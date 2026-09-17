@@ -56,6 +56,15 @@ class ProviderModel(Base):
     display_name: Mapped[str | None] = mapped_column(String(300), nullable=True)
     metadata_json: Mapped[str | None] = mapped_column(Text, nullable=True)
     is_available: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    generation_candidate: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    qualification_status: Mapped[str] = mapped_column(
+        String(30), nullable=False, default="unknown", index=True,
+    )
+    qualification_checked_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True,
+    )
+    qualification_error_code: Mapped[str | None] = mapped_column(String(80), nullable=True)
+    qualification_message: Mapped[str | None] = mapped_column(Text, nullable=True)
     discovered_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, nullable=False,
     )

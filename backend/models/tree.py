@@ -36,6 +36,10 @@ class Tree(TimestampMixin, Base):
         "Run", back_populates="tree", cascade="all, delete-orphan",
         passive_deletes=True,
     )
+    destinations = relationship(
+        "ResultDestination", back_populates="tree", cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
 
 
 class TreeVersion(TimestampMixin, Base):

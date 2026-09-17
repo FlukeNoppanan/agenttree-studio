@@ -13,20 +13,29 @@ from agenttree.core import (
     BaseTaskDecomposer,
     ProviderFinalReviewer,
     ProviderManagerReviewer,
+    ProviderSpecialistExecutor,
     ProviderTaskDecomposer,
     ProviderTaskTriage,
 )
 from agenttree.models import ReviewResult, Subtask, Task, TriageResult
 from agenttree.orchestration import SpecialistExecution
 from agenttree.providers import BaseProvider, ProviderRegistry, ProviderRequest, ProviderResponse
+from agenttree.tools import ToolBindingRegistry, ToolExecutor, ToolRegistry
+from agenttree.tools.mcp import BaseMCPClient
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
 from backend.models.provider import ProviderConnection, ProviderModel
+from backend.models.tool import ToolConnection
 from backend.models.tree import AgentConfig, Tree, TreeVersion
+from backend.repositories.protocols import TreeRepository
+from backend.repositories.sqlalchemy import SQLAlchemyTreeRepository
 from backend.providers.generation import create_generation_provider
+from backend.schemas.tool_loop import ToolLoopSettings
 from backend.services.errors import ResourceNotFoundError, RunRequestError
 from backend.services.secret_service import SecretService
+from backend.services.tool_aware_specialist_executor import ToolAwareSpecialistExecutor
+from backend.tools.factory import BuiltTools, ToolAdapterFactory
 
 
 ProviderFactory = Callable[[ProviderConnection, str, str | None, str], BaseProvider]
@@ -52,6 +61,11 @@ class RuntimeBundle:
     version: TreeVersion
     agents_by_id: dict[str, RootAgent | ManagerAgent | SpecialistAgent]
     sensitive_values: tuple[str, ...]
+    tool_registry: ToolRegistry
+    tool_bindings: ToolBindingRegistry
+    tool_executor: ToolExecutor
+    tool_loop_executor: ToolAwareSpecialistExecutor | None = None
+    mcp_clients: tuple[BaseMCPClient, ...] = ()
 
 
 class _InstructionProvider(BaseProvider):
@@ -118,6 +132,8 @@ class RuntimeBuilder:
         self,
         database: Session,
         provider_factory: ProviderFactory | None = None,
+        tool_factory: ToolAdapterFactory | None = None,
+        tree_repository: TreeRepository | None = None,
     ) -> None:
         self._database = database
         self._provider_factory = provider_factory or (
@@ -125,6 +141,8 @@ class RuntimeBuilder:
                 connection, model, credential, provider_name=name,
             )
         )
+        self._tool_factory = tool_factory or ToolAdapterFactory(database)
+        self._trees = tree_repository or SQLAlchemyTreeRepository(database)
 
     @staticmethod
     def _tree_options():
@@ -137,9 +155,7 @@ class RuntimeBuilder:
         )
 
     def get_tree(self, tree_id: str) -> Tree:
-        tree = self._database.scalar(
-            select(Tree).options(*self._tree_options()).where(Tree.id == tree_id),
-        )
+        tree = self._trees.get(tree_id)
         if tree is None:
             raise ResourceNotFoundError("Tree not found")
         if tree.current_version is None:
@@ -180,33 +196,36 @@ class RuntimeBuilder:
         for manager in managers:
             if not any(item.parent_agent_id == manager.id for item in specialists):
                 issue("TREE_INVALID", "Every Manager needs at least one Specialist", manager.id)
-        if version.trigger is None or version.trigger.trigger_type not in {"manual_form", "webhook"}:
-            issue("TREE_INVALID", "Trigger / Input configuration is missing or unsupported")
-        elif version.trigger.trigger_type == "manual_form":
-            fields = version.trigger.config_json.get("fields")
-            if not isinstance(fields, list):
-                issue("TREE_INVALID", "Manual Form requires a fields list")
+        configs = {item.id: item for item in agents}
+        assigned_specialists: set[str] = set()
+        for assignment in version.tool_assignments:
+            agent = configs.get(assignment.agent_config_id)
+            if agent is None or agent.agent_type != "specialist":
+                issue("TOOL_BINDING_ERROR", "Core Tool bindings support Specialist Agents only", assignment.agent_config_id)
+                continue
+            tool = self._database.get(ToolConnection, assignment.tool_connection_id)
+            if tool is None:
+                issue("TOOL_BINDING_ERROR", "Tool assignment references a missing Tool", agent.id)
+            elif not tool.enabled or tool.status != "connected":
+                issue("TOOL_BINDING_ERROR", "Assigned Tool must be enabled and connected", agent.id)
+            elif tool.tool_type == "mcp" and not any(
+                item.get("selected") is True for item in (tool.discovered_tools_json or [])
+            ):
+                issue("TOOL_BINDING_ERROR", "Assigned MCP connection has no selected Tools", agent.id)
             else:
-                seen_fields: set[str] = set()
-                for field in fields:
-                    if not isinstance(field, dict):
-                        issue("TREE_INVALID", "Manual Form contains an invalid field")
-                        continue
-                    field_id = str(field.get("id") or field.get("name") or "").strip()
-                    if (
-                        not field_id
-                        or field_id in seen_fields
-                        or field.get("type") not in {"text", "textarea", "number", "select", "file"}
-                    ):
-                        issue("TREE_INVALID", "Manual Form contains an invalid or duplicate field")
-                    seen_fields.add(field_id)
-        if version.output is None:
-            issue("TREE_INVALID", "Output configuration is missing")
-        elif (
-            version.output.output_type not in {"text", "structured_json"}
-            or version.output.delivery_type not in {"show_in_web", "api_response"}
-        ):
-            issue("TREE_INVALID", "Output configuration is unsupported")
+                assigned_specialists.add(agent.id)
+        for specialist in specialists:
+            try:
+                loop_settings = ToolLoopSettings.from_mapping(specialist.settings_json)
+            except ValueError as error:
+                issue("TOOL_LOOP_CONFIG_ERROR", str(error), specialist.id)
+                continue
+            if loop_settings.enabled and specialist.id not in assigned_specialists:
+                issue(
+                    "TOOL_LOOP_CONFIG_ERROR",
+                    "Autonomous Tool use requires at least one executable Tool assignment",
+                    specialist.id,
+                )
         return RuntimeValidationResult(valid=not errors, errors=tuple(errors))
 
     def _validate_provider(self, agent: AgentConfig, issue) -> None:
@@ -294,6 +313,36 @@ class RuntimeBuilder:
             manager_reviewers[config.id] = ProviderManagerReviewer(configured)
 
         registry = ProviderRegistry()
+        tool_registry = ToolRegistry()
+        tool_bindings = ToolBindingRegistry()
+        tool_executor = ToolExecutor(registry=tool_registry, bindings=tool_bindings)
+        specialist_provider_bindings: dict[str, str] = {}
+        specialist_providers: dict[str, BaseProvider] = {}
+        loop_settings = {
+            item.id: ToolLoopSettings.from_mapping(item.settings_json)
+            for item in specialist_configs
+        }
+        for config in specialist_configs:
+            provider = resolve(config)
+            specialist_providers[config.id] = provider
+            if provider.name.casefold() not in registry.names:
+                registry.register(provider)
+            specialist_provider_bindings[config.id] = provider.name
+        provider_executor = ProviderSpecialistExecutor(
+            provider_registry=registry,
+            provider_bindings=specialist_provider_bindings,
+        )
+        tool_loop_executor = (
+            ToolAwareSpecialistExecutor(
+                provider_executor=provider_executor,
+                tool_executor=tool_executor,
+                tool_registry=tool_registry,
+                tool_bindings=tool_bindings,
+                settings=loop_settings,
+                sensitive_values=secrets,
+            )
+            if any(item.enabled for item in loop_settings.values()) else None
+        )
         runtime = AgentTree(
             root_agent=root,
             triage=ProviderTaskTriage(root_provider),
@@ -301,15 +350,49 @@ class RuntimeBuilder:
             manager_reviewer=_ManagerReviewer(manager_reviewers),
             final_reviewer=ProviderFinalReviewer(root_provider),
             provider_registry=registry,
+            tool_registry=tool_registry,
+            tool_bindings=tool_bindings,
+            executor=tool_loop_executor,
             config=self._core_config(root_config),
         )
         for manager in managers.values():
             runtime.register_manager(manager)
         for config in specialist_configs:
-            provider = resolve(config)
-            if provider.name.casefold() not in registry.names:
-                runtime.register_provider(provider)
-            runtime.bind_provider(specialists[config.id], provider)
+            if tool_loop_executor is None:
+                runtime.bind_provider(specialists[config.id], specialist_providers[config.id])
+
+        built_connections: dict[str, BuiltTools] = {}
+        mcp_clients: list[BaseMCPClient] = []
+        try:
+            for assignment in version.tool_assignments:
+                connection = self._database.get(ToolConnection, assignment.tool_connection_id)
+                assert connection is not None
+                built = built_connections.get(connection.id)
+                if built is None:
+                    built = self._tool_factory.build_runtime_tools(connection)
+                    if not built.tools:
+                        raise ValueError("Assigned Tool produced no executable Tools")
+                    for client in built.mcp_clients:
+                        client.connect()
+                    built_connections[connection.id] = built
+                    secrets.extend(built.sensitive_values)
+                    mcp_clients.extend(built.mcp_clients)
+                    for executable in built.tools:
+                        runtime.register_tool(executable)
+                specialist = specialists[assignment.agent_config_id]
+                for executable in built.tools:
+                    runtime.bind_tool(specialist, executable)
+        except Exception as error:
+            for client in mcp_clients:
+                try:
+                    client.close()
+                except Exception:
+                    pass
+            if isinstance(error, RunRequestError):
+                raise
+            raise RunRequestError(
+                "TOOL_BINDING_ERROR", "Executable Tool runtime could not be created",
+            ) from error
 
         all_agents: dict[str, RootAgent | ManagerAgent | SpecialistAgent] = {root.id: root}
         all_agents.update(managers)
@@ -320,6 +403,11 @@ class RuntimeBuilder:
             version=version,
             agents_by_id=all_agents,
             sensitive_values=tuple(dict.fromkeys(value for value in secrets if value)),
+            tool_registry=tool_registry,
+            tool_bindings=tool_bindings,
+            tool_executor=tool_executor,
+            tool_loop_executor=tool_loop_executor,
+            mcp_clients=tuple(mcp_clients),
         )
 
     @staticmethod

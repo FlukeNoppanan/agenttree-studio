@@ -22,3 +22,26 @@ class HealthResponse(BaseModel):
     version: str
     agenttree: AgentTreeStatus
     runtime: RuntimeInfo
+
+
+class ComponentHealth(BaseModel):
+    available: bool
+    version: str | None = None
+    detail: str | None = None
+
+
+class MigrationHealth(BaseModel):
+    current: str | None
+    head: str | None
+    up_to_date: bool
+
+
+class SystemHealthResponse(BaseModel):
+    status: Literal["ok", "degraded"]
+    studio_api: ComponentHealth
+    agenttree: AgentTreeStatus
+    database: ComponentHealth
+    migrations: MigrationHealth
+    backend_version: str
+    frontend_version: str
+    runtime: RuntimeInfo

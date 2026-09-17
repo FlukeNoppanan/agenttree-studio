@@ -1,8 +1,10 @@
-"""Minimal persisted tool catalog and draft assignment integration point."""
+"""Executable Tool connections and persisted Specialist assignments."""
 
 from uuid import uuid4
 
-from sqlalchemy import ForeignKey, JSON, String, Text, UniqueConstraint
+from datetime import datetime
+
+from sqlalchemy import Boolean, DateTime, ForeignKey, JSON, String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from backend.db.base import Base
@@ -16,12 +18,23 @@ class ToolConnection(TimestampMixin, Base):
     name: Mapped[str] = mapped_column(String(160), nullable=False)
     tool_type: Mapped[str] = mapped_column(String(40), nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=False, default="")
-    status: Mapped[str] = mapped_column(String(30), nullable=False, default="available")
+    enabled: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+    secret_id: Mapped[str | None] = mapped_column(
+        ForeignKey("secrets.id", ondelete="RESTRICT"), nullable=True,
+    )
+    transport_type: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    status: Mapped[str] = mapped_column(String(30), nullable=False, default="not_configured")
     config_json: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    discovered_tools_json: Mapped[list | None] = mapped_column(JSON, nullable=True)
+    last_checked_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True,
+    )
+    last_error: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     assignments = relationship(
         "ToolAssignment", back_populates="tool_connection", passive_deletes=True,
     )
+    secret = relationship("Secret", back_populates="tool_connections")
 
 
 class ToolAssignment(Base):

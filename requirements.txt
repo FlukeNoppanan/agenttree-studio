@@ -3,11 +3,12 @@ fastapi>=0.115,<1
 uvicorn[standard]>=0.30,<1
 pydantic>=2.9,<3
 SQLAlchemy>=2.0,<3
+alembic>=1.14,<2
 cryptography>=44,<47
 httpx>=0.28,<1
 
-# Local development dependency plus the provider SDKs used for capability suggestions.
--e ../Agenttree[providers]
+# Local development dependency plus provider and MCP SDKs used by Studio.
+-e ../Agenttree[providers,mcp]
 
 # Initial smoke-test dependency
 pytest>=8,<10

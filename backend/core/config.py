@@ -1,6 +1,6 @@
 """Static local-development settings for the initial Studio foundation."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import os
 from pathlib import Path
 
@@ -12,7 +12,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 class Settings:
     app_name: str = "AgentTree Studio API"
     app_version: str = "0.1.0"
-    database_url: str = f"sqlite:///{PROJECT_ROOT / 'agenttree_studio.db'}"
+    database_url: str = field(default_factory=lambda: (
+        os.getenv("AGENTTREE_STUDIO_DATABASE_URL")
+        or f"sqlite:///{PROJECT_ROOT / 'agenttree_studio.db'}"
+    ))
     cors_origins: tuple[str, ...] = (
         "http://localhost:5173",
         "http://127.0.0.1:5173",

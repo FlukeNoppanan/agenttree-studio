@@ -26,7 +26,7 @@ def test_openai_discovers_server_returned_models() -> None:
     assert models[0].metadata == {"owned_by": "vendor"}
 
 
-def test_gemini_keeps_only_models_with_declared_generation_support() -> None:
+def test_gemini_marks_models_with_declared_generation_support() -> None:
     def respond(request: httpx.Request) -> httpx.Response:
         assert request.url.params["key"] == "gemini-key"
         return httpx.Response(200, json={
@@ -46,7 +46,10 @@ def test_gemini_keeps_only_models_with_declared_generation_support() -> None:
     client = httpx.Client(transport=httpx.MockTransport(respond))
     models = GeminiAdapter(client=client).discover_models("gemini-key")
 
-    assert [model.model_id for model in models] == ["models/generative-one"]
+    assert [model.model_id for model in models] == [
+        "models/generative-one", "models/embedding-only",
+    ]
+    assert [model.generation_candidate for model in models] == [True, False]
     assert models[0].display_name == "Generative One"
 
 

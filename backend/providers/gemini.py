@@ -27,8 +27,8 @@ class GeminiAdapter(HttpDiscoveryAdapter, ProviderAdapter):
             if not isinstance(item, dict) or not isinstance(item.get("name"), str):
                 continue
             methods = item.get("supportedGenerationMethods", [])
-            if not isinstance(methods, list) or "generateContent" not in methods:
-                continue
+            if not isinstance(methods, list):
+                methods = []
             metadata: dict[str, Any] = {}
             for key in (
                 "description", "inputTokenLimit", "outputTokenLimit",
@@ -41,5 +41,6 @@ class GeminiAdapter(HttpDiscoveryAdapter, ProviderAdapter):
                 model_id=item["name"],
                 display_name=display_name if isinstance(display_name, str) else None,
                 metadata=metadata,
+                generation_candidate="generateContent" in methods,
             ))
         return tuple(models)

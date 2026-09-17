@@ -9,9 +9,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from backend.api.health import router as health_router
+from backend.api.dashboard import router as dashboard_router
 from backend.api.capabilities import router as capabilities_router
 from backend.api.providers import router as providers_router
 from backend.api.runs import router as runs_router
+from backend.api.runtime import router as runtime_router
+from backend.api.destinations import router as destinations_router
 from backend.api.secrets import router as secrets_router
 from backend.api.tools import router as tools_router
 from backend.api.trees import router as trees_router
@@ -63,9 +66,12 @@ app.add_middleware(
 )
 
 app.include_router(health_router, prefix="/api")
+app.include_router(dashboard_router, prefix="/api")
 app.include_router(secrets_router, prefix="/api")
 app.include_router(providers_router, prefix="/api")
 app.include_router(trees_router, prefix="/api")
 app.include_router(tools_router, prefix="/api")
 app.include_router(capabilities_router, prefix="/api")
 app.include_router(runs_router, prefix="/api")
+app.include_router(runtime_router, prefix="/api")
+app.include_router(destinations_router, prefix="/api")

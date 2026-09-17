@@ -39,6 +39,7 @@ def provider_with_model(database, *, status: str = "connected", secret_id: str |
         provider_connection_id=provider.id,
         model_id="test-model",
         is_available=True,
+        qualification_status="qualified",
     ))
     database.commit()
     return provider

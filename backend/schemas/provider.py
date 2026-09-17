@@ -20,6 +20,13 @@ class ProviderStatus(str, Enum):
     ERROR = "error"
 
 
+class ModelQualificationStatus(str, Enum):
+    UNKNOWN = "unknown"
+    QUALIFIED = "qualified"
+    UNAVAILABLE = "unavailable"
+    TRANSIENT_ERROR = "transient_error"
+
+
 class ProviderCreate(BaseModel):
     name: str = Field(min_length=1, max_length=120)
     provider_type: ProviderType
@@ -56,6 +63,9 @@ class ProviderRead(BaseModel):
     last_checked_at: datetime | None
     last_error: str | None
     models_count: int
+    discovered_models_count: int
+    unavailable_models_count: int
+    transient_models_count: int
     created_at: datetime
     updated_at: datetime
 
@@ -69,9 +79,23 @@ class ProviderModelRead(BaseModel):
     display_name: str | None
     metadata: dict[str, Any] | None
     is_available: bool
+    generation_candidate: bool
+    qualification_status: ModelQualificationStatus
+    qualification_checked_at: datetime | None
+    qualification_error_code: str | None
+    qualification_message: str | None
     discovered_at: datetime
+
+
+class ModelQualificationSummary(BaseModel):
+    discovered_count: int
+    candidate_count: int
+    usable_count: int
+    unavailable_count: int
+    transient_error_count: int
 
 
 class ModelDiscoveryResponse(BaseModel):
     provider: ProviderRead
     models: list[ProviderModelRead]
+    summary: ModelQualificationSummary

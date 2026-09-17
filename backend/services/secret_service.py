@@ -9,6 +9,8 @@ from sqlalchemy.orm import Session
 from backend.core.config import settings
 from backend.models.provider import ProviderConnection
 from backend.models.secret import Secret
+from backend.models.tool import ToolConnection
+from backend.models.destination import ResultDestination
 from backend.schemas.secret import SecretCreate, SecretRead
 from backend.services.errors import (
     ResourceConflictError,
@@ -89,14 +91,32 @@ class SecretService:
         secret = self._database.get(Secret, secret_id)
         if secret is None:
             raise ResourceNotFoundError("Secret not found")
-        references = self._database.scalar(
+        provider_references = self._database.scalar(
             select(func.count()).select_from(ProviderConnection).where(
                 ProviderConnection.secret_id == secret_id,
             ),
         )
-        if references:
+        tool_references = self._database.scalar(
+            select(func.count()).select_from(ToolConnection).where(
+                ToolConnection.secret_id == secret_id,
+            ),
+        )
+        destination_references = self._database.scalar(
+            select(func.count()).select_from(ResultDestination).where(
+                ResultDestination.secret_id == secret_id,
+            ),
+        )
+        if provider_references:
             raise ResourceConflictError(
                 "Secret is used by a provider connection and cannot be deleted",
+            )
+        if tool_references:
+            raise ResourceConflictError(
+                "Secret is used by a Tool connection and cannot be deleted",
+            )
+        if destination_references:
+            raise ResourceConflictError(
+                "Secret is used by a result destination and cannot be deleted",
             )
         self._database.delete(secret)
         self._database.commit()

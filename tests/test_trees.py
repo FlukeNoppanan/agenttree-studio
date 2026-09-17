@@ -26,6 +26,7 @@ def connected_provider(database, model_id: str = "discovered-model") -> Provider
         provider_connection_id=provider.id,
         model_id=model_id,
         is_available=True,
+        qualification_status="qualified",
     ))
     database.commit()
     return provider
@@ -177,6 +178,26 @@ def test_model_must_exist_in_selected_provider_catalog(database) -> None:
     assert any(error.code == "model_missing" for error in validation.errors)
 
 
+def test_existing_tree_with_unavailable_model_remains_readable(database) -> None:
+    provider = connected_provider(database)
+    service = TreeService(database)
+    tree = service.create(valid_payload(provider))
+    model = database.scalar(select(ProviderModel).where(
+        ProviderModel.provider_connection_id == provider.id,
+    ))
+    model.qualification_status = "unavailable"
+    model.is_available = False
+    database.commit()
+
+    detail = service.get(tree.id)
+    validation = service.validate(tree.id)
+
+    assert detail.root.model_id == "discovered-model"
+    assert detail.root.provider_connection_id == provider.id
+    assert any(error.code == "model_unavailable" for error in validation.errors)
+    assert "secret" not in detail.model_dump_json().casefold()
+
+
 def test_every_agent_requires_a_capability(database) -> None:
     provider = connected_provider(database)
     payload = valid_payload(provider)
@@ -188,7 +209,7 @@ def test_every_agent_requires_a_capability(database) -> None:
     assert any(error.code == "capability_required" for error in validation.errors)
 
 
-def test_trigger_and_output_are_required(database) -> None:
+def test_tree_validation_does_not_require_trigger_or_output(database) -> None:
     provider = connected_provider(database)
     payload = valid_payload(provider)
     payload.trigger = None
@@ -197,8 +218,8 @@ def test_trigger_and_output_are_required(database) -> None:
 
     validation = TreeService(database).validate(tree.id)
 
-    assert any(error.code == "trigger_required" for error in validation.errors)
-    assert any(error.code == "output_required" for error in validation.errors)
+    assert validation.valid is True
+    assert not any(error.step in {"trigger", "output"} for error in validation.errors)
 
 
 def test_save_draft_persists_full_configuration(database) -> None:
@@ -267,7 +288,7 @@ def test_valid_tree_can_be_marked_ready_but_invalid_tree_cannot(database) -> Non
     assert service.get(valid_tree.id).status == "ready"
 
     invalid_payload = valid_payload(provider)
-    invalid_payload.trigger = None
+    invalid_payload.agents[-1].capabilities = []
     invalid_tree = service.create(invalid_payload)
     with pytest.raises(ServiceError, match="cannot become ready"):
         service.update(invalid_tree.id, TreeUpdate(status="ready"))

@@ -6,6 +6,8 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
+from backend.schemas.destination import DeliveryResultRead
+
 
 class RunStatus(str, Enum):
     PENDING = "pending"
@@ -30,6 +32,11 @@ class TestRunRequest(BaseModel):
     input: dict[str, Any] = Field(default_factory=dict)
 
 
+class InvocationRequest(BaseModel):
+    input: dict[str, Any] = Field(default_factory=dict)
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
+
 class TraceEventRead(BaseModel):
     id: str
     run_id: str
@@ -49,6 +56,8 @@ class RunRead(BaseModel):
     tree_version_number: int
     status: RunStatus
     input: dict[str, Any]
+    metadata: dict[str, Any]
+    invocation_source: str
     output: dict[str, Any] | None
     error_code: RunErrorCode | None
     error_message: str | None
@@ -61,3 +70,4 @@ class RunRead(BaseModel):
 class RunDetailRead(RunRead):
     state: dict[str, Any] | None
     trace: list[TraceEventRead]
+    delivery_results: list[DeliveryResultRead] = Field(default_factory=list)

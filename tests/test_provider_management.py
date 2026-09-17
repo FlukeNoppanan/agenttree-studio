@@ -4,6 +4,7 @@ import asyncio
 import json
 
 import pytest
+from agenttree.providers import ProviderResponse
 from fastapi.exceptions import RequestValidationError
 from pydantic import ValidationError
 from sqlalchemy import func, select
@@ -21,7 +22,7 @@ from backend.services.errors import (
     ResourceConflictError,
     ServiceError,
 )
-from backend.services.model_discovery_service import ModelDiscoveryService
+from backend.services.model_discovery_service import ModelDiscoveryService, runtime_model_id
 from backend.services.provider_service import ProviderService
 from backend.services.secret_service import SecretService
 
@@ -142,6 +143,12 @@ def test_model_discovery_stores_and_returns_models(database) -> None:
     service = ModelDiscoveryService(
         database,
         adapter_factory=lambda provider_type, base_url: CatalogAdapter(),
+        generation_factory=lambda connection, model_id, credential, provider_name: type(
+            "WorkingProvider", (),
+            {"generate": lambda self, request: ProviderResponse(
+                content="OK", model=model_id, provider=provider_name or "test",
+            )},
+        )(),
     )
     result = service.discover_models(provider.id)
 
@@ -152,6 +159,63 @@ def test_model_discovery_stores_and_returns_models(database) -> None:
 
     stored = ProviderService(database).models(provider.id)
     assert stored == result.models
+
+
+def test_gemini_2_native_id_is_preserved_and_qualified_by_real_generation_contract(database) -> None:
+    secret = create_secret(database)
+    provider = ProviderService(database).create(ProviderCreate(
+        name="Gemini", provider_type="gemini", secret_id=secret.id,
+    ))
+    captured: list[str] = []
+
+    class CatalogAdapter(ProviderAdapter):
+        def discover_models(self, credential):
+            return (DiscoveredModel("models/gemini-2.5-flash", "Gemini 2.5 Flash"),)
+
+    class WorkingProvider:
+        def generate(self, request):
+            captured.append(request.model or "")
+            return ProviderResponse(content="OK", provider="Gemini", model=request.model)
+
+    result = ModelDiscoveryService(
+        database,
+        adapter_factory=lambda provider_type, base_url: CatalogAdapter(),
+        generation_factory=lambda connection, model_id, credential, provider_name: (
+            captured.append(model_id) or WorkingProvider()
+        ),
+    ).discover_models(provider.id)
+
+    assert result.summary.usable_count == 1
+    assert result.models[0].model_id == "models/gemini-2.5-flash"
+    assert result.models[0].qualification_status == "qualified"
+    assert captured[0] == "models/gemini-2.5-flash"
+    assert runtime_model_id("gemini", "models/gemini-2.5-flash") == "models/gemini-2.5-flash"
+
+
+def test_failed_qualification_is_sanitized_and_excluded_from_normal_models(database) -> None:
+    secret_value = "sk-never-persist-this"
+    secret = create_secret(database, secret_value)
+    provider = create_openai_provider(database, secret.id)
+
+    class CatalogAdapter(ProviderAdapter):
+        def discover_models(self, credential):
+            return (DiscoveredModel("embedding-or-denied"),)
+
+    class DeniedProvider:
+        def generate(self, request):
+            raise RuntimeError(f"denied using {secret_value}")
+
+    result = ModelDiscoveryService(
+        database,
+        adapter_factory=lambda provider_type, base_url: CatalogAdapter(),
+        generation_factory=lambda connection, model_id, credential, provider_name: DeniedProvider(),
+    ).discover_models(provider.id)
+
+    assert result.summary.usable_count == 0
+    assert result.models[0].qualification_status == "unavailable"
+    assert secret_value not in result.models[0].model_dump_json()
+    assert ProviderService(database).models(provider.id) == []
+    assert len(ProviderService(database).models(provider.id, include_unusable=True)) == 1
 
 
 def test_delete_provider_cascades_related_models(database) -> None:

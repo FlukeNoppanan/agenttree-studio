@@ -5,9 +5,10 @@ from enum import Enum
 from typing import Any
 from uuid import uuid4
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 from backend.core.capabilities import normalize_capabilities
+from backend.schemas.tool_loop import ToolLoopSettings
 
 
 class TreeStatus(str, Enum):
@@ -45,6 +46,15 @@ class AgentDraft(BaseModel):
     @classmethod
     def normalize_capabilities(cls, values: list[str]) -> list[str]:
         return normalize_capabilities(values)
+
+    @model_validator(mode="after")
+    def validate_tool_loop_settings(self) -> "AgentDraft":
+        settings = self.settings or {}
+        if self.agent_type != AgentType.SPECIALIST and settings.get("autonomous_tool_use") is True:
+            raise ValueError("Autonomous Tool use is available only to Specialists")
+        if self.agent_type == AgentType.SPECIALIST:
+            ToolLoopSettings.from_mapping(settings)
+        return self
 
 
 class TriggerDraft(BaseModel):

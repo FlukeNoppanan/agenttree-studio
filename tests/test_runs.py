@@ -10,11 +10,14 @@ from sqlalchemy import func, select
 
 from backend.models.provider import ProviderConnection, ProviderModel
 from backend.models.run import Run, TraceEvent
-from backend.models.tree import AgentConfig
-from backend.schemas.run import TestRunRequest as RunRequest
+from backend.models.destination import ResultDelivery
+from backend.models.tree import AgentConfig, Tree
+from backend.schemas.destination import DestinationWrite
+from backend.schemas.run import InvocationRequest, TestRunRequest as RunRequest
 from backend.schemas.secret import SecretCreate
 from backend.schemas.tree import TreeDraftPayload
 from backend.services.errors import RunRequestError
+from backend.services.destination_service import DestinationService, ResultDeliveryService
 from backend.services.run_service import RunService
 from backend.services.runtime_builder import RuntimeBuilder
 from backend.services.secret_service import SecretService
@@ -26,6 +29,7 @@ from backend.api.runs import (
     list_tree_runs as api_list_tree_runs,
     test_run as api_test_run,
 )
+from backend.api.runtime import invoke_tree as api_invoke_tree
 
 
 class ScriptedProvider(BaseProvider):
@@ -65,6 +69,7 @@ def runtime_tree(database, *, output_type: str = "text"):
         provider_connection_id=provider.id,
         model_id="runtime-model",
         is_available=True,
+        qualification_status="qualified",
     ))
     database.commit()
     root_id, manager_id, specialist_id = (str(uuid4()) for _ in range(3))
@@ -232,7 +237,7 @@ def test_run_listing_detail_trace_and_filters(database) -> None:
     assert service.trace(completed.id)[-1].event_type == "orchestration.final_result_created"
 
 
-def test_invalid_tree_and_invalid_input_are_rejected_before_run_creation(database) -> None:
+def test_invalid_tree_is_rejected_but_generic_json_input_is_accepted(database) -> None:
     tree, provider, _ = runtime_tree(database)
     builder, _, _ = scripted_builder(database)
     service = RunService(database, builder)
@@ -246,14 +251,13 @@ def test_invalid_tree_and_invalid_input_are_rejected_before_run_creation(databas
 
     provider.status = "connected"
     database.commit()
-    with pytest.raises(RunRequestError) as input_error:
-        service.test_run(tree.id, RunRequest(input={}))
-    assert input_error.value.error_code == "INPUT_INVALID"
-    with pytest.raises(RunRequestError, match="not supported"):
-        service.test_run(tree.id, RunRequest(input={
-            "objective": "work", "attachment": "secret.txt",
-        }))
-    assert database.scalar(select(func.count()).select_from(Run)) == 0
+    empty = service.test_run(tree.id, RunRequest(input={}))
+    arbitrary = service.test_run(tree.id, RunRequest(input={
+        "case_id": "CASE-1", "attachment": {"name": "report.txt"},
+    }))
+    assert empty.status.value == "completed"
+    assert arbitrary.input["case_id"] == "CASE-1"
+    assert database.scalar(select(func.count()).select_from(Run)) == 2
 
 
 def test_missing_provider_and_model_have_specific_runtime_validation_codes(database) -> None:
@@ -289,3 +293,120 @@ def test_run_api_functions_create_list_detail_and_trace(database, monkeypatch) -
     assert [item.id for item in api_list_tree_runs(tree.id, None, database)] == [created.id]
     assert api_get_run(created.id, database).id == created.id
     assert api_get_run_trace(created.id, database)[0].event_type == "orchestration.started"
+
+
+def test_tree_without_legacy_input_or_output_executes_generic_json(database) -> None:
+    tree, _, _ = runtime_tree(database)
+    stored = database.get(Tree, tree.id)
+    stored.current_version.trigger = None
+    stored.current_version.output = None
+    database.commit()
+    builder, _, _ = scripted_builder(database)
+
+    result = RunService(database, builder).invoke(
+        tree.id,
+        InvocationRequest(input={"case_id": "CASE-001", "data": {"severity": "high"}}),
+    )
+
+    assert result.status.value == "completed"
+    assert result.input["case_id"] == "CASE-001"
+    assert result.output["type"] == "structured_json"
+
+
+def test_repeated_invocations_and_multiple_trees_are_isolated(database) -> None:
+    tree_a, _, _ = runtime_tree(database)
+    tree_b, _, _ = runtime_tree(database)
+    builder, created_providers, _ = scripted_builder(database)
+    service = RunService(database, builder)
+
+    first = service.invoke(tree_a.id, InvocationRequest(input={"case": "A-1"}))
+    second = service.invoke(tree_a.id, InvocationRequest(input={"case": "A-2"}))
+    other = service.invoke(tree_b.id, InvocationRequest(input={"case": "B-1"}))
+
+    assert len({first.id, second.id, other.id}) == 3
+    assert first.tree_id == second.tree_id == tree_a.id
+    assert other.tree_id == tree_b.id
+    assert first.tree_version_id != other.tree_version_id
+    assert first.input != second.input
+    assert len(created_providers) == 3
+
+
+class RecordingDestinationAdapter:
+    def __init__(self, failure: Exception | None = None) -> None:
+        self.failure = failure
+        self.calls: list[tuple[dict, str | None]] = []
+
+    def deliver(self, destination, payload, credential) -> None:
+        self.calls.append((payload, credential))
+        if self.failure:
+            raise self.failure
+
+
+def test_destinations_deliver_independently_and_persist_outcomes(database) -> None:
+    tree, _, _ = runtime_tree(database)
+    webhook_secret = SecretService(database).create(SecretCreate(
+        name="Webhook token", secret_type="bearer", value="destination-super-secret",
+    ))
+    DestinationService(database).create(tree.id, DestinationWrite.model_validate({
+        "name": "Operations Webhook", "destination_type": "webhook",
+        "configuration": {"url": "https://example.test/results", "timeout_seconds": 10},
+        "secret_id": webhook_secret.id,
+    }))
+    adapter = RecordingDestinationAdapter()
+    delivery = ResultDeliveryService(database, webhook_adapter=adapter)
+    builder, _, _ = scripted_builder(database)
+
+    result = RunService(database, builder, delivery_service=delivery).invoke(
+        tree.id,
+        InvocationRequest(input={"case_id": "INC-1"}, metadata={"source": "portal"}),
+    )
+
+    assert result.status.value == "completed"
+    assert {item.destination_type.value for item in result.delivery_results} == {
+        "store_in_studio", "api_response", "webhook",
+    }
+    assert all(item.status.value == "success" for item in result.delivery_results)
+    assert adapter.calls[0][0]["run_id"] == result.id
+    assert adapter.calls[0][1] == "destination-super-secret"
+    assert database.scalar(select(func.count()).select_from(ResultDelivery)) == 3
+
+
+def test_webhook_failure_does_not_corrupt_run_or_leak_credentials(database) -> None:
+    tree, _, _ = runtime_tree(database)
+    secret = SecretService(database).create(SecretCreate(
+        name="Destination key", secret_type="api_key", value="never-leak-me",
+    ))
+    DestinationService(database).create(tree.id, DestinationWrite.model_validate({
+        "name": "Broken Webhook", "destination_type": "webhook",
+        "configuration": {"url": "https://example.test/fail"}, "secret_id": secret.id,
+    }))
+    adapter = RecordingDestinationAdapter(RuntimeError("401 Bearer never-leak-me"))
+    builder, _, _ = scripted_builder(database)
+
+    result = RunService(
+        database, builder,
+        delivery_service=ResultDeliveryService(database, webhook_adapter=adapter),
+    ).invoke(tree.id, InvocationRequest(input={"message": "work"}))
+
+    assert result.status.value == "completed"
+    webhook = next(item for item in result.delivery_results if item.destination_type.value == "webhook")
+    assert webhook.status.value == "failed"
+    assert webhook.sanitized_error == "Webhook delivery failed"
+    assert "never-leak-me" not in json.dumps(result.model_dump(mode="json"))
+    assert all(item.status.value == "success" for item in result.delivery_results if item.destination_type.value != "webhook")
+
+
+def test_runtime_api_uses_same_execution_pipeline(database, monkeypatch) -> None:
+    tree, _, _ = runtime_tree(database)
+    builder, _, _ = scripted_builder(database)
+    monkeypatch.setattr("backend.api.runtime.RunService", lambda session: RunService(session, builder))
+
+    result = api_invoke_tree(
+        tree.id,
+        InvocationRequest(input={"message": "Investigate"}, metadata={"caller": "api-test"}),
+        database,
+    )
+
+    assert result.invocation_source == "api"
+    assert result.metadata == {"caller": "api-test"}
+    assert result.input == {"message": "Investigate"}

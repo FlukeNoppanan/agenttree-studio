@@ -14,6 +14,7 @@ class DiscoveredModel:
     model_id: str
     display_name: str | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
+    generation_candidate: bool = True
 
 
 class ProviderAdapter(ABC):

@@ -24,6 +24,8 @@ class Run(Base):
     )
     status: Mapped[str] = mapped_column(String(20), nullable=False, default="pending", index=True)
     input_json: Mapped[dict] = mapped_column(JSON, nullable=False)
+    metadata_json: Mapped[dict] = mapped_column(JSON, nullable=False, default=dict)
+    invocation_source: Mapped[str] = mapped_column(String(40), nullable=False, default="studio_test")
     output_json: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     state_json: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     error_code: Mapped[str | None] = mapped_column(String(80), nullable=True)
@@ -40,6 +42,10 @@ class Run(Base):
     trace_events = relationship(
         "TraceEvent", back_populates="run", cascade="all, delete-orphan",
         passive_deletes=True, order_by="TraceEvent.sequence",
+    )
+    delivery_results = relationship(
+        "ResultDelivery", back_populates="run", cascade="all, delete-orphan",
+        passive_deletes=True, order_by="ResultDelivery.attempted_at",
     )
 
 

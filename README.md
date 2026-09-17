@@ -3,9 +3,9 @@
 AgentTree Studio is a separate web management application for the
 [AgentTree](../Agenttree) Python framework. The current foundation provides a
 FastAPI integration boundary, encrypted secret storage, provider connections
-with live model discovery, versioned Tree drafts, and a React administration
-workflow, including synchronous Core-backed Test Runs, persisted results, and
-real execution traces.
+with live model discovery, versioned reusable Tree runtimes, and a React
+administration workflow. Every invocation creates an independent Run with its
+own input, result, trace, and Result Delivery outcomes.
 
 ## Architecture
 
@@ -13,8 +13,10 @@ real execution traces.
 React + TypeScript (Vite)
           ↓ /api
 FastAPI Studio backend
+    ↓ services/repositories
+SQLAlchemy (SQLite by default; configurable for future PostgreSQL)
           ↓ import
-AgentTree Python package
+AgentTree Python package (one runtime context per Run)
 ```
 
 AgentTree remains an external package. No core source is copied into this
@@ -40,12 +42,23 @@ cp .env.example .env
 uvicorn backend.main:app --reload --env-file .env
 ```
 
+Set `AGENTTREE_STUDIO_DATABASE_URL` to override the default
+`sqlite:///agenttree_studio.db` connection. Apply the versioned schema with:
+
+```bash
+.venv/bin/alembic upgrade head
+```
+
+Startup also upgrades to `head`. The baseline adopts existing unversioned local
+databases without deleting rows, then applies Destination and invocation schema
+changes. `create_all()` remains useful only for isolated tests.
+
 The `requirements.txt` file installs `../Agenttree` as an editable local Python
 dependency. If Studio dependencies are already installed, refresh just the core
 link with:
 
 ```bash
-python -m pip install -e /home/fluke/Agenttree
+python -m pip install -e '/home/fluke/Agenttree[providers,mcp]'
 ```
 
 The API is served at <http://127.0.0.1:8000>, Swagger UI at
@@ -58,7 +71,7 @@ Run backend checks with:
 .venv/bin/python -m pytest -q
 ```
 
-SQLite is initialized at `agenttree_studio.db`. The database stores secrets,
+SQLite defaults to `agenttree_studio.db`. The database stores secrets,
 provider connections, discovered provider models, Trees, Tree versions, Agent
 configurations, input/output settings, Tool connections, Tool assignments,
 Runs, and Core-emitted Trace Events.
@@ -98,18 +111,33 @@ Implemented:
 - Fernet-encrypted secret storage with masked API responses
 - OpenAI, Gemini, and Ollama connection testing and model discovery
 - Functional Providers and Secrets administration pages
-- Eight-step Create Tree wizard with draft save and resume
+- Six-step Create Tree wizard focused on Agents, routing, and Tools
 - Version 1 Tree persistence for Root, Managers, and Specialists
 - Capability, provider, discovered-model, trigger, output, and reference validation
 - Description-driven AI capability suggestions with explicit user selection
 - Searchable capability catalog aggregated from saved Agent configurations
-- Tree list and detail pages with Overview, Agents, Tools, Input/Output, Runs,
+- Tree list and detail pages with Overview, Agents, Tools, Connect, Runs,
   Versions, and Settings tabs
 - Synchronous Test Run through AgentTree Core's public `AgentTree.run(Task)` API
 - Runtime provider resolution for OpenAI, Gemini, and Ollama with in-memory-only
   secret decryption and per-agent model binding
 - Persisted Run history, final output/state snapshots, and genuine Core trace events
-- Manual Form and webhook JSON Test Run inputs, Run Detail, and trace timeline UI
+- Generic JSON Test Run input, optional legacy-friendly form mode, delivery
+  outcomes, Run Detail, and trace timeline UI
+- Stable `POST /api/runtime/trees/{tree_id}/invoke` API with generic `input` and
+  optional caller `metadata`
+- Store in Studio, API Response, and generic Webhook Result Destinations with
+  Secret-backed authentication and independently persisted outcomes
+- Tree, Run, and Destination repository contracts plus a lightweight Unit of Work
+- Executable HTTP API Tools with JSON Schema inputs, templated URL/query values,
+  explicit timeouts, Secret-backed headers, and structured results
+- MCP stdio and Streamable HTTP connections using AgentTree Core transports,
+  live discovery, explicit per-tool import, and manual test execution
+- Specialist-only Tool assignments backed by Core `ToolRegistry`,
+  `ToolBindingRegistry`, and `ToolExecutor`
+- Functional Tools page plus executable-Tool selection in Tree Wizard step 5
+- Opt-in bounded autonomous Tool loops for Specialists, with structured model
+  decisions, Core-enforced Tool execution, sanitized observations, and trace UI
 - Routed desktop-first admin shell with light and dark themes
 - Placeholder pages for remaining planned resource and settings areas
 
@@ -134,18 +162,19 @@ agent records should store only `provider_connection_id` and `model_id`.
   configuration atomically.
 - Readiness validation enforces one Root, at least one Manager, at least one
   Specialist per Manager, capabilities, connected provider/model references,
-  and configured input/output.
+  and valid Tool bindings. Integration settings are not readiness requirements.
 - A valid draft can be marked `ready`. Ready versions are protected from direct
   draft edits. Publishing is not implemented.
-- Manual Form and webhook trigger configuration are persisted. Webhook routes
-  are reserved as `/api/trees/{tree_id}/webhook`, but they do not execute Trees.
-- Tool assignments are persisted against a minimal Tool catalog. Tool creation,
-  MCP setup, and invocation remain part of a later Tools phase.
+- Existing TriggerConfig, OutputConfig, and Manual Form records remain readable
+  and round-trip when older Trees are edited. New Trees do not require them.
+- Tool assignments bind enabled, connected HTTP or selected MCP Tools to
+  Specialist Agents. Root and Manager Tool bindings are intentionally rejected
+  because the current Core permission API accepts Specialists.
 
 ### Test Run behavior
 
-- Test Run validates the stored hierarchy, provider/model availability, trigger,
-  input, and output before execution.
+- Test Run and API invocation validate the stored hierarchy and runtime
+  references, then accept any JSON object as the Case/Task input.
 - Studio builds public Core `RootAgent`, `ManagerAgent`, and `SpecialistAgent`
   objects, provider-backed Core decision strategies, the `ProviderRegistry`, and
   Specialist provider bindings. Core retains capability-based Manager and
@@ -153,20 +182,45 @@ agent records should store only `provider_connection_id` and `model_id`.
 - Runs execute synchronously. A Run transitions through `pending` and `running`
   before ending as `completed` or `failed`; the UI disables duplicate submission
   while the request is active.
-- Manual Form text, textarea, number, and select fields are supported. File
-  fields are explicitly shown as unsupported because no safe upload pipeline is
-  configured. Webhook Test Run accepts a JSON object.
+- JSON Input is the default Test Run mode. A stored legacy Manual Form enables
+  an optional friendly form without constraining API callers.
 - Text output displays accepted Specialist output; structured JSON preserves
   Core's final content. Studio retains configured delivery metadata while always
   showing Test Run output for debugging.
-- Trace Events are copied only from Core's `ExecutionTrace`; Studio does not
-  fabricate routing or execution events. Errors use safe codes and messages,
-  and decrypted credentials are redacted before persistence.
+- Core orchestration and Tool events are copied from real `ExecutionTrace`
+  instances. Studio's Tool-loop decisions, observations, completion, and limit
+  events use an explicit `studio.*` namespace. Errors use safe messages, and
+  decrypted credentials are redacted before persistence.
 
-ToolConnection currently stores catalog/configuration metadata only. It cannot
-be converted into Core `BaseTool` instances without an executable callable or
-MCP transport definition, so Test Run does not register or invoke these tools.
-Core also does not autonomously select tools during `AgentTree.run()`.
+### Tool behavior
+
+- HTTP API connections become Studio `BaseTool` adapters and execute through
+  Core `ToolExecutor`. GET/DELETE/HEAD send unused arguments as query values;
+  other methods send them as JSON. Responses can be decoded as JSON or text.
+- MCP supports only the transports publicly supplied by Core: stdio and
+  Streamable HTTP. Discovery persists the server-returned name, description,
+  input schema, and metadata; users explicitly select which discovered Tools
+  are registered at runtime.
+- Tool credentials reference the existing encrypted Secret store. Sensitive
+  header, environment, and query values must use `{{secret}}`; decrypted values
+  exist only in runtime memory and are redacted from results and errors.
+- Manual Test Execute constructs a temporary Specialist binding and calls the
+  real Core `ToolExecutor`, returning genuine Core tool trace events without
+  mixing them into Tree Run history.
+- Runtime construction registers executable Tools, applies persisted
+  Specialist bindings, and opens MCP clients for the runtime lifetime. Test Run
+  closes all MCP resources afterward.
+- Core does not autonomously select Tools itself. Studio injects a public
+  `BaseSpecialistExecutor` strategy only when a Specialist opts in. Each model
+  step must return strict JSON validated as a `ToolDecision`; every selected
+  Tool is still authorized and invoked by Core `ToolExecutor`.
+- The loop defaults to five iterations, five Tool calls, and a 60-second
+  cooperative overall deadline. Settings are bounded to 10 iterations, 10
+  calls, and 300 seconds. HTTP/MCP transport timeouts remain the hard per-call
+  network limits. Observations are sanitized and truncated at 16,000 characters.
+- Specialists without the opt-in setting follow the unchanged Core
+  `ProviderSpecialistExecutor` path. Root routing, Manager review, Root final
+  review, and capability selection remain Core-owned.
 
 ### Capability suggestions
 
@@ -183,10 +237,26 @@ The searchable catalog is derived from capabilities already saved on
 AgentConfigs; it contains no hardcoded domain catalog. Custom capability entry
 remains available when AI is unavailable or unnecessary.
 
-Deferred by design: executable Tool/MCP management, publishing, webhook delivery,
-background/distributed execution, authentication, multi-user support, A2A
-communication, provider fallback, and autonomous tool planning.
+## Runtime and delivery model
 
-SQLite schema changes currently rely on `create_all`. This is sufficient for the
-new Run and Trace Event tables, but Alembic should be introduced before future
-changes need to alter existing columns in deployed databases.
+A Tree is a reusable runtime definition, not a one-time form workflow. Every
+invocation references one Tree version and owns a freshly built AgentTree
+runtime, state, trace, and resource lifetime. Tools are available to Agents
+during execution; Destinations run only after a successful final result.
+
+Enabled Destinations execute independently. Store in Studio and API Response
+are built-in defaults. A Webhook sends a generic Run/Tree/result/metadata POST
+payload. Webhook failure records a sanitized failed delivery without changing a
+successful AgentTree Run into a failed Run.
+
+Execution remains synchronous. `RunExecutionBackend` currently uses
+`SynchronousExecutionBackend`; no parallel or distributed execution is claimed.
+The boundary prepares this later path without introducing it now:
+
+```text
+API → Job Queue → Worker Pool → per-Run execution → Result Destinations
+```
+
+Deferred by design: publishing, background workers, Redis/Celery,
+authentication, multi-user support, A2A communication, provider fallback,
+Discord/LINE-specific adapters, scheduling, and recursive agent creation.

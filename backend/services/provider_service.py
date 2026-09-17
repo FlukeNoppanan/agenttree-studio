@@ -69,7 +69,20 @@ class ProviderService:
             status=connection.status,
             last_checked_at=connection.last_checked_at,
             last_error=connection.last_error,
-            models_count=sum(1 for model in connection.models if model.is_available),
+            models_count=sum(
+                1 for model in connection.models
+                if model.is_available and model.generation_candidate
+                and model.qualification_status == "qualified"
+            ),
+            discovered_models_count=sum(1 for model in connection.models if model.is_available),
+            unavailable_models_count=sum(
+                1 for model in connection.models
+                if model.qualification_status == "unavailable"
+            ),
+            transient_models_count=sum(
+                1 for model in connection.models
+                if model.qualification_status == "transient_error"
+            ),
             created_at=connection.created_at,
             updated_at=connection.updated_at,
         )
@@ -84,6 +97,11 @@ class ProviderService:
             display_name=model.display_name,
             metadata=metadata,
             is_available=model.is_available,
+            generation_candidate=model.generation_candidate,
+            qualification_status=model.qualification_status,
+            qualification_checked_at=model.qualification_checked_at,
+            qualification_error_code=model.qualification_error_code,
+            qualification_message=model.qualification_message,
             discovered_at=model.discovered_at,
         )
 
@@ -167,10 +185,16 @@ class ProviderService:
         self._database.delete(connection)
         self._database.commit()
 
-    def models(self, provider_id: str) -> list[ProviderModelRead]:
+    def models(
+        self, provider_id: str, *, include_unusable: bool = False,
+    ) -> list[ProviderModelRead]:
         connection = self.get_model(provider_id)
         return [
             self.serialize_model(model)
             for model in sorted(connection.models, key=lambda item: item.model_id.casefold())
-            if model.is_available
+            if include_unusable or (
+                model.is_available
+                and model.generation_candidate
+                and model.qualification_status == "qualified"
+            )
         ]

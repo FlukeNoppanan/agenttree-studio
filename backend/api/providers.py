@@ -1,6 +1,6 @@
 """Provider connection and discovered-model endpoints."""
 
-from fastapi import APIRouter, Depends, Response, status
+from fastapi import APIRouter, Depends, Query, Response, status
 from sqlalchemy.orm import Session
 
 from backend.db.session import get_db
@@ -75,6 +75,7 @@ def discover_provider_models(
 @router.get("/{provider_id}/models", response_model=list[ProviderModelRead])
 def list_provider_models(
     provider_id: str,
+    include_unusable: bool = Query(default=False),
     database: Session = Depends(get_db),
 ) -> list[ProviderModelRead]:
-    return ProviderService(database).models(provider_id)
+    return ProviderService(database).models(provider_id, include_unusable=include_unusable)

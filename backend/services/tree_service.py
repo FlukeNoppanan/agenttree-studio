@@ -13,6 +13,9 @@ from sqlalchemy.orm import Session, selectinload
 from backend.models.provider import ProviderConnection, ProviderModel
 from backend.models.tool import ToolAssignment, ToolConnection
 from backend.models.tree import AgentConfig, OutputConfig, Tree, TreeVersion, TriggerConfig
+from backend.models.destination import ResultDestination
+from backend.repositories.protocols import TreeRepository
+from backend.repositories.sqlalchemy import SQLAlchemyTreeRepository
 from backend.schemas.tree import (
     AgentDraft,
     AgentRead,
@@ -27,6 +30,7 @@ from backend.schemas.tree import (
     TriggerDraft,
     ValidationIssue,
 )
+from backend.schemas.tool_loop import ToolLoopSettings
 from backend.services.errors import (
     ResourceConflictError,
     ResourceNotFoundError,
@@ -35,8 +39,9 @@ from backend.services.errors import (
 
 
 class TreeService:
-    def __init__(self, database: Session) -> None:
+    def __init__(self, database: Session, tree_repository: TreeRepository | None = None) -> None:
         self._database = database
+        self._trees = tree_repository or SQLAlchemyTreeRepository(database)
 
     @staticmethod
     def _tree_options():
@@ -49,9 +54,7 @@ class TreeService:
         )
 
     def _get_model(self, tree_id: str) -> Tree:
-        tree = self._database.scalar(
-            select(Tree).options(*self._tree_options()).where(Tree.id == tree_id),
-        )
+        tree = self._trees.get(tree_id)
         if tree is None:
             raise ResourceNotFoundError("Tree not found")
         if tree.current_version is None:
@@ -101,6 +104,16 @@ class TreeService:
             if pair in assignment_pairs:
                 raise ServiceError("Duplicate Tool assignment")
             assignment_pairs.add(pair)
+        assigned_agent_ids = {agent_id for agent_id, _ in assignment_pairs}
+        for agent in payload.agents:
+            if (
+                agent.agent_type.value == "specialist"
+                and ToolLoopSettings.from_mapping(agent.settings).enabled
+                and agent.id not in assigned_agent_ids
+            ):
+                raise ServiceError(
+                    "Autonomous Tool use requires at least one Tool assignment",
+                )
 
     def _write_version(
         self,
@@ -167,13 +180,17 @@ class TreeService:
             template=payload.template,
             status="draft",
         )
-        self._database.add(tree)
+        self._trees.add(tree)
         self._database.flush()
         version = TreeVersion(tree=tree, version_number=1, status="draft")
         self._database.add(version)
         self._database.flush()
         tree.current_version = version
         self._write_version(tree, version, payload)
+        tree.destinations.extend([
+            ResultDestination(name="Store in Studio", destination_type="store_in_studio", enabled=True, configuration_json={}),
+            ResultDestination(name="Return API Response", destination_type="api_response", enabled=True, configuration_json={}),
+        ])
         self._database.commit()
         self._database.expire_all()
         return self.get(tree.id)
@@ -252,9 +269,7 @@ class TreeService:
         )
 
     def list(self) -> list[TreeListRead]:
-        trees = self._database.scalars(
-            select(Tree).options(*self._tree_options()).order_by(Tree.updated_at.desc()),
-        ).all()
+        trees = self._trees.list()
         return [self._list_read(tree) for tree in trees]
 
     def get(self, tree_id: str) -> TreeDetailRead:
@@ -344,10 +359,19 @@ class TreeService:
         model = self._database.scalar(select(ProviderModel).where(
             ProviderModel.provider_connection_id == provider.id,
             ProviderModel.model_id == agent.model_id,
-            ProviderModel.is_available.is_(True),
         ))
         if model is None:
             self._issue(errors, step, "model_missing", f"Model for {agent.name or 'Agent'} is not in the provider catalog", agent.id)
+        elif (
+            not model.is_available
+            or not model.generation_candidate
+            or model.qualification_status != "qualified"
+        ):
+            self._issue(
+                errors, step, "model_unavailable",
+                f"Model for {agent.name or 'Agent'} is not verified for AgentTree generation",
+                agent.id,
+            )
 
     def _validate_core_hierarchy(self, agents: Iterable[AgentConfig]) -> None:
         roots = [agent for agent in agents if agent.agent_type == "root"]
@@ -410,28 +434,20 @@ class TreeService:
         for specialist in specialists:
             if specialist.parent_agent_id not in manager_ids:
                 self._issue(errors, "specialists", "specialist_parent", f"{specialist.name or 'Specialist'} must belong to a Manager", specialist.id)
-
-        if version.trigger is None:
-            self._issue(errors, "trigger", "trigger_required", "Trigger / Input must be configured")
-        elif version.trigger.trigger_type == "manual_form":
-            fields = version.trigger.config_json.get("fields")
-            if not isinstance(fields, list):
-                self._issue(errors, "trigger", "manual_fields", "Manual Form requires a fields list")
-            else:
-                allowed = {"text", "textarea", "number", "select", "file"}
-                for index, field in enumerate(fields, start=1):
-                    if not isinstance(field, dict) or not str(field.get("name", "")).strip() or field.get("type") not in allowed:
-                        self._issue(errors, "trigger", "manual_field_invalid", f"Manual Form field {index} is invalid")
-        elif version.trigger.trigger_type != "webhook":
-            self._issue(errors, "trigger", "trigger_type", "Unsupported trigger type")
-
-        if version.output is None:
-            self._issue(errors, "output", "output_required", "Output must be configured")
-        else:
-            if version.output.output_type not in {"text", "structured_json"}:
-                self._issue(errors, "output", "output_type", "Unsupported output type")
-            if version.output.delivery_type not in {"show_in_web", "api_response"}:
-                self._issue(errors, "output", "delivery_type", "Unsupported output delivery")
+            try:
+                settings = ToolLoopSettings.from_mapping(specialist.settings_json)
+            except ValueError as error:
+                self._issue(errors, "specialists", "tool_loop_settings", str(error), specialist.id)
+                continue
+            if settings.enabled and not any(
+                assignment.agent_config_id == specialist.id
+                for assignment in version.tool_assignments
+            ):
+                self._issue(
+                    errors, "tools", "tool_assignment_required",
+                    f"{specialist.name or 'Specialist'} needs an assigned Tool for autonomous use",
+                    specialist.id,
+                )
 
         try:
             self._validate_core_hierarchy(agents)

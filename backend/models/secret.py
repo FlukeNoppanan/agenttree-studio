@@ -22,3 +22,9 @@ class Secret(TimestampMixin, Base):
     provider_connections = relationship(
         "ProviderConnection", back_populates="secret", passive_deletes=True,
     )
+    tool_connections = relationship(
+        "ToolConnection", back_populates="secret", passive_deletes=True,
+    )
+    result_destinations = relationship(
+        "ResultDestination", back_populates="secret", passive_deletes=True,
+    )

@@ -21,6 +21,10 @@ class ProviderOperationError(ServiceError):
     status_code = 502
 
 
+class ToolOperationError(ServiceError):
+    status_code = 502
+
+
 class RunRequestError(ServiceError):
     """A safe, machine-readable runtime or input failure."""
 
