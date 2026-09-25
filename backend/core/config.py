@@ -22,6 +22,12 @@ class Settings:
     )
 
     @property
+    def public_api_cors_origins(self) -> tuple[str, ...]:
+        return tuple(origin.strip().rstrip("/") for origin in os.getenv(
+            "AGENTTREE_PUBLIC_API_CORS_ORIGINS", "",
+        ).split(",") if origin.strip() and origin.strip() != "*")
+
+    @property
     def encryption_key(self) -> str | None:
         """Read the secret key at use time so deployments can inject it safely."""
         return os.getenv("AGENTTREE_STUDIO_ENCRYPTION_KEY")

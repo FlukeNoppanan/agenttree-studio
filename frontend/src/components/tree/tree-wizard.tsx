@@ -10,7 +10,7 @@ import {
   Wrench,
 } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 
 import { AgentEditorDialog } from "@/components/tree/agent-editor-dialog"
@@ -19,6 +19,7 @@ import { AgentForm } from "@/components/tree/agent-form"
 import { ManagerCard } from "@/components/tree/manager-card"
 import { SpecialistCard } from "@/components/tree/specialist-card"
 import { TreeSummary } from "@/components/tree/tree-summary"
+import { TreeStructurePreview } from "@/components/tree/tree-structure-preview"
 import { ToolUseSettings } from "@/components/tree/tool-use-settings"
 import {
   emptyAgent,
@@ -31,6 +32,7 @@ import {
 } from "@/components/tree/types"
 import { ValidationPanel } from "@/components/tree/validation-panel"
 import { WizardStepper } from "@/components/tree/wizard-stepper"
+import { generateClientId } from "@/lib/client-id"
 import { Notice } from "@/components/notice"
 import { ToolStatusBadge } from "@/components/tools/tool-status-badge"
 import { Button } from "@/components/ui/button"
@@ -58,6 +60,8 @@ type Editor =
 export function TreeWizard() {
   const { t } = useTranslation()
   const { treeId } = useParams()
+  const [searchParams] = useSearchParams()
+  const targetAgentId = searchParams.get("agent")
   const navigate = useNavigate()
   const [state, setState] = useState<WizardState>(emptyWizard)
   const [step, setStep] = useState(0)
@@ -68,6 +72,7 @@ export function TreeWizard() {
   const [loading, setLoading] = useState(Boolean(treeId))
   const [saving, setSaving] = useState(false)
   const [dirty, setDirty] = useState(false)
+  const [editingReady, setEditingReady] = useState(false)
   const [editor, setEditor] = useState<Editor>(null)
   const [validation, setValidation] = useState<TreeValidation | null>(null)
   const [runnableTree, setRunnableTree] = useState<TreeDetail | null>(null)
@@ -85,14 +90,37 @@ export function TreeWizard() {
       setProviders(providerItems)
       setTools(toolItems)
       if (tree) {
-        setState(wizardFromTree(tree))
+        const loaded = wizardFromTree(tree)
+        setState(loaded)
         setCurrentTreeId(tree.id)
+        setEditingReady(tree.status === "ready")
+        if (targetAgentId === loaded.root.id) setStep(1)
+        loaded.managers.forEach((manager, managerIndex) => {
+          if (targetAgentId === manager.agent.id) {
+            setStep(2)
+            setEditor({ kind: "manager", managerIndex, value: { ...manager.agent } })
+          }
+          manager.specialists.forEach((specialist, specialistIndex) => {
+            if (targetAgentId === specialist.id) {
+              setStep(3)
+              setManagerCursor(managerIndex)
+              setEditor({ kind: "specialist", managerIndex, specialistIndex, value: { ...specialist } })
+            }
+          })
+        })
       }
     }).catch((error) => {
       if (active) setNotice({ tone: "error", message: error instanceof Error ? error.message : "Unable to load tree draft" })
     }).finally(() => { if (active) setLoading(false) })
     return () => { active = false }
-  }, [treeId])
+  }, [treeId, targetAgentId])
+
+  useEffect(() => {
+    if (!dirty) return
+    const warn = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = "" }
+    window.addEventListener("beforeunload", warn)
+    return () => window.removeEventListener("beforeunload", warn)
+  }, [dirty])
 
   function update(mutator: (current: WizardState) => WizardState) {
     setState(mutator)
@@ -110,12 +138,13 @@ export function TreeWizard() {
     try {
       const payload = wizardPayload(state)
       const saved = currentTreeId
-        ? await api.saveTreeDraft(currentTreeId, payload)
+        ? editingReady ? await api.replaceReadyTree(currentTreeId, payload) : await api.saveTreeDraft(currentTreeId, payload)
         : await api.createTree(payload)
       setCurrentTreeId(saved.id)
+      if (editingReady) setState(wizardFromTree(saved))
       setDirty(false)
       if (!currentTreeId) navigate(`/trees/${saved.id}/edit`, { replace: true })
-      if (showFeedback) setNotice({ tone: "success", message: "Draft saved." })
+      if (showFeedback) setNotice({ tone: "success", message: editingReady ? "Ready Tree updated and validated." : "Draft saved." })
       return saved
     } catch (error) {
       setNotice({ tone: "error", message: error instanceof Error ? error.message : "Unable to save draft" })
@@ -129,11 +158,11 @@ export function TreeWizard() {
     const saved = await saveDraft(false)
     if (!saved) return
     try {
-      const result = await api.validateTree(saved.id, markReady)
+      const result = await api.validateTree(saved.id, markReady && !editingReady)
       setValidation(result)
       if (result.valid) setRunnableTree(saved)
       if (result.valid && markReady) {
-        setNotice({ tone: "success", message: "Tree passed validation and is now Ready." })
+        setNotice({ tone: "success", message: "Tree configuration is Ready." })
         navigate(`/trees/${saved.id}`)
       } else if (result.valid) {
         setNotice({ tone: "success", message: "Tree validation passed." })
@@ -179,33 +208,26 @@ export function TreeWizard() {
 
   return (
     <div className="space-y-7">
-      <div className="relative flex flex-col gap-4 overflow-hidden rounded-2xl border border-primary/15 bg-secondary/25 p-5 sm:flex-row sm:items-end sm:justify-between sm:p-6">
-        <div><p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">{t("wizard.builder")}</p><h1 className="mt-2 text-3xl font-semibold tracking-tight">{t(currentTreeId ? "wizard.edit" : "wizard.create")}</h1><p className="mt-2 text-sm text-muted-foreground">{t("wizard.description")}</p></div>
-        <div className="flex gap-2"><Button variant="outline" onClick={cancel}>{t("common.cancel")}</Button><Button onClick={() => void saveDraft()} disabled={saving}><Save className="size-4" />{t(saving ? "wizard.saving" : "wizard.saveDraft")}</Button></div>
+      <div className="flex flex-col gap-5 border-b border-border pb-5 sm:flex-row sm:items-end sm:justify-between">
+        <div className="relative"><p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">{t("wizard.builder")} · {t("wizardV2.stepCount", { current: step + 1, total: steps.length })}</p><h1 className="mt-2 text-3xl font-semibold tracking-tight">{t(currentTreeId ? "wizard.edit" : "wizard.create")}</h1><p className="mt-2 max-w-xl text-sm text-muted-foreground">{t("wizard.description")}</p></div>
+        <div className="relative flex gap-2"><Button variant="outline" onClick={cancel}>{t("common.cancel")}</Button><Button onClick={() => void saveDraft()} disabled={saving}><Save className="size-4" />{saving ? t("wizard.saving") : editingReady ? t("treeV3.saveChanges") : t("wizard.saveDraft")}</Button></div>
       </div>
       {notice ? <Notice {...notice} onDismiss={() => setNotice(null)} /> : null}
       <WizardStepper steps={(t("wizard.steps", { returnObjects: true }) as string[])} current={step} onSelect={setStep} />
 
-      <Card className="overflow-hidden">
-        <CardHeader className="border-b border-border/70 bg-muted/25"><CardTitle>{(t("wizard.steps", { returnObjects: true }) as string[])[step]}</CardTitle><CardDescription>{[
-          "Name the Tree and select its starting template.",
-          "Configure the single Root Agent that receives objectives and performs final review.",
-          "Add capability-focused Managers. Specialists are configured in the next step.",
-          "Add Specialists under each Manager.",
-          "Assign connected executable Tools to eligible Specialists.",
-          "Review the reusable runtime hierarchy and run readiness validation.",
-        ][step]}</CardDescription></CardHeader>
+      <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_19rem]"><Card className="min-w-0 overflow-hidden">
+        <CardHeader className="border-b border-border/70 bg-muted/25"><CardTitle>{(t("wizard.steps", { returnObjects: true }) as string[])[step]}</CardTitle><CardDescription>{(t("designV3.steps", { returnObjects: true }) as string[])[step]}</CardDescription></CardHeader>
         <CardContent>
           {step === 0 ? <GeneralStep state={state} update={update} /> : null}
           {step === 1 ? <AgentForm value={state.root} onChange={(root) => update((current) => ({ ...current, root }))} providers={providers} agentType="root" reviewLabel="Final Review enabled" /> : null}
           {step === 2 ? <ManagersStep state={state} update={update} openEditor={setEditor} /> : null}
           {step === 3 ? <SpecialistsStep state={state} update={update} managerCursor={managerCursor} setManagerCursor={setManagerCursor} openEditor={setEditor} /> : null}
           {step === 4 ? <ToolsStep agents={allAssignableAgents} tools={tools} updateAgent={(agent) => update((current) => ({ ...current, managers: current.managers.map((manager) => manager.agent.id === agent.id ? { ...manager, agent } : { ...manager, specialists: manager.specialists.map((specialist) => specialist.id === agent.id ? agent : specialist) }) }))} /> : null}
-          {step === 5 ? <div className="space-y-6"><TreeSummary state={state} providers={providers} tools={tools} /><ValidationPanel validation={validation} /><div className="flex flex-wrap justify-end gap-3">{validation?.valid && runnableTree ? <Button variant="outline" onClick={() => setTestOpen(true)}><Play className="size-4" />Test Run</Button> : null}<Button variant="outline" onClick={() => void validate(false)} disabled={saving}>Validate Draft</Button><Button onClick={() => void validate(true)} disabled={saving}>Validate & Mark Ready</Button></div></div> : null}
+          {step === 5 ? <div className="space-y-6"><TreeSummary state={state} providers={providers} tools={tools} /><ValidationPanel validation={validation} /><div className="flex flex-wrap justify-end gap-3">{validation?.valid && runnableTree ? <Button variant="outline" onClick={() => setTestOpen(true)}><Play className="size-4" />Test Run</Button> : null}{!editingReady ? <Button variant="outline" onClick={() => void validate(false)} disabled={saving}>Validate Draft</Button> : null}<Button onClick={() => void validate(true)} disabled={saving}>{editingReady ? t("treeV3.validateSave") : "Validate & Mark Ready"}</Button></div></div> : null}
         </CardContent>
-      </Card>
+      </Card><aside className="hidden xl:block"><TreeStructurePreview state={state} /></aside></div>
 
-      <div className="flex justify-between"><Button variant="outline" disabled={step === 0} onClick={() => setStep((current) => Math.max(0, current - 1))}><ArrowLeft className="size-4" />{t("wizard.back")}</Button><Button variant="outline" disabled={step === steps.length - 1} onClick={() => setStep((current) => Math.min(steps.length - 1, current + 1))}>{t("wizard.next")}<ArrowRight className="size-4" /></Button></div>
+      <div className="flex justify-between border-t border-border pt-5"><Button variant="outline" disabled={step === 0} onClick={() => setStep((current) => Math.max(0, current - 1))}><ArrowLeft className="size-4" />{t("wizard.back")}</Button><Button disabled={step === steps.length - 1} onClick={() => setStep((current) => Math.min(steps.length - 1, current + 1))}>{t("wizard.next")}<ArrowRight className="size-4" /></Button></div>
 
       <AgentEditorDialog
         open={editor !== null}
@@ -254,7 +276,7 @@ function ToolsStep({ agents, tools, updateAgent }: { agents: WizardAgent[]; tool
 
 function TriggerStep({ state, update, treeId }: { state: WizardState; update: (fn: (state: WizardState) => WizardState) => void; treeId: string | null }) {
   function updateField(index: number, patch: Partial<ManualField>) { update((current) => ({ ...current, manualFields: current.manualFields.map((field, itemIndex) => itemIndex === index ? { ...field, ...patch } : field) })) }
-  return <div className="space-y-5"><div className="grid gap-3 sm:grid-cols-2"><button type="button" onClick={() => update((current) => ({ ...current, triggerType: "manual_form" }))} className={`rounded-lg border p-4 text-left ${state.triggerType === "manual_form" ? "border-primary bg-primary/5" : "border-border"}`}><FileInput className="size-5" /><p className="mt-2 font-medium">Manual Form</p><p className="mt-1 text-xs text-muted-foreground">Collect configured fields in Studio.</p></button><button type="button" onClick={() => update((current) => ({ ...current, triggerType: "webhook" }))} className={`rounded-lg border p-4 text-left ${state.triggerType === "webhook" ? "border-primary bg-primary/5" : "border-border"}`}><Webhook className="size-5" /><p className="mt-2 font-medium">Webhook</p><p className="mt-1 text-xs text-muted-foreground">Reserve a Tree-specific POST route. Execution is deferred.</p></button></div>{state.triggerType === "manual_form" ? <div className="space-y-3"><div className="flex justify-between"><div><p className="font-medium">Form fields</p><p className="text-xs text-muted-foreground">Text, textarea, number, select, and file are supported.</p></div><Button type="button" variant="outline" onClick={() => update((current) => ({ ...current, manualFields: [...current.manualFields, { id: crypto.randomUUID(), name: "", type: "text", required: false, options: [] }] }))}><Plus className="size-4" />Add Field</Button></div>{state.manualFields.map((field, index) => <div key={field.id} className="grid gap-3 rounded-lg border border-border p-4 sm:grid-cols-[1fr_160px_auto_auto]"><Input value={field.name} onChange={(event) => updateField(index, { name: event.target.value })} placeholder="Field label" /><Select value={field.type} onChange={(event) => updateField(index, { type: event.target.value as ManualField["type"] })}><option value="text">Text</option><option value="textarea">Textarea</option><option value="number">Number</option><option value="select">Select</option><option value="file">File</option></Select><label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={field.required} onChange={(event) => updateField(index, { required: event.target.checked })} className="accent-primary" />Required</label><Button type="button" variant="ghost" size="icon" onClick={() => update((current) => ({ ...current, manualFields: current.manualFields.filter((_, itemIndex) => itemIndex !== index) }))}><Trash2 className="size-4" /></Button>{field.type === "select" ? <Input className="sm:col-span-4" value={field.options.join(", ")} onChange={(event) => updateField(index, { options: event.target.value.split(",").map((item) => item.trim()).filter(Boolean) })} placeholder="Options separated by commas" /> : null}</div>)}</div> : <div className="rounded-lg border border-border bg-muted/25 p-4"><p className="text-sm font-medium">Generated after save</p><p className="mt-1 font-mono text-xs text-muted-foreground">POST /api/trees/{treeId ?? "{tree_id}"}/webhook</p><p className="mt-2 text-xs text-muted-foreground">This phase stores route configuration only; it does not execute the Tree.</p></div>}</div>
+  return <div className="space-y-5"><div className="grid gap-3 sm:grid-cols-2"><button type="button" onClick={() => update((current) => ({ ...current, triggerType: "manual_form" }))} className={`rounded-lg border p-4 text-left ${state.triggerType === "manual_form" ? "border-primary bg-primary/5" : "border-border"}`}><FileInput className="size-5" /><p className="mt-2 font-medium">Manual Form</p><p className="mt-1 text-xs text-muted-foreground">Collect configured fields in Studio.</p></button><button type="button" onClick={() => update((current) => ({ ...current, triggerType: "webhook" }))} className={`rounded-lg border p-4 text-left ${state.triggerType === "webhook" ? "border-primary bg-primary/5" : "border-border"}`}><Webhook className="size-5" /><p className="mt-2 font-medium">Webhook</p><p className="mt-1 text-xs text-muted-foreground">Reserve a Tree-specific POST route. Execution is deferred.</p></button></div>{state.triggerType === "manual_form" ? <div className="space-y-3"><div className="flex justify-between"><div><p className="font-medium">Form fields</p><p className="text-xs text-muted-foreground">Text, textarea, number, select, and file are supported.</p></div><Button type="button" variant="outline" onClick={() => update((current) => ({ ...current, manualFields: [...current.manualFields, { id: generateClientId(), name: "", type: "text", required: false, options: [] }] }))}><Plus className="size-4" />Add Field</Button></div>{state.manualFields.map((field, index) => <div key={field.id} className="grid gap-3 rounded-lg border border-border p-4 sm:grid-cols-[1fr_160px_auto_auto]"><Input value={field.name} onChange={(event) => updateField(index, { name: event.target.value })} placeholder="Field label" /><Select value={field.type} onChange={(event) => updateField(index, { type: event.target.value as ManualField["type"] })}><option value="text">Text</option><option value="textarea">Textarea</option><option value="number">Number</option><option value="select">Select</option><option value="file">File</option></Select><label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={field.required} onChange={(event) => updateField(index, { required: event.target.checked })} className="accent-primary" />Required</label><Button type="button" variant="ghost" size="icon" onClick={() => update((current) => ({ ...current, manualFields: current.manualFields.filter((_, itemIndex) => itemIndex !== index) }))}><Trash2 className="size-4" /></Button>{field.type === "select" ? <Input className="sm:col-span-4" value={field.options.join(", ")} onChange={(event) => updateField(index, { options: event.target.value.split(",").map((item) => item.trim()).filter(Boolean) })} placeholder="Options separated by commas" /> : null}</div>)}</div> : <div className="rounded-lg border border-border bg-muted/25 p-4"><p className="text-sm font-medium">Generated after save</p><p className="mt-1 font-mono text-xs text-muted-foreground">POST /api/trees/{treeId ?? "{tree_id}"}/webhook</p><p className="mt-2 text-xs text-muted-foreground">This phase stores route configuration only; it does not execute the Tree.</p></div>}</div>
 }
 
 function OutputStep({ state, update }: { state: WizardState; update: (fn: (state: WizardState) => WizardState) => void }) {

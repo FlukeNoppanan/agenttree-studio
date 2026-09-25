@@ -15,7 +15,7 @@ from backend.core.sanitization import sanitize_value
 from backend.models.tree import Tree, TreeVersion
 from backend.repositories.protocols import RunRepository
 from backend.repositories.sqlalchemy import SQLAlchemyRunRepository
-from backend.schemas.run import InvocationRequest, RunDetailRead, RunRead, TestRunRequest, TraceEventRead
+from backend.schemas.run import InvocationRequest, LiveExecutionRead, RunDetailRead, RunRead, TestRunRequest, TraceEventRead, TreeLiveRead
 from backend.services.destination_service import ResultDeliveryService
 from backend.services.execution_backend import RunExecutionBackend, SynchronousExecutionBackend
 from backend.services.errors import ResourceNotFoundError, RunRequestError
@@ -301,3 +301,37 @@ class RunService:
 
     def trace(self, run_id: str) -> list[TraceEventRead]:
         return [self._trace_read(item) for item in self._get_model(run_id).trace_events]
+
+    def live(self, tree_id: str) -> TreeLiveRead:
+        tree = self._database.get(Tree, tree_id)
+        if tree is None:
+            raise ResourceNotFoundError("Tree not found")
+        runs = self._runs.list(tree_id=tree_id)
+        executions: list[LiveExecutionRead] = []
+        activity: list[TraceEvent] = []
+        for run in runs:
+            # Trace is persisted per execution; no Tree-global current Agent exists.
+            latest = run.trace_events[-1] if run.trace_events else None
+            metadata = latest.payload_json.get("metadata", {}) if latest else {}
+            if not isinstance(metadata, dict):
+                metadata = {}
+            executions.append(LiveExecutionRead(
+                run=self._read(run),
+                current_agent=latest.agent_name if run.status == "running" and latest else None,
+                current_stage=latest.event_type if run.status == "running" and latest else None,
+                current_tool=str(metadata["tool_name"]) if run.status == "running" and metadata.get("tool_name") else None,
+            ))
+            activity.extend(run.trace_events)
+        activity.sort(key=lambda event: (self._utc(event.created_at), event.run_id, event.sequence), reverse=True)
+        return TreeLiveRead(
+            tree_id=tree.id,
+            tree_name=tree.name,
+            # There is no authoritative long-running Tree Runtime controller yet.
+            runtime_status="unavailable",
+            active_count=sum(run.status == "running" for run in runs),
+            queued_count=sum(run.status == "pending" for run in runs),
+            completed_count=sum(run.status == "completed" for run in runs),
+            failed_count=sum(run.status == "failed" for run in runs),
+            executions=executions,
+            recent_activity=[self._trace_read(event) for event in activity[:12]],
+        )

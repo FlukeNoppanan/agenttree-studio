@@ -85,9 +85,27 @@ def test_alembic_upgrades_an_existing_unversioned_sqlite_schema(tmp_path: Path) 
         columns = {row[1] for row in connection.execute("PRAGMA table_info(runs)")}
         tool_columns = {row[1] for row in connection.execute("PRAGMA table_info(tool_connections)")}
         model_columns = {row[1] for row in connection.execute("PRAGMA table_info(provider_models)")}
+        token_columns = {row[1] for row in connection.execute("PRAGMA table_info(api_tokens)")}
         revision = connection.execute("SELECT version_num FROM alembic_version").fetchone()[0]
     assert {"result_destinations", "result_deliveries"}.issubset(tables)
     assert {"metadata_json", "invocation_source"}.issubset(columns)
     assert {"enabled", "secret_id", "transport_type", "discovered_tools_json"}.issubset(tool_columns)
     assert {"generation_candidate", "qualification_status", "qualification_checked_at"}.issubset(model_columns)
-    assert revision == "0003_model_qualification"
+    assert {"users", "user_permissions", "user_tree_access", "user_sessions", "api_tokens"}.issubset(tables)
+    assert "last_used_at" in token_columns
+    assert revision == "0007_api_token_last_used"
+
+
+def test_existing_tree_grants_migrate_to_selected_mode(tmp_path: Path) -> None:
+    database_path = tmp_path / "existing-grants.db"
+    config = Config(str(PROJECT_ROOT / "alembic.ini"))
+    config.set_main_option("sqlalchemy.url", f"sqlite:///{database_path}")
+    command.upgrade(config, "0005_primary_admin")
+    with sqlite3.connect(database_path) as connection:
+        connection.execute("INSERT INTO users (id, username, username_key, password_hash, is_admin, is_primary_admin, is_active, must_change_password, created_at, updated_at) VALUES ('user-1', 'member', 'member', 'hash', 0, 0, 1, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)")
+        connection.execute("INSERT INTO trees (id, name, description, template, status, created_at, updated_at) VALUES ('tree-1', 'Tree', '', 'blank', 'draft', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)")
+        connection.execute("INSERT INTO user_tree_access (user_id, tree_id) VALUES ('user-1', 'tree-1')")
+    command.upgrade(config, "head")
+    with sqlite3.connect(database_path) as connection:
+        assert connection.execute("SELECT tree_access_mode FROM users WHERE id='user-1'").fetchone()[0] == "selected"
+        assert connection.execute("SELECT tree_id FROM user_tree_access WHERE user_id='user-1'").fetchone()[0] == "tree-1"

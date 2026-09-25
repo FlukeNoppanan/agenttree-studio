@@ -17,8 +17,14 @@ export default defineConfig({
   server: {
     host: "localhost",
     port: 5173,
+    strictPort: true,
     proxy: {
-      "/api": "http://127.0.0.1:8000",
+      "/api": {
+        target: process.env.AGENTTREE_STUDIO_API_PROXY_TARGET || "http://127.0.0.1:8000",
+        // Keep the browser-facing Host so backend same-origin CSRF checks work
+        // for localhost and LAN-IP access without accepting arbitrary origins.
+        changeOrigin: false,
+      },
     },
   },
 })

@@ -1,10 +1,12 @@
 """Derive the Studio operational overview from persisted domain data."""
 
 from datetime import datetime, timezone
+from sqlalchemy import func, select
 
 from sqlalchemy.orm import Session
 
 from backend.repositories.protocols import DashboardRepository
+from backend.models.auth import User
 from backend.repositories.sqlalchemy import SQLAlchemyDashboardRepository
 from backend.schemas.dashboard import (
     AttentionItem,
@@ -24,6 +26,7 @@ class DashboardService:
     def __init__(
         self, database: Session, repository: DashboardRepository | None = None,
     ) -> None:
+        self._database = database
         self._repository = repository or SQLAlchemyDashboardRepository(database)
 
     def summary(self) -> DashboardSummary:
@@ -149,6 +152,7 @@ class DashboardService:
                     total=len(tools), connected=sum(tool.status == "connected" for tool in tools),
                     enabled=sum(tool.enabled for tool in tools),
                 ),
+                users=self._database.scalar(select(func.count()).select_from(User)) or 0,
             ),
             recent_runs=[RecentRunSummary(
                 id=run.id, tree_id=run.tree_id, tree_name=run.tree.name,

@@ -1,0 +1,66 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-agenttree_studio}
+      POSTGRES_USER: ${POSTGRES_USER:-agenttree}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-agenttree_dev_only}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 15s
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      AGENTTREE_STUDIO_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-agenttree}:${POSTGRES_PASSWORD:-agenttree_dev_only}@postgres:5432/${POSTGRES_DB:-agenttree_studio}
+      AGENTTREE_STUDIO_ENCRYPTION_KEY: ${AGENTTREE_STUDIO_ENCRYPTION_KEY:-}
+      AGENTTREE_STUDIO_ADMIN_USERNAME: ${AGENTTREE_STUDIO_ADMIN_USERNAME:-admin}
+      AGENTTREE_STUDIO_ADMIN_PASSWORD: ${AGENTTREE_STUDIO_ADMIN_PASSWORD:-admin}
+      AGENTTREE_STUDIO_SECURE_COOKIES: ${AGENTTREE_STUDIO_SECURE_COOKIES:-false}
+      AGENTTREE_PUBLIC_API_CORS_ORIGINS: ${AGENTTREE_PUBLIC_API_CORS_ORIGINS:-}
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - studio_key:/var/lib/agenttree-studio
+      - ./workspace:/workspace
+    healthcheck:
+      test: ["CMD", "python", "-c", "import json,urllib.request; data=json.load(urllib.request.urlopen('http://127.0.0.1:8000/api/system-health',timeout=5)); assert data['status']=='ok'"]
+      interval: 10s
+      timeout: 8s
+      retries: 12
+      start_period: 90s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      AGENTTREE_STUDIO_API_PROXY_TARGET: http://backend:8000
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5173/').then(response => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+volumes:
+  postgres_data:
+  studio_key:

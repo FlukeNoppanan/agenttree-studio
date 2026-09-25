@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"
 import { EmptyState } from "@/components/empty-state"
 import { Notice } from "@/components/notice"
 import { PageHeader } from "@/components/page-header"
+import { ResourceDependencyDialog } from "@/components/resource-dependency-dialog"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -34,6 +35,7 @@ export function SecretsPage() {
   const [secretType, setSecretType] = useState("api_key")
   const [value, setValue] = useState("")
   const [notice, setNotice] = useState<{ tone: "success" | "error"; message: string } | null>(null)
+  const [deletingSecret, setDeletingSecret] = useState<Secret | null>(null)
 
   const loadSecrets = useCallback(async () => {
     setLoading(true)
@@ -63,9 +65,9 @@ export function SecretsPage() {
     event.preventDefault()
     setSaving(true)
     try {
-      const created = await api.createSecret({ name, secret_type: secretType, value })
+      await api.createSecret({ name, secret_type: secretType, value })
       setValue("")
-      setSecrets((current) => [created, ...current])
+      await loadSecrets()
       setDialogOpen(false)
       resetForm()
       setNotice({ tone: "success", message: "Secret saved securely." })
@@ -73,17 +75,6 @@ export function SecretsPage() {
       setNotice({ tone: "error", message: error instanceof Error ? error.message : "Unable to save secret" })
     } finally {
       setSaving(false)
-    }
-  }
-
-  async function remove(secret: Secret) {
-    if (!window.confirm(`Delete “${secret.name}”? This cannot be undone.`)) return
-    try {
-      await api.deleteSecret(secret.id)
-      setSecrets((current) => current.filter((item) => item.id !== secret.id))
-      setNotice({ tone: "success", message: "Secret deleted." })
-    } catch (error) {
-      setNotice({ tone: "error", message: error instanceof Error ? error.message : "Unable to delete secret" })
     }
   }
 
@@ -108,7 +99,7 @@ export function SecretsPage() {
           icon={KeyRound}
         />
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-border bg-card/95 shadow-[var(--shadow-soft)]">
+        <div className="overflow-hidden border-y border-border bg-card">
           <Table>
             <TableHeader><TableRow>
               <TableHead>Name</TableHead><TableHead>Type</TableHead><TableHead>Masked value</TableHead>
@@ -122,7 +113,7 @@ export function SecretsPage() {
                   <TableCell><code className="rounded bg-muted px-2 py-1 text-xs">{secret.masked_value}</code></TableCell>
                   <TableCell className="whitespace-nowrap text-muted-foreground">{formatDate(secret.created_at)}</TableCell>
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="icon" onClick={() => void remove(secret)} title="Delete secret">
+                    <Button variant="ghost" size="icon" onClick={() => setDeletingSecret(secret)} title="Delete secret">
                       <Trash2 className="size-4" /><span className="sr-only">Delete</span>
                     </Button>
                   </TableCell>
@@ -152,6 +143,7 @@ export function SecretsPage() {
           </form>
         </DialogContent>
       </Dialog>
+      <ResourceDependencyDialog resource={deletingSecret && { id: deletingSecret.id, name: deletingSecret.name, type: "secret" }} inspect={api.getSecretDependencies} remove={api.deleteSecret} onClose={() => setDeletingSecret(null)} onDeleted={async () => { await loadSecrets(); setNotice({ tone: "success", message: t("resourceDeletion.deleted", { type: t("resourceDeletion.types.secret") }) }) }} />
     </div>
   )
 }

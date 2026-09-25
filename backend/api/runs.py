@@ -4,11 +4,16 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from backend.db.session import get_db
-from backend.schemas.run import RunDetailRead, RunRead, RunStatus, TestRunRequest, TraceEventRead
+from backend.schemas.run import RunDetailRead, RunRead, RunStatus, TestRunRequest, TraceEventRead, TreeLiveRead
 from backend.services.run_service import RunService
 
 
 router = APIRouter(tags=["runs"])
+
+
+@router.get("/trees/{tree_id}/live", response_model=TreeLiveRead)
+def tree_live(tree_id: str, database: Session = Depends(get_db)) -> TreeLiveRead:
+    return RunService(database).live(tree_id)
 
 
 @router.post("/trees/{tree_id}/test-run", response_model=RunDetailRead)

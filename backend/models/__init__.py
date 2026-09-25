@@ -6,6 +6,7 @@ from backend.models.destination import ResultDelivery, ResultDestination
 from backend.models.secret import Secret
 from backend.models.tool import ToolAssignment, ToolConnection
 from backend.models.tree import AgentConfig, OutputConfig, Tree, TreeVersion, TriggerConfig
+from backend.models.auth import ApiToken, SecurityEvent, User, UserPermission, UserSession, UserTreeAccess
 
 __all__ = [
     "Secret", "ProviderConnection", "ProviderModel", "Tree", "TreeVersion",
@@ -13,4 +14,5 @@ __all__ = [
     "ToolAssignment",
     "Run", "TraceEvent",
     "ResultDestination", "ResultDelivery",
+    "User", "UserPermission", "UserTreeAccess", "UserSession", "ApiToken", "SecurityEvent",
 ]

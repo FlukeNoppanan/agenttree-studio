@@ -14,6 +14,7 @@ class RunStatus(str, Enum):
     RUNNING = "running"
     COMPLETED = "completed"
     FAILED = "failed"
+    CANCELLED = "cancelled"
 
 
 class RunErrorCode(str, Enum):
@@ -71,3 +72,23 @@ class RunDetailRead(RunRead):
     state: dict[str, Any] | None
     trace: list[TraceEventRead]
     delivery_results: list[DeliveryResultRead] = Field(default_factory=list)
+
+
+class LiveExecutionRead(BaseModel):
+    run: RunRead
+    current_agent: str | None = None
+    current_stage: str | None = None
+    current_tool: str | None = None
+
+
+class TreeLiveRead(BaseModel):
+    tree_id: str
+    tree_name: str
+    runtime_status: str = "unavailable"
+    runtime_started_at: datetime | None = None
+    active_count: int
+    queued_count: int
+    completed_count: int
+    failed_count: int
+    executions: list[LiveExecutionRead]
+    recent_activity: list[TraceEventRead]

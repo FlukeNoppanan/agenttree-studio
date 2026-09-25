@@ -12,6 +12,7 @@ from agenttree.models import ExecutionTrace
 from agenttree.tools import ToolBindingRegistry, ToolExecutor, ToolRegistry
 from agenttree.tools.mcp import MCPTool, MCPToolLoader
 from sqlalchemy import delete, func, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, selectinload
 
 from backend.core.sanitization import sanitize_value
@@ -38,6 +39,7 @@ from backend.services.errors import (
     ServiceError,
     ToolOperationError,
 )
+from backend.services.dependency_service import DependencyService
 from backend.tools.factory import ToolAdapterFactory
 
 
@@ -198,9 +200,14 @@ class ToolService:
 
     def delete(self, tool_id: str) -> None:
         tool = self._get(tool_id)
-        self._database.execute(delete(ToolAssignment).where(ToolAssignment.tool_connection_id == tool.id))
+        if not DependencyService(self._database).tool(tool_id).can_delete:
+            raise ResourceConflictError("Tool is assigned to a Specialist; remove assignments before deleting")
         self._database.delete(tool)
-        self._database.commit()
+        try:
+            self._database.commit()
+        except IntegrityError as error:
+            self._database.rollback()
+            raise ResourceConflictError("Tool gained an assignment; inspect its dependencies before deleting") from error
 
     def test(self, tool_id: str) -> ToolTestResponse:
         tool = self._get(tool_id)

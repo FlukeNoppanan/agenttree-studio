@@ -67,6 +67,15 @@ def save_tree_draft(
     return TreeService(database).save_draft(tree_id, payload)
 
 
+@router.put("/{tree_id}/configuration", response_model=TreeDetailRead)
+def replace_ready_tree_configuration(
+    tree_id: str,
+    payload: TreeDraftPayload,
+    database: Session = Depends(get_db),
+) -> TreeDetailRead:
+    return TreeService(database).replace_ready_configuration(tree_id, payload)
+
+
 @router.post("/{tree_id}/validate", response_model=TreeValidationRead)
 def validate_tree(
     tree_id: str,

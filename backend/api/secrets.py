@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 
 from backend.db.session import get_db
 from backend.schemas.secret import SecretCreate, SecretRead
+from backend.schemas.dependency import ResourceDependencies
+from backend.services.dependency_service import DependencyService
 from backend.services.secret_service import SecretService
 
 router = APIRouter(prefix="/secrets", tags=["secrets"])
@@ -30,3 +32,8 @@ def delete_secret(
 ) -> Response:
     SecretService(database).delete(secret_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.get("/{secret_id}/dependencies", response_model=ResourceDependencies)
+def secret_dependencies(secret_id: str, database: Session = Depends(get_db)) -> ResourceDependencies:
+    return DependencyService(database).secret(secret_id)

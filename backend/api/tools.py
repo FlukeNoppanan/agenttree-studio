@@ -16,8 +16,15 @@ from backend.schemas.tool import (
     ToolUpdate,
 )
 from backend.services.tool_service import ToolService
+from backend.schemas.dependency import ResourceDependencies
+from backend.services.dependency_service import DependencyService
 
 router = APIRouter(prefix="/tools", tags=["tools"])
+
+
+@router.get("/{tool_id}/dependencies", response_model=ResourceDependencies)
+def tool_dependencies(tool_id: str, database: Session = Depends(get_db)) -> ResourceDependencies:
+    return DependencyService(database).tool(tool_id)
 
 
 @router.get("", response_model=list[ToolConnectionRead])

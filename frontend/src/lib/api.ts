@@ -1,4 +1,30 @@
 export type ProviderType = "openai" | "gemini" | "ollama"
+export type Permission = "manage_trees_agents" | "manage_secrets" | "manage_providers_models" | "manage_tools_mcp" | "view_executions" | "use_trees"
+export type TreeAccessMode = "selected" | "all"
+export interface StudioUser {
+  id: string; username: string; is_admin: boolean; is_primary_admin: boolean; is_active: boolean; must_change_password: boolean
+  permissions: Permission[]; allowed_tree_ids: string[]; tree_access_mode: TreeAccessMode; created_at: string; updated_at: string; last_login_at: string | null
+}
+export interface ApiToken { id: string; name: string; created_at: string; last_used_at?: string | null }
+export interface SecurityEvent { id: string; event_type: string; actor_username: string | null; subject_user_id: string | null; created_at: string }
+export interface SecurityEventPage { items: SecurityEvent[]; total: number; page: number; page_size: number; event_types: string[] }
+export interface SecurityEventFilters { page?: number; page_size?: number; event_type?: string; actor?: string; search?: string; after?: string; before?: string }
+export interface AccountInfo {
+  user: StudioUser
+  session_expires_at: string | null
+  allowed_trees: Array<{ id: string; name: string }>
+  active_token_count: number
+}
+export interface MyDashboard {
+  trees_count: number | null
+  available_trees: Array<{ id: string; name: string; status: TreeStatus }>
+  providers_count: number | null
+  ready_models_count: number | null
+  tools_count: number | null
+  runs_count: number | null
+  recent_runs: DashboardSummary["recent_runs"]
+  secrets_count: number | null
+}
 export type ProviderStatus = "not_configured" | "testing" | "connected" | "error"
 
 export interface Secret {
@@ -8,6 +34,27 @@ export interface Secret {
   masked_value: string
   created_at: string
   updated_at: string
+}
+
+export interface ResourceDependency {
+  type: "provider" | "tool" | "destination" | "agent"
+  id: string
+  name: string
+  relation: string
+  tree_id: string | null
+  tree_name: string | null
+  tree_version: number | null
+  agent_id: string | null
+  agent_name: string | null
+  agent_type: string | null
+  model_id: string | null
+  capabilities: string[]
+}
+
+export interface ResourceDependencies {
+  can_delete: boolean
+  resource: { type: "secret" | "provider" | "tool"; id: string; name: string }
+  dependencies: ResourceDependency[]
 }
 
 export interface ProviderConnection {
@@ -67,6 +114,7 @@ export interface DashboardSummary {
     runs: { total: number; today: number; running: number; completed: number; failed: number; success_rate: number | null }
     providers: { total: number; connected: number; usable_models: number }
     tools: { total: number; connected: number; enabled: number }
+    users: number
   }
   recent_runs: Array<{ id: string; tree_id: string; tree_name: string; status: RunStatus; started_at: string; duration_ms: number | null; result_state: string | null }>
   trees: Array<{ id: string; name: string; description: string; status: TreeStatus; agent_count: number; run_count: number; last_run_at: string | null; provider_summary: string[] }>
@@ -250,7 +298,7 @@ export interface CapabilitySuggestionPayload {
   model_id: string
 }
 
-export type RunStatus = "pending" | "running" | "completed" | "failed"
+export type RunStatus = "pending" | "running" | "completed" | "failed" | "cancelled"
 
 export interface TraceEvent {
   id: string
@@ -314,6 +362,19 @@ export interface RunDetail extends Run {
   delivery_results: DeliveryResult[]
 }
 
+export interface TreeLive {
+  tree_id: string
+  tree_name: string
+  runtime_status: "unavailable" | "starting" | "running" | "stopping" | "stopped" | "error"
+  runtime_started_at: string | null
+  active_count: number
+  queued_count: number
+  completed_count: number
+  failed_count: number
+  executions: Array<{ run: Run; current_agent: string | null; current_stage: string | null; current_tool: string | null }>
+  recent_activity: TraceEvent[]
+}
+
 export class ApiError extends Error {
   constructor(message: string, readonly status: number, readonly code?: string) {
     super(message)
@@ -323,12 +384,14 @@ export class ApiError extends Error {
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
   const response = await fetch(path, {
     ...options,
+    credentials: "same-origin",
     headers: {
       "Content-Type": "application/json",
       ...options?.headers,
     },
   })
   if (!response.ok) {
+    if (response.status === 401 && path !== "/api/auth/login") window.dispatchEvent(new Event("studio-auth-expired"))
     let message = `Request failed with status ${response.status}`
     let code: string | undefined
     try {
@@ -348,10 +411,31 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
 }
 
 export const api = {
+  login: (username: string, password: string) => request<StudioUser>("/api/auth/login", { method: "POST", body: JSON.stringify({ username, password }) }),
+  me: () => request<StudioUser>("/api/auth/me"),
+  account: () => request<AccountInfo>("/api/auth/account"),
+  myDashboard: () => request<MyDashboard>("/api/dashboard/me"),
+  logout: () => request<void>("/api/auth/logout", { method: "POST" }),
+  changePassword: (current_password: string, new_password: string) => request<StudioUser>("/api/auth/change-password", { method: "POST", body: JSON.stringify({ current_password, new_password }) }),
+  listUsers: () => request<StudioUser[]>("/api/users"),
+  listSecurityEvents: (filters: SecurityEventFilters = {}) => {
+    const params = new URLSearchParams()
+    for (const [key, value] of Object.entries(filters)) if (value !== undefined && value !== "") params.set(key, String(value))
+    return request<SecurityEventPage>(`/api/security-events${params.size ? `?${params}` : ""}`)
+  },
+  createUser: (payload: { username: string; password: string; is_admin: boolean; permissions: Permission[]; allowed_tree_ids: string[]; tree_access_mode: TreeAccessMode }) => request<StudioUser>("/api/users", { method: "POST", body: JSON.stringify(payload) }),
+  updateUser: (id: string, payload: { is_admin?: boolean; is_active?: boolean; permissions?: Permission[]; allowed_tree_ids?: string[]; tree_access_mode?: TreeAccessMode }) => request<StudioUser>(`/api/users/${id}`, { method: "PUT", body: JSON.stringify(payload) }),
+  resetUserPassword: (id: string, password: string) => request<void>(`/api/users/${id}/reset-password`, { method: "POST", body: JSON.stringify({ password }) }),
+  deleteUser: (id: string) => request<void>(`/api/users/${id}`, { method: "DELETE" }),
+  myTrees: () => request<TreeListItem[]>("/api/me/trees"),
+  listTokens: () => request<ApiToken[]>("/api/auth/tokens"),
+  createToken: (name: string) => request<ApiToken & { token: string }>("/api/auth/tokens", { method: "POST", body: JSON.stringify({ name }) }),
+  revokeToken: (id: string) => request<void>(`/api/auth/tokens/${id}`, { method: "DELETE" }),
   listSecrets: () => request<Secret[]>("/api/secrets"),
   createSecret: (payload: { name: string; secret_type: string; value: string }) =>
     request<Secret>("/api/secrets", { method: "POST", body: JSON.stringify(payload) }),
   deleteSecret: (id: string) => request<void>(`/api/secrets/${id}`, { method: "DELETE" }),
+  getSecretDependencies: (id: string) => request<ResourceDependencies>(`/api/secrets/${id}/dependencies`),
 
   listProviders: () => request<ProviderConnection[]>("/api/providers"),
   createProvider: (payload: ProviderPayload) =>
@@ -366,6 +450,7 @@ export const api = {
     }),
   deleteProvider: (id: string) =>
     request<void>(`/api/providers/${id}`, { method: "DELETE" }),
+  getProviderDependencies: (id: string) => request<ResourceDependencies>(`/api/providers/${id}/dependencies`),
   testProvider: (id: string) =>
     request<ProviderConnection>(`/api/providers/${id}/test`, { method: "POST" }),
   discoverModels: (id: string) =>
@@ -383,6 +468,11 @@ export const api = {
       method: "PUT",
       body: JSON.stringify(payload),
     }),
+  replaceReadyTree: (id: string, payload: TreeDraftPayload) =>
+    request<TreeDetail>(`/api/trees/${id}/configuration`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    }),
   deleteTree: (id: string) => request<void>(`/api/trees/${id}`, { method: "DELETE" }),
   validateTree: (id: string, markReady = false) =>
     request<TreeValidation>(`/api/trees/${id}/validate?mark_ready=${markReady}`, { method: "POST" }),
@@ -394,6 +484,7 @@ export const api = {
   updateTool: (id: string, payload: Partial<ToolPayload> & { selected_tools?: string[] }) =>
     request<ToolConnection>(`/api/tools/${id}`, { method: "PUT", body: JSON.stringify(payload) }),
   deleteTool: (id: string) => request<void>(`/api/tools/${id}`, { method: "DELETE" }),
+  getToolDependencies: (id: string) => request<ResourceDependencies>(`/api/tools/${id}/dependencies`),
   testTool: (id: string) => request<{ tool: ToolConnection; message: string }>(`/api/tools/${id}/test`, { method: "POST" }),
   discoverTool: (id: string) => request<{ tool: ToolConnection; tools: DiscoveredTool[] }>(`/api/tools/${id}/discover`, { method: "POST" }),
   executeTool: (id: string, payload: { arguments: Record<string, unknown>; tool_name?: string }) =>
@@ -435,6 +526,7 @@ export const api = {
     return request<Run[]>(`/api/runs${query.size ? `?${query}` : ""}`)
   },
   listTreeRuns: (treeId: string) => request<Run[]>(`/api/trees/${treeId}/runs`),
+  getTreeLive: (treeId: string) => request<TreeLive>(`/api/trees/${treeId}/live`),
   getRun: (runId: string) => request<RunDetail>(`/api/runs/${runId}`),
   getRunTrace: (runId: string) => request<TraceEvent[]>(`/api/runs/${runId}/trace`),
 }

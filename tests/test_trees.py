@@ -125,6 +125,93 @@ def test_multiple_managers_are_allowed(database) -> None:
     assert TreeService(database).get(tree.id).managers_count == 2
 
 
+def test_ready_tree_configuration_edit_is_versioned_and_atomic(database) -> None:
+    first = connected_provider(database)
+    second = ProviderConnection(name="Replacement", provider_type="ollama", status="connected")
+    database.add(second)
+    database.flush()
+    database.add(ProviderModel(provider_connection_id=second.id, model_id="ready-model",
+                               is_available=True, generation_candidate=True, qualification_status="qualified"))
+    database.add(ProviderModel(provider_connection_id=second.id, model_id="discovered-only",
+                               is_available=True, generation_candidate=True, qualification_status="unknown"))
+    tool = ToolConnection(name="Probe", tool_type="http_api", status="connected", enabled=True)
+    database.add(tool)
+    database.commit()
+
+    service = TreeService(database)
+    original = service.create(valid_payload(first))
+    assert service.validate(original.id, mark_ready=True).valid
+    payload = valid_payload(first)
+    payload.description = "Updated without losing the original version"
+    for agent in payload.agents:
+        agent.provider_connection_id = second.id
+        agent.model_id = "ready-model"
+    payload.agents[2].name = "Renamed Specialist"
+    payload.tool_assignments = [ToolAssignmentDraft(
+        agent_config_id=payload.agents[2].id, tool_connection_id=tool.id,
+    )]
+
+    updated = service.replace_ready_configuration(original.id, payload)
+    assert updated.status == "ready" and updated.version_number == 2
+    assert updated.version.agents[2].name == "Renamed Specialist"
+    assert all(agent.provider_connection_id == second.id and agent.model_id == "ready-model"
+               for agent in updated.version.agents)
+    assert updated.version.tool_assignments[0].agent_config_id == updated.version.agents[2].id
+    assert updated.version.agents[2].id != original.version.agents[2].id
+    assert updated.description == payload.description
+    assert database.get(TreeVersion, original.version.id) is not None
+
+    bad = payload.model_copy(deep=True)
+    bad.agents[1].name = "Never committed"
+    bad.agents[1].model_id = "unavailable-model"
+    with pytest.raises(ServiceError, match="not in the provider catalog"):
+        service.replace_ready_configuration(original.id, bad)
+    preserved = service.get(original.id)
+    assert preserved.version_number == 2
+    assert preserved.version.agents[1].name != "Never committed"
+
+    unqualified = payload.model_copy(deep=True)
+    unqualified.agents[1].model_id = "discovered-only"
+    with pytest.raises(ServiceError, match="not verified for AgentTree generation"):
+        service.replace_ready_configuration(original.id, unqualified)
+    assert service.get(original.id).version_number == 2
+
+    tool.enabled = False
+    database.commit()
+    with pytest.raises(ServiceError, match="Tool must be enabled and connected"):
+        service.replace_ready_configuration(original.id, payload)
+    assert service.get(original.id).version_number == 2
+    tool.enabled = True
+    database.commit()
+
+    broken = payload.model_copy(deep=True)
+    broken.agents = [agent for agent in broken.agents if agent.agent_type != "manager"]
+    with pytest.raises(ServiceError, match="missing parent"):
+        service.replace_ready_configuration(original.id, broken)
+    assert service.get(original.id).version_number == 2
+
+
+def test_ready_tree_tool_assignment_can_be_added_and_removed(database) -> None:
+    provider = connected_provider(database)
+    tool = ToolConnection(name="Disposable Tool", tool_type="http_api", status="connected", enabled=True)
+    database.add(tool)
+    database.commit()
+    service = TreeService(database)
+    original = service.create(valid_payload(provider))
+    assert service.validate(original.id, mark_ready=True).valid
+    with_tool = valid_payload(provider)
+    with_tool.tool_assignments = [ToolAssignmentDraft(
+        agent_config_id=with_tool.agents[2].id, tool_connection_id=tool.id,
+    )]
+    added = service.replace_ready_configuration(original.id, with_tool)
+    assert len(added.version.tool_assignments) == 1
+    without_tool = valid_payload(provider)
+    removed = service.replace_ready_configuration(original.id, without_tool)
+    assert removed.status == "ready" and removed.version_number == 3
+    assert removed.version.tool_assignments == []
+    assert database.get(TreeVersion, added.version.id) is not None
+
+
 def test_specialist_must_belong_to_manager(database) -> None:
     provider = connected_provider(database)
     payload = valid_payload(provider)

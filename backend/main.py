@@ -4,6 +4,7 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
+from fastapi.exceptions import HTTPException as FastAPIHTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -18,15 +19,33 @@ from backend.api.destinations import router as destinations_router
 from backend.api.secrets import router as secrets_router
 from backend.api.tools import router as tools_router
 from backend.api.trees import router as trees_router
+from backend.api.auth import router as auth_router
+from backend.api.public_v1 import router as public_v1_router
 from backend.core.config import settings
-from backend.db.session import initialize_database
+from backend.db.session import SessionLocal, initialize_database
+from backend.core.authz import AuthMiddleware
+from backend.services.auth_service import AuthService
+import os
 from backend.services.errors import ServiceError
+from backend.core.public_api import PublicAPIError
+from backend.core.public_cors import PublicCORSMiddleware
+
+
+def public_error(request: Request, status: int, code: str, message: str) -> JSONResponse:
+    return JSONResponse(status_code=status, content={"error": {
+        "code": code, "message": message, "request_id": request.state.request_id,
+    }})
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     """Initialize local infrastructure before accepting requests."""
     initialize_database()
+    with SessionLocal() as database:
+        AuthService(database).bootstrap(
+            os.getenv("AGENTTREE_STUDIO_ADMIN_USERNAME", "admin"),
+            os.getenv("AGENTTREE_STUDIO_ADMIN_PASSWORD", "admin"),
+        )
     yield
 
 
@@ -38,7 +57,9 @@ app = FastAPI(
 
 
 @app.exception_handler(ServiceError)
-async def handle_service_error(_: Request, exc: ServiceError) -> JSONResponse:
+async def handle_service_error(request: Request, exc: ServiceError) -> JSONResponse:
+    if request.url.path.startswith("/api/v1/"):
+        return public_error(request, exc.status_code, getattr(exc, "error_code", "request_failed").lower(), str(exc))
     content: dict = {"detail": str(exc)}
     if hasattr(exc, "error_code"):
         content["error"] = {"code": exc.error_code, "message": str(exc)}
@@ -47,7 +68,7 @@ async def handle_service_error(_: Request, exc: ServiceError) -> JSONResponse:
 
 @app.exception_handler(RequestValidationError)
 async def handle_validation_error(
-    _: Request,
+    request: Request,
     exc: RequestValidationError,
 ) -> JSONResponse:
     """Return useful validation errors without echoing submitted credentials."""
@@ -55,7 +76,28 @@ async def handle_validation_error(
         {key: value for key, value in error.items() if key not in ("input", "ctx")}
         for error in exc.errors()
     ]
+    if request is not None and request.url.path.startswith("/api/v1/"):
+        return public_error(request, 422, "validation_error", "Request validation failed.")
     return JSONResponse(status_code=422, content={"detail": safe_errors})
+
+
+@app.exception_handler(PublicAPIError)
+async def handle_public_error(request: Request, exc: PublicAPIError) -> JSONResponse:
+    return public_error(request, exc.status_code, exc.code, exc.message)
+
+
+@app.exception_handler(FastAPIHTTPException)
+async def handle_http_error(request: Request, exc: FastAPIHTTPException) -> JSONResponse:
+    if request.url.path.startswith("/api/v1/"):
+        return public_error(request, exc.status_code, "resource_not_found" if exc.status_code == 404 else "request_failed", "Resource not found." if exc.status_code == 404 else "Request failed.")
+    return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
+
+
+@app.exception_handler(Exception)
+async def handle_unexpected_error(request: Request, _: Exception) -> JSONResponse:
+    if request.url.path.startswith("/api/v1/"):
+        return public_error(request, 500, "internal_error", "An internal error occurred.")
+    return JSONResponse(status_code=500, content={"detail": "Internal Server Error"})
 
 app.add_middleware(
     CORSMiddleware,
@@ -65,6 +107,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.add_middleware(AuthMiddleware)
+app.add_middleware(PublicCORSMiddleware)
+
+app.include_router(auth_router, prefix="/api")
+app.include_router(public_v1_router)
 app.include_router(health_router, prefix="/api")
 app.include_router(dashboard_router, prefix="/api")
 app.include_router(secrets_router, prefix="/api")

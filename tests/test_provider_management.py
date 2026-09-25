@@ -49,7 +49,7 @@ def test_create_and_get_secrets_never_expose_raw_value(database) -> None:
     response_json = created.model_dump_json()
     assert "value" not in created.model_dump()
     assert "encrypted_value" not in created.model_dump()
-    assert created.masked_value == "sk-••••••••9X2A"
+    assert created.masked_value == SecretService.MASKED_VALUE
     assert raw_value not in response_json
 
     listed = list_secrets_route(database)

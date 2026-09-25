@@ -1,6 +1,7 @@
 """Core-backed runtime construction, execution, persistence, and safety."""
 
 import json
+from datetime import datetime, timezone
 from uuid import uuid4
 
 import pytest
@@ -55,7 +56,7 @@ class ScriptedProvider(BaseProvider):
 
 def runtime_tree(database, *, output_type: str = "text"):
     secret = SecretService(database).create(SecretCreate(
-        name="Runtime key", secret_type="api_key", value="super-secret-runtime-key",
+        name=f"Runtime key {uuid4()}", secret_type="api_key", value="super-secret-runtime-key",
     ))
     provider = ProviderConnection(
         name="Runtime Provider",
@@ -199,6 +200,8 @@ def test_execution_failure_transitions_to_failed_and_sanitizes_auth_error(databa
     serialized = json.dumps(result.model_dump(mode="json"))
     assert "super-secret-runtime-key" not in serialized
     assert "Authorization" not in serialized
+    live = RunService(database).live(tree.id)
+    assert "super-secret-runtime-key" not in json.dumps(live.model_dump(mode="json"))
     stored = database.get(Run, result.id)
     assert stored.status == "failed"
     assert stored.finished_at is not None
@@ -235,6 +238,39 @@ def test_run_listing_detail_trace_and_filters(database) -> None:
     assert [item.id for item in service.list(tree_id=tree.id)] == [completed.id]
     assert service.get(completed.id).input["objective"] == "Inspect network logs"
     assert service.trace(completed.id)[-1].event_type == "orchestration.final_result_created"
+
+
+def test_live_snapshot_separates_runtime_from_multiple_executions(database) -> None:
+    tree, _, _ = runtime_tree(database)
+    other_tree, _, _ = runtime_tree(database)
+    now = datetime.now(timezone.utc)
+    runs = [
+        Run(tree_id=tree.id, tree_version_id=tree.version.id, status=status,
+            input_json={"objective": f"task {index}"}, metadata_json={},
+            invocation_source="api", started_at=now)
+        for index, status in enumerate(("running", "running", "pending", "completed", "failed"))
+    ]
+    foreign = Run(tree_id=other_tree.id, tree_version_id=other_tree.version.id,
+                  status="completed", input_json={}, metadata_json={},
+                  invocation_source="api", started_at=now)
+    database.add_all([*runs, foreign])
+    database.flush()
+    database.add_all([
+        TraceEvent(run_id=runs[3].id, sequence=2, event_type="orchestration.final_result_created",
+                   payload_json={"metadata": {"password": "[REDACTED]"}}, created_at=now),
+        TraceEvent(run_id=runs[3].id, sequence=1, event_type="orchestration.started",
+                   payload_json={}, created_at=now),
+    ])
+    database.commit()
+
+    snapshot = RunService(database).live(tree.id)
+    assert snapshot.runtime_status == "unavailable"
+    assert (snapshot.active_count, snapshot.queued_count, snapshot.completed_count, snapshot.failed_count) == (2, 1, 1, 1)
+    assert len(snapshot.executions) == 5
+    assert {item.run.id for item in snapshot.executions} == {run.id for run in runs}
+    assert [event.sequence for event in snapshot.recent_activity] == [2, 1]
+    assert foreign.id not in json.dumps(snapshot.model_dump(mode="json"))
+    assert "secret-plaintext" not in json.dumps(snapshot.model_dump(mode="json"))
 
 
 def test_invalid_tree_is_rejected_but_generic_json_input_is_accepted(database) -> None:

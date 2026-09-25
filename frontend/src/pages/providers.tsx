@@ -1,5 +1,6 @@
 import {
-  Eye,
+  ChevronDown,
+  ChevronUp,
   Pencil,
   Plus,
   RefreshCw,
@@ -7,15 +8,15 @@ import {
   TestTube2,
   Trash2,
 } from "lucide-react"
-import { type FormEvent, useCallback, useEffect, useState } from "react"
+import { Fragment, type FormEvent, useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { EmptyState } from "@/components/empty-state"
 import { Notice } from "@/components/notice"
 import { PageHeader } from "@/components/page-header"
+import { ResourceDependencyDialog } from "@/components/resource-dependency-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Dialog,
   DialogContent,
@@ -64,25 +65,37 @@ const emptyForm: ProviderPayload = {
   base_url: null,
 }
 
+function readyModels(models: ProviderModel[]) {
+  return models.filter((model) => model.is_available && model.generation_candidate && model.qualification_status === "qualified")
+}
+
 export function ProvidersPage() {
   const { t, i18n } = useTranslation()
   const [providers, setProviders] = useState<ProviderConnection[]>([])
   const [secrets, setSecrets] = useState<Secret[]>([])
-  const [models, setModels] = useState<ProviderModel[]>([])
-  const [selectedProvider, setSelectedProvider] = useState<ProviderConnection | null>(null)
+  const [modelsByProvider, setModelsByProvider] = useState<Record<string, ProviderModel[]>>({})
+  const [expandedProviders, setExpandedProviders] = useState<Set<string>>(() => new Set())
   const [loading, setLoading] = useState(true)
   const [busy, setBusy] = useState<string | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editing, setEditing] = useState<ProviderConnection | null>(null)
   const [form, setForm] = useState<ProviderPayload>(emptyForm)
   const [notice, setNotice] = useState<{ tone: "success" | "error"; message: string } | null>(null)
+  const [deletingProvider, setDeletingProvider] = useState<ProviderConnection | null>(null)
 
   const loadPage = useCallback(async () => {
     setLoading(true)
     try {
-      const [providerItems, secretItems] = await Promise.all([api.listProviders(), api.listSecrets()])
-      setProviders(providerItems)
-      setSecrets(secretItems)
+      const [providerResult, secretResult] = await Promise.allSettled([api.listProviders(), api.listSecrets()])
+      if (providerResult.status === "rejected") throw providerResult.reason
+      setProviders(providerResult.value)
+      if (secretResult.status === "fulfilled") {
+        setSecrets(secretResult.value)
+      } else {
+        setSecrets([])
+        const message = secretResult.reason instanceof Error ? secretResult.reason.message : "Unable to load saved Secrets"
+        setNotice({ tone: "error", message: `Providers loaded, but saved Secrets could not be loaded: ${message}` })
+      }
     } catch (error) {
       setNotice({ tone: "error", message: error instanceof Error ? error.message : "Unable to load providers" })
     } finally {
@@ -91,6 +104,12 @@ export function ProvidersPage() {
   }, [])
 
   useEffect(() => { void loadPage() }, [loadPage])
+  const focusedProviderId = new URLSearchParams(window.location.search).get("focus")
+  useEffect(() => {
+    if (focusedProviderId && providers.some((item) => item.id === focusedProviderId)) {
+      document.getElementById(`provider-${focusedProviderId}`)?.scrollIntoView?.({ block: "center" })
+    }
+  }, [focusedProviderId, providers])
 
   function openCreate() {
     setEditing(null)
@@ -122,16 +141,14 @@ export function ProvidersPage() {
     event.preventDefault()
     setBusy("save")
     try {
-      const saved = editing
-        ? await api.updateProvider(editing.id, form)
-        : await api.createProvider(form)
-      setProviders((current) => editing
-        ? current.map((item) => item.id === saved.id ? saved : item)
-        : [saved, ...current])
+      if (editing) await api.updateProvider(editing.id, form)
+      else await api.createProvider(form)
+      const wasEditing = Boolean(editing)
+      await loadPage()
       setDialogOpen(false)
       setEditing(null)
       setForm(emptyForm)
-      setNotice({ tone: "success", message: editing ? "Provider updated." : "Provider connection added." })
+      setNotice({ tone: "success", message: wasEditing ? "Provider updated." : "Provider connection added." })
     } catch (error) {
       setNotice({ tone: "error", message: error instanceof Error ? error.message : "Unable to save provider" })
     } finally {
@@ -141,7 +158,6 @@ export function ProvidersPage() {
 
   function replaceProvider(updated: ProviderConnection) {
     setProviders((current) => current.map((item) => item.id === updated.id ? updated : item))
-    setSelectedProvider((current) => current?.id === updated.id ? updated : current)
   }
 
   async function testConnection(provider: ProviderConnection) {
@@ -163,8 +179,8 @@ export function ProvidersPage() {
     try {
       const result = await api.discoverModels(provider.id)
       replaceProvider(result.provider)
-      setSelectedProvider(result.provider)
-      setModels(result.models)
+      setModelsByProvider((current) => ({ ...current, [provider.id]: readyModels(result.models) }))
+      setExpandedProviders((current) => new Set(current).add(provider.id))
       setNotice({ tone: "success", message: t("providers.discovered", {
         discovered: result.summary.discovered_count,
         candidates: result.summary.candidate_count,
@@ -180,30 +196,17 @@ export function ProvidersPage() {
   }
 
   async function viewModels(provider: ProviderConnection) {
+    if (expandedProviders.has(provider.id)) {
+      setExpandedProviders((current) => { const next = new Set(current); next.delete(provider.id); return next })
+      return
+    }
     setBusy(`models:${provider.id}`)
     try {
-      setModels(await api.listModels(provider.id, true))
-      setSelectedProvider(provider)
+      const models = await api.listModels(provider.id)
+      setModelsByProvider((current) => ({ ...current, [provider.id]: readyModels(models) }))
+      setExpandedProviders((current) => new Set(current).add(provider.id))
     } catch (error) {
       setNotice({ tone: "error", message: error instanceof Error ? error.message : "Unable to load models" })
-    } finally {
-      setBusy(null)
-    }
-  }
-
-  async function remove(provider: ProviderConnection) {
-    if (!window.confirm(`Delete “${provider.name}” and its discovered models?`)) return
-    setBusy(`delete:${provider.id}`)
-    try {
-      await api.deleteProvider(provider.id)
-      setProviders((current) => current.filter((item) => item.id !== provider.id))
-      if (selectedProvider?.id === provider.id) {
-        setSelectedProvider(null)
-        setModels([])
-      }
-      setNotice({ tone: "success", message: "Provider connection deleted." })
-    } catch (error) {
-      setNotice({ tone: "error", message: error instanceof Error ? error.message : "Unable to delete provider" })
     } finally {
       setBusy(null)
     }
@@ -230,67 +233,47 @@ export function ProvidersPage() {
           icon={ServerCog}
         />
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-border bg-card/95 shadow-[var(--shadow-soft)]">
+        <div className="overflow-hidden border-y border-border bg-card">
           <Table>
             <TableHeader><TableRow>
-              <TableHead>Provider</TableHead><TableHead>Status</TableHead><TableHead>Models</TableHead>
-              <TableHead>Last checked</TableHead><TableHead className="min-w-[300px] text-right">Actions</TableHead>
+              <TableHead>{t("agents.provider")}</TableHead><TableHead>{t("common.status")}</TableHead><TableHead>{t("designV3.models")}</TableHead>
+              <TableHead className="hidden xl:table-cell">{t("common.lastChecked")}</TableHead><TableHead className="min-w-[180px] text-right">{t("common.actions")}</TableHead>
             </TableRow></TableHeader>
             <TableBody>
               {providers.map((provider) => (
-                <TableRow key={provider.id}>
-                  <TableCell><p className="font-medium">{provider.name}</p><p className="mt-1 text-xs text-muted-foreground">{providerLabels[provider.provider_type]}</p></TableCell>
+                <Fragment key={provider.id}>
+                <TableRow id={`provider-${provider.id}`} className={focusedProviderId === provider.id ? "bg-accent/60" : undefined}>
+                  <TableCell><div className="flex items-center gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary"><ServerCog className="size-5" /></span><div><p className="font-semibold">{provider.name}</p><p className="mt-1 text-xs text-muted-foreground">{providerLabels[provider.provider_type]}</p></div></div></TableCell>
                   <TableCell><ProviderStatusBadge status={provider.status} />{provider.last_error ? <p className="mt-1.5 max-w-48 text-xs text-red-600 dark:text-red-400">{provider.last_error}</p> : null}</TableCell>
                   <TableCell><p>{t("providers.modelsReady", { count: provider.models_count })}</p><p className="mt-1 text-xs text-muted-foreground">{t("providers.unavailableCount", { count: provider.unavailable_models_count })}</p></TableCell>
-                  <TableCell className="whitespace-nowrap text-muted-foreground">{provider.last_checked_at ? new Intl.DateTimeFormat(i18n.language, { dateStyle: "medium", timeStyle: "short" }).format(new Date(provider.last_checked_at)) : t("common.never")}</TableCell>
+                  <TableCell className="hidden whitespace-nowrap text-muted-foreground xl:table-cell">{provider.last_checked_at ? new Intl.DateTimeFormat(i18n.language, { dateStyle: "medium", timeStyle: "short" }).format(new Date(provider.last_checked_at)) : t("common.never")}</TableCell>
                   <TableCell>
                     <div className="flex flex-wrap justify-end gap-1">
-                      <Button variant="ghost" className="h-8 px-2" title={t("providers.test")} disabled={busy !== null} onClick={() => void testConnection(provider)}>
-                        <TestTube2 className={busy === `test:${provider.id}` ? "size-4 animate-pulse" : "size-4"} />{t("providers.test")}
+                      <Button variant="outline" className="h-8 px-2" title={t("providers.test")} aria-label={t("providers.test")} disabled={busy !== null} onClick={() => void testConnection(provider)}>
+                        <TestTube2 className={busy === `test:${provider.id}` ? "size-4 animate-pulse" : "size-4"} /><span className="hidden xl:inline">{t("providers.test")}</span>
                       </Button>
-                      <Button variant="ghost" className="h-8 px-2" title={t("providers.discover")} disabled={busy !== null} onClick={() => void discover(provider)}>
-                        <RefreshCw className={busy === `discover:${provider.id}` ? "size-4 animate-spin" : "size-4"} />{t("providers.discover")}
+                      <Button variant="outline" className="h-8 px-2" title={t("providers.discover")} aria-label={t("providers.discover")} disabled={busy !== null} onClick={() => void discover(provider)}>
+                        <RefreshCw className={busy === `discover:${provider.id}` ? "size-4 animate-spin" : "size-4"} /><span className="hidden xl:inline">{t("providers.discover")}</span>
                       </Button>
-                      <Button variant="ghost" className="h-8 px-2" title={t("providers.viewModels")} disabled={busy !== null} onClick={() => void viewModels(provider)}>
-                        <Eye className="size-4" />{t("providers.viewModels")}
+                      <Button variant="ghost" className="h-8 px-2" title={t(expandedProviders.has(provider.id) ? "providers.hideModels" : "providers.viewModels")} aria-label={t(expandedProviders.has(provider.id) ? "providers.hideModels" : "providers.viewModels")} aria-expanded={expandedProviders.has(provider.id)} aria-controls={`models-${provider.id}`} disabled={busy !== null} onClick={() => void viewModels(provider)}>
+                        {expandedProviders.has(provider.id) ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}<span className="hidden xl:inline">{t(expandedProviders.has(provider.id) ? "providers.hideModels" : "providers.viewModels")}</span>
                       </Button>
                       <Button variant="ghost" size="icon" title="Edit provider" disabled={busy !== null} onClick={() => openEdit(provider)}>
                         <Pencil className="size-4" /><span className="sr-only">Edit</span>
                       </Button>
-                      <Button variant="ghost" size="icon" title="Delete provider" disabled={busy !== null} onClick={() => void remove(provider)}>
+                      <Button variant="ghost" size="icon" title="Delete provider" disabled={busy !== null} onClick={() => setDeletingProvider(provider)}>
                         <Trash2 className="size-4" /><span className="sr-only">Delete</span>
                       </Button>
                     </div>
                   </TableCell>
                 </TableRow>
+                {expandedProviders.has(provider.id) ? <TableRow id={`models-${provider.id}`} className="bg-secondary/20"><TableCell colSpan={5} className="p-4 sm:p-6"><div className="border-l-2 border-earth/40 pl-4 sm:pl-5"><h3 className="font-semibold">{t("providers.availableModels", { count: modelsByProvider[provider.id]?.length ?? 0 })}</h3>{modelsByProvider[provider.id]?.length ? <div className="mt-3 divide-y divide-border">{modelsByProvider[provider.id].map((model) => <div key={model.id} className="flex flex-wrap items-center justify-between gap-3 py-3"><div className="min-w-0"><p className="break-words font-medium">{model.display_name || model.model_id.replace(/^models\//, "")}</p><p className="mt-1 break-all font-mono text-xs text-muted-foreground">{model.model_id}</p></div><Badge variant="success">{t("status.qualified")}</Badge></div>)}</div> : <p className="mt-3 text-sm text-muted-foreground">{t("providers.noReadyModels")}</p>}</div></TableCell></TableRow> : null}
+                </Fragment>
               ))}
             </TableBody>
           </Table>
         </div>
       )}
-
-      {selectedProvider ? (
-        <Card>
-          <CardHeader className="flex-row items-start justify-between">
-            <div><CardTitle>{selectedProvider.name}</CardTitle><CardDescription className="mt-1.5">{t("providers.modelDetails")}</CardDescription></div>
-            <ProviderStatusBadge status={selectedProvider.status} />
-          </CardHeader>
-          <CardContent>
-            {models.length === 0 ? (
-              <p className="rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted-foreground">No models have been discovered for this connection.</p>
-            ) : (
-              <div className="divide-y divide-border rounded-lg border border-border">
-                {models.map((model) => (
-                  <div key={model.id} className="flex items-center justify-between gap-4 px-4 py-3">
-                    <div className="min-w-0"><p className="font-medium">{model.display_name || model.model_id.replace(/^models\//, "")}</p><p className="mt-1 truncate font-mono text-xs text-muted-foreground">{model.model_id}</p><p className="mt-1 text-xs text-muted-foreground">{model.qualification_message}</p></div>
-                    <Badge variant={model.qualification_status === "qualified" ? "success" : model.qualification_status === "transient_error" ? "secondary" : "destructive"}>{t(`status.${model.qualification_status === "transient_error" ? "transientError" : model.qualification_status}`)}</Badge>
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      ) : null}
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
@@ -328,6 +311,7 @@ export function ProvidersPage() {
           </form>
         </DialogContent>
       </Dialog>
+      <ResourceDependencyDialog resource={deletingProvider && { id: deletingProvider.id, name: deletingProvider.name, type: "provider" }} inspect={api.getProviderDependencies} remove={api.deleteProvider} onClose={() => setDeletingProvider(null)} onDeleted={async () => { await loadPage(); if (deletingProvider) { setExpandedProviders((current) => { const next = new Set(current); next.delete(deletingProvider.id); return next }); setModelsByProvider((current) => { const next = { ...current }; delete next[deletingProvider.id]; return next }) } setNotice({ tone: "success", message: t("resourceDeletion.deleted", { type: t("resourceDeletion.types.provider") }) }) }} />
     </div>
   )
 }

@@ -37,6 +37,7 @@ class DashboardMetrics(BaseModel):
     runs: RunMetrics
     providers: ProviderMetrics
     tools: ToolMetrics
+    users: int
 
 
 class RecentRunSummary(BaseModel):
@@ -88,3 +89,14 @@ class DashboardSummary(BaseModel):
     trees: list[DashboardTreeSummary]
     providers: list[DashboardProviderSummary]
     needs_attention: list[AttentionItem]
+
+
+class MyDashboard(BaseModel):
+    trees_count: int | None = None
+    available_trees: list[dict[str, str]] = Field(default_factory=list)
+    providers_count: int | None = None
+    ready_models_count: int | None = None
+    tools_count: int | None = None
+    runs_count: int | None = None
+    recent_runs: list[RecentRunSummary] = Field(default_factory=list)
+    secrets_count: int | None = None

@@ -13,8 +13,15 @@ from backend.schemas.provider import (
 )
 from backend.services.model_discovery_service import ModelDiscoveryService
 from backend.services.provider_service import ProviderService
+from backend.schemas.dependency import ResourceDependencies
+from backend.services.dependency_service import DependencyService
 
 router = APIRouter(prefix="/providers", tags=["providers"])
+
+
+@router.get("/{provider_id}/dependencies", response_model=ResourceDependencies)
+def provider_dependencies(provider_id: str, database: Session = Depends(get_db)) -> ResourceDependencies:
+    return DependencyService(database).provider(provider_id)
 
 
 @router.get("", response_model=list[ProviderRead])

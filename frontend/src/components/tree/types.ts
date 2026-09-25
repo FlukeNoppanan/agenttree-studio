@@ -5,6 +5,7 @@ import type {
   TreeDraftPayload,
   TriggerDraft,
 } from "@/lib/api"
+import { generateClientId } from "@/lib/client-id"
 
 export interface WizardAgent {
   id: string
@@ -49,7 +50,7 @@ export interface WizardState {
 
 export function emptyAgent(name = ""): WizardAgent {
   return {
-    id: crypto.randomUUID(),
+    id: generateClientId(),
     name,
     description: "",
     capabilities: [],

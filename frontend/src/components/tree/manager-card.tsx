@@ -12,7 +12,7 @@ interface ManagerCardProps {
 
 export function ManagerCard({ manager, onEdit, onDelete }: ManagerCardProps) {
   return (
-    <Card className="border-manager-agent/40 bg-manager-agent/[0.06] hover:border-primary/25 hover:shadow-[var(--shadow-lifted)]">
+    <Card className="border-l-2 border-l-manager-agent">
       <CardHeader className="flex-row items-start justify-between gap-4">
         <div><CardTitle className="text-base">{manager.agent.name || "Untitled Manager"}</CardTitle><p className="mt-1.5 text-sm text-muted-foreground">{manager.agent.description || "No description"}</p></div>
         <div className="flex gap-1"><Button type="button" variant="ghost" size="icon" onClick={onEdit}><Pencil className="size-4" /><span className="sr-only">Edit</span></Button><Button type="button" variant="ghost" size="icon" onClick={onDelete}><Trash2 className="size-4" /><span className="sr-only">Delete</span></Button></div>

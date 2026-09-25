@@ -296,7 +296,7 @@ def test_mcp_connection_failure_is_sanitized(database) -> None:
     assert "token" not in result.tool.last_error.casefold()
 
 
-def test_assignments_are_specialist_only_and_delete_cleans_them(database) -> None:
+def test_assignments_are_specialist_only_and_block_tool_delete(database) -> None:
     provider = connected_provider(database)
     tree = TreeService(database).create(valid_payload(provider))
     specialist = next(item for item in tree.version.agents if item.agent_type == "specialist")
@@ -310,6 +310,11 @@ def test_assignments_are_specialist_only_and_delete_cleans_them(database) -> Non
     with pytest.raises(ServiceError, match="Specialist"):
         service.replace_assignments(tool.id, ToolAssignmentsUpdate(agent_ids=[manager.id]))
 
+    with pytest.raises(ServiceError, match="assigned to a Specialist"):
+        service.delete(tool.id)
+    assert database.scalar(select(func.count()).select_from(ToolAssignment)) == 1
+    assert service.get(tool.id).id == tool.id
+    service.replace_assignments(tool.id, ToolAssignmentsUpdate(agent_ids=[]))
     service.delete(tool.id)
     assert database.scalar(select(func.count()).select_from(ToolAssignment)) == 0
 

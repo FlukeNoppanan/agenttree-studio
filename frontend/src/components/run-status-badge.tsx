@@ -9,11 +9,12 @@ const items = {
   running: { icon: LoaderCircle, variant: "info" as const },
   completed: { icon: CircleCheck, variant: "success" as const },
   failed: { icon: CircleX, variant: "destructive" as const },
+  cancelled: { icon: CircleX, variant: "secondary" as const },
 }
 
 export function RunStatusBadge({ status }: { status: RunStatus }) {
   const { t } = useTranslation()
   const item = items[status]
   const Icon = item.icon
-  return <Badge variant={item.variant} className="gap-1.5"><Icon className={status === "running" ? "size-3 animate-spin" : "size-3"} />{t(`status.${status}`)}</Badge>
+  return <Badge variant={item.variant} className="gap-1.5"><Icon className={status === "running" ? "size-3 animate-spin" : "size-3"} />{t(status === "pending" ? "live.queued" : `status.${status}`)}</Badge>
 }

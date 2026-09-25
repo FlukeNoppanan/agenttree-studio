@@ -1,0 +1,5 @@
+-r requirements-base.txt
+
+# Pinned to the sibling Core checkout's current upstream commit. Docker builds
+# remain self-contained after cloning Studio; local development still uses -e.
+agenttree[providers,mcp] @ git+https://github.com/FlukeNoppanan/Agenttree.git@cdf1045c61200d5bf6d2432d4b5125c4ff80cb04

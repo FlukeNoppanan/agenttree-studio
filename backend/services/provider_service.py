@@ -6,11 +6,12 @@ import json
 from urllib.parse import urlparse
 
 from sqlalchemy import func, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, selectinload
 
 from backend.models.provider import ProviderConnection, ProviderModel
 from backend.models.secret import Secret
-from backend.models.tree import AgentConfig
+from backend.services.dependency_service import DependencyService
 from backend.schemas.provider import (
     ProviderCreate,
     ProviderModelRead,
@@ -173,17 +174,14 @@ class ProviderService:
 
     def delete(self, provider_id: str) -> None:
         connection = self.get_model(provider_id)
-        references = self._database.scalar(
-            select(func.count()).select_from(AgentConfig).where(
-                AgentConfig.provider_connection_id == provider_id,
-            ),
-        )
-        if references:
-            raise ResourceConflictError(
-                "Provider connection is used by a Tree and cannot be deleted",
-            )
+        if not DependencyService(self._database).provider(provider_id).can_delete:
+            raise ResourceConflictError("Provider is still in use; inspect its dependencies before deleting")
         self._database.delete(connection)
-        self._database.commit()
+        try:
+            self._database.commit()
+        except IntegrityError as error:
+            self._database.rollback()
+            raise ResourceConflictError("Provider gained a dependency; inspect its dependencies before deleting") from error
 
     def models(
         self, provider_id: str, *, include_unusable: bool = False,

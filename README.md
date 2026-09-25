@@ -14,7 +14,7 @@ React + TypeScript (Vite)
           ↓ /api
 FastAPI Studio backend
     ↓ services/repositories
-SQLAlchemy (SQLite by default; configurable for future PostgreSQL)
+SQLAlchemy (SQLite for direct local development; PostgreSQL in Docker)
           ↓ import
 AgentTree Python package (one runtime context per Run)
 ```
@@ -22,7 +22,115 @@ AgentTree Python package (one runtime context per Run)
 AgentTree remains an external package. No core source is copied into this
 repository, and Studio-specific code must stay here.
 
-## Prerequisites
+## Quick Start with Docker
+
+Docker Compose starts PostgreSQL, the FastAPI backend, and the Vite frontend.
+Only Docker with the Compose plugin is required; no local Python, Node, or
+PostgreSQL installation is needed. The initial image build needs internet
+access to fetch package dependencies and the pinned AgentTree Core commit.
+
+```bash
+cp .env.example .env
+docker compose up -d
+docker compose ps
+```
+
+Wait for `postgres`, `backend`, and `frontend` to report healthy, then open
+<http://localhost:5173>. The backend API and documentation are at
+<http://localhost:8000> and <http://localhost:8000/docs>. Host ports are
+published on all host interfaces for trusted LAN access and can be changed
+with `FRONTEND_PORT` and `BACKEND_PORT` in `.env`. PostgreSQL is not published
+to the host.
+
+### Access from another device on a trusted LAN
+
+Find the Studio host's current IPv4 address with `hostname -I` (choose the
+address of the interface on your LAN, not a Docker or VM interface). With
+Docker Compose running, open `http://<AGENTTREE_HOST_IP>:5173` from a device
+that can reach that host; for example, `http://192.168.1.50:5173`. Local
+`http://localhost:5173` and `http://127.0.0.1:5173` still work. Browser API
+calls stay same-origin at `/api/...` and are proxied inside Docker to the
+backend. Direct API clients can use `http://<AGENTTREE_HOST_IP>:8000` with
+the existing authentication and authorization rules; no anonymous access is
+granted. PostgreSQL and the encryption-key volume remain private.
+
+Allow inbound TCP 5173 on the host firewall for the UI, and TCP 8000 only if
+direct LAN API access is needed. For example, on a host using UFW, review
+your network policy before using `sudo ufw allow 5173/tcp` or
+`sudo ufw allow 8000/tcp`. Docker port publishing and host firewalls may
+interact differently by platform; verify rules from another LAN device.
+Do not disable the firewall. Only expose Studio on trusted/private networks:
+HTTP LAN traffic is not encrypted. Change the one-time `admin/admin` password
+immediately on fresh installs, and use HTTPS with
+`AGENTTREE_STUDIO_SECURE_COOKIES=true` for deployment beyond a trusted LAN.
+Secure cookies intentionally do not work over ordinary LAN HTTP.
+
+Studio requires sign-in. On a **genuinely fresh database**, the Primary
+Administrator starts as `admin` / `admin` and must change that bootstrap
+password before accessing Studio. Set `AGENTTREE_STUDIO_ADMIN_USERNAME` and
+`AGENTTREE_STUDIO_ADMIN_PASSWORD` before first start to override the initial
+credentials; a custom password must contain at least 12 characters. Existing
+Admin passwords are never reset by changing these values or restarting Docker.
+The migration promotes the existing `admin` account (or the oldest Admin if
+renamed) to Primary Administrator without changing its password. The Primary
+Administrator cannot be deleted, deactivated, or demoted. Admins create other
+accounts from **Users**; new normal Users must change their temporary password.
+Older installations may still have a `bootstrap-admin-password` file in
+`studio_key`; it is a legacy artifact, not a reset mechanism, and may no
+longer match the Admin's current password.
+
+The frontend sends `/api` requests to its own origin. Vite proxies them to
+`http://backend:8000` inside the Compose network, so the browser never needs
+to resolve a Docker service name. Direct local development retains its proxy
+to `http://127.0.0.1:8000`. The backend connects to `postgres:5432` with
+`psycopg`. Its entrypoint runs `alembic upgrade head` before Uvicorn starts;
+migration failures stop startup. PostgreSQL readiness gates backend startup,
+and backend health gates frontend startup.
+
+Useful commands:
+
+```bash
+docker compose ps
+docker compose logs -f
+docker compose logs -f backend
+docker compose restart backend
+docker compose up -d --build
+docker compose down
+```
+
+`docker compose down` keeps the named `postgres_data` and `studio_key` volumes.
+`docker compose down -v` **deletes both volumes**, including all Docker
+PostgreSQL data and any auto-generated encryption key. Back up both volumes
+together. If `AGENTTREE_STUDIO_ENCRYPTION_KEY` is blank, the backend generates
+a random Fernet key once in `studio_key`, then reuses it after restart or
+down/up. You may instead set a stable Fernet key in `.env` before creating
+Secrets. Changing or losing the key after Secrets have been stored makes
+those credentials impossible to decrypt. Change the development-only
+`POSTGRES_PASSWORD` before exposing this deployment beyond your machine;
+use URL-safe characters because Compose builds the SQLAlchemy URL from it.
+After the first PostgreSQL initialization, changing `POSTGRES_PASSWORD` in
+`.env` alone does not change the existing database user's password.
+
+Docker starts a **new PostgreSQL database**; existing
+`agenttree_studio.db` SQLite data is not copied or modified. Schema migration
+is automatic, but SQLite-to-PostgreSQL data migration is not provided.
+
+MCP stdio commands run **inside the backend container**. That image includes
+Python, Node, npm, and npx; a Filesystem MCP configuration can use
+`npx -y @modelcontextprotocol/server-filesystem /workspace` if the container
+can reach the npm registry. Only this project's `./workspace` directory is
+mounted at `/workspace`; the host root and home directory are not shared.
+Other stdio executables, packages, and paths must exist inside the container.
+Streamable HTTP MCP connections remain supported, but their server URLs must
+be reachable from the backend container (not merely from the host).
+
+The Docker image installs the pinned AgentTree Core Git commit in
+`requirements-docker.txt`; the direct local workflow below still uses the
+neighboring `../Agenttree` checkout. Core source is not copied into Studio.
+If Docker reports that it cannot connect to `/var/run/docker.sock`, start the
+Docker daemon before running Compose.
+
+## Prerequisites for direct local development
 
 - Python 3.10 or newer
 - Node.js 20.19+ or 22.12+ (the local environment currently uses Node 24)
@@ -39,6 +147,9 @@ python -m pip install -r requirements.txt
 cp .env.example .env
 # Generate a key and paste it after AGENTTREE_STUDIO_ENCRYPTION_KEY= in .env
 .venv/bin/python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+# Optional: set AGENTTREE_STUDIO_ADMIN_PASSWORD in .env to a unique 12+ character
+# value before first start. Otherwise the fresh bootstrap is admin/admin and
+# requires an immediate password change.
 uvicorn backend.main:app --reload --env-file .env
 ```
 
@@ -50,8 +161,8 @@ Set `AGENTTREE_STUDIO_DATABASE_URL` to override the default
 ```
 
 Startup also upgrades to `head`. The baseline adopts existing unversioned local
-databases without deleting rows, then applies Destination and invocation schema
-changes. `create_all()` remains useful only for isolated tests.
+databases without deleting rows, then applies Destination, invocation, and
+authentication schema changes. `create_all()` remains useful only for isolated tests.
 
 The `requirements.txt` file installs `../Agenttree` as an editable local Python
 dependency. If Studio dependencies are already installed, refresh just the core
@@ -118,6 +229,8 @@ Implemented:
 - Searchable capability catalog aggregated from saved Agent configurations
 - Tree list and detail pages with Overview, Agents, Tools, Connect, Runs,
   Versions, and Settings tabs
+- Compact, keyboard-operable Agent hierarchy with an in-place detail drawer
+- Blank Tree template inspection and Create Tree entry point
 - Synchronous Test Run through AgentTree Core's public `AgentTree.run(Task)` API
 - Runtime provider resolution for OpenAI, Gemini, and Ollama with in-memory-only
   secret decryption and per-agent model binding
@@ -164,7 +277,14 @@ agent records should store only `provider_connection_id` and `model_id`.
   Specialist per Manager, capabilities, connected provider/model references,
   and valid Tool bindings. Integration settings are not readiness requirements.
 - A valid draft can be marked `ready`. Ready versions are protected from direct
-  draft edits. Publishing is not implemented.
+  draft edits. `PUT /api/trees/{tree_id}/configuration` validates a replacement
+  and atomically creates a new Ready version, retaining the previous version;
+  invalid changes roll back without altering the active Tree. Publishing is not
+  implemented.
+- The persisted `template` field currently has one supported built-in value,
+  `blank`. The Templates page inspects and starts that workflow; it does not
+  overwrite an existing Tree. No independent Blocks route, API, database model,
+  or documented Block contract exists in this repository yet.
 - Existing TriggerConfig, OutputConfig, and Manual Form records remain readable
   and round-trip when older Trees are edited. New Trees do not require them.
 - Tool assignments bind enabled, connected HTTP or selected MCP Tools to
@@ -258,5 +378,56 @@ API → Job Queue → Worker Pool → per-Run execution → Result Destinations
 ```
 
 Deferred by design: publishing, background workers, Redis/Celery,
-authentication, multi-user support, A2A communication, provider fallback,
+A2A communication, provider fallback,
 Discord/LINE-specific adapters, scheduling, and recursive agent creation.
+
+## Accounts and Tree access
+
+Studio uses Argon2id password hashes and a revocable, 12-hour server-side
+session in an HttpOnly SameSite cookie. The cookie is marked Secure when the
+request is HTTPS or `AGENTTREE_STUDIO_SECURE_COOKIES=true`. Logging out revokes
+that session. Changing a password revokes other sessions and API keys;
+deactivating an account blocks its existing sessions and keys immediately.
+
+Admin has full access and cannot remove the last active Admin. Other users
+receive independent permissions for Trees & Agents, Secrets, Providers &
+Models, Tools & MCP, Execution / Live View, and Use Trees. Normal users need
+both **Use Trees** and Tree Access. **Selected Trees** is the safe default and
+uses explicit grants; **All Trees** is an Admin-selected rule covering current
+and future Trees without creating individual grant rows. Existing users and
+grants migrate to Selected Trees. Switching to All Trees retains the underlying
+selections but makes them inactive; switching back immediately restores those
+selections (which an Admin can edit). Turning off Use Trees denies invocation
+even if grants or All Trees mode remain. Admins, including the Primary Admin,
+always have full Tree access without grants. **Account → Tree Access** lists only
+effectively accessible Trees; the bookmarked `/my-trees` URL redirects there.
+**Account → API Keys** manages personal credentials. New key values are
+shown once, stored only as hashes, and usable only for the existing synchronous
+`POST /api/runtime/trees/{tree_id}/invoke` endpoint. Every invocation rechecks
+the account, permission, and Tree Access mode. The long-running Runtime/Input API
+remains unimplemented; these keys do not create such a runtime. The backend
+retains its `api_tokens` table and `/api/auth/tokens` paths; the naming change
+is user-facing and requires no migration. Administrators can review paginated,
+filtered, metadata-only Security Events in the Studio UI.
+
+# Live View (first version)
+
+Open a Tree and choose **Live View** (`/trees/:treeId/live`). The page polls
+`GET /api/trees/:treeId/live` every two seconds while visible. It reads the
+persisted PostgreSQL/SQLite Run and TraceEvent records; the Inspector remains
+available at `/runs/:runId` after an execution completes or fails. A Run is one
+independent execution/input, not the lifetime of a Tree.
+
+The current execution backend is synchronous per request. It does **not** have
+an authoritative long-running Tree Runtime controller, queue worker, Start/Stop
+operations, cancellation, or incremental trace persistence. Live View therefore
+labels Tree Runtime as unavailable and never infers its status from Tree
+configuration or an individual Run. Running/pending Run counts are database
+facts, but agent/tool progress appears only when the trace has been persisted
+(currently at execution completion). SSE would not improve fidelity without a
+real incremental event source. Historical Tree versions without a matching
+current version use only observed trace actor names for the hierarchy; their
+trace and results remain inspectable.
+# Public API v1
+
+External applications can use AgentTree Studio with only a backend Base URL and a personal Bearer API key. Generate a key at **Account → API Keys**, then use `GET /api/v1/me`, `GET /api/v1/trees`, `POST /api/v1/trees/{tree_id}/invoke`, and `GET /api/v1/runs/{run_id}`. Keys inherit **current** user permissions and Tree grants, not a permanent snapshot. See [Public API v1 contract](docs/public-api-v1.md) for curl/Python examples, security guidance, and the full response contract.

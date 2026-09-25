@@ -1,6 +1,7 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { X } from "lucide-react"
 import type { ComponentProps } from "react"
+import { useTranslation } from "react-i18next"
 
 import { cn } from "@/lib/utils"
 
@@ -8,10 +9,11 @@ const Dialog = DialogPrimitive.Root
 const DialogTrigger = DialogPrimitive.Trigger
 const DialogClose = DialogPrimitive.Close
 
-function DialogContent({ className, children, ...props }: ComponentProps<typeof DialogPrimitive.Content>) {
+function DialogContent({ className, children, overlayClassName, ...props }: ComponentProps<typeof DialogPrimitive.Content> & { overlayClassName?: string }) {
+  const { t } = useTranslation()
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-foreground/45 backdrop-blur-sm data-[state=closed]:animate-out data-[state=open]:animate-in" />
+      <DialogPrimitive.Overlay className={cn("fixed inset-0 z-50 bg-foreground/30 data-[state=closed]:animate-out data-[state=open]:animate-in", overlayClassName)} />
       <DialogPrimitive.Content
         className={cn(
           "fixed left-1/2 top-1/2 z-50 max-h-[90vh] w-[calc(100%-2rem)] max-w-lg -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl border border-border bg-card p-5 text-card-foreground shadow-[var(--shadow-lifted)] outline-none sm:p-6",
@@ -22,7 +24,7 @@ function DialogContent({ className, children, ...props }: ComponentProps<typeof 
         {children}
         <DialogPrimitive.Close className="absolute right-4 top-4 rounded-md p-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
           <X className="size-4" />
-          <span className="sr-only">Close</span>
+          <span className="sr-only">{t("toolUx.close")}</span>
         </DialogPrimitive.Close>
       </DialogPrimitive.Content>
     </DialogPrimitive.Portal>

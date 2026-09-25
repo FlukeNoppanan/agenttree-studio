@@ -4,14 +4,13 @@ from __future__ import annotations
 
 from cryptography.fernet import Fernet, InvalidToken
 from sqlalchemy import func, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from backend.core.config import settings
-from backend.models.provider import ProviderConnection
 from backend.models.secret import Secret
-from backend.models.tool import ToolConnection
-from backend.models.destination import ResultDestination
 from backend.schemas.secret import SecretCreate, SecretRead
+from backend.services.dependency_service import DependencyService
 from backend.services.errors import (
     ResourceConflictError,
     ResourceNotFoundError,
@@ -20,6 +19,8 @@ from backend.services.errors import (
 
 
 class SecretService:
+    MASKED_VALUE = "••••••••"
+
     def __init__(self, database: Session) -> None:
         self._database = database
 
@@ -37,19 +38,15 @@ class SecretService:
                 "AGENTTREE_STUDIO_ENCRYPTION_KEY is not a valid Fernet key",
             ) from exc
 
-    @staticmethod
-    def _mask(value: str) -> str:
-        if len(value) <= 4:
-            return "•" * 8
-        prefix = value[:3] if len(value) > 8 else ""
-        return f"{prefix}{'•' * 8}{value[-4:]}"
-
     def _read(self, secret: Secret) -> SecretRead:
+        # List/read responses are metadata-only. Decrypting here made one legacy
+        # ciphertext encrypted with another key fail the entire collection and
+        # hid otherwise healthy Providers and Tools in the UI.
         return SecretRead(
             id=secret.id,
             name=secret.name,
             secret_type=secret.secret_type,
-            masked_value=self._mask(self._decrypt(secret.encrypted_value)),
+            masked_value=self.MASKED_VALUE,
             created_at=secret.created_at,
             updated_at=secret.updated_at,
         )
@@ -63,6 +60,11 @@ class SecretService:
             ) from exc
 
     def create(self, payload: SecretCreate) -> SecretRead:
+        duplicate = self._database.scalar(
+            select(Secret.id).where(func.lower(Secret.name) == payload.name.casefold()),
+        )
+        if duplicate:
+            raise ResourceConflictError("A Secret with this name already exists")
         encrypted = self._cipher().encrypt(payload.value.encode("utf-8")).decode("utf-8")
         secret = Secret(
             name=payload.name,
@@ -88,35 +90,14 @@ class SecretService:
         return self._decrypt(secret.encrypted_value)
 
     def delete(self, secret_id: str) -> None:
-        secret = self._database.get(Secret, secret_id)
-        if secret is None:
-            raise ResourceNotFoundError("Secret not found")
-        provider_references = self._database.scalar(
-            select(func.count()).select_from(ProviderConnection).where(
-                ProviderConnection.secret_id == secret_id,
-            ),
-        )
-        tool_references = self._database.scalar(
-            select(func.count()).select_from(ToolConnection).where(
-                ToolConnection.secret_id == secret_id,
-            ),
-        )
-        destination_references = self._database.scalar(
-            select(func.count()).select_from(ResultDestination).where(
-                ResultDestination.secret_id == secret_id,
-            ),
-        )
-        if provider_references:
-            raise ResourceConflictError(
-                "Secret is used by a provider connection and cannot be deleted",
-            )
-        if tool_references:
-            raise ResourceConflictError(
-                "Secret is used by a Tool connection and cannot be deleted",
-            )
-        if destination_references:
-            raise ResourceConflictError(
-                "Secret is used by a result destination and cannot be deleted",
-            )
-        self._database.delete(secret)
-        self._database.commit()
+        inspection = DependencyService(self._database).secret(secret_id)
+        if not inspection.can_delete:
+            kind = inspection.dependencies[0].type
+            label = {"provider": "provider connection", "tool": "Tool connection", "destination": "result destination"}[kind]
+            raise ResourceConflictError(f"Secret is used by a {label} and cannot be deleted")
+        self._database.delete(self._database.get(Secret, secret_id))
+        try:
+            self._database.commit()
+        except IntegrityError as error:
+            self._database.rollback()
+            raise ResourceConflictError("Secret gained a dependency; inspect its dependencies before deleting") from error

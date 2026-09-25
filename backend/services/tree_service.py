@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections import Counter
 from datetime import datetime, timezone
 from typing import Iterable
+from uuid import uuid4
 
 from agenttree import ManagerAgent, RootAgent, SpecialistAgent
 from sqlalchemy import select
@@ -199,6 +200,48 @@ class TreeService:
         tree = self._get_model(tree_id)
         self._write_version(tree, tree.current_version, payload)
         self._database.commit()
+        self._database.expire_all()
+        return self.get(tree_id)
+
+    def replace_ready_configuration(self, tree_id: str, payload: TreeDraftPayload) -> TreeDetailRead:
+        """Atomically replace a Ready configuration while retaining its prior version.
+
+        Agent IDs are global primary keys, so the new version receives fresh IDs and
+        all parent/Tool references are remapped. Failed validation rolls back the
+        new version and leaves the current Ready Tree untouched.
+        """
+        tree = self._get_model(tree_id)
+        if tree.status != "ready" or tree.current_version.status != "ready":
+            raise ResourceConflictError("Only a Ready Tree can use configuration replacement")
+        old_version = tree.current_version
+        id_map = {agent.id: str(uuid4()) for agent in payload.agents}
+        if len(id_map) != len(payload.agents):
+            raise ServiceError("Agent IDs must be unique within a Tree")
+        remapped = payload.model_copy(update={
+            "agents": [agent.model_copy(update={
+                "id": id_map[agent.id],
+                "parent_agent_id": id_map.get(agent.parent_agent_id, agent.parent_agent_id),
+            }) for agent in payload.agents],
+            "tool_assignments": [assignment.model_copy(update={
+                "agent_config_id": id_map.get(assignment.agent_config_id, assignment.agent_config_id),
+            }) for assignment in payload.tool_assignments],
+        })
+        try:
+            version = TreeVersion(tree=tree, version_number=old_version.version_number + 1, status="draft")
+            self._database.add(version)
+            self._database.flush()
+            tree.current_version = version
+            self._write_version(tree, version, remapped)
+            self._database.flush()
+            result = self._validate_version(version)
+            if not result.valid:
+                raise ServiceError("Edited Tree is invalid: " + "; ".join(issue.message for issue in result.errors))
+            version.status = "ready"
+            tree.status = "ready"
+            self._database.commit()
+        except Exception:
+            self._database.rollback()
+            raise
         self._database.expire_all()
         return self.get(tree_id)
 
@@ -399,7 +442,18 @@ class TreeService:
     def validate(self, tree_id: str, *, mark_ready: bool = False) -> TreeValidationRead:
         tree = self._get_model(tree_id)
         version = tree.current_version
-        agents = list(version.agents)
+        result = self._validate_version(version)
+        if mark_ready and result.valid:
+            self._ensure_draft(version)
+            tree.status = "ready"
+            version.status = "ready"
+            self._database.commit()
+        return result
+
+    def _validate_version(self, version: TreeVersion) -> TreeValidationRead:
+        # Relationship assignment and explicit insertion may temporarily show
+        # the same pending Agent twice before a commit expires the collection.
+        agents = list({agent.id: agent for agent in version.agents}.values())
         errors: list[ValidationIssue] = []
         roots = [agent for agent in agents if agent.agent_type == "root"]
         managers = [agent for agent in agents if agent.agent_type == "manager"]
@@ -449,17 +503,21 @@ class TreeService:
                     specialist.id,
                 )
 
+        for assignment in version.tool_assignments:
+            tool = self._database.get(ToolConnection, assignment.tool_connection_id)
+            if tool is None or not tool.enabled or tool.status != "connected":
+                self._issue(errors, "tools", "tool_not_ready", "Assigned Tool must be enabled and connected", assignment.agent_config_id)
+            elif tool.tool_type == "mcp" and not any(
+                isinstance(item, dict) and item.get("selected") for item in tool.discovered_tools_json or []
+            ):
+                self._issue(errors, "tools", "mcp_tool_not_selected", "Assigned MCP connection needs a selected Tool", assignment.agent_config_id)
+
         try:
             self._validate_core_hierarchy(agents)
         except (TypeError, ValueError) as exc:
             self._issue(errors, "review", "core_compatibility", f"AgentTree Core rejected the hierarchy: {exc}")
 
         valid = not errors
-        if mark_ready and valid:
-            self._ensure_draft(version)
-            tree.status = "ready"
-            version.status = "ready"
-            self._database.commit()
         return TreeValidationRead(
             valid=valid,
             errors=errors,
