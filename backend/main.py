@@ -1,7 +1,9 @@
 """AgentTree Studio API application."""
 
 from collections.abc import AsyncIterator
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, contextmanager
+import logging
+from time import monotonic
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import HTTPException as FastAPIHTTPException
@@ -31,6 +33,24 @@ import os
 from backend.services.errors import ServiceError
 from backend.core.public_api import PublicAPIError
 from backend.core.public_cors import PublicCORSMiddleware
+
+startup_logger = logging.getLogger("uvicorn.error")
+
+
+@contextmanager
+def startup_step(name: str):
+    """Log stage and duration without including configuration or credentials."""
+    started = monotonic()
+    startup_logger.info("startup.%s.begin", name)
+    outcome = "ok"
+    try:
+        yield
+    except BaseException:
+        outcome = "failed"
+        raise
+    finally:
+        startup_logger.info("startup.%s.%s duration_ms=%.1f", name, outcome,
+                            (monotonic() - started) * 1000)
 
 
 def public_error(request: Request, status: int, code: str, message: str) -> JSONResponse:
@@ -67,14 +87,21 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
         except (ValueError, TypeError) as exc:
             raise RuntimeError("Railway encryption key is not a valid Fernet key") from exc
         _ = settings.public_origin
-    initialize_database()
-    with SessionLocal() as database:
-        AuthService(database).bootstrap(
-            os.getenv("AGENTTREE_STUDIO_ADMIN_USERNAME", "admin"),
-            os.getenv("AGENTTREE_STUDIO_ADMIN_PASSWORD", "admin"),
-        )
-        from backend.services.async_runs import reconcile_interrupted_runs
-        reconcile_interrupted_runs(database)
+    if os.getenv("AGENTTREE_STUDIO_DEPLOYMENT") == "railway":
+        startup_logger.info("startup.migration.skipped reason=entrypoint")
+    else:
+        with startup_step("migration"):
+            initialize_database()
+    with startup_step("session"):
+        with SessionLocal() as database:
+            with startup_step("bootstrap"):
+                AuthService(database).bootstrap(
+                    os.getenv("AGENTTREE_STUDIO_ADMIN_USERNAME", "admin"),
+                    os.getenv("AGENTTREE_STUDIO_ADMIN_PASSWORD", "admin"),
+                )
+            with startup_step("reconcile"):
+                from backend.services.async_runs import reconcile_interrupted_runs
+                reconcile_interrupted_runs(database)
     try:
         yield
     finally:
