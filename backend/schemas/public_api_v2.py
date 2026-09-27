@@ -71,6 +71,7 @@ class ArtifactSummary(BaseModel):
     sha256: str
     producer_role: str
     producer_agent_id: str | None
+    supersedes_artifact_id: str | None = None
     is_final: bool
     body_available: bool
     created_at: datetime

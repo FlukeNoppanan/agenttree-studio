@@ -306,6 +306,7 @@ export interface LiveRun {
   final_status: string | null; created_at: string; started_at: string | null; finished_at: string | null
   cancellation_requested: boolean; error: { code: string; message: string } | null
   artifact_count: number; latest_event_sequence: number; final_output: unknown | null
+  usage?: Record<string, unknown> | null; metrics?: Record<string, unknown> | null
 }
 export interface LiveEvent {
   sequence: number; type: string; agent_id: string | null; agent_name: string | null
@@ -315,6 +316,7 @@ export interface LiveArtifact {
   artifact_id: string; type: string; name: string; path: string | null; operation: string
   media_type: string; size_bytes: number; sha256: string; producer_role: string
   producer_agent_id: string | null; is_final: boolean; body_available: boolean; created_at: string
+  supersedes_artifact_id?: string | null
 }
 export interface LiveEventPage { events: LiveEvent[]; next_after: number; has_more: boolean }
 

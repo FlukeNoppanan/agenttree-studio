@@ -17,6 +17,14 @@ export interface WizardAgent {
   system_instruction: string
   review_enabled: boolean
   tool_connection_ids: string[]
+  allowed_manager_peer_ids: string[]
+  max_manager_revisions: number
+  max_final_revisions: number
+  max_tool_rounds: number
+  max_runtime_tool_calls: number
+  max_collaboration_messages_per_manager: number
+  max_collaboration_messages_total: number
+  provider_streaming: boolean
   autonomous_tool_use: boolean
   max_tool_iterations: number
   max_tool_calls: number
@@ -59,6 +67,14 @@ export function emptyAgent(name = ""): WizardAgent {
     system_instruction: "",
     review_enabled: true,
     tool_connection_ids: [],
+    allowed_manager_peer_ids: [],
+    max_manager_revisions: 2,
+    max_final_revisions: 1,
+    max_tool_rounds: 3,
+    max_runtime_tool_calls: 8,
+    max_collaboration_messages_per_manager: 4,
+    max_collaboration_messages_total: 12,
+    provider_streaming: true,
     autonomous_tool_use: false,
     max_tool_iterations: 5,
     max_tool_calls: 5,
@@ -93,6 +109,14 @@ function fromAgent(agent: AgentDraft, assignments: Map<string, string[]>): Wizar
       agent.settings?.review_enabled ?? agent.settings?.final_review_enabled ?? true,
     ),
     tool_connection_ids: assignments.get(agent.id) ?? [],
+    allowed_manager_peer_ids: Array.isArray(agent.settings?.allowed_manager_peer_ids) ? agent.settings.allowed_manager_peer_ids as string[] : [],
+    max_manager_revisions: Number(agent.settings?.max_manager_revisions ?? 2),
+    max_final_revisions: Number(agent.settings?.max_final_revisions ?? 1),
+    max_tool_rounds: Number(agent.settings?.max_tool_rounds ?? 3),
+    max_runtime_tool_calls: Number(agent.settings?.max_tool_calls ?? 8),
+    max_collaboration_messages_per_manager: Number(agent.settings?.max_collaboration_messages_per_manager ?? 4),
+    max_collaboration_messages_total: Number(agent.settings?.max_collaboration_messages_total ?? 12),
+    provider_streaming: Boolean(agent.settings?.provider_streaming ?? true),
     autonomous_tool_use: Boolean(agent.settings?.autonomous_tool_use ?? false),
     max_tool_iterations: Number(agent.settings?.max_tool_iterations ?? 5),
     max_tool_calls: Number(agent.settings?.max_tool_calls ?? 5),
@@ -137,8 +161,13 @@ function agentPayload(
   parentAgentId: string | null,
 ): AgentDraft {
   const settings = agentType === "root"
-    ? { final_review_enabled: agent.review_enabled }
-    : agentType === "manager" ? { review_enabled: agent.review_enabled } : {
+    ? { final_review_enabled: agent.review_enabled, max_manager_revisions: agent.max_manager_revisions,
+      max_final_revisions: agent.max_final_revisions, max_tool_rounds: agent.max_tool_rounds,
+      max_tool_calls: agent.max_runtime_tool_calls,
+      max_collaboration_messages_per_manager: agent.max_collaboration_messages_per_manager,
+      max_collaboration_messages_total: agent.max_collaboration_messages_total,
+      provider_streaming: agent.provider_streaming }
+    : agentType === "manager" ? { review_enabled: agent.review_enabled, allowed_manager_peer_ids: agent.allowed_manager_peer_ids } : {
       autonomous_tool_use: agent.autonomous_tool_use,
       max_tool_iterations: agent.max_tool_iterations,
       max_tool_calls: agent.max_tool_calls,
@@ -161,6 +190,9 @@ function agentPayload(
 export function wizardPayload(state: WizardState): TreeDraftPayload {
   const agents: AgentDraft[] = [agentPayload(state.root, "root", null)]
   const toolAssignments: TreeDraftPayload["tool_assignments"] = []
+  state.root.tool_connection_ids.forEach((toolId) => toolAssignments.push({
+    agent_config_id: state.root.id, tool_connection_id: toolId,
+  }))
   state.managers.forEach((manager) => {
     agents.push(agentPayload(manager.agent, "manager", state.root.id))
     manager.agent.tool_connection_ids.forEach((toolId) => toolAssignments.push({

@@ -11,6 +11,9 @@ from agenttree.models import ExecutionTrace, Task, TaskContext
 from agenttree.core.execution_runtime import ExecutionFailed
 from agenttree.core.execution_store import ExecutionState
 from agenttree.orchestration import FinalResult
+from agenttree.providers import (ProviderAuthenticationError, ProviderRateLimitError,
+    ProviderTimeoutError, ProviderModelNotFoundError, ProviderUnavailableError,
+    ProviderInvalidRequestError)
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
@@ -429,6 +432,18 @@ class RunService:
         while current is not None and current not in chain:
             chain.append(current)
             current = current.__cause__ or current.__context__
+        provider_categories = (
+            (ProviderAuthenticationError, "PROVIDER_AUTH_ERROR", "Provider authentication failed"),
+            (ProviderRateLimitError, "PROVIDER_RATE_LIMIT", "Provider rate limit exceeded"),
+            (ProviderTimeoutError, "PROVIDER_TIMEOUT", "Provider request timed out"),
+            (ProviderModelNotFoundError, "PROVIDER_MODEL_NOT_FOUND", "Provider model was not found"),
+            (ProviderUnavailableError, "PROVIDER_UNAVAILABLE", "Provider service is unavailable"),
+            (ProviderInvalidRequestError, "PROVIDER_INVALID_REQUEST", "Provider rejected the request"),
+        )
+        for item in chain:
+            for kind, code, message in provider_categories:
+                if isinstance(item, kind):
+                    return code, message
         fingerprint = " ".join(
             f"{type(item).__name__} {item}" for item in chain
         ).casefold()

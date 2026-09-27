@@ -18,7 +18,7 @@ from backend.models.provider import ProviderConnection, ProviderModel
 from backend.providers.generation import create_generation_provider
 from backend.models.secret import Secret
 from backend.providers.base import DiscoveredModel, ProviderAdapter, ProviderDiscoveryError
-from backend.schemas.provider import ProviderCreate
+from backend.schemas.provider import ProviderCreate, ProviderType
 from backend.schemas.secret import SecretCreate
 from backend.services.errors import (
     ProviderOperationError,
@@ -277,3 +277,10 @@ def test_validation_error_response_does_not_echo_credentials() -> None:
     assert response.status_code == 422
     assert credential not in body
     assert '"input"' not in body
+
+
+def test_provider_type_contract_covers_current_core_adapters():
+    assert {kind.value for kind in ProviderType} == {
+        "openai", "gemini", "ollama", "groq", "openrouter", "cerebras",
+        "openai_compatible",
+    }

@@ -11,6 +11,7 @@ export function RunArtifacts({ runId, artifacts }: { runId: string; artifacts: L
   const [preview, setPreview] = useState<{ id: string; text: string } | null>(null)
   const [error, setError] = useState<string | null>(null)
   const sorted = [...artifacts].sort((a, b) => Number(b.is_final) - Number(a.is_final) || a.created_at.localeCompare(b.created_at))
+  const superseded = new Set(artifacts.map((item) => item.supersedes_artifact_id).filter(Boolean))
   const open = async (item: LiveArtifact, download: boolean) => {
     setError(null)
     try {
@@ -28,7 +29,7 @@ export function RunArtifacts({ runId, artifacts }: { runId: string; artifacts: L
     <h2 className="text-xl font-semibold">{t("liveV2.artifacts")}</h2>
     {error ? <p role="alert" className="mt-2 text-sm text-destructive">{error}</p> : null}
     {sorted.length ? <div className="mt-3 divide-y divide-border">{sorted.map(item => <article key={item.artifact_id} className="min-w-0 py-3">
-      <div className="flex flex-wrap items-center gap-2"><strong className="break-all text-sm">{item.name}</strong><span className="text-xs text-primary">{item.is_final ? t("liveV2.finalArtifact") : t("liveV2.intermediateArtifact")}</span></div>
+      <div className="flex flex-wrap items-center gap-2"><strong className="break-all text-sm">{item.name}</strong><span className="text-xs text-primary">{item.is_final ? t("liveV2.finalArtifact") : superseded.has(item.artifact_id) ? t("liveV2.supersededArtifact") : t("liveV2.intermediateArtifact")}</span></div>
       <p className="mt-1 break-all text-xs text-muted-foreground">{item.type} · {item.operation} · {item.path ?? "—"} · {item.producer_role} · {item.size_bytes} B</p>
       <p className="mt-1 font-mono text-xs text-muted-foreground" title={item.sha256}>SHA-256 {item.sha256.slice(0, 12)}…</p>
       {item.body_available ? <div className="mt-2 flex gap-3">{previewable(item) ? <button className="text-sm text-primary hover:underline" onClick={() => void open(item, false)}>{t("liveV2.preview")}</button> : null}<button className="text-sm text-primary hover:underline" onClick={() => void open(item, true)}>{t("liveV2.download")}</button></div> : null}

@@ -74,6 +74,7 @@ def artifact_read(item: RunArtifact) -> ArtifactSummary:
         path=item.logical_path, operation=item.operation, media_type=item.media_type,
         size_bytes=item.size_bytes, sha256=item.sha256,
         producer_role=item.producer_role, producer_agent_id=item.producer_agent_id,
+        supersedes_artifact_id=(item.metadata_json or {}).get("supersedes_artifact_id"),
         is_final=item.is_final, body_available=item.body_available,
         created_at=RunService._utc(item.created_at),
     )

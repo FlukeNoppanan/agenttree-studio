@@ -22,12 +22,16 @@ AgentTree Python package (one runtime context per Run)
 AgentTree remains an external package. No core source is copied into this
 repository, and Studio-specific code must stay here.
 
+For Railway preparation and service settings, see [the Railway deployment
+guide](docs/railway-deployment.md) and [deployment audit](docs/railway-deployment-audit.md).
+Docker builds install the immutable AgentTree Core 0.2.2 commit pinned in
+`requirements-docker.txt`; no sibling Core checkout is required.
+
 ## Quick Start with Docker
 
 Docker Compose starts PostgreSQL, the FastAPI backend, and the Vite frontend.
-Only Docker with the Compose plugin is required; no local Python, Node, or
-PostgreSQL installation is needed. The initial image build needs internet
-access to fetch package dependencies and the pinned AgentTree Core commit.
+Docker with the Compose plugin is required; no local Python, Node, or PostgreSQL installation is needed. The
+initial image build needs internet access for package dependencies.
 
 ```bash
 cp .env.example .env
@@ -124,9 +128,9 @@ Other stdio executables, packages, and paths must exist inside the container.
 Streamable HTTP MCP connections remain supported, but their server URLs must
 be reachable from the backend container (not merely from the host).
 
-The Docker image installs the pinned AgentTree Core Git commit in
-`requirements-docker.txt`; the direct local workflow below still uses the
-neighboring `../Agenttree` checkout. Core source is not copied into Studio.
+The Docker image installs dependency extras from the immutable Core 0.2.2 Git
+commit pinned in `requirements-docker.txt`. It builds from this repository
+alone, including in Railway.
 If Docker reports that it cannot connect to `/var/run/docker.sock`, start the
 Docker daemon before running Compose.
 
@@ -220,7 +224,7 @@ Implemented:
 - Explicit local-development CORS origins
 - SQLite/SQLAlchemy persistence for secrets, provider connections, and models
 - Fernet-encrypted secret storage with masked API responses
-- OpenAI, Gemini, and Ollama connection testing and model discovery
+- OpenAI, Gemini, Ollama, Groq, OpenRouter, Cerebras, and custom OpenAI-compatible connection testing and model discovery
 - Functional Providers and Secrets administration pages
 - Six-step Create Tree wizard focused on Agents, routing, and Tools
 - Version 1 Tree persistence for Root, Managers, and Specialists
@@ -232,7 +236,7 @@ Implemented:
 - Compact, keyboard-operable Agent hierarchy with an in-place detail drawer
 - Blank Tree template inspection and Create Tree entry point
 - Synchronous Test Run through AgentTree Core's public `AgentTree.run(Task)` API
-- Runtime provider resolution for OpenAI, Gemini, and Ollama with in-memory-only
+- Runtime provider resolution for all supported provider types with in-memory-only
   secret decryption and per-agent model binding
 - Persisted Run history, final output/state snapshots, and genuine Core trace events
 - Generic JSON Test Run input, optional legacy-friendly form mode, delivery
@@ -246,11 +250,11 @@ Implemented:
   explicit timeouts, Secret-backed headers, and structured results
 - MCP stdio and Streamable HTTP connections using AgentTree Core transports,
   live discovery, explicit per-tool import, and manual test execution
-- Specialist-only Tool assignments backed by Core `ToolRegistry`,
+- Root, Manager, and Specialist Tool assignments backed by Core `ToolRegistry`,
   `ToolBindingRegistry`, and `ToolExecutor`
 - Functional Tools page plus executable-Tool selection in Tree Wizard step 5
-- Opt-in bounded autonomous Tool loops for Specialists, with structured model
-  decisions, Core-enforced Tool execution, sanitized observations, and trace UI
+- Core-owned ToolSession execution for Root, Manager, and Specialist Agents,
+  with explicit bindings and Core-enforced limits
 - Routed desktop-first admin shell with light and dark themes
 - Placeholder pages for remaining planned resource and settings areas
 
@@ -328,26 +332,23 @@ agent records should store only `provider_connection_id` and `model_id`.
   real Core `ToolExecutor`, returning genuine Core tool trace events without
   mixing them into Tree Run history.
 - Runtime construction registers executable Tools, applies persisted
-  Specialist bindings, and opens MCP clients for the runtime lifetime. Test Run
+  Agent bindings, and opens MCP clients for the runtime lifetime. Test Run
   closes all MCP resources afterward.
-- Core does not autonomously select Tools itself. Studio injects a public
-  `BaseSpecialistExecutor` strategy only when a Specialist opts in. Each model
-  step must return strict JSON validated as a `ToolDecision`; every selected
-  Tool is still authorized and invoked by Core `ToolExecutor`.
-- The loop defaults to five iterations, five Tool calls, and a 60-second
-  cooperative overall deadline. Settings are bounded to 10 iterations, 10
-  calls, and 300 seconds. HTTP/MCP transport timeouts remain the hard per-call
-  network limits. Observations are sanitized and truncated at 16,000 characters.
-- Specialists without the opt-in setting follow the unchanged Core
-  `ProviderSpecialistExecutor` path. Root routing, Manager review, Root final
-  review, and capability selection remain Core-owned.
+- Core `ToolSession` handles model-directed Tool use for every Agent role.
+  Studio supplies executable Tool adapters and explicit per-Agent bindings;
+  Core authorizes calls and enforces the Root-configured round/call budgets.
+- Older Tree versions may retain Specialist autonomous-loop settings for
+  compatibility. New Tree configuration uses Core `ToolSession` instead.
+  HTTP/MCP transport timeouts remain the hard per-call network limits.
+- Root routing, Manager review, Root final review, and capability selection
+  remain Core-owned.
 
 ### Capability suggestions
 
 Every Root, Manager, and Specialist form uses the same Capability Selector.
 Users describe an Agent naturally, select a connected provider and discovered
 model, and can request 3–6 structured suggestions. Studio invokes AgentTree's
-public OpenAI, Gemini, or Ollama provider adapter, validates the JSON response,
+configured supported provider adapter, validates the JSON response,
 and normalizes identifiers such as `Network Analysis` or `network_analysis` to
 `network-analysis`.
 

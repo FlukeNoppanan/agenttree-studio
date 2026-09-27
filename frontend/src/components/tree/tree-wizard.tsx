@@ -20,7 +20,6 @@ import { ManagerCard } from "@/components/tree/manager-card"
 import { SpecialistCard } from "@/components/tree/specialist-card"
 import { TreeSummary } from "@/components/tree/tree-summary"
 import { TreeStructurePreview } from "@/components/tree/tree-structure-preview"
-import { ToolUseSettings } from "@/components/tree/tool-use-settings"
 import {
   emptyAgent,
   emptyWizard,
@@ -202,7 +201,7 @@ export function TreeWizard() {
     if (managerCursor >= state.managers.length) setManagerCursor(Math.max(0, state.managers.length - 1))
   }, [managerCursor, state.managers.length])
 
-  const allAssignableAgents = useMemo(() => state.managers.flatMap((manager) => manager.specialists), [state.managers])
+  const allAssignableAgents = useMemo(() => [state.root, ...state.managers.flatMap((manager) => [manager.agent, ...manager.specialists])], [state.root, state.managers])
 
   if (loading) return <div className="space-y-4"><Skeleton className="h-10 w-64" /><Skeleton className="h-96 w-full" /></div>
 
@@ -222,7 +221,7 @@ export function TreeWizard() {
           {step === 1 ? <AgentForm value={state.root} onChange={(root) => update((current) => ({ ...current, root }))} providers={providers} agentType="root" reviewLabel="Final Review enabled" /> : null}
           {step === 2 ? <ManagersStep state={state} update={update} openEditor={setEditor} /> : null}
           {step === 3 ? <SpecialistsStep state={state} update={update} managerCursor={managerCursor} setManagerCursor={setManagerCursor} openEditor={setEditor} /> : null}
-          {step === 4 ? <ToolsStep agents={allAssignableAgents} tools={tools} updateAgent={(agent) => update((current) => ({ ...current, managers: current.managers.map((manager) => manager.agent.id === agent.id ? { ...manager, agent } : { ...manager, specialists: manager.specialists.map((specialist) => specialist.id === agent.id ? agent : specialist) }) }))} /> : null}
+          {step === 4 ? <ToolsStep agents={allAssignableAgents} tools={tools} updateAgent={(agent) => update((current) => ({ ...current, root: current.root.id === agent.id ? agent : current.root, managers: current.managers.map((manager) => manager.agent.id === agent.id ? { ...manager, agent } : { ...manager, specialists: manager.specialists.map((specialist) => specialist.id === agent.id ? agent : specialist) }) }))} /> : null}
           {step === 5 ? <div className="space-y-6"><TreeSummary state={state} providers={providers} tools={tools} /><ValidationPanel validation={validation} /><div className="flex flex-wrap justify-end gap-3">{validation?.valid && runnableTree ? <Button variant="outline" onClick={() => setTestOpen(true)}><Play className="size-4" />Test Run</Button> : null}{!editingReady ? <Button variant="outline" onClick={() => void validate(false)} disabled={saving}>Validate Draft</Button> : null}<Button onClick={() => void validate(true)} disabled={saving}>{editingReady ? t("treeV3.validateSave") : "Validate & Mark Ready"}</Button></div></div> : null}
         </CardContent>
       </Card><aside className="hidden xl:block"><TreeStructurePreview state={state} /></aside></div>
@@ -252,7 +251,8 @@ function GeneralStep({ state, update }: { state: WizardState; update: (fn: (stat
 }
 
 function ManagersStep({ state, update, openEditor }: { state: WizardState; update: (fn: (state: WizardState) => WizardState) => void; openEditor: (editor: Editor) => void }) {
-  return <div className="space-y-4"><div className="flex justify-end"><Button type="button" onClick={() => openEditor({ kind: "manager", managerIndex: null, value: emptyAgent("New Manager") })}><Plus className="size-4" />Add Manager</Button></div>{state.managers.length ? <div className="grid gap-4 lg:grid-cols-2">{state.managers.map((manager, index) => <ManagerCard key={manager.agent.id} manager={manager} onEdit={() => openEditor({ kind: "manager", managerIndex: index, value: { ...manager.agent } })} onDelete={() => { if (window.confirm(`Delete “${manager.agent.name}” and its Specialists?`)) update((current) => ({ ...current, managers: current.managers.filter((_, itemIndex) => itemIndex !== index) })) }} />)}</div> : <p className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">No Managers yet. At least one is required for readiness.</p>}</div>
+  const { t } = useTranslation()
+  return <div className="space-y-4"><div className="flex justify-end"><Button type="button" onClick={() => openEditor({ kind: "manager", managerIndex: null, value: emptyAgent("New Manager") })}><Plus className="size-4" />Add Manager</Button></div>{state.managers.length ? <div className="grid gap-4 lg:grid-cols-2">{state.managers.map((manager, index) => <ManagerCard key={manager.agent.id} manager={manager} onEdit={() => openEditor({ kind: "manager", managerIndex: index, value: { ...manager.agent } })} onDelete={() => { if (window.confirm(`Delete “${manager.agent.name}” and its Specialists?`)) update((current) => ({ ...current, managers: current.managers.filter((_, itemIndex) => itemIndex !== index).map((item) => ({ ...item, agent: { ...item.agent, allowed_manager_peer_ids: item.agent.allowed_manager_peer_ids.filter((id) => id !== manager.agent.id) } })) })) }} />)}</div> : <p className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">No Managers yet. At least one is required for readiness.</p>}{state.managers.length > 1 ? <section className="rounded-lg border border-border p-4"><h3 className="font-semibold">{t("treeParity.directionalPeers")}</h3><p className="mt-1 text-sm text-muted-foreground">{t("treeParity.directionalHelp")}</p><div className="mt-4 space-y-4">{state.managers.map((manager, index) => <div key={manager.agent.id}><p className="text-sm font-medium">{manager.agent.name} →</p><div className="mt-2 flex flex-wrap gap-4">{state.managers.filter((peer) => peer.agent.id !== manager.agent.id).map((peer) => <label key={peer.agent.id} className="flex items-center gap-2 text-sm"><input type="checkbox" aria-label={t("treeParity.mayContact", { source: manager.agent.name, target: peer.agent.name })} checked={manager.agent.allowed_manager_peer_ids.includes(peer.agent.id)} onChange={(event) => update((current) => ({ ...current, managers: current.managers.map((item, itemIndex) => itemIndex === index ? { ...item, agent: { ...item.agent, allowed_manager_peer_ids: event.target.checked ? [...item.agent.allowed_manager_peer_ids, peer.agent.id] : item.agent.allowed_manager_peer_ids.filter((id) => id !== peer.agent.id) } } : item) }))} />{peer.agent.name}</label>)}</div></div>)}</div></section> : null}</div>
 }
 
 function SpecialistsStep({ state, update, managerCursor, setManagerCursor, openEditor }: { state: WizardState; update: (fn: (state: WizardState) => WizardState) => void; managerCursor: number; setManagerCursor: (index: number) => void; openEditor: (editor: Editor) => void }) {
@@ -263,15 +263,14 @@ function SpecialistsStep({ state, update, managerCursor, setManagerCursor, openE
 
 function ToolsStep({ agents, tools, updateAgent }: { agents: WizardAgent[]; tools: ToolConnection[]; updateAgent: (agent: WizardAgent) => void }) {
   if (!tools.length) return <div className="rounded-lg border border-dashed border-border p-8 text-center"><Wrench className="mx-auto size-6 text-muted-foreground" /><p className="mt-3 font-medium">No Tool connections available</p><p className="mt-1 text-sm text-muted-foreground">Add and test an HTTP API or MCP connection on the Tools page first.</p></div>
-  if (!agents.length) return <div className="rounded-lg border border-dashed border-border p-8 text-center"><Wrench className="mx-auto size-6 text-muted-foreground" /><p className="mt-3 font-medium">No eligible Specialists</p><p className="mt-1 text-sm text-muted-foreground">Core Tool permissions bind to Specialist Agents. Add a Specialist before assigning Tools.</p></div>
-  return <div className="space-y-5">{agents.map((agent) => <div key={agent.id} className="rounded-lg border border-border p-4"><p className="font-medium">{agent.name}</p><p className="mt-1 text-xs text-muted-foreground">Specialist</p><div className="mt-3 grid gap-2 sm:grid-cols-2">{tools.map((tool) => {
+  return <div className="space-y-5">{agents.map((agent) => <div key={agent.id} className="rounded-lg border border-border p-4"><p className="font-medium">{agent.name}</p><div className="mt-3 grid gap-2 sm:grid-cols-2">{tools.map((tool) => {
     const usable = tool.enabled && tool.status === "connected" && (tool.tool_type !== "mcp" || tool.discovered_tools.some((item) => item.selected))
     const assigned = agent.tool_connection_ids.includes(tool.id)
     return <label key={tool.id} className={`flex items-center justify-between gap-3 rounded-md px-3 py-2 text-sm ${usable ? "bg-muted/30" : "bg-muted/15 text-muted-foreground"}`}><span className="flex min-w-0 items-center gap-2"><input type="checkbox" className="accent-primary" disabled={!usable && !assigned} checked={assigned} onChange={(event) => {
       const tool_connection_ids = event.target.checked ? [...agent.tool_connection_ids, tool.id] : agent.tool_connection_ids.filter((id) => id !== tool.id)
-      updateAgent({ ...agent, tool_connection_ids, autonomous_tool_use: tool_connection_ids.length ? agent.autonomous_tool_use : false })
+      updateAgent({ ...agent, tool_connection_ids })
     }} /><span className="truncate">{tool.name}</span></span><ToolStatusBadge status={tool.status} /></label>
-  })}</div><div className="mt-4"><ToolUseSettings value={agent} tools={tools} onChange={updateAgent} /></div></div>)}</div>
+  })}</div></div>)}</div>
 }
 
 function TriggerStep({ state, update, treeId }: { state: WizardState; update: (fn: (state: WizardState) => WizardState) => void; treeId: string | null }) {

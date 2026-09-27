@@ -24,7 +24,8 @@ export function ProviderModelSelector({ providers, providerId, modelId, onProvid
   const providerOptions = selected && selected.status !== "connected"
     ? [selected, ...connected]
     : connected
-  const savedModelIsMissing = Boolean(modelId && !models.some((model) => model.model_id === modelId))
+  const readyModels = models.filter((model) => model.is_available && model.qualification_status === "qualified")
+  const savedModelIsMissing = Boolean(modelId && !readyModels.some((model) => model.model_id === modelId))
 
   useEffect(() => {
     if (!providerId || selected?.status !== "connected") {
@@ -57,22 +58,22 @@ export function ProviderModelSelector({ providers, providerId, modelId, onProvid
       </div>
       <div className="space-y-2">
         <Label>Model</Label>
-        <Select value={modelId ?? ""} disabled={!providerId || loading || selected?.status !== "connected" || models.length === 0} onChange={(event) => onModelChange(event.target.value || null)}>
+        <Select value={modelId ?? ""} disabled={!providerId || loading || selected?.status !== "connected" || readyModels.length === 0} onChange={(event) => onModelChange(event.target.value || null)}>
           <option value="">{!providerId
             ? "Select connected provider first"
             : loading
               ? "Loading models…"
               : error
                 ? "Unable to load models"
-                : models.length === 0
+                : readyModels.length === 0
                   ? "No discovered models for this provider"
                   : "Select discovered model"}</option>
           {savedModelIsMissing ? <option value={modelId ?? ""}>{modelId} · {t("trees.modelUnavailable")}</option> : null}
-          {models.map((model) => <option key={model.id} value={model.model_id}>{model.display_name ? `${model.display_name} · ${model.model_id}` : model.model_id}</option>)}
+          {readyModels.map((model) => <option key={model.id} value={model.model_id}>{model.display_name ? `${model.display_name} · ${model.model_id}` : model.model_id}</option>)}
         </Select>
         {loading ? <p className="flex items-center gap-1.5 text-xs text-muted-foreground"><LoaderCircle className="size-3 animate-spin" />Loading provider catalog</p> : null}
         {error ? <p className="text-xs text-red-600 dark:text-red-400">{error}</p> : null}
-        {providerId && !loading && selected?.status === "connected" && models.length === 0 && !error ? <p className="text-xs text-muted-foreground">No verified generation models are ready. Use Discover &amp; Verify Models on the Providers page.</p> : null}
+        {providerId && !loading && selected?.status === "connected" && readyModels.length === 0 && !error ? <p className="text-xs text-muted-foreground">No verified generation models are ready. Use Discover &amp; Verify Models on the Providers page.</p> : null}
         {savedModelIsMissing && !loading ? <div className="rounded-md border border-amber-500/25 bg-amber-500/5 p-2 text-xs text-amber-800 dark:text-amber-200"><p className="font-medium">{t("trees.modelUnavailable")}</p><p className="mt-1">{t("trees.modelUnavailableHelp")}</p></div> : null}
       </div>
     </div>

@@ -42,6 +42,31 @@ def public_error(request: Request, status: int, code: str, message: str) -> JSON
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncIterator[None]:
     """Initialize local infrastructure before accepting requests."""
+    if os.getenv("AGENTTREE_STUDIO_DEPLOYMENT") == "railway":
+        required = (
+            "AGENTTREE_STUDIO_ENCRYPTION_KEY",
+            "AGENTTREE_STUDIO_ADMIN_USERNAME",
+            "AGENTTREE_STUDIO_ADMIN_PASSWORD",
+            "AGENTTREE_STUDIO_ARTIFACT_ROOT",
+            "AGENTTREE_STUDIO_PUBLIC_ORIGIN",
+        )
+        missing = [name for name in required if not os.getenv(name)]
+        if missing or not (os.getenv("AGENTTREE_STUDIO_DATABASE_URL") or os.getenv("DATABASE_URL")):
+            raise RuntimeError("Railway deployment configuration is incomplete")
+        if os.getenv("AGENTTREE_STUDIO_SECURE_COOKIES", "").lower() != "true":
+            raise RuntimeError("Railway deployment requires secure cookies")
+        if os.getenv("AGENTTREE_STUDIO_ADMIN_PASSWORD") == "admin":
+            raise RuntimeError("Railway deployment requires a unique bootstrap password")
+        if len(os.getenv("AGENTTREE_STUDIO_ADMIN_PASSWORD", "")) < 12:
+            raise RuntimeError("Railway bootstrap password must contain at least 12 characters")
+        if not settings.database_url.startswith("postgresql+psycopg://"):
+            raise RuntimeError("Railway deployment requires PostgreSQL")
+        from cryptography.fernet import Fernet
+        try:
+            Fernet(settings.encryption_key.encode())
+        except (ValueError, TypeError) as exc:
+            raise RuntimeError("Railway encryption key is not a valid Fernet key") from exc
+        _ = settings.public_origin
     initialize_database()
     with SessionLocal() as database:
         AuthService(database).bootstrap(

@@ -15,6 +15,15 @@ import { emptyLiveModel, openRunStream, reduceLive, type ConnectionState, type L
 
 const terminal = new Set(["completed", "failed", "cancelled"])
 function outputText(value: unknown): string { return typeof value === "string" ? value : JSON.stringify(value, null, 2) }
+function metricNumbers(value: unknown, prefix = ""): Array<[string, number]> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return []
+  return Object.entries(value).flatMap(([key, item]) => {
+    const name = prefix ? `${prefix} · ${key.replaceAll("_", " ")}` : key.replaceAll("_", " ")
+    if (typeof item === "number" && Number.isFinite(item)) return [[name, item] as [string, number]]
+    if (item && typeof item === "object" && !Array.isArray(item) && prefix.length < 30) return metricNumbers(item, name)
+    return []
+  }).slice(0, 20)
+}
 
 export function RunDetailPage() {
   const { runId } = useParams()
@@ -142,12 +151,13 @@ export function RunDetailPage() {
       {run.status === "queued" ? <p className="mt-3 text-sm text-muted-foreground">{t("liveV2.queued")}</p> : null}
       {run.status === "cancellation_requested" ? <p className="mt-3 text-sm text-warning">{t("liveV2.cancellationRequested")}</p> : null}
       {active && connection === "reconnecting" ? <p className="mt-3 text-sm text-warning">{t("liveV2.reconnectingHelp")}</p> : null}
-      {run.status === "failed" && run.error ? <p role="alert" className="mt-3 text-sm text-destructive">{run.error.code}: {run.error.message}</p> : null}
+      {run.status === "failed" && run.error ? <p role="alert" className="mt-3 text-sm text-destructive">{t(`liveV2.errors.${run.error.code}`, { defaultValue: run.error.code.replaceAll("_", " ") })}: {run.error.message}</p> : null}
       {run.status === "cancelled" ? <p className="mt-3 text-sm">{t("liveV2.cancelled")}</p> : null}
       {run.final_status === "partial" ? <p className="mt-3 text-sm text-warning">{t("liveV2.partialHelp")}</p> : null}
     </header>
     <div className="grid min-w-0 gap-7 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,0.8fr)]"><RunTimeline model={model} tree={tree} versionId={run.tree_version_id} /><RunArtifacts runId={run.run_id} artifacts={artifacts} /></div>
     <section className="border-t border-border pt-5" aria-live="polite"><h2 className="text-xl font-semibold">{t("liveV2.finalOutput")}</h2>{run.final_output !== null ? <pre className="mt-4 max-h-[36rem] overflow-auto whitespace-pre-wrap break-words font-sans text-sm">{outputText(run.final_output)}</pre> : rootText && active ? <pre className="mt-4 max-h-64 overflow-auto whitespace-pre-wrap break-words font-sans text-sm">{rootText}</pre> : <p className="mt-3 text-sm text-muted-foreground">{t("liveV2.outputPending")}</p>}</section>
+    {run.usage || run.metrics ? <details className="border-t border-border pt-4"><summary className="cursor-pointer text-sm font-medium">{t("liveV2.metrics")}</summary><dl className="mt-3 grid gap-3 text-sm sm:grid-cols-3">{metricNumbers({ usage: run.usage, metrics: run.metrics }).map(([label, value]) => <div key={label}><dt className="text-xs text-muted-foreground">{label}</dt><dd className="font-medium">{value.toLocaleString(i18n.language)}</dd></div>)}</dl></details> : null}
     {legacy && model.events.length === 0 ? <details className="border-t border-border pt-4"><summary className="cursor-pointer text-sm font-medium">{t("liveV2.legacyTrace")}</summary><ExecutionInspector run={legacy} tree={tree} /></details> : null}
     <details className="border-t border-border pt-4 text-xs text-muted-foreground"><summary className="cursor-pointer">{t("liveV2.durability")}</summary><p className="mt-2">{t("liveV2.durabilityHelp")}</p></details>
   </div>

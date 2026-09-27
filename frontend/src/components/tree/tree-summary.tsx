@@ -33,7 +33,7 @@ export function TreeSummary({ state, providers, tools }: TreeSummaryProps) {
             {state.managers.length === 0 ? <p className="pl-5 text-muted-foreground">└── No managers</p> : state.managers.map((manager, managerIndex) => (
               <div key={manager.agent.id}>
                 <p className="pl-5">{managerIndex === state.managers.length - 1 ? "└──" : "├──"} {manager.agent.name || "Unnamed Manager"}</p>
-                {manager.specialists.map((specialist, specialistIndex) => <p key={specialist.id} className="pl-12 text-muted-foreground">{specialistIndex === manager.specialists.length - 1 ? "└──" : "├──"} {specialist.name || "Unnamed Specialist"}{specialist.autonomous_tool_use ? " · autonomous Tools" : ""}</p>)}
+                {manager.specialists.map((specialist, specialistIndex) => <p key={specialist.id} className="pl-12 text-muted-foreground">{specialistIndex === manager.specialists.length - 1 ? "└──" : "├──"} {specialist.name || "Unnamed Specialist"}</p>)}
               </div>
             ))}
           </div>

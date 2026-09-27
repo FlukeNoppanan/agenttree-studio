@@ -155,6 +155,8 @@ class AuthMiddleware:
                 origin = request.headers.get("origin")
                 fetch_site = request.headers.get("sec-fetch-site")
                 allowed_origins = {str(request.base_url).rstrip("/"), *settings.cors_origins}
+                if settings.public_origin:
+                    allowed_origins.add(settings.public_origin)
                 if (origin and origin not in allowed_origins) or fetch_site == "cross-site":
                     await reject(403, "Cross-origin request denied")
                     return

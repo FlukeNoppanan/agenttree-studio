@@ -1,15 +1,15 @@
 from logging.config import fileConfig
 import os
-
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
 import backend.models  # noqa: F401
+from backend.core.config import settings
 from backend.db.base import Base
 
 config = context.config
-if database_url := os.getenv("AGENTTREE_STUDIO_DATABASE_URL"):
-    config.set_main_option("sqlalchemy.url", database_url.replace("%", "%%"))
+if os.getenv("AGENTTREE_STUDIO_DATABASE_URL") or os.getenv("DATABASE_URL"):
+    config.set_main_option("sqlalchemy.url", settings.database_url.replace("%", "%%"))
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 target_metadata = Base.metadata

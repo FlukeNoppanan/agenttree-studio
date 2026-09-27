@@ -3,6 +3,7 @@
 from dataclasses import dataclass, field
 import os
 from pathlib import Path
+from urllib.parse import urlsplit
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -14,12 +15,24 @@ class Settings:
     app_version: str = "0.1.0"
     database_url: str = field(default_factory=lambda: (
         os.getenv("AGENTTREE_STUDIO_DATABASE_URL")
+        or os.getenv("DATABASE_URL")
         or f"sqlite:///{PROJECT_ROOT / 'agenttree_studio.db'}"
-    ))
+    ).replace("postgresql://", "postgresql+psycopg://", 1).replace("postgres://", "postgresql+psycopg://", 1))
     cors_origins: tuple[str, ...] = (
         "http://localhost:5173",
         "http://127.0.0.1:5173",
     )
+
+    @property
+    def public_origin(self) -> str | None:
+        value = os.getenv("AGENTTREE_STUDIO_PUBLIC_ORIGIN", "").strip().rstrip("/")
+        if not value:
+            return None
+        parsed = urlsplit(value)
+        if (parsed.scheme != "https" or not parsed.hostname or parsed.username
+                or parsed.password or parsed.path or parsed.query or parsed.fragment):
+            raise ValueError("AGENTTREE_STUDIO_PUBLIC_ORIGIN must be an HTTPS origin")
+        return value
 
     @property
     def public_api_cors_origins(self) -> tuple[str, ...]:

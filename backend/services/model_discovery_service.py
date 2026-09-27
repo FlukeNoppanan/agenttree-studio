@@ -18,7 +18,9 @@ from backend.services.provider_service import ProviderService
 from backend.services.secret_service import SecretService
 
 AdapterFactory = Callable[[str, str | None], ProviderAdapter]
-PROVIDER_LABELS = {"openai": "OpenAI", "gemini": "Gemini", "ollama": "Ollama"}
+PROVIDER_LABELS = {"openai": "OpenAI", "gemini": "Gemini", "ollama": "Ollama",
+                   "groq": "Groq", "openrouter": "OpenRouter", "cerebras": "Cerebras",
+                   "openai_compatible": "Custom OpenAI-compatible"}
 
 
 class GenerationProvider(Protocol):

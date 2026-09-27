@@ -397,9 +397,21 @@ class RuntimeBuilder:
             max_final_revisions=RuntimeBuilder._nonnegative_int(
                 settings.get("max_final_revisions"), 1,
             ),
+            max_tool_rounds=RuntimeBuilder._positive_int(settings.get("max_tool_rounds"), 3),
+            max_tool_calls=RuntimeBuilder._positive_int(settings.get("max_tool_calls"), 8),
+            max_collaboration_messages_per_manager=RuntimeBuilder._positive_int(
+                settings.get("max_collaboration_messages_per_manager"), 4,
+            ),
+            max_collaboration_messages_total=RuntimeBuilder._positive_int(
+                settings.get("max_collaboration_messages_total"), 12,
+            ),
             provider_streaming=bool(settings.get("provider_streaming", True)),
         )
 
     @staticmethod
     def _nonnegative_int(value, default: int) -> int:
         return value if isinstance(value, int) and not isinstance(value, bool) and value >= 0 else default
+
+    @staticmethod
+    def _positive_int(value, default: int) -> int:
+        return value if isinstance(value, int) and not isinstance(value, bool) and value > 0 else default

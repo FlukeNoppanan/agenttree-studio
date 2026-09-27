@@ -51,7 +51,7 @@ describe("Live Run console", () => {
     const button = await screen.findByRole("button", { name: "Cancel Run" })
     fireEvent.click(button)
     await waitFor(() => expect(api.cancelLiveRun).toHaveBeenCalledTimes(1))
-    expect(await screen.findByText(/Cancellation requested/)).toBeInTheDocument()
+    expect(await screen.findByText("Cancellation requested. Waiting for the runtime to stop.")).toBeInTheDocument()
   })
   it("shows a partial final result and preserves committed artifacts after refresh", async () => {
     vi.mocked(api.getLiveRun).mockResolvedValue({ ...running, status: "completed", final_status: "partial", final_output: "Root answer" })
@@ -63,5 +63,16 @@ describe("Live Run console", () => {
     expect(screen.getByText(/Some branches failed/)).toBeInTheDocument()
     expect(screen.getByText("fix.patch")).toBeInTheDocument()
     expect(openRunStream).not.toHaveBeenCalled()
+  })
+  it("shows a safe provider failure category and numeric usage without raw response text", async () => {
+    vi.mocked(api.getLiveRun).mockResolvedValue({ ...running, status: "failed", final_status: "failed",
+      error: { code: "PROVIDER_RATE_LIMIT", message: "Provider rate limit exceeded" },
+      usage: { total_tokens: 24, calls: [{ token: "hidden" }] }, metrics: { tool_metrics: { calls: 2 } } })
+    vi.spyOn(api, "getLiveResult").mockResolvedValue({ final_output: null, final_status: "failed" })
+    mount()
+    expect(await screen.findByRole("alert")).toHaveTextContent("Provider rate limit: Provider rate limit exceeded")
+    fireEvent.click(screen.getByText("Usage and metrics"))
+    expect(screen.getByText("24")).toBeInTheDocument()
+    expect(screen.queryByText("hidden")).not.toBeInTheDocument()
   })
 })

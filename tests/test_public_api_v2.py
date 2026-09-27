@@ -28,6 +28,17 @@ from tests.test_runs import runtime_tree, scripted_builder
 from tests.test_phase8a_core_runtime import streaming_bundle
 
 
+@pytest.fixture
+def sse_database_factory(tmp_path):
+    """Give the SSE producer and consumer separate SQLite connections."""
+    engine = create_engine(f"sqlite:///{tmp_path / 'sse.db'}",
+                           connect_args={"check_same_thread": False})
+    factory = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
+    Base.metadata.create_all(engine)
+    yield factory
+    engine.dispose()
+
+
 def request_for(user_id: str, token_id: str = "token") -> Request:
     request = Request({
         "type": "http", "method": "GET", "scheme": "http",
@@ -129,14 +140,14 @@ def test_v2_status_result_events_and_cursor_are_dynamic_and_ordered(database):
     assert not second.has_more
 
 
-def test_v2_sse_durable_reconnect_and_multiple_consumers(database_factory):
-    with database_factory() as database:
+def test_v2_sse_durable_reconnect_and_multiple_consumers(sse_database_factory):
+    with sse_database_factory() as database:
         user = admin(database)
         run = persisted_run(database)
         run_id = run.id
-    first = list(_stream(database_factory, run_id, 0, "consumer-a"))
-    second = list(_stream(database_factory, run_id, 2, "consumer-b"))
-    peer = list(_stream(database_factory, run_id, 0, "consumer-c"))
+    first = list(_stream(sse_database_factory, run_id, 0, "consumer-a"))
+    second = list(_stream(sse_database_factory, run_id, 2, "consumer-b"))
+    peer = list(_stream(sse_database_factory, run_id, 0, "consumer-c"))
     assert [line.split("\n", 1)[0] for line in first] == ["id: 1", "id: 2", "id: 3", "id: 4"]
     assert [line.split("\n", 1)[0] for line in second] == ["id: 3", "id: 4"]
     assert peer == first
@@ -146,13 +157,13 @@ def test_v2_sse_durable_reconnect_and_multiple_consumers(database_factory):
 
 @pytest.mark.anyio
 @pytest.mark.parametrize("anyio_backend", ["asyncio"])
-async def test_v2_sse_disconnect_releases_connection_slot(database_factory):
-    with database_factory() as database:
+async def test_v2_sse_disconnect_releases_connection_slot(sse_database_factory):
+    with sse_database_factory() as database:
         admin(database)
         run_id = persisted_run(database).id
     identity = "disconnect-test-token"
     assert acquire_sse(identity, limit=1)
-    stream = _async_stream(database_factory, run_id, 0, identity)
+    stream = _async_stream(sse_database_factory, run_id, 0, identity)
     assert (await anext(stream)).startswith("id: 1\n")
     await stream.aclose()
     assert identity not in _connections

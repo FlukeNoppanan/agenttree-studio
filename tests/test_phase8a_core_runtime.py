@@ -10,6 +10,7 @@ from agenttree.core import (ProviderRootSynthesizer, RuleBasedTaskTriage,
                             StaticTaskDecomposer)
 from agenttree.models import ArtifactRef, ArtifactType, ExecutionEvent, FileIntent, SubtaskTemplate
 from agenttree.providers import BaseProvider, ProviderCapabilities, ProviderConfig, ProviderResponse, ProviderStreamChunk
+from agenttree.providers import ProviderRateLimitError, ProviderTimeoutError
 from agenttree.tools import ToolBindingRegistry, ToolExecutor, ToolRegistry
 from sqlalchemy import func, select
 
@@ -19,6 +20,7 @@ from backend.models.tree import AgentConfig
 from backend.services.core_runtime import StudioAgentTreeRuntime
 from backend.services.run_service import RunService
 from backend.services.runtime_builder import RuntimeBuilder, RuntimeBundle
+from backend.api.public_v2 import artifact_read
 from tests.test_runs import ScriptedProvider, runtime_tree, scripted_builder
 
 
@@ -151,6 +153,27 @@ def test_builder_maps_directional_manager_collaboration_and_keeps_specialists_is
                for agent in bundle.runtime.specialists)
 
 
+def test_root_runtime_limits_and_safe_provider_error_categories(database):
+    tree, _, ids = runtime_tree(database)
+    root = database.get(AgentConfig, ids[0])
+    root.settings_json = {"max_manager_revisions": 3, "max_final_revisions": 0,
+        "max_tool_rounds": 4, "max_tool_calls": 9,
+        "max_collaboration_messages_per_manager": 5,
+        "max_collaboration_messages_total": 14, "provider_streaming": False}
+    database.commit()
+    bundle = scripted_builder(database)[0].build(tree.id, tree.version.id)
+    config = bundle.runtime.config
+    assert config.max_manager_revisions == 3 and config.max_final_revisions == 0
+    assert config.max_tool_rounds == 4 and config.max_tool_calls == 9
+    assert config.max_collaboration_messages_per_manager == 5
+    assert config.max_collaboration_messages_total == 14
+    assert config.provider_streaming is False
+    assert RunService._safe_execution_error(ProviderRateLimitError("secret-body")) == (
+        "PROVIDER_RATE_LIMIT", "Provider rate limit exceeded")
+    assert RunService._safe_execution_error(ProviderTimeoutError("secret-body")) == (
+        "PROVIDER_TIMEOUT", "Provider request timed out")
+
+
 def test_core_event_ingestion_is_ordered_and_idempotent(database):
     tree, _, _ = runtime_tree(database)
     run = Run(tree_id=tree.id, tree_version_id=tree.version.id, status="running",
@@ -183,7 +206,8 @@ def test_artifact_metadata_is_scoped_to_its_run_and_never_applied(database):
         datetime.now(timezone.utc), "specialist", "worker", None, {"round": 1})
     ref = ArtifactRef("d" * 64, run.id, ArtifactType.PATCH, "fix-v2", "src/fix.py",
         FileIntent.MODIFY, "text/x-diff", "utf-8", 12, "b" * 64,
-        datetime.now(timezone.utc), "specialist", "worker", None, {"round": 2})
+        datetime.now(timezone.utc), "specialist", "worker", None,
+        {"round": 2, "supersedes_artifact_id": first.artifact_id})
     RunService(database)._persist_artifacts(
         run, SimpleNamespace(artifacts=(ref,)), (), artifact_history=(first, ref),
     )
@@ -194,3 +218,5 @@ def test_artifact_metadata_is_scoped_to_its_run_and_never_applied(database):
     ]
     assert RunService(database).artifact_metadata(other.id) == ()
     assert database.scalar(select(func.count()).select_from(RunArtifact)) == 2
+    stored = database.scalar(select(RunArtifact).where(RunArtifact.core_artifact_id == ref.artifact_id))
+    assert artifact_read(stored).supersedes_artifact_id == first.artifact_id

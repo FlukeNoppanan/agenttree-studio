@@ -10,7 +10,7 @@ def test_health_reports_backend_and_agenttree() -> None:
     assert payload["service"] == "AgentTree Studio"
     assert payload["version"] == "0.1.0"
     assert payload["agenttree"]["available"] is True
-    assert payload["agenttree"]["version"] == "0.2.1"
+    assert payload["agenttree"]["version"] == "0.2.2"
     assert payload["runtime"]["python_version"]
 
 

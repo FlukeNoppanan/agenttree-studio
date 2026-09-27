@@ -31,6 +31,13 @@ describe("Provider model visibility", () => {
       summary: { discovered_count: 3, candidate_count: 3, usable_count: 1, unavailable_count: 1, transient_error_count: 1 } })
   })
 
+  it("offers every supported provider type in the create form", async () => {
+    render(<MemoryRouter><ProvidersPage /></MemoryRouter>)
+    fireEvent.click(await screen.findByRole("button", { name: "Add Provider" }))
+    const types = [...(document.getElementById("provider-type") as HTMLSelectElement).options].map((item) => item.value)
+    expect(types).toEqual(["openai", "gemini", "groq", "openrouter", "cerebras", "openai_compatible", "ollama"])
+  })
+
   it("starts collapsed, toggles one Provider without mutation, and shows only ready models", async () => {
     const mutations = [vi.spyOn(api, "deleteProvider"), vi.spyOn(api, "updateProvider")]
     render(<MemoryRouter><ProvidersPage /></MemoryRouter>)
