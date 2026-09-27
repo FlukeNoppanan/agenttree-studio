@@ -45,10 +45,14 @@ class ProviderService:
         secret_id: str | None,
         base_url: str | None,
     ) -> tuple[str | None, str | None]:
-        if provider_type in ("openai", "gemini"):
+        credential_types = {
+            "openai": "OpenAI", "gemini": "Gemini", "groq": "Groq",
+            "openrouter": "OpenRouter", "cerebras": "Cerebras",
+            "openai_compatible": "Custom OpenAI-compatible",
+        }
+        if provider_type in credential_types:
             if not secret_id:
-                label = "OpenAI" if provider_type == "openai" else "Gemini"
-                raise ServiceError(f"{label} requires a secret")
+                raise ServiceError(f"{credential_types[provider_type]} requires a secret")
             if self._database.get(Secret, secret_id) is None:
                 raise ServiceError("Selected secret does not exist")
         elif secret_id and self._database.get(Secret, secret_id) is None:
@@ -56,7 +60,9 @@ class ProviderService:
 
         if provider_type == "gemini" and base_url:
             raise ServiceError("Gemini does not support a custom base URL")
-        base_url = self._validate_url(base_url, required=provider_type == "ollama")
+        base_url = self._validate_url(
+            base_url, required=provider_type in {"ollama", "openai_compatible"},
+        )
         return secret_id, base_url
 
     @staticmethod

@@ -1,7 +1,7 @@
 """Studio-owned persistence models."""
 
 from backend.models.provider import ProviderConnection, ProviderModel
-from backend.models.run import Run, TraceEvent
+from backend.models.run import Run, RunArtifact, RunIdempotency, TraceEvent
 from backend.models.destination import ResultDelivery, ResultDestination
 from backend.models.secret import Secret
 from backend.models.tool import ToolAssignment, ToolConnection
@@ -12,7 +12,7 @@ __all__ = [
     "Secret", "ProviderConnection", "ProviderModel", "Tree", "TreeVersion",
     "AgentConfig", "TriggerConfig", "OutputConfig", "ToolConnection",
     "ToolAssignment",
-    "Run", "TraceEvent",
+    "Run", "RunArtifact", "RunIdempotency", "TraceEvent",
     "ResultDestination", "ResultDelivery",
     "User", "UserPermission", "UserTreeAccess", "UserSession", "ApiToken", "SecurityEvent",
 ]

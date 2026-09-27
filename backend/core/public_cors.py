@@ -1,4 +1,4 @@
-"""Bearer-only CORS allowlist for v1 without widening Studio cookie CORS."""
+"""Bearer-only CORS allowlist for public APIs without widening Studio cookie CORS."""
 
 from starlette.responses import Response
 
@@ -10,7 +10,7 @@ class PublicCORSMiddleware:
         self.app = app
 
     async def __call__(self, scope, receive, send):
-        if scope["type"] != "http" or not scope.get("path", "").startswith("/api/v1/"):
+        if scope["type"] != "http" or not scope.get("path", "").startswith(("/api/v1/", "/api/v2/")):
             await self.app(scope, receive, send)
             return
         headers = {key.lower(): value.decode("latin1") for key, value in scope.get("headers", [])}
@@ -23,7 +23,7 @@ class PublicCORSMiddleware:
             await Response(status_code=204, headers={
                 "Access-Control-Allow-Origin": origin,
                 "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-                "Access-Control-Allow-Headers": "Authorization, Content-Type, X-Request-ID",
+                "Access-Control-Allow-Headers": "Authorization, Content-Type, X-Request-ID, Idempotency-Key, Last-Event-ID",
                 "Access-Control-Max-Age": "600",
                 "Vary": "Origin",
             })(scope, receive, send)

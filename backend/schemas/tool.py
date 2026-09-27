@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field, field_validator
 class ToolType(str, Enum):
     HTTP_API = "http_api"
     MCP = "mcp"
+    ARTIFACT = "artifact"
 
 
 class ToolStatus(str, Enum):

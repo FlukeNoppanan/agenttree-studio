@@ -50,9 +50,9 @@ class AgentDraft(BaseModel):
     @model_validator(mode="after")
     def validate_tool_loop_settings(self) -> "AgentDraft":
         settings = self.settings or {}
-        if self.agent_type != AgentType.SPECIALIST and settings.get("autonomous_tool_use") is True:
-            raise ValueError("Autonomous Tool use is available only to Specialists")
         if self.agent_type == AgentType.SPECIALIST:
+            # Retain legacy settings for round-trip compatibility. Core
+            # ToolSession now owns model-driven Tool use for every role.
             ToolLoopSettings.from_mapping(settings)
         return self
 

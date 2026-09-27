@@ -21,6 +21,8 @@ from backend.api.tools import router as tools_router
 from backend.api.trees import router as trees_router
 from backend.api.auth import router as auth_router
 from backend.api.public_v1 import router as public_v1_router
+from backend.api.public_v2 import router as public_v2_router
+from backend.api.studio_runs import router as studio_runs_router
 from backend.core.config import settings
 from backend.db.session import SessionLocal, initialize_database
 from backend.core.authz import AuthMiddleware
@@ -46,7 +48,15 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
             os.getenv("AGENTTREE_STUDIO_ADMIN_USERNAME", "admin"),
             os.getenv("AGENTTREE_STUDIO_ADMIN_PASSWORD", "admin"),
         )
-    yield
+        from backend.services.async_runs import reconcile_interrupted_runs
+        reconcile_interrupted_runs(database)
+    try:
+        yield
+    finally:
+        from backend.services.async_runs import shutdown_async_run_coordinator
+        from backend.services.core_runtime import shutdown_studio_runtime
+        shutdown_async_run_coordinator()
+        shutdown_studio_runtime()
 
 
 app = FastAPI(
@@ -58,7 +68,7 @@ app = FastAPI(
 
 @app.exception_handler(ServiceError)
 async def handle_service_error(request: Request, exc: ServiceError) -> JSONResponse:
-    if request.url.path.startswith("/api/v1/"):
+    if request.url.path.startswith(("/api/v1/", "/api/v2/")):
         return public_error(request, exc.status_code, getattr(exc, "error_code", "request_failed").lower(), str(exc))
     content: dict = {"detail": str(exc)}
     if hasattr(exc, "error_code"):
@@ -76,7 +86,7 @@ async def handle_validation_error(
         {key: value for key, value in error.items() if key not in ("input", "ctx")}
         for error in exc.errors()
     ]
-    if request is not None and request.url.path.startswith("/api/v1/"):
+    if request is not None and request.url.path.startswith(("/api/v1/", "/api/v2/")):
         return public_error(request, 422, "validation_error", "Request validation failed.")
     return JSONResponse(status_code=422, content={"detail": safe_errors})
 
@@ -88,14 +98,14 @@ async def handle_public_error(request: Request, exc: PublicAPIError) -> JSONResp
 
 @app.exception_handler(FastAPIHTTPException)
 async def handle_http_error(request: Request, exc: FastAPIHTTPException) -> JSONResponse:
-    if request.url.path.startswith("/api/v1/"):
+    if request.url.path.startswith(("/api/v1/", "/api/v2/")):
         return public_error(request, exc.status_code, "resource_not_found" if exc.status_code == 404 else "request_failed", "Resource not found." if exc.status_code == 404 else "Request failed.")
     return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
 
 
 @app.exception_handler(Exception)
 async def handle_unexpected_error(request: Request, _: Exception) -> JSONResponse:
-    if request.url.path.startswith("/api/v1/"):
+    if request.url.path.startswith(("/api/v1/", "/api/v2/")):
         return public_error(request, 500, "internal_error", "An internal error occurred.")
     return JSONResponse(status_code=500, content={"detail": "Internal Server Error"})
 
@@ -112,6 +122,8 @@ app.add_middleware(PublicCORSMiddleware)
 
 app.include_router(auth_router, prefix="/api")
 app.include_router(public_v1_router)
+app.include_router(public_v2_router)
+app.include_router(studio_runs_router, prefix="/api")
 app.include_router(health_router, prefix="/api")
 app.include_router(dashboard_router, prefix="/api")
 app.include_router(secrets_router, prefix="/api")

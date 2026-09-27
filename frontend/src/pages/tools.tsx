@@ -42,10 +42,11 @@ export function ToolsPage() {
         : []
       const details = detailResults.flatMap((result) => result.status === "fulfilled" ? [result.value] : [])
       setSpecialists(details.flatMap((tree) => tree.version.agents
-        .filter((agent) => agent.agent_type === "specialist")
-        .map((agent) => ({ id: agent.id, name: agent.name, treeName: tree.name }))))
+        .map((agent) => ({
+          id: agent.id, name: `${agent.name} (${agent.agent_type})`, treeName: tree.name,
+        }))))
       const supplementalError = secretResult.status === "rejected" || treeResult.status === "rejected" || detailResults.some((result) => result.status === "rejected")
-      if (supplementalError) setNotice({ tone: "error", message: "Tools loaded, but some Secret or Specialist assignment options are temporarily unavailable." })
+      if (supplementalError) setNotice({ tone: "error", message: "Tools loaded, but some Secret or Agent assignment options are temporarily unavailable." })
     } catch (error) {
       setNotice({ tone: "error", message: error instanceof Error ? error.message : "Unable to load Tools" })
     } finally {

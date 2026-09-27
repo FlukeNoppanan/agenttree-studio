@@ -12,6 +12,7 @@ from backend.schemas.destination import DeliveryResultRead
 class RunStatus(str, Enum):
     PENDING = "pending"
     RUNNING = "running"
+    CANCELLATION_REQUESTED = "cancellation_requested"
     COMPLETED = "completed"
     FAILED = "failed"
     CANCELLED = "cancelled"
@@ -42,6 +43,7 @@ class TraceEventRead(BaseModel):
     id: str
     run_id: str
     sequence: int
+    core_sequence: int | None = None
     event_type: str
     agent_id: str | None
     agent_name: str | None
@@ -56,6 +58,8 @@ class RunRead(BaseModel):
     tree_version_id: str
     tree_version_number: int
     status: RunStatus
+    core_execution_id: str | None = None
+    final_status: str | None = None
     input: dict[str, Any]
     metadata: dict[str, Any]
     invocation_source: str
@@ -65,6 +69,8 @@ class RunRead(BaseModel):
     started_at: datetime
     finished_at: datetime | None
     duration_ms: int | None
+    usage: dict[str, Any] | None = None
+    metrics: dict[str, Any] | None = None
     created_at: datetime
 
 
@@ -72,6 +78,24 @@ class RunDetailRead(RunRead):
     state: dict[str, Any] | None
     trace: list[TraceEventRead]
     delivery_results: list[DeliveryResultRead] = Field(default_factory=list)
+    artifacts: list["RunArtifactRead"] = Field(default_factory=list)
+
+
+class RunArtifactRead(BaseModel):
+    id: str
+    core_artifact_id: str
+    artifact_type: str
+    name: str
+    logical_path: str | None
+    operation: str
+    media_type: str
+    size_bytes: int
+    sha256: str
+    producer_role: str
+    producer_agent_id: str | None
+    metadata: dict[str, Any]
+    is_final: bool
+    created_at: datetime
 
 
 class LiveExecutionRead(BaseModel):

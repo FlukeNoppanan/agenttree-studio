@@ -6,7 +6,8 @@ import pytest
 from agenttree import SpecialistAgent
 from agenttree.core import ProviderSpecialistExecutor
 from agenttree.models import Subtask, Task
-from agenttree.providers import BaseProvider, ProviderConfig, ProviderRegistry, ProviderRequest, ProviderResponse
+from agenttree.providers import (BaseProvider, ProviderCapabilities, ProviderConfig,
+                                 ProviderRegistry, ProviderRequest, ProviderResponse)
 from agenttree.tools import FunctionTool, ToolBindingRegistry, ToolExecutor, ToolRegistry
 from pydantic import ValidationError
 
@@ -267,14 +268,13 @@ def test_tool_decision_and_settings_validation_is_strict() -> None:
         ToolLoopSettings.from_mapping({"max_tool_iterations": 0})
 
 
-def test_runtime_validation_rejects_enabled_loop_without_tools(database) -> None:
+def test_legacy_tool_loop_setting_does_not_enable_a_second_runtime(database) -> None:
     tree, _, ids = runtime_tree(database)
     specialist = database.get(AgentConfig, ids[2])
     specialist.settings_json = {"autonomous_tool_use": True}
     database.commit()
     validation = RuntimeBuilder(database).validate(tree.id)
-    assert validation.valid is False
-    assert any(item.code == "TOOL_LOOP_CONFIG_ERROR" for item in validation.errors)
+    assert validation.valid is True
 
 
 class WorkflowToolProvider(BaseProvider):
@@ -282,21 +282,28 @@ class WorkflowToolProvider(BaseProvider):
         super().__init__(ProviderConfig(provider_name=name, model=model))
         self.requests: list[ProviderRequest] = []
 
+    @property
+    def capabilities(self):
+        return ProviderCapabilities(tool_calling=True)
+
     def generate(self, request: ProviderRequest) -> ProviderResponse:
         self.requests.append(request)
         strategy = request.metadata.get("strategy")
-        if strategy == "triage":
+        if strategy == "root_planning":
+            payload = {"delegate": True}
+        elif strategy == "triage":
             payload = {"objective": "Inspect network logs", "required_capabilities": ["network"]}
         elif strategy == "decomposition":
             payload = {"subtasks": [{"objective": "Inspect the logs", "required_capabilities": ["log-analysis"]}]}
         elif strategy in {"manager_review", "final_review"}:
             payload = {"decision": "pass", "feedback": "accepted"}
-        elif strategy == "studio_tool_loop":
-            payload = (
-                {"action": "tool_call", "tool_name": "Get Server Status", "arguments": {"server_id": "srv-1", "detail": "full"}}
-                if request.metadata["iteration"] == 1
-                else {"action": "final", "result": "Server is healthy"}
-            )
+        elif request.tools and not request.tool_history:
+            return ProviderResponse(content="", provider=self.name, model=self.config.model,
+                tool_calls=({"id": "status-1", "type": "function", "function": {
+                    "name": "Get Server Status",
+                    "arguments": json.dumps({"server_id": "srv-1", "detail": "full"})}},))
+        elif request.tool_history or strategy == "root_synthesis":
+            payload = "Server is healthy"
         else:
             payload = "unexpected"
         content = json.dumps(payload) if not isinstance(payload, str) else payload
@@ -333,13 +340,15 @@ def test_full_core_workflow_routes_through_tool_loop_and_persists_trace(database
     assert result.status.value == "completed"
     assert result.output["value"] == "Server is healthy"
     event_types = [event.event_type for event in result.trace]
-    assert "studio.tool_decision" in event_types
-    assert "orchestration.tool_execution_started" in event_types
-    assert "orchestration.tool_execution_completed" in event_types
-    assert "studio.tool_observation" in event_types
-    assert "studio.tool_loop_completed" in event_types
-    assert event_types[0] == "orchestration.started"
-    assert event_types[-1] == "orchestration.final_result_created"
+    assert "specialist.tool.requested" in event_types, [
+        (request.metadata.get("strategy"), len(request.tools), len(request.tool_history))
+        for request in providers[0].requests
+    ]
+    assert "specialist.tool.authorized" in event_types
+    assert "specialist.tool.completed" in event_types
+    assert not any(event.startswith("studio.tool_") for event in event_types)
+    assert event_types[0] == "execution.queued"
+    assert event_types[-1] == "execution.completed"
     assert any(request.metadata.get("strategy") == "manager_review" for request in providers[0].requests)
     assert any(request.metadata.get("strategy") == "final_review" for request in providers[0].requests)
     assert "detail=full" in transport_record["url"]

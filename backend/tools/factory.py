@@ -7,6 +7,7 @@ from typing import Any
 
 import httpx
 from agenttree.tools import BaseTool
+from agenttree.core import create_artifact_tool
 from agenttree.tools.mcp import (
     BaseMCPClient,
     MCPTool,
@@ -119,4 +120,6 @@ class ToolAdapterFactory:
                 sensitive_values=sensitive,
                 mcp_clients=(client,),
             )
+        if connection.tool_type == "artifact":
+            return BuiltTools(tools=(create_artifact_tool(),))
         raise ValueError("Unsupported Tool type")

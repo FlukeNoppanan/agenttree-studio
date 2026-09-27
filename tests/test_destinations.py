@@ -86,6 +86,7 @@ def test_alembic_upgrades_an_existing_unversioned_sqlite_schema(tmp_path: Path) 
         tool_columns = {row[1] for row in connection.execute("PRAGMA table_info(tool_connections)")}
         model_columns = {row[1] for row in connection.execute("PRAGMA table_info(provider_models)")}
         token_columns = {row[1] for row in connection.execute("PRAGMA table_info(api_tokens)")}
+        trace_columns = {row[1] for row in connection.execute("PRAGMA table_info(trace_events)")}
         revision = connection.execute("SELECT version_num FROM alembic_version").fetchone()[0]
     assert {"result_destinations", "result_deliveries"}.issubset(tables)
     assert {"metadata_json", "invocation_source"}.issubset(columns)
@@ -93,7 +94,13 @@ def test_alembic_upgrades_an_existing_unversioned_sqlite_schema(tmp_path: Path) 
     assert {"generation_candidate", "qualification_status", "qualification_checked_at"}.issubset(model_columns)
     assert {"users", "user_permissions", "user_tree_access", "user_sessions", "api_tokens"}.issubset(tables)
     assert "last_used_at" in token_columns
-    assert revision == "0007_api_token_last_used"
+    assert {"core_execution_id", "final_status", "usage_json", "metrics_json"}.issubset(columns)
+    assert "core_sequence" in trace_columns
+    assert "run_artifacts" in tables
+    assert {"submitted_by_user_id", "submitted_by_token_id",
+            "cancellation_requested_at"}.issubset(columns)
+    assert "run_idempotency" in tables
+    assert revision == "0009_public_api_v2"
 
 
 def test_existing_tree_grants_migrate_to_selected_mode(tmp_path: Path) -> None:

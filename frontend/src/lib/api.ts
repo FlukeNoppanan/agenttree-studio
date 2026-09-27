@@ -1,4 +1,4 @@
-export type ProviderType = "openai" | "gemini" | "ollama"
+export type ProviderType = "openai" | "gemini" | "groq" | "openrouter" | "cerebras" | "openai_compatible" | "ollama"
 export type Permission = "manage_trees_agents" | "manage_secrets" | "manage_providers_models" | "manage_tools_mcp" | "view_executions" | "use_trees"
 export type TreeAccessMode = "selected" | "all"
 export interface StudioUser {
@@ -228,7 +228,7 @@ export interface TreeValidation {
 export interface ToolConnection {
   id: string
   name: string
-  tool_type: "http_api" | "mcp"
+  tool_type: "http_api" | "mcp" | "artifact"
   description: string
   enabled: boolean
   secret_id: string | null
@@ -254,7 +254,7 @@ export interface DiscoveredTool {
 export interface ToolPayload {
   name: string
   description: string
-  tool_type: "http_api" | "mcp"
+  tool_type: "http_api" | "mcp" | "artifact"
   enabled: boolean
   secret_id: string | null
   transport_type: "stdio" | "streamable_http" | null
@@ -298,7 +298,25 @@ export interface CapabilitySuggestionPayload {
   model_id: string
 }
 
-export type RunStatus = "pending" | "running" | "completed" | "failed" | "cancelled"
+export type RunStatus = "pending" | "running" | "cancellation_requested" | "completed" | "failed" | "cancelled"
+
+export type LiveRunStatus = "queued" | "running" | "cancellation_requested" | "completed" | "failed" | "cancelled"
+export interface LiveRun {
+  run_id: string; tree_id: string; tree_version_id: string; status: LiveRunStatus
+  final_status: string | null; created_at: string; started_at: string | null; finished_at: string | null
+  cancellation_requested: boolean; error: { code: string; message: string } | null
+  artifact_count: number; latest_event_sequence: number; final_output: unknown | null
+}
+export interface LiveEvent {
+  sequence: number; type: string; agent_id: string | null; agent_name: string | null
+  payload: Record<string, unknown>; created_at: string
+}
+export interface LiveArtifact {
+  artifact_id: string; type: string; name: string; path: string | null; operation: string
+  media_type: string; size_bytes: number; sha256: string; producer_role: string
+  producer_agent_id: string | null; is_final: boolean; body_available: boolean; created_at: string
+}
+export interface LiveEventPage { events: LiveEvent[]; next_after: number; has_more: boolean }
 
 export interface TraceEvent {
   id: string
@@ -529,4 +547,17 @@ export const api = {
   getTreeLive: (treeId: string) => request<TreeLive>(`/api/trees/${treeId}/live`),
   getRun: (runId: string) => request<RunDetail>(`/api/runs/${runId}`),
   getRunTrace: (runId: string) => request<TraceEvent[]>(`/api/runs/${runId}/trace`),
+  submitLiveRun: (treeId: string, input: string) => request<{ run_id: string }>("/api/studio/runs", {
+    method: "POST", body: JSON.stringify({ tree_id: treeId, input }),
+  }),
+  getLiveRun: (runId: string) => request<LiveRun>(`/api/studio/runs/${runId}`),
+  getLiveEvents: (runId: string, after: number) => request<LiveEventPage>(`/api/studio/runs/${runId}/events?after=${after}&limit=500`),
+  getLiveArtifacts: (runId: string) => request<{ artifacts: LiveArtifact[] }>(`/api/studio/runs/${runId}/artifacts`),
+  getLiveResult: (runId: string) => request<{ final_output: unknown; final_status: string | null }>(`/api/studio/runs/${runId}/result`),
+  cancelLiveRun: (runId: string) => request<{ status: LiveRunStatus }>(`/api/studio/runs/${runId}/cancel`, { method: "POST" }),
+  fetchLiveArtifact: async (runId: string, artifactId: string) => {
+    const response = await fetch(`/api/studio/runs/${runId}/artifacts/${artifactId}`, { credentials: "same-origin" })
+    if (!response.ok) throw new ApiError(`Artifact unavailable (${response.status})`, response.status)
+    return response.blob()
+  },
 }

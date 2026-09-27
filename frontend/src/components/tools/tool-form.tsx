@@ -62,12 +62,13 @@ export function ToolForm({ open, onOpenChange, tool, secrets, specialists, onCom
 
   function configuration(): Record<string, unknown> {
     if (type === "http_api") return { method: http.method, url: http.url, headers: jsonValue(http.headers, "Headers", "object"), query: jsonValue(http.query, "Query", "object"), input_schema: jsonValue(http.inputSchema, "Input schema", "object"), output_handling: http.outputHandling, timeout: Number(http.timeout), test_arguments: jsonValue(http.testArguments, "Test arguments", "object") }
+    if (type === "artifact") return {}
     return mcp.transport === "stdio" ? { command: mcp.command, args: jsonValue(mcp.args, "Arguments", "array"), env: jsonValue(mcp.env, "Environment", "object"), cwd: mcp.cwd || null, timeout: Number(mcp.timeout) } : { url: mcp.url, headers: jsonValue(mcp.headers, "Headers", "object"), timeout: Number(mcp.timeout) }
   }
 
   async function persist() {
     if (!name.trim()) throw new Error("Tool name is required")
-    const payload: ToolPayload = { name: name.trim(), description: description.trim(), tool_type: type, enabled, secret_id: secretId || null, transport_type: type === "mcp" ? mcp.transport : null, configuration: configuration() }
+    const payload: ToolPayload = { name: name.trim(), description: description.trim(), tool_type: type, enabled, secret_id: type === "artifact" ? null : secretId || null, transport_type: type === "mcp" ? mcp.transport : null, configuration: configuration() }
     const result = saved ? await api.updateTool(saved.id, { ...payload, selected_tools: type === "mcp" ? selectedTools : undefined }) : await api.createTool(payload)
     setSaved(result); setDiscovered(result.discovered_tools)
     return result

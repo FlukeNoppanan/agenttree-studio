@@ -7,6 +7,7 @@ import type { RunStatus } from "@/lib/api"
 const items = {
   pending: { icon: Clock3, variant: "warning" as const },
   running: { icon: LoaderCircle, variant: "info" as const },
+  cancellation_requested: { icon: Clock3, variant: "warning" as const },
   completed: { icon: CircleCheck, variant: "success" as const },
   failed: { icon: CircleX, variant: "destructive" as const },
   cancelled: { icon: CircleX, variant: "secondary" as const },

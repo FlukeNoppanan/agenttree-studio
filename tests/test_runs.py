@@ -6,7 +6,8 @@ from uuid import uuid4
 
 import pytest
 from agenttree import ManagerAgent, RootAgent, SpecialistAgent
-from agenttree.providers import BaseProvider, ProviderConfig, ProviderRequest, ProviderResponse
+from agenttree.providers import (BaseProvider, ProviderAuthenticationError,
+                                 ProviderConfig, ProviderRequest, ProviderResponse)
 from sqlalchemy import func, select
 
 from backend.models.provider import ProviderConnection, ProviderModel
@@ -45,6 +46,7 @@ class ScriptedProvider(BaseProvider):
             raise self.fail
         strategy = request.metadata.get("strategy")
         payload = {
+            "root_planning": {"delegate": True},
             "triage": {"objective": "Inspect network logs", "required_capabilities": ["network"]},
             "decomposition": {"subtasks": [{"objective": "Inspect the logs", "required_capabilities": ["log-analysis"]}]},
             "manager_review": {"decision": "pass", "feedback": "accepted"},
@@ -54,9 +56,11 @@ class ScriptedProvider(BaseProvider):
         return ProviderResponse(content=content, provider=self.name, model=self.config.model)
 
 
-def runtime_tree(database, *, output_type: str = "text"):
+def runtime_tree(database, *, output_type: str = "text",
+                 secret_value: str = "SUPER_SECRET_PHASE8A_PROVIDER_VALUE"):
     secret = SecretService(database).create(SecretCreate(
-        name=f"Runtime key {uuid4()}", secret_type="api_key", value="super-secret-runtime-key",
+        name=f"Runtime key {uuid4()}", secret_type="api_key",
+        value=secret_value,
     ))
     provider = ProviderConnection(
         name="Runtime Provider",
@@ -143,8 +147,8 @@ def test_runtime_builder_builds_root_managers_specialists_and_capabilities(datab
     assert isinstance(bundle.runtime.specialists[0], SpecialistAgent)
     assert bundle.runtime.specialists[0].capabilities == ("log-analysis",)
     assert bundle.runtime.provider_bindings[ids[2]] == providers[0].name
-    assert credentials == ["super-secret-runtime-key"]
-    assert bundle.sensitive_values == ("super-secret-runtime-key",)
+    assert credentials == ["SUPER_SECRET_PHASE8A_PROVIDER_VALUE"]
+    assert bundle.sensitive_values == ("SUPER_SECRET_PHASE8A_PROVIDER_VALUE",)
 
 
 def test_valid_test_run_executes_core_and_persists_output_state_and_real_trace(database) -> None:
@@ -162,12 +166,15 @@ def test_valid_test_run_executes_core_and_persists_output_state_and_real_trace(d
     assert result.state["current_phase"] == "completed"
     assert result.duration_ms is not None
     assert result.trace
-    assert result.trace[0].event_type == "orchestration.started"
-    assert result.trace[-1].event_type == "orchestration.final_result_created"
-    assert all(item.event_type.startswith("orchestration.") for item in result.trace)
+    assert result.trace[0].event_type == "execution.queued"
+    assert result.trace[-1].event_type == "execution.completed"
+    assert any(item.event_type == "root.synthesis.completed" for item in result.trace)
+    core_sequences = [item.core_sequence for item in result.trace if item.core_sequence is not None]
+    assert core_sequences == list(range(1, len(core_sequences) + 1))
     assert any(item.agent_name == "Log Analyst" for item in result.trace)
     strategies = [request.metadata.get("strategy") for request in provider_instances[0].requests]
-    assert strategies == ["triage", "decomposition", None, "manager_review", "final_review"]
+    assert strategies == ["root_planning", "triage", "decomposition", None,
+                          "manager_review", "final_review", "root_synthesis"]
     assert database.scalar(select(func.count()).select_from(TraceEvent)) == len(result.trace)
 
 
@@ -179,15 +186,15 @@ def test_structured_output_preserves_core_final_content(database) -> None:
         tree.id, RunRequest(input={"objective": "Inspect network logs"}),
     )
 
-    value = result.output["value"]
-    assert value["managers"][0]["subtasks"][0]["specialists"][0]["output"] == "Network analysis complete"
+    assert result.output["value"] == "Network analysis complete"
+    assert result.output["orchestration"]["managers"][0]["subtasks"][0]["specialists"][0]["output"] == "Network analysis complete"
 
 
 def test_execution_failure_transitions_to_failed_and_sanitizes_auth_error(database) -> None:
     tree, _, _ = runtime_tree(database)
     builder, _, _ = scripted_builder(
         database,
-        fail=RuntimeError("401 Authorization: Bearer super-secret-runtime-key"),
+        fail=ProviderAuthenticationError("Provider authentication failed"),
     )
 
     result = RunService(database, builder).test_run(
@@ -198,10 +205,10 @@ def test_execution_failure_transitions_to_failed_and_sanitizes_auth_error(databa
     assert result.error_code == "PROVIDER_AUTH_ERROR"
     assert result.error_message == "Provider authentication failed"
     serialized = json.dumps(result.model_dump(mode="json"))
-    assert "super-secret-runtime-key" not in serialized
+    assert "SUPER_SECRET_PHASE8A_PROVIDER_VALUE" not in serialized
     assert "Authorization" not in serialized
     live = RunService(database).live(tree.id)
-    assert "super-secret-runtime-key" not in json.dumps(live.model_dump(mode="json"))
+    assert "SUPER_SECRET_PHASE8A_PROVIDER_VALUE" not in json.dumps(live.model_dump(mode="json"))
     stored = database.get(Run, result.id)
     assert stored.status == "failed"
     assert stored.finished_at is not None
@@ -221,7 +228,7 @@ def test_runtime_build_failure_is_persisted_with_safe_structured_error(database)
     assert result.status.value == "failed"
     assert result.error_code == "RUNTIME_BUILD_ERROR"
     assert result.error_message == "Provider runtime could not be created"
-    assert "super-secret-runtime-key" not in json.dumps(result.model_dump(mode="json"))
+    assert "SUPER_SECRET_PHASE8A_PROVIDER_VALUE" not in json.dumps(result.model_dump(mode="json"))
 
 
 def test_run_listing_detail_trace_and_filters(database) -> None:
@@ -237,7 +244,7 @@ def test_run_listing_detail_trace_and_filters(database) -> None:
     assert service.list(status="failed") == []
     assert [item.id for item in service.list(tree_id=tree.id)] == [completed.id]
     assert service.get(completed.id).input["objective"] == "Inspect network logs"
-    assert service.trace(completed.id)[-1].event_type == "orchestration.final_result_created"
+    assert service.trace(completed.id)[-1].event_type == "execution.completed"
 
 
 def test_live_snapshot_separates_runtime_from_multiple_executions(database) -> None:
@@ -328,7 +335,7 @@ def test_run_api_functions_create_list_detail_and_trace(database, monkeypatch) -
     assert [item.id for item in api_list_runs(None, None, database)] == [created.id]
     assert [item.id for item in api_list_tree_runs(tree.id, None, database)] == [created.id]
     assert api_get_run(created.id, database).id == created.id
-    assert api_get_run_trace(created.id, database)[0].event_type == "orchestration.started"
+    assert api_get_run_trace(created.id, database)[0].event_type == "execution.queued"
 
 
 def test_tree_without_legacy_input_or_output_executes_generic_json(database) -> None:

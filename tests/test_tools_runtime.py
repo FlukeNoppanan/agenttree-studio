@@ -296,7 +296,7 @@ def test_mcp_connection_failure_is_sanitized(database) -> None:
     assert "token" not in result.tool.last_error.casefold()
 
 
-def test_assignments_are_specialist_only_and_block_tool_delete(database) -> None:
+def test_assignments_support_all_agent_roles_and_block_tool_delete(database) -> None:
     provider = connected_provider(database)
     tree = TreeService(database).create(valid_payload(provider))
     specialist = next(item for item in tree.version.agents if item.agent_type == "specialist")
@@ -307,10 +307,10 @@ def test_assignments_are_specialist_only_and_block_tool_delete(database) -> None
 
     assigned = service.replace_assignments(tool.id, ToolAssignmentsUpdate(agent_ids=[specialist.id]))
     assert assigned.assignments[0].agent_id == specialist.id
-    with pytest.raises(ServiceError, match="Specialist"):
-        service.replace_assignments(tool.id, ToolAssignmentsUpdate(agent_ids=[manager.id]))
+    assigned = service.replace_assignments(tool.id, ToolAssignmentsUpdate(agent_ids=[manager.id]))
+    assert assigned.assignments[0].agent_id == manager.id
 
-    with pytest.raises(ServiceError, match="assigned to a Specialist"):
+    with pytest.raises(ServiceError, match="assigned to an Agent"):
         service.delete(tool.id)
     assert database.scalar(select(func.count()).select_from(ToolAssignment)) == 1
     assert service.get(tool.id).id == tool.id
@@ -323,11 +323,14 @@ def test_runtime_builder_registers_tools_preserves_bindings_and_enforces_authori
     provider = connected_provider(database)
     tree = TreeService(database).create(valid_payload(provider))
     specialist_config = next(item for item in tree.version.agents if item.agent_type == "specialist")
+    root_config = next(item for item in tree.version.agents if item.agent_type == "root")
+    manager_config = next(item for item in tree.version.agents if item.agent_type == "manager")
     factory = TestToolFactory(database, transport=successful_transport({}))
     tool_service = ToolService(database, factory)
     tool = tool_service.create(http_payload())
     tool_service.test(tool.id)
-    tool_service.replace_assignments(tool.id, ToolAssignmentsUpdate(agent_ids=[specialist_config.id]))
+    tool_service.replace_assignments(tool.id, ToolAssignmentsUpdate(
+        agent_ids=[root_config.id, manager_config.id, specialist_config.id]))
 
     def provider_factory(connection, model, credential, runtime_name):
         return MockProvider(ProviderConfig(provider_name=runtime_name, model=model))
@@ -340,6 +343,8 @@ def test_runtime_builder_registers_tools_preserves_bindings_and_enforces_authori
 
     assert bundle.runtime.tools[0].id == tool.id
     assert bundle.tool_bindings.tool_ids_for(specialist_config.id) == (tool.id,)
+    assert bundle.tool_bindings.tool_ids_for(root_config.id) == (tool.id,)
+    assert bundle.tool_bindings.tool_ids_for(manager_config.id) == (tool.id,)
     result = bundle.tool_executor.execute(
         specialist=bundle.agents_by_id[specialist_config.id],
         tool_id=tool.id,

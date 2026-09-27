@@ -10,6 +10,10 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 class ProviderType(str, Enum):
     OPENAI = "openai"
     GEMINI = "gemini"
+    GROQ = "groq"
+    OPENROUTER = "openrouter"
+    CEREBRAS = "cerebras"
+    OPENAI_COMPATIBLE = "openai_compatible"
     OLLAMA = "ollama"
 
 

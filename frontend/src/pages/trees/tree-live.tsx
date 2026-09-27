@@ -8,6 +8,7 @@ import { RunStatusBadge } from "@/components/run-status-badge"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { Skeleton } from "@/components/ui/skeleton"
 import { api, type RunStatus, type TreeLive } from "@/lib/api"
 import { cn } from "@/lib/utils"
@@ -42,6 +43,18 @@ export function TreeLivePage() {
   const [error, setError] = useState<string | null>(null)
   const [filter, setFilter] = useState<Filter>("all")
   const [search, setSearch] = useState("")
+  const [runInput, setRunInput] = useState("")
+  const [submitting, setSubmitting] = useState(false)
+
+  const startRun = async () => {
+    if (!treeId || !runInput.trim() || submitting) return
+    setSubmitting(true)
+    try {
+      const accepted = await api.submitLiveRun(treeId, runInput.trim())
+      navigate(`/runs/${accepted.run_id}`)
+    } catch (caught) { setError(caught instanceof Error ? caught.message : t("liveV2.loadError")) }
+    finally { setSubmitting(false) }
+  }
 
   useEffect(() => {
     if (!treeId) return
@@ -82,6 +95,13 @@ export function TreeLivePage() {
         ] as const).map(([label, count]) => <div key={label} className="flex items-baseline gap-2"><p className="text-xs text-muted-foreground">{t(`live.${label}`)}</p><p className="text-xl font-semibold tabular-nums">{count}</p></div>)}</div>
         {snapshot.runtime_status !== "unavailable" ? <p className="mt-3 text-xs text-muted-foreground">{t("live.runtimeStatus")}: {t(`runtimeState.${snapshot.runtime_status}`)} · {t("live.started")}: {snapshot.runtime_started_at ? new Date(snapshot.runtime_started_at).toLocaleString(i18n.language) : "—"} · {t("live.uptime")}: {snapshot.runtime_status === "running" ? uptime(snapshot.runtime_started_at) : "—"}</p> : null}
       </header>
+
+      <section className="border-b border-border pb-5" aria-label={t("liveV2.startRun")}>
+        <div className="flex flex-wrap items-baseline justify-between gap-2"><h2 className="text-lg font-semibold">{t("liveV2.startRun")}</h2><p className="text-sm text-muted-foreground">{t("liveV2.startHelp")}</p></div>
+        <label htmlFor="live-run-input" className="mt-3 block text-sm font-medium">{t("liveV2.runInput")}</label>
+        <Textarea id="live-run-input" className="mt-2" maxLength={65536} value={runInput} onChange={event => setRunInput(event.target.value)} />
+        <Button className="mt-3" disabled={!runInput.trim() || submitting} onClick={() => void startRun()}>{submitting ? t("liveV2.starting") : t("liveV2.startRun")}</Button>
+      </section>
 
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(16rem,0.7fr)]">
         <section className="min-w-0 space-y-4" aria-label={t("live.executions")}>

@@ -46,6 +46,7 @@ class SQLAlchemyRunRepository:
         return (
             selectinload(Run.tree), selectinload(Run.tree_version),
             selectinload(Run.trace_events), selectinload(Run.delivery_results),
+            selectinload(Run.artifacts),
         )
 
     def get(self, run_id: str) -> Run | None:

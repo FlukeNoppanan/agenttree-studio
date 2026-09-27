@@ -13,13 +13,13 @@ from agenttree.core import (
     BaseTaskDecomposer,
     ProviderFinalReviewer,
     ProviderManagerReviewer,
-    ProviderSpecialistExecutor,
+    ProviderRootSynthesizer,
     ProviderTaskDecomposer,
     ProviderTaskTriage,
 )
 from agenttree.models import ReviewResult, Subtask, Task, TriageResult
 from agenttree.orchestration import SpecialistExecution
-from agenttree.providers import BaseProvider, ProviderRegistry, ProviderRequest, ProviderResponse
+from agenttree.providers import BaseProvider
 from agenttree.tools import ToolBindingRegistry, ToolExecutor, ToolRegistry
 from agenttree.tools.mcp import BaseMCPClient
 from sqlalchemy import select
@@ -31,10 +31,8 @@ from backend.models.tree import AgentConfig, Tree, TreeVersion
 from backend.repositories.protocols import TreeRepository
 from backend.repositories.sqlalchemy import SQLAlchemyTreeRepository
 from backend.providers.generation import create_generation_provider
-from backend.schemas.tool_loop import ToolLoopSettings
 from backend.services.errors import ResourceNotFoundError, RunRequestError
 from backend.services.secret_service import SecretService
-from backend.services.tool_aware_specialist_executor import ToolAwareSpecialistExecutor
 from backend.tools.factory import BuiltTools, ToolAdapterFactory
 
 
@@ -64,31 +62,7 @@ class RuntimeBundle:
     tool_registry: ToolRegistry
     tool_bindings: ToolBindingRegistry
     tool_executor: ToolExecutor
-    tool_loop_executor: ToolAwareSpecialistExecutor | None = None
     mcp_clients: tuple[BaseMCPClient, ...] = ()
-
-
-class _InstructionProvider(BaseProvider):
-    """Apply stored agent instructions while retaining the Core provider adapter."""
-
-    def __init__(self, provider: BaseProvider, instruction: str | None) -> None:
-        super().__init__(provider.config)
-        self._provider = provider
-        self._instruction = (instruction or "").strip()
-
-    def generate(self, request: ProviderRequest) -> ProviderResponse:
-        system = request.system_prompt
-        if self._instruction:
-            system = "\n\n".join(filter(None, (system, f"Configured agent instructions:\n{self._instruction}")))
-        return self._provider.generate(ProviderRequest(
-            prompt=request.prompt,
-            system_prompt=system,
-            context=request.context,
-            metadata=request.metadata,
-            model=request.model,
-            temperature=request.temperature,
-            max_tokens=request.max_tokens,
-        ))
 
 
 class _ManagerDecomposer(BaseTaskDecomposer):
@@ -168,6 +142,9 @@ class RuntimeBuilder:
     def validate_tree(self, tree: Tree) -> RuntimeValidationResult:
         version = tree.current_version
         assert version is not None
+        return self._validate_version(version)
+
+    def _validate_version(self, version: TreeVersion) -> RuntimeValidationResult:
         agents = tuple(version.agents)
         roots = [item for item in agents if item.agent_type == "root"]
         managers = [item for item in agents if item.agent_type == "manager"]
@@ -197,11 +174,10 @@ class RuntimeBuilder:
             if not any(item.parent_agent_id == manager.id for item in specialists):
                 issue("TREE_INVALID", "Every Manager needs at least one Specialist", manager.id)
         configs = {item.id: item for item in agents}
-        assigned_specialists: set[str] = set()
         for assignment in version.tool_assignments:
             agent = configs.get(assignment.agent_config_id)
-            if agent is None or agent.agent_type != "specialist":
-                issue("TOOL_BINDING_ERROR", "Core Tool bindings support Specialist Agents only", assignment.agent_config_id)
+            if agent is None:
+                issue("TOOL_BINDING_ERROR", "Tool assignment references a missing Agent", assignment.agent_config_id)
                 continue
             tool = self._database.get(ToolConnection, assignment.tool_connection_id)
             if tool is None:
@@ -212,20 +188,11 @@ class RuntimeBuilder:
                 item.get("selected") is True for item in (tool.discovered_tools_json or [])
             ):
                 issue("TOOL_BINDING_ERROR", "Assigned MCP connection has no selected Tools", agent.id)
-            else:
-                assigned_specialists.add(agent.id)
-        for specialist in specialists:
-            try:
-                loop_settings = ToolLoopSettings.from_mapping(specialist.settings_json)
-            except ValueError as error:
-                issue("TOOL_LOOP_CONFIG_ERROR", str(error), specialist.id)
-                continue
-            if loop_settings.enabled and specialist.id not in assigned_specialists:
-                issue(
-                    "TOOL_LOOP_CONFIG_ERROR",
-                    "Autonomous Tool use requires at least one executable Tool assignment",
-                    specialist.id,
-                )
+        for manager in managers:
+            peers = (manager.settings_json or {}).get("allowed_manager_peer_ids", [])
+            if (not isinstance(peers, list) or any(not isinstance(peer, str) for peer in peers)
+                    or manager.id in peers or any(peer not in manager_ids for peer in peers)):
+                issue("TREE_INVALID", "Manager collaboration peers must reference other Managers", manager.id)
         return RuntimeValidationResult(valid=not errors, errors=tuple(errors))
 
     def _validate_provider(self, agent: AgentConfig, issue) -> None:
@@ -238,6 +205,10 @@ class RuntimeBuilder:
             return
         if connection.status != "connected":
             issue("PROVIDER_UNAVAILABLE", "Agent provider is not connected", agent.id)
+        if connection.provider_type != "ollama" and not connection.secret_id:
+            issue("PROVIDER_UNAVAILABLE", "Agent provider credential is missing", agent.id)
+        if connection.provider_type == "openai_compatible" and not connection.base_url:
+            issue("PROVIDER_UNAVAILABLE", "Custom provider base URL is missing", agent.id)
         if not agent.model_id:
             issue("MODEL_NOT_AVAILABLE", "Agent model is missing", agent.id)
             return
@@ -249,14 +220,21 @@ class RuntimeBuilder:
         if model is None:
             issue("MODEL_NOT_AVAILABLE", "Agent model is not available", agent.id)
 
-    def build(self, tree_id: str) -> RuntimeBundle:
+    def build(self, tree_id: str, tree_version_id: str | None = None) -> RuntimeBundle:
         tree = self.get_tree(tree_id)
-        validation = self.validate_tree(tree)
+        if tree_version_id is not None:
+            version = self._database.scalar(select(TreeVersion).options(
+                selectinload(TreeVersion.agents), selectinload(TreeVersion.trigger),
+                selectinload(TreeVersion.output), selectinload(TreeVersion.tool_assignments),
+            ).where(TreeVersion.id == tree_version_id, TreeVersion.tree_id == tree_id))
+            if version is None:
+                raise ResourceNotFoundError("Tree version not found")
+        version = version if tree_version_id is not None else tree.current_version
+        assert version is not None
+        validation = self._validate_version(version)
         if not validation.valid:
             first = validation.errors[0]
             raise RunRequestError(first.code, first.message)
-        version = tree.current_version
-        assert version is not None
         configs = {item.id: item for item in version.agents}
         root_config = next(item for item in configs.values() if item.agent_type == "root")
         manager_configs = [item for item in configs.values() if item.agent_type == "manager"]
@@ -304,62 +282,44 @@ class RuntimeBuilder:
             provider_cache[key] = provider
             return provider
 
-        root_provider = _InstructionProvider(resolve(root_config), root_config.system_instruction)
+        root_provider = resolve(root_config)
         manager_decomposers: dict[str, ProviderTaskDecomposer] = {}
         manager_reviewers: dict[str, ProviderManagerReviewer] = {}
         for config in manager_configs:
-            configured = _InstructionProvider(resolve(config), config.system_instruction)
+            configured = resolve(config)
             manager_decomposers[config.id] = ProviderTaskDecomposer(configured)
             manager_reviewers[config.id] = ProviderManagerReviewer(configured)
+        resolved_providers = {
+            config.id: resolve(config)
+            for config in (root_config, *manager_configs, *specialist_configs)
+        }
 
-        registry = ProviderRegistry()
         tool_registry = ToolRegistry()
         tool_bindings = ToolBindingRegistry()
         tool_executor = ToolExecutor(registry=tool_registry, bindings=tool_bindings)
-        specialist_provider_bindings: dict[str, str] = {}
-        specialist_providers: dict[str, BaseProvider] = {}
-        loop_settings = {
-            item.id: ToolLoopSettings.from_mapping(item.settings_json)
-            for item in specialist_configs
-        }
-        for config in specialist_configs:
-            provider = resolve(config)
-            specialist_providers[config.id] = provider
-            if provider.name.casefold() not in registry.names:
-                registry.register(provider)
-            specialist_provider_bindings[config.id] = provider.name
-        provider_executor = ProviderSpecialistExecutor(
-            provider_registry=registry,
-            provider_bindings=specialist_provider_bindings,
-        )
-        tool_loop_executor = (
-            ToolAwareSpecialistExecutor(
-                provider_executor=provider_executor,
-                tool_executor=tool_executor,
-                tool_registry=tool_registry,
-                tool_bindings=tool_bindings,
-                settings=loop_settings,
-                sensitive_values=secrets,
-            )
-            if any(item.enabled for item in loop_settings.values()) else None
-        )
         runtime = AgentTree(
             root_agent=root,
             triage=ProviderTaskTriage(root_provider),
             decomposer=_ManagerDecomposer(manager_decomposers),
             manager_reviewer=_ManagerReviewer(manager_reviewers),
             final_reviewer=ProviderFinalReviewer(root_provider),
-            provider_registry=registry,
             tool_registry=tool_registry,
             tool_bindings=tool_bindings,
-            executor=tool_loop_executor,
+            root_synthesizer=ProviderRootSynthesizer(root_provider),
             config=self._core_config(root_config),
         )
         for manager in managers.values():
             runtime.register_manager(manager)
-        for config in specialist_configs:
-            if tool_loop_executor is None:
-                runtime.bind_provider(specialists[config.id], specialist_providers[config.id])
+        for provider in provider_cache.values():
+            runtime.register_provider(provider)
+        for config in (root_config, *manager_configs, *specialist_configs):
+            runtime.bind_provider(
+                {root_config.id: root, **managers, **specialists}[config.id],
+                resolved_providers[config.id], model=config.model_id,
+            )
+        for manager_config in manager_configs:
+            for peer_id in (manager_config.settings_json or {}).get("allowed_manager_peer_ids", []):
+                runtime.allow_manager_communication(managers[manager_config.id], managers[peer_id])
 
         built_connections: dict[str, BuiltTools] = {}
         mcp_clients: list[BaseMCPClient] = []
@@ -379,9 +339,9 @@ class RuntimeBuilder:
                     mcp_clients.extend(built.mcp_clients)
                     for executable in built.tools:
                         runtime.register_tool(executable)
-                specialist = specialists[assignment.agent_config_id]
+                assigned_agent = {root.id: root, **managers, **specialists}[assignment.agent_config_id]
                 for executable in built.tools:
-                    runtime.bind_tool(specialist, executable)
+                    runtime.bind_tool(assigned_agent, executable)
         except Exception as error:
             for client in mcp_clients:
                 try:
@@ -406,7 +366,6 @@ class RuntimeBuilder:
             tool_registry=tool_registry,
             tool_bindings=tool_bindings,
             tool_executor=tool_executor,
-            tool_loop_executor=tool_loop_executor,
             mcp_clients=tuple(mcp_clients),
         )
 
@@ -438,6 +397,7 @@ class RuntimeBuilder:
             max_final_revisions=RuntimeBuilder._nonnegative_int(
                 settings.get("max_final_revisions"), 1,
             ),
+            provider_streaming=bool(settings.get("provider_streaming", True)),
         )
 
     @staticmethod

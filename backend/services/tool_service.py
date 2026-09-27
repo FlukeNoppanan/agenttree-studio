@@ -100,6 +100,9 @@ class ToolService:
                 self._factory.build_http(tool)
             elif tool.tool_type == "mcp":
                 self._factory.create_mcp_client(tool)
+            elif tool.tool_type == "artifact":
+                if tool.secret_id or tool.transport_type or tool.config_json:
+                    raise ServiceError("Artifact Tool does not accept connection configuration")
             else:
                 raise ServiceError("Unsupported Tool type")
         except ServiceError:
@@ -201,7 +204,7 @@ class ToolService:
     def delete(self, tool_id: str) -> None:
         tool = self._get(tool_id)
         if not DependencyService(self._database).tool(tool_id).can_delete:
-            raise ResourceConflictError("Tool is assigned to a Specialist; remove assignments before deleting")
+            raise ResourceConflictError("Tool is assigned to an Agent; remove assignments before deleting")
         self._database.delete(tool)
         try:
             self._database.commit()
@@ -220,13 +223,15 @@ class ToolService:
                 ))
                 if not result.success:
                     raise ToolOperationError(result.error or "HTTP Tool test failed")
-            else:
+            elif tool.tool_type == "mcp":
                 client = self._factory.create_mcp_client(tool)
                 try:
                     client.connect()
                     client.list_tools()
                 finally:
                     client.close()
+            else:
+                self._factory.build_runtime_tools(tool)
             tool.status = "connected"
             tool.last_error = None
             message = "Tool connection succeeded"
@@ -381,8 +386,6 @@ class ToolService:
         agents = list(self._database.scalars(select(AgentConfig).where(AgentConfig.id.in_(agent_ids))).all()) if agent_ids else []
         if len(agents) != len(agent_ids):
             raise ServiceError("Assignment references a missing Agent")
-        if any(item.agent_type != "specialist" for item in agents):
-            raise ServiceError("Core Tool bindings support Specialist Agents only")
         self._database.execute(delete(ToolAssignment).where(ToolAssignment.tool_connection_id == tool.id))
         for agent in agents:
             self._database.add(ToolAssignment(

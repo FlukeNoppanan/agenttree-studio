@@ -43,6 +43,10 @@ import {
 const providerLabels: Record<ProviderType, string> = {
   openai: "OpenAI",
   gemini: "Gemini",
+  groq: "Groq",
+  openrouter: "OpenRouter",
+  cerebras: "Cerebras",
+  openai_compatible: "Custom OpenAI-compatible",
   ollama: "Ollama",
 }
 
@@ -284,7 +288,7 @@ export function ProvidersPage() {
           <form onSubmit={submit}>
             <div className="space-y-4">
               <div className="space-y-2"><Label htmlFor="provider-name">Name</Label><Input id="provider-name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="OpenAI Main" required autoFocus /></div>
-              <div className="space-y-2"><Label htmlFor="provider-type">Provider type</Label><Select id="provider-type" value={form.provider_type} onChange={(e) => setProviderType(e.target.value as ProviderType)}><option value="openai">OpenAI</option><option value="gemini">Gemini</option><option value="ollama">Ollama</option></Select></div>
+              <div className="space-y-2"><Label htmlFor="provider-type">Provider type</Label><Select id="provider-type" value={form.provider_type} onChange={(e) => setProviderType(e.target.value as ProviderType)}><option value="openai">OpenAI</option><option value="gemini">Gemini</option><option value="groq">Groq</option><option value="openrouter">OpenRouter</option><option value="cerebras">Cerebras</option><option value="openai_compatible">Custom OpenAI-compatible</option><option value="ollama">Ollama</option></Select></div>
 
               {form.provider_type !== "ollama" ? (
                 <div className="space-y-2">
@@ -297,10 +301,10 @@ export function ProvidersPage() {
                 </div>
               ) : null}
 
-              {form.provider_type === "ollama" || form.provider_type === "openai" ? (
+              {form.provider_type === "ollama" || form.provider_type === "openai" || form.provider_type === "openai_compatible" ? (
                 <div className="space-y-2">
                   <Label htmlFor="provider-base-url">Base URL {form.provider_type === "openai" ? "(optional)" : ""}</Label>
-                  <Input id="provider-base-url" type="url" value={form.base_url ?? ""} onChange={(e) => setForm({ ...form, base_url: e.target.value || null })} placeholder={form.provider_type === "ollama" ? "http://localhost:11434" : "https://api.openai.com/v1"} required={form.provider_type === "ollama"} />
+                  <Input id="provider-base-url" type="url" value={form.base_url ?? ""} onChange={(e) => setForm({ ...form, base_url: e.target.value || null })} placeholder={form.provider_type === "ollama" ? "http://localhost:11434" : "https://api.example.com/v1"} required={form.provider_type !== "openai"} />
                 </div>
               ) : null}
             </div>

@@ -32,5 +32,16 @@ class Settings:
         """Read the secret key at use time so deployments can inject it safely."""
         return os.getenv("AGENTTREE_STUDIO_ENCRYPTION_KEY")
 
+    @property
+    def artifact_store_root(self) -> Path:
+        return Path(os.getenv(
+            "AGENTTREE_STUDIO_ARTIFACT_ROOT",
+            str(PROJECT_ROOT / "data" / "artifacts"),
+        )).resolve()
+
+    @property
+    def max_artifact_bytes(self) -> int:
+        return int(os.getenv("AGENTTREE_STUDIO_MAX_ARTIFACT_BYTES", "10485760"))
+
 
 settings = Settings()

@@ -52,7 +52,7 @@ describe("Tree Live View", () => {
     vi.mocked(api.getTreeLive).mockResolvedValue({ ...snapshot, recent_activity: [event(1, "studio.tool_observation")] })
     render(<MemoryRouter initialEntries={["/trees/tree-1/live"]}><Routes><Route path="/trees/:treeId/live" element={<TreeLivePage />} /><Route path="/runs/:runId" element={<p>Selected activity inspector</p>} /></Routes></MemoryRouter>)
     await screen.findByText("Coding Assistant")
-    const search = screen.getByRole("textbox")
+    const search = screen.getByRole("textbox", { name: "Search executions…" })
     fireEvent.change(search, { target: { value: "Task run-e" } })
     expect(screen.getByText("Task run-e")).toBeInTheDocument()
     expect(screen.queryByText("Task run-a")).not.toBeInTheDocument()

@@ -16,7 +16,7 @@ def required_access(path: str, method: str) -> tuple[str, str | None] | None:
     """Return the sole authorization policy for every Studio API route."""
     if path == "/api/v1/health" and method == "GET":
         return None
-    if path.startswith("/api/v1/"):
+    if path.startswith("/api/v1/") or path.startswith("/api/v2/"):
         return ("public_api", None)
     if path in {"/api/health", "/api/system-health", "/api/auth/login"}:
         return None
@@ -34,6 +34,8 @@ def required_access(path: str, method: str) -> tuple[str, str | None] | None:
         return ("admin", None)
     if path == "/api/dashboard/me":
         return ("authenticated", None)
+    if path == "/api/studio/runs" or path.startswith("/api/studio/runs/"):
+        return ("view_executions", None)
     for prefix, permission in (
         ("/api/secrets", "manage_secrets"),
         ("/api/providers", "manage_providers_models"),
@@ -73,7 +75,7 @@ class AuthMiddleware:
             await self.app(scope, receive, send)
             return
         policy = required_access(path, request.method)
-        if path.startswith("/api/v1/"):
+        if path.startswith(("/api/v1/", "/api/v2/")):
             incoming_id = request.headers.get("x-request-id", "")
             request_id = incoming_id if re.fullmatch(r"[A-Za-z0-9._:-]{1,64}", incoming_id) else f"req_{uuid4().hex}"
             request.state.request_id = request_id
@@ -107,8 +109,19 @@ class AuthMiddleware:
                         await public_reject(401, "invalid_api_key", "A valid API key is required.")
                     return
                 user, token = resolved
-                if path.endswith("/invoke") and request.method == "POST" and rate_limited("invoke", token.id, limit=30):
-                    await public_reject(429, "rate_limited", "Too many invocation requests.")
+                kind_limit = None
+                if request.method == "POST" and path == "/api/v2/runs":
+                    kind_limit = ("v2_submit", 30)
+                elif request.method == "POST" and path.endswith("/cancel"):
+                    kind_limit = ("v2_cancel", 60)
+                elif request.method == "GET" and path.endswith("/stream"):
+                    kind_limit = ("v2_stream_open", 30)
+                elif request.method == "GET" and "/api/v2/runs/" in path:
+                    kind_limit = ("v2_read", 300)
+                elif path.endswith("/invoke") and request.method == "POST":
+                    kind_limit = ("invoke", 30)
+                if kind_limit and rate_limited(kind_limit[0], token.id, limit=kind_limit[1]):
+                    await public_reject(429, "rate_limited", "Too many requests.")
                     return
                 service.mark_token_used(token)
                 request.state.user_id = user.id

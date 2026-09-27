@@ -98,6 +98,47 @@ def test_public_auth_discovery_grants_and_revocation(clients):
     assert external.get("/api/v1/me", headers=headers).status_code == 401
 
 
+def test_v2_run_reads_follow_current_tree_grant_and_request_id(clients):
+    admin, external, factory = clients
+    tree_id, version_id = make_tree(factory, "V2 access")
+    user, key, headers = make_member(admin, external, [tree_id])
+    with factory() as database:
+        run = Run(tree_id=tree_id, tree_version_id=version_id, status="completed",
+                  core_execution_id=None, input_json={"input": "safe"}, metadata_json={},
+                  invocation_source="public_api_v2", started_at=datetime.now(timezone.utc),
+                  finished_at=datetime.now(timezone.utc), output_json={"value": "root result"})
+        database.add(run)
+        database.flush()
+        for sequence, kind in enumerate(("execution.queued", "output.final.available", "execution.completed"), 1):
+            database.add(TraceEvent(run_id=run.id, sequence=sequence, core_sequence=sequence,
+                                    event_type=kind, payload_json={}, created_at=datetime.now(timezone.utc)))
+        database.commit()
+        run_id = run.id
+
+    response = external.get(f"/api/v2/runs/{run_id}", headers={**headers, "X-Request-ID": "client-42"})
+    assert response.status_code == 200
+    assert response.json()["final_output"] == "root result"
+    assert response.headers["x-request-id"] == "client-42"
+    assert external.get(f"/api/v2/runs/{run_id}/events", headers=headers).status_code == 200
+    assert external.get(f"/api/v2/runs/{run_id}/artifacts", headers=headers).status_code == 200
+    replay = external.get(f"/api/v2/runs/{run_id}/stream",
+                          headers={**headers, "Last-Event-ID": "1"})
+    assert replay.status_code == 200
+    assert "id: 1\n" not in replay.text
+    assert "id: 2\n" in replay.text and "id: 3\n" in replay.text
+    schema = external.get("/openapi.json").json()
+    assert "/api/v2/runs/{run_id}/stream" in schema["paths"]
+    admin.put(f"/api/users/{user['id']}", json={"allowed_tree_ids": []})
+    for suffix in ("", "/result", "/events", "/artifacts", "/stream"):
+        denied = external.get(f"/api/v2/runs/{run_id}{suffix}", headers=headers)
+        assert denied.status_code == 404
+        assert denied.json()["error"]["request_id"] == denied.headers["x-request-id"]
+    with factory() as database:
+        database.get(ApiToken, key["id"]).revoked_at = datetime.now(timezone.utc)
+        database.commit()
+    assert external.get(f"/api/v2/runs/{run_id}", headers=headers).status_code == 401
+
+
 @pytest.mark.parametrize("header", [None, "Basic abc", "Bearer wrong", "Bearer ats_short"])
 def test_public_bad_auth_is_safe(clients, header):
     _, external, _ = clients
@@ -207,7 +248,9 @@ def test_public_invocation_uses_real_run_and_trace_pipeline(clients, monkeypatch
                             json={"input": "Inspect network logs", "metadata": {"client_request_id": "playground-123"}})
     assert invoked.status_code == 200, invoked.text
     result = invoked.json()
-    assert result["status"] == "completed" and result["output"]["type"] == "text"
+    assert result["status"] == "completed" and result["output"] == {
+        "type": "text", "content": "Network analysis complete",
+    }
     run_id = result["run_id"]
     retrieved = external.get(f"/api/v1/runs/{run_id}", headers=headers)
     assert retrieved.status_code == 200 and retrieved.json()["output"] == result["output"]
@@ -215,7 +258,10 @@ def test_public_invocation_uses_real_run_and_trace_pipeline(clients, monkeypatch
     assert any(row["run"]["id"] == run_id for row in admin.get(f"/api/trees/{tree_id}/live").json()["executions"])
     with factory() as db:
         assert db.scalar(select(TraceEvent).where(TraceEvent.run_id == run_id)) is not None
-        assert db.get(Run, run_id).invocation_source == "public_api_v1"
+        stored = db.get(Run, run_id)
+        assert stored.invocation_source == "public_api_v1"
+        assert stored.output_json["value"] == "Network analysis complete"
+        assert isinstance(stored.output_json["orchestration"], dict)
 
 
 def test_public_invocation_failure_is_safe_and_persisted(clients, monkeypatch):

@@ -4,7 +4,9 @@ import asyncio
 import json
 
 import pytest
-from agenttree.providers import ProviderResponse
+from agenttree.providers import (CerebrasProvider, GroqProvider,
+                                 OpenAICompatibleProvider, OpenRouterProvider,
+                                 ProviderResponse)
 from fastapi.exceptions import RequestValidationError
 from pydantic import ValidationError
 from sqlalchemy import func, select
@@ -12,7 +14,8 @@ from sqlalchemy import func, select
 from backend.api.secrets import create_secret as create_secret_route
 from backend.api.secrets import list_secrets as list_secrets_route
 from backend.main import handle_validation_error
-from backend.models.provider import ProviderModel
+from backend.models.provider import ProviderConnection, ProviderModel
+from backend.providers.generation import create_generation_provider
 from backend.models.secret import Secret
 from backend.providers.base import DiscoveredModel, ProviderAdapter, ProviderDiscoveryError
 from backend.schemas.provider import ProviderCreate
@@ -94,6 +97,26 @@ def test_ollama_can_exist_without_a_secret(database) -> None:
 
     assert created.secret_id is None
     assert created.base_url == "http://localhost:11434"
+
+
+@pytest.mark.parametrize(("provider_type", "expected_type"), (
+    ("groq", GroqProvider), ("openrouter", OpenRouterProvider),
+    ("cerebras", CerebrasProvider),
+    ("openai_compatible", OpenAICompatibleProvider),
+))
+def test_phase8a_provider_types_resolve_to_core_adapters(
+    database, provider_type, expected_type,
+) -> None:
+    secret = create_secret(database)
+    base_url = "https://compatible.example/v1" if provider_type == "openai_compatible" else None
+    created = ProviderService(database).create(ProviderCreate(
+        name=provider_type, provider_type=provider_type,
+        secret_id=secret.id, base_url=base_url,
+    ))
+    connection = database.get(ProviderConnection, created.id)
+    provider = create_generation_provider(connection, "exact-model-id", "fixture-secret")
+    assert isinstance(provider, expected_type)
+    assert provider.config.model == "exact-model-id"
 
 
 def test_secret_in_use_cannot_be_deleted(database) -> None:
