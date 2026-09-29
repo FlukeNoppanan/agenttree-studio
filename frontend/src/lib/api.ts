@@ -82,7 +82,7 @@ export interface ProviderModel {
   metadata: Record<string, unknown> | null
   is_available: boolean
   generation_candidate: boolean
-  qualification_status: "unknown" | "qualified" | "unavailable" | "transient_error"
+  qualification_status: "unknown" | "verifying" | "qualified" | "unavailable" | "transient_error"
   qualification_checked_at: string | null
   qualification_error_code: string | null
   qualification_message: string | null
@@ -106,6 +106,11 @@ export interface DiscoveryResponse {
     unavailable_count: number
     transient_error_count: number
   }
+}
+
+export interface ProviderModelVerificationResponse {
+  provider: ProviderConnection
+  model: ProviderModel
 }
 
 export interface DashboardSummary {
@@ -475,6 +480,13 @@ export const api = {
     request<ProviderConnection>(`/api/providers/${id}/test`, { method: "POST" }),
   discoverModels: (id: string) =>
     request<DiscoveryResponse>(`/api/providers/${id}/discover-models`, { method: "POST" }),
+  discoverModelCatalog: (id: string) =>
+    request<DiscoveryResponse>(`/api/providers/${id}/discover-catalog`, { method: "POST" }),
+  verifyProviderModel: (id: string, model_id: string) =>
+    request<ProviderModelVerificationResponse>(`/api/providers/${id}/verify-model`, {
+      method: "POST",
+      body: JSON.stringify({ model_id }),
+    }),
   listModels: (id: string, includeUnusable = false) => request<ProviderModel[]>(`/api/providers/${id}/models${includeUnusable ? "?include_unusable=true" : ""}`),
   getDashboardSummary: () => request<DashboardSummary>("/api/dashboard/summary"),
   getSystemHealth: () => request<SystemHealth>("/api/system-health"),

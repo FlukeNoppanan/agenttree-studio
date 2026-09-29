@@ -8,7 +8,7 @@ import {
   TestTube2,
   Trash2,
 } from "lucide-react"
-import { Fragment, type FormEvent, useCallback, useEffect, useState } from "react"
+import { Fragment, type FormEvent, useCallback, useEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { EmptyState } from "@/components/empty-state"
@@ -69,8 +69,30 @@ const emptyForm: ProviderPayload = {
   base_url: null,
 }
 
-function readyModels(models: ProviderModel[]) {
-  return models.filter((model) => model.is_available && model.generation_candidate && model.qualification_status === "qualified")
+type ProviderWorkflowStep = "connecting" | "connected" | "discovering" | "verifying" | "ready" | "connection_failed" | "discovery_failed"
+interface ProviderWorkflow {
+  step: ProviderWorkflowStep
+  message?: string
+  modelId?: string
+  current?: number
+  total?: number
+}
+
+function workflowLabel(workflow: ProviderWorkflow): string {
+  if (workflow.step === "connecting") return "Connecting…"
+  if (workflow.step === "connected") return "Connected"
+  if (workflow.step === "discovering") return "Discovering models…"
+  if (workflow.step === "verifying") return `Verifying ${workflow.modelId} (${workflow.current}/${workflow.total})…`
+  if (workflow.step === "ready") return "Ready"
+  if (workflow.step === "connection_failed") return `Connection failed — ${workflow.message ?? "Connection test failed"}`
+  return `Model discovery failed — ${workflow.message ?? "Model discovery failed"}`
+}
+
+function modelStateLabel(status: ProviderModel["qualification_status"]): string {
+  if (status === "qualified") return "Ready"
+  if (status === "verifying") return "Verifying…"
+  if (status === "unknown") return "Queued"
+  return "Unavailable"
 }
 
 export function ProvidersPage() {
@@ -78,6 +100,7 @@ export function ProvidersPage() {
   const [providers, setProviders] = useState<ProviderConnection[]>([])
   const [secrets, setSecrets] = useState<Secret[]>([])
   const [modelsByProvider, setModelsByProvider] = useState<Record<string, ProviderModel[]>>({})
+  const [workflowByProvider, setWorkflowByProvider] = useState<Record<string, ProviderWorkflow>>({})
   const [expandedProviders, setExpandedProviders] = useState<Set<string>>(() => new Set())
   const [loading, setLoading] = useState(true)
   const [busy, setBusy] = useState<string | null>(null)
@@ -86,6 +109,7 @@ export function ProvidersPage() {
   const [form, setForm] = useState<ProviderPayload>(emptyForm)
   const [notice, setNotice] = useState<{ tone: "success" | "error"; message: string } | null>(null)
   const [deletingProvider, setDeletingProvider] = useState<ProviderConnection | null>(null)
+  const activeProviderWork = useRef(new Set<string>())
 
   const loadPage = useCallback(async () => {
     setLoading(true)
@@ -145,14 +169,32 @@ export function ProvidersPage() {
     event.preventDefault()
     setBusy("save")
     try {
-      if (editing) await api.updateProvider(editing.id, form)
-      else await api.createProvider(form)
-      const wasEditing = Boolean(editing)
-      await loadPage()
+      const previous = editing
+      const mustRevalidate = !previous ||
+        previous.provider_type !== form.provider_type ||
+        previous.secret_id !== form.secret_id ||
+        previous.base_url !== form.base_url
+      const saved = previous
+        ? await api.updateProvider(previous.id, form)
+        : await api.createProvider(form)
+      if (previous) replaceProvider(saved)
+      else setProviders((current) => [saved, ...current])
+      if (previous && mustRevalidate) {
+        setModelsByProvider((current) => {
+          const next = { ...current }
+          delete next[previous.id]
+          return next
+        })
+      }
       setDialogOpen(false)
       setEditing(null)
       setForm(emptyForm)
-      setNotice({ tone: "success", message: wasEditing ? "Provider updated." : "Provider connection added." })
+      if (mustRevalidate) {
+        setNotice({ tone: "success", message: "Provider saved. Starting connection and model checks…" })
+        await runDiscoveryWorkflow(saved, true)
+      } else {
+        setNotice({ tone: "success", message: "Provider updated." })
+      }
     } catch (error) {
       setNotice({ tone: "error", message: error instanceof Error ? error.message : "Unable to save provider" })
     } finally {
@@ -164,39 +206,118 @@ export function ProvidersPage() {
     setProviders((current) => current.map((item) => item.id === updated.id ? updated : item))
   }
 
+  async function refreshProvider(providerId: string) {
+    try {
+      const latest = await api.listProviders()
+      setProviders(latest)
+      return latest.find((item) => item.id === providerId)
+    } catch {
+      return undefined
+    }
+  }
+
   async function testConnection(provider: ProviderConnection) {
+    if (activeProviderWork.current.has(provider.id)) return
+    activeProviderWork.current.add(provider.id)
     setBusy(`test:${provider.id}`)
+    setWorkflowByProvider((current) => ({ ...current, [provider.id]: { step: "connecting" } }))
     try {
       const updated = await api.testProvider(provider.id)
       replaceProvider(updated)
+      setWorkflowByProvider((current) => ({ ...current, [provider.id]: { step: "connected" } }))
       setNotice({ tone: "success", message: `${provider.name} connected successfully.` })
     } catch (error) {
-      await loadPage()
-      setNotice({ tone: "error", message: error instanceof Error ? error.message : "Connection test failed" })
+      const message = error instanceof Error ? error.message : "Connection test failed"
+      await refreshProvider(provider.id)
+      setWorkflowByProvider((current) => ({ ...current, [provider.id]: { step: "connection_failed", message } }))
+      setNotice({ tone: "error", message })
     } finally {
+      activeProviderWork.current.delete(provider.id)
+      setBusy(null)
+    }
+  }
+
+  async function runDiscoveryWorkflow(provider: ProviderConnection, testFirst: boolean) {
+    if (activeProviderWork.current.has(provider.id)) return
+    activeProviderWork.current.add(provider.id)
+    setBusy(`${testFirst ? "onboard" : "discover"}:${provider.id}`)
+    setExpandedProviders((current) => new Set(current).add(provider.id))
+
+    if (testFirst) {
+      setWorkflowByProvider((current) => ({ ...current, [provider.id]: { step: "connecting" } }))
+      try {
+        const connected = await api.testProvider(provider.id)
+        replaceProvider(connected)
+        setWorkflowByProvider((current) => ({ ...current, [provider.id]: { step: "connected" } }))
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Connection test failed"
+        await refreshProvider(provider.id)
+        setWorkflowByProvider((current) => ({ ...current, [provider.id]: { step: "connection_failed", message } }))
+        setNotice({ tone: "error", message })
+        activeProviderWork.current.delete(provider.id)
+        return
+      }
+    }
+
+    setWorkflowByProvider((current) => ({ ...current, [provider.id]: { step: "discovering" } }))
+    try {
+      const catalog = await api.discoverModelCatalog(provider.id)
+      replaceProvider(catalog.provider)
+      let models = catalog.models
+      setModelsByProvider((current) => ({ ...current, [provider.id]: models }))
+      const candidates = models.filter((model) => model.is_available && model.generation_candidate)
+
+      for (const [index, model] of candidates.entries()) {
+        setWorkflowByProvider((current) => ({
+          ...current,
+          [provider.id]: {
+            step: "verifying", modelId: model.model_id,
+            current: index + 1, total: candidates.length,
+          },
+        }))
+        models = models.map((item) => item.model_id === model.model_id
+          ? { ...item, qualification_status: "verifying", qualification_message: "Verification in progress" }
+          : item)
+        setModelsByProvider((current) => ({ ...current, [provider.id]: models }))
+        try {
+          const result = await api.verifyProviderModel(provider.id, model.model_id)
+          replaceProvider(result.provider)
+          models = models.map((item) => item.model_id === result.model.model_id ? result.model : item)
+        } catch {
+          // Continue with the other models. Keep a safe, actionable fallback if
+          // the verification API itself failed before returning a model result.
+          models = models.map((item) => item.model_id === model.model_id
+            ? {
+              ...item,
+              qualification_status: "unavailable",
+              qualification_error_code: "verification_failed",
+              qualification_message: "Generation failed",
+            }
+            : item)
+        }
+        setModelsByProvider((current) => ({ ...current, [provider.id]: models }))
+      }
+
+      setWorkflowByProvider((current) => ({ ...current, [provider.id]: { step: "ready" } }))
+      setNotice({ tone: "success", message: t("providers.discovered", {
+        discovered: catalog.summary.discovered_count,
+        candidates: candidates.length,
+        usable: models.filter((model) => model.qualification_status === "qualified").length,
+        unavailable: models.filter((model) => model.qualification_status === "unavailable" || model.qualification_status === "transient_error").length,
+      }) })
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Model discovery failed"
+      await refreshProvider(provider.id)
+      setWorkflowByProvider((current) => ({ ...current, [provider.id]: { step: "discovery_failed", message } }))
+      setNotice({ tone: "error", message })
+    } finally {
+      activeProviderWork.current.delete(provider.id)
       setBusy(null)
     }
   }
 
   async function discover(provider: ProviderConnection) {
-    setBusy(`discover:${provider.id}`)
-    try {
-      const result = await api.discoverModels(provider.id)
-      replaceProvider(result.provider)
-      setModelsByProvider((current) => ({ ...current, [provider.id]: readyModels(result.models) }))
-      setExpandedProviders((current) => new Set(current).add(provider.id))
-      setNotice({ tone: "success", message: t("providers.discovered", {
-        discovered: result.summary.discovered_count,
-        candidates: result.summary.candidate_count,
-        usable: result.summary.usable_count,
-        unavailable: result.summary.unavailable_count,
-      }) })
-    } catch (error) {
-      await loadPage()
-      setNotice({ tone: "error", message: error instanceof Error ? error.message : "Model discovery failed" })
-    } finally {
-      setBusy(null)
-    }
+    await runDiscoveryWorkflow(provider, false)
   }
 
   async function viewModels(provider: ProviderConnection) {
@@ -206,8 +327,8 @@ export function ProvidersPage() {
     }
     setBusy(`models:${provider.id}`)
     try {
-      const models = await api.listModels(provider.id)
-      setModelsByProvider((current) => ({ ...current, [provider.id]: readyModels(models) }))
+      const models = await api.listModels(provider.id, true)
+      setModelsByProvider((current) => ({ ...current, [provider.id]: models }))
       setExpandedProviders((current) => new Set(current).add(provider.id))
     } catch (error) {
       setNotice({ tone: "error", message: error instanceof Error ? error.message : "Unable to load models" })
@@ -248,8 +369,15 @@ export function ProvidersPage() {
                 <Fragment key={provider.id}>
                 <TableRow id={`provider-${provider.id}`} className={focusedProviderId === provider.id ? "bg-accent/60" : undefined}>
                   <TableCell><div className="flex items-center gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary"><ServerCog className="size-5" /></span><div><p className="font-semibold">{provider.name}</p><p className="mt-1 text-xs text-muted-foreground">{providerLabels[provider.provider_type]}</p></div></div></TableCell>
-                  <TableCell><ProviderStatusBadge status={provider.status} />{provider.last_error ? <p className="mt-1.5 max-w-48 text-xs text-red-600 dark:text-red-400">{provider.last_error}</p> : null}</TableCell>
-                  <TableCell><p>{t("providers.modelsReady", { count: provider.models_count })}</p><p className="mt-1 text-xs text-muted-foreground">{t("providers.unavailableCount", { count: provider.unavailable_models_count })}</p></TableCell>
+                  <TableCell>
+                    <ProviderStatusBadge status={provider.status} />
+                    {workflowByProvider[provider.id] ? <p className={`mt-1.5 max-w-64 text-xs ${workflowByProvider[provider.id].step.endsWith("failed") ? "text-red-600 dark:text-red-400" : "text-muted-foreground"}`}>{workflowLabel(workflowByProvider[provider.id])}</p> : null}
+                    {!workflowByProvider[provider.id] && provider.last_error ? <p className="mt-1.5 max-w-48 text-xs text-red-600 dark:text-red-400">{provider.last_error}</p> : null}
+                  </TableCell>
+                  <TableCell>
+                    <p>{t("providers.modelsReady", { count: provider.models_count })}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{t("providers.unavailableCount", { count: provider.unavailable_models_count })}{provider.transient_models_count ? ` · ${provider.transient_models_count} retry` : ""}</p>
+                  </TableCell>
                   <TableCell className="hidden whitespace-nowrap text-muted-foreground xl:table-cell">{provider.last_checked_at ? new Intl.DateTimeFormat(i18n.language, { dateStyle: "medium", timeStyle: "short" }).format(new Date(provider.last_checked_at)) : t("common.never")}</TableCell>
                   <TableCell>
                     <div className="flex flex-wrap justify-end gap-1">
@@ -271,7 +399,7 @@ export function ProvidersPage() {
                     </div>
                   </TableCell>
                 </TableRow>
-                {expandedProviders.has(provider.id) ? <TableRow id={`models-${provider.id}`} className="bg-secondary/20"><TableCell colSpan={5} className="p-4 sm:p-6"><div className="border-l-2 border-earth/40 pl-4 sm:pl-5"><h3 className="font-semibold">{t("providers.availableModels", { count: modelsByProvider[provider.id]?.length ?? 0 })}</h3>{modelsByProvider[provider.id]?.length ? <div className="mt-3 divide-y divide-border">{modelsByProvider[provider.id].map((model) => <div key={model.id} className="flex flex-wrap items-center justify-between gap-3 py-3"><div className="min-w-0"><p className="break-words font-medium">{model.display_name || model.model_id.replace(/^models\//, "")}</p><p className="mt-1 break-all font-mono text-xs text-muted-foreground">{model.model_id}</p></div><Badge variant="success">{t("status.qualified")}</Badge></div>)}</div> : <p className="mt-3 text-sm text-muted-foreground">{t("providers.noReadyModels")}</p>}</div></TableCell></TableRow> : null}
+                {expandedProviders.has(provider.id) ? <TableRow id={`models-${provider.id}`} className="bg-secondary/20"><TableCell colSpan={5} className="p-4 sm:p-6"><div className="border-l-2 border-earth/40 pl-4 sm:pl-5"><h3 className="font-semibold">Discovered models ({modelsByProvider[provider.id]?.length ?? 0})</h3>{modelsByProvider[provider.id]?.length ? <div className="mt-3 divide-y divide-border">{modelsByProvider[provider.id].map((model) => { const state = modelStateLabel(model.qualification_status); const failed = model.qualification_status === "unavailable" || model.qualification_status === "transient_error"; return <div key={model.id} className="flex flex-wrap items-center justify-between gap-3 py-3"><div className="min-w-0"><p className="break-words font-medium">{model.display_name || model.model_id.replace(/^models\//, "")}</p><p className="mt-1 break-all font-mono text-xs text-muted-foreground">{model.model_id}</p>{failed && model.qualification_message ? <p className="mt-1 text-xs text-red-600 dark:text-red-400">Unavailable — {model.qualification_message}</p> : null}</div><Badge variant={model.qualification_status === "qualified" ? "success" : failed ? "destructive" : "secondary"}>{state}</Badge></div> })}</div> : <p className="mt-3 text-sm text-muted-foreground">No models were discovered from this provider.</p>}</div></TableCell></TableRow> : null}
                 </Fragment>
               ))}
             </TableBody>
@@ -310,7 +438,7 @@ export function ProvidersPage() {
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
-              <Button type="submit" disabled={busy === "save" || (form.provider_type !== "ollama" && !form.secret_id)}>{busy === "save" ? "Saving…" : editing ? "Save changes" : "Add provider"}</Button>
+              <Button type="submit" disabled={busy !== null || (form.provider_type !== "ollama" && !form.secret_id)}>{busy === "save" ? "Saving…" : editing ? "Save changes" : "Add provider"}</Button>
             </DialogFooter>
           </form>
         </DialogContent>

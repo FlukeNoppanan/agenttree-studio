@@ -5,7 +5,7 @@ from typing import Any
 import httpx
 
 from backend.providers.base import DiscoveredModel, ProviderAdapter, ProviderDiscoveryError
-from backend.providers.http import HttpDiscoveryAdapter
+from backend.providers.http import HttpDiscoveryAdapter, url_targets_loopback
 
 
 class OllamaAdapter(HttpDiscoveryAdapter, ProviderAdapter):
@@ -14,6 +14,9 @@ class OllamaAdapter(HttpDiscoveryAdapter, ProviderAdapter):
     def __init__(self, base_url: str, client: httpx.Client | None = None) -> None:
         super().__init__(client)
         self._base_url = base_url.rstrip("/")
+        # Proxy environment variables can redirect localhost traffic away from
+        # the Ollama process. Keep environment proxy support for remote hosts.
+        self.trust_env = not url_targets_loopback(self._base_url)
 
     def discover_models(self, credential: str | None) -> tuple[DiscoveredModel, ...]:
         del credential

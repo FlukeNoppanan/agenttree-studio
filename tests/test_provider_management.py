@@ -3,6 +3,7 @@
 import asyncio
 import json
 
+import httpx
 import pytest
 from agenttree.providers import (CerebrasProvider, GroqProvider,
                                  OpenAICompatibleProvider, OpenRouterProvider,
@@ -18,6 +19,7 @@ from backend.models.provider import ProviderConnection, ProviderModel
 from backend.providers.generation import create_generation_provider
 from backend.models.secret import Secret
 from backend.providers.base import DiscoveredModel, ProviderAdapter, ProviderDiscoveryError
+from backend.providers.ollama import OllamaAdapter
 from backend.schemas.provider import ProviderCreate, ProviderType
 from backend.schemas.secret import SecretCreate
 from backend.services.errors import (
@@ -97,6 +99,294 @@ def test_ollama_can_exist_without_a_secret(database) -> None:
 
     assert created.secret_id is None
     assert created.base_url == "http://localhost:11434"
+
+
+def test_ollama_test_and_discovery_use_normalized_tags_catalog(database) -> None:
+    requested: list[httpx.Request] = []
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        requested.append(request)
+        if request.url.path == "/api/tags":
+            body = {
+                "models": [
+                    {"name": "gemma4:e4b", "size": 400, "details": {"format": "gguf"}},
+                    {"name": "qwen3:1.7b", "size": 170},
+                ],
+            }
+        else:
+            body = {"model": json.loads(request.content)["model"], "response": "OK", "thinking": ""}
+        return httpx.Response(200, json=body)
+
+    client = httpx.Client(transport=httpx.MockTransport(respond))
+    provider = ProviderService(database).create(ProviderCreate(
+        name="Local Ollama",
+        provider_type="ollama",
+        base_url="http://127.0.0.1:11434/",
+    ))
+    assert provider.base_url == "http://127.0.0.1:11434"
+
+    def adapter_factory(provider_type, base_url):
+        assert provider_type == "ollama"
+        return OllamaAdapter(base_url, client=client)
+
+    client_options: list[dict] = []
+    def generation_client_factory(**kwargs):
+        client_options.append(kwargs)
+        return httpx.Client(transport=httpx.MockTransport(respond), **kwargs)
+
+    service = ModelDiscoveryService(
+        database,
+        adapter_factory=adapter_factory,
+        ollama_client_factory=generation_client_factory,
+    )
+
+    tested = service.test_connection(provider.id)
+    discovered = service.discover_models(provider.id)
+
+    assert tested.status == "connected"
+    assert discovered.provider.status == "connected"
+    assert discovered.provider.models_count == 2
+    assert discovered.summary.discovered_count == 2
+    assert [model.model_id for model in discovered.models] == ["gemma4:e4b", "qwen3:1.7b"]
+    assert discovered.models[0].metadata == {"details": {"format": "gguf"}, "size": 400}
+    assert all(model.qualification_status == "qualified" for model in discovered.models)
+    assert [(request.method, request.url.path) for request in requested] == [
+        ("GET", "/api/tags"), ("GET", "/api/tags"),
+        ("POST", "/api/generate"), ("POST", "/api/generate"),
+    ]
+    assert [str(request.url) for request in requested] == [
+        "http://127.0.0.1:11434/api/tags",
+        "http://127.0.0.1:11434/api/tags",
+        "http://127.0.0.1:11434/api/generate",
+        "http://127.0.0.1:11434/api/generate",
+    ]
+    bodies = [json.loads(request.content) for request in requested if request.method == "POST"]
+    assert [body["model"] for body in bodies] == ["gemma4:e4b", "qwen3:1.7b"]
+    assert all(body["think"] is False and body["stream"] is False for body in bodies)
+    assert all(options["timeout"] == 120.0 and options["trust_env"] is False for options in client_options)
+
+
+def test_qwen3_thinking_only_response_does_not_fail_other_ollama_models(database) -> None:
+    generation_requests: list[dict] = []
+
+    def tags(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/api/tags":
+            return httpx.Response(200, json={"models": [
+                {"name": "gemma4:e4b"}, {"name": "qwen3:1.7b"},
+            ]})
+        body = json.loads(request.content)
+        generation_requests.append(body)
+        if body["model"] == "gemma4:e4b":
+            return httpx.Response(200, json={
+                "model": "gemma4:e4b", "response": "OK", "thinking": "", "done": True,
+            })
+        return httpx.Response(200, json={
+            "model": "qwen3:1.7b", "response": "", "thinking": "private reasoning text", "done": True,
+        })
+
+    catalog_client = httpx.Client(transport=httpx.MockTransport(tags))
+    provider = ProviderService(database).create(ProviderCreate(
+        name="Qwen Ollama", provider_type="ollama",
+        base_url="http://127.0.0.1:11434",
+    ))
+    service = ModelDiscoveryService(
+        database,
+        adapter_factory=lambda provider_type, base_url: OllamaAdapter(base_url, client=catalog_client),
+        ollama_client_factory=lambda **kwargs: httpx.Client(
+            transport=httpx.MockTransport(tags), **kwargs,
+        ),
+    )
+
+    catalog = service.discover_catalog(provider.id)
+    gemma = service.verify_model(provider.id, "gemma4:e4b")
+    qwen = service.verify_model(provider.id, "qwen3:1.7b")
+
+    assert catalog.summary.discovered_count == 2
+    assert gemma.provider.status == qwen.provider.status == "connected"
+    assert gemma.model.qualification_status == "qualified"
+    assert qwen.model.model_id == "qwen3:1.7b"
+    assert qwen.model.qualification_status == "unavailable"
+    assert qwen.model.qualification_error_code == "incompatible_response"
+    assert qwen.model.qualification_message == "Incompatible response — no final text was returned"
+    assert "private reasoning text" not in qwen.model.model_dump_json()
+    assert [item["model"] for item in generation_requests] == ["gemma4:e4b", "qwen3:1.7b"]
+    assert all(item["think"] is False and item["stream"] is False for item in generation_requests)
+    assert ProviderService(database).get(provider.id).models_count == 1
+
+
+def test_qwen3_verifies_when_ollama_thinking_is_disabled(database) -> None:
+    generation_requests: list[dict] = []
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/api/tags":
+            return httpx.Response(200, json={"models": [{"name": "qwen3:1.7b"}]})
+        body = json.loads(request.content)
+        generation_requests.append(body)
+        if body.get("think") is False:
+            return httpx.Response(200, json={
+                "model": "qwen3:1.7b", "response": "OK", "thinking": "", "done": True,
+            })
+        return httpx.Response(200, json={
+            "model": "qwen3:1.7b", "response": "", "thinking": "private reasoning text", "done": True,
+        })
+
+    catalog_client = httpx.Client(transport=httpx.MockTransport(respond))
+    provider = ProviderService(database).create(ProviderCreate(
+        name="Qwen Ollama", provider_type="ollama", base_url="http://127.0.0.1:11434",
+    ))
+    service = ModelDiscoveryService(
+        database,
+        adapter_factory=lambda provider_type, base_url: OllamaAdapter(base_url, client=catalog_client),
+        ollama_client_factory=lambda **kwargs: httpx.Client(
+            transport=httpx.MockTransport(respond), **kwargs,
+        ),
+    )
+
+    service.discover_catalog(provider.id)
+    result = service.verify_model(provider.id, "qwen3:1.7b")
+
+    assert generation_requests == [{
+        "model": "qwen3:1.7b",
+        "prompt": "Reply with exactly OK. Do not explain.",
+        "stream": False,
+        "think": False,
+        "options": {"temperature": 0, "num_predict": 32},
+    }]
+    assert result.provider.status == "connected"
+    assert result.model.qualification_status == "qualified"
+    assert result.model.qualification_message == "Ready to use"
+    assert result.provider.models_count == 1
+
+
+def test_ollama_verification_timeout_is_transient_and_safe(database) -> None:
+    def respond(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/api/tags":
+            return httpx.Response(200, json={"models": [{"name": "qwen3:1.7b"}]})
+        raise httpx.ReadTimeout("sensitive host and private diagnostic", request=request)
+
+    client = httpx.Client(transport=httpx.MockTransport(respond))
+    provider = ProviderService(database).create(ProviderCreate(
+        name="Qwen Ollama", provider_type="ollama", base_url="http://127.0.0.1:11434",
+    ))
+    service = ModelDiscoveryService(
+        database,
+        adapter_factory=lambda provider_type, base_url: OllamaAdapter(base_url, client=client),
+        ollama_client_factory=lambda **kwargs: httpx.Client(
+            transport=httpx.MockTransport(respond), **kwargs,
+        ),
+    )
+
+    service.discover_catalog(provider.id)
+    result = service.verify_model(provider.id, "qwen3:1.7b")
+
+    assert result.provider.status == "connected"
+    assert result.model.qualification_status == "transient_error"
+    assert result.model.qualification_error_code == "verification_timeout"
+    assert result.model.qualification_message == "Verification timed out"
+    assert "sensitive host" not in result.model.model_dump_json()
+
+
+def test_duplicate_model_verification_returns_in_progress_without_generation(database) -> None:
+    generation_calls = 0
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        nonlocal generation_calls
+        if request.url.path == "/api/tags":
+            return httpx.Response(200, json={"models": [{"name": "qwen3:1.7b"}]})
+        generation_calls += 1
+        return httpx.Response(200, json={"model": "qwen3:1.7b", "response": "OK"})
+
+    client = httpx.Client(transport=httpx.MockTransport(respond))
+    provider = ProviderService(database).create(ProviderCreate(
+        name="Qwen Ollama", provider_type="ollama", base_url="http://127.0.0.1:11434",
+    ))
+    service = ModelDiscoveryService(
+        database,
+        adapter_factory=lambda provider_type, base_url: OllamaAdapter(base_url, client=client),
+        ollama_client_factory=lambda **kwargs: httpx.Client(
+            transport=httpx.MockTransport(respond), **kwargs,
+        ),
+    )
+    service.discover_catalog(provider.id)
+    connection = ProviderService(database).get_model(provider.id)
+    connection.models[0].qualification_status = "verifying"
+    connection.models[0].qualification_message = "Verification in progress"
+    database.commit()
+
+    result = service.verify_model(provider.id, "qwen3:1.7b")
+
+    assert result.model.qualification_status == "verifying"
+    assert result.model.qualification_message == "Verification in progress"
+    assert generation_calls == 0
+
+
+def test_discovery_failure_does_not_mark_connected_provider_as_failed(database) -> None:
+    calls = 0
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            return httpx.Response(200, json={"models": [{"name": "qwen3:1.7b"}]})
+        return httpx.Response(503, json={"error": "private upstream diagnostic"})
+
+    client = httpx.Client(transport=httpx.MockTransport(respond))
+    provider = ProviderService(database).create(ProviderCreate(
+        name="Qwen Ollama", provider_type="ollama", base_url="http://ollama.test:11434",
+    ))
+    service = ModelDiscoveryService(
+        database,
+        adapter_factory=lambda provider_type, base_url: OllamaAdapter(base_url, client=client),
+    )
+
+    assert service.test_connection(provider.id).status == "connected"
+    with pytest.raises(ProviderOperationError, match="model discovery failed \\(server returned HTTP 503\\)"):
+        service.discover_catalog(provider.id)
+
+    stored = ProviderService(database).get(provider.id)
+    assert stored.status == "connected"
+    assert stored.last_error is None
+
+
+def test_provider_test_surfaces_only_safe_http_failure_category(database) -> None:
+    client = httpx.Client(transport=httpx.MockTransport(
+        lambda request: (_ for _ in ()).throw(httpx.ProxyError(
+            "must not be shown", request=request,
+        )),
+    ))
+    provider = ProviderService(database).create(ProviderCreate(
+        name="Local Ollama", provider_type="ollama",
+        base_url="http://127.0.0.1:11434",
+    ))
+    service = ModelDiscoveryService(
+        database,
+        adapter_factory=lambda provider_type, base_url: OllamaAdapter(base_url, client=client),
+    )
+
+    with pytest.raises(ProviderOperationError, match="Ollama connection test failed \\(proxy connection failed\\)") as failure:
+        service.test_connection(provider.id)
+
+    assert "must not be shown" not in str(failure.value)
+    stored = ProviderService(database).get(provider.id)
+    assert stored.status == "error"
+    assert stored.last_error == "Ollama connection test failed (proxy connection failed)"
+
+
+@pytest.mark.parametrize(("base_url", "expected_trust_env"), (
+    ("http://127.0.0.1:11434", False),
+    ("https://ollama.example.test", True),
+))
+def test_ollama_generation_client_proxy_policy(base_url, expected_trust_env) -> None:
+    connection = ProviderConnection(
+        name="Local Ollama", provider_type="ollama",
+        base_url=base_url,
+    )
+
+    provider = create_generation_provider(connection, "gemma4:e4b", None)
+    try:
+        assert provider._client._client._trust_env is expected_trust_env
+    finally:
+        provider._client.close()
 
 
 @pytest.mark.parametrize(("provider_type", "expected_type"), (
@@ -254,6 +544,12 @@ def test_delete_provider_cascades_related_models(database) -> None:
     ModelDiscoveryService(
         database,
         adapter_factory=lambda provider_type, base_url: CatalogAdapter(),
+        ollama_client_factory=lambda **kwargs: httpx.Client(
+            transport=httpx.MockTransport(
+                lambda request: httpx.Response(200, json={"response": "OK"}),
+            ),
+            **kwargs,
+        ),
     ).discover_models(provider.id)
 
     ProviderService(database).delete(provider.id)

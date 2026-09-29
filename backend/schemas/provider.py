@@ -26,6 +26,7 @@ class ProviderStatus(str, Enum):
 
 class ModelQualificationStatus(str, Enum):
     UNKNOWN = "unknown"
+    VERIFYING = "verifying"
     QUALIFIED = "qualified"
     UNAVAILABLE = "unavailable"
     TRANSIENT_ERROR = "transient_error"
@@ -89,6 +90,15 @@ class ProviderModelRead(BaseModel):
     qualification_error_code: str | None
     qualification_message: str | None
     discovered_at: datetime
+
+
+class VerifyProviderModelRequest(BaseModel):
+    model_id: str = Field(min_length=1, max_length=300)
+
+
+class ProviderModelVerificationResponse(BaseModel):
+    provider: ProviderRead
+    model: ProviderModelRead
 
 
 class ModelQualificationSummary(BaseModel):

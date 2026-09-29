@@ -8,8 +8,10 @@ from backend.schemas.provider import (
     ModelDiscoveryResponse,
     ProviderCreate,
     ProviderModelRead,
+    ProviderModelVerificationResponse,
     ProviderRead,
     ProviderUpdate,
+    VerifyProviderModelRequest,
 )
 from backend.services.model_discovery_service import ModelDiscoveryService
 from backend.services.provider_service import ProviderService
@@ -77,6 +79,26 @@ def discover_provider_models(
     database: Session = Depends(get_db),
 ) -> ModelDiscoveryResponse:
     return ModelDiscoveryService(database).discover_models(provider_id)
+
+
+@router.post("/{provider_id}/discover-catalog", response_model=ModelDiscoveryResponse)
+def discover_provider_catalog(
+    provider_id: str,
+    database: Session = Depends(get_db),
+) -> ModelDiscoveryResponse:
+    return ModelDiscoveryService(database).discover_catalog(provider_id)
+
+
+@router.post(
+    "/{provider_id}/verify-model",
+    response_model=ProviderModelVerificationResponse,
+)
+def verify_provider_model(
+    provider_id: str,
+    payload: VerifyProviderModelRequest,
+    database: Session = Depends(get_db),
+) -> ProviderModelVerificationResponse:
+    return ModelDiscoveryService(database).verify_model(provider_id, payload.model_id)
 
 
 @router.get("/{provider_id}/models", response_model=list[ProviderModelRead])

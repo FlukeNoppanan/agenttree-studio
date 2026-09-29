@@ -11,8 +11,10 @@ from agenttree.providers import (
     OpenRouterProvider,
     ProviderConfig,
 )
+from ollama import Client as OllamaClient
 
 from backend.models.provider import ProviderConnection
+from backend.providers.http import url_targets_loopback
 
 
 def create_generation_provider(
@@ -45,5 +47,12 @@ def create_generation_provider(
             streaming=True,
         )
     if connection.provider_type == "ollama":
-        return OllamaProvider(config, host=connection.base_url)
+        client_options = {}
+        if url_targets_loopback(connection.base_url or ""):
+            # The Ollama SDK also builds an httpx client that otherwise inherits
+            # proxy variables. Bypass them for local servers during verification
+            # and generation, while leaving proxy support enabled for remote URLs.
+            client_options["trust_env"] = False
+        client = OllamaClient(host=connection.base_url, **client_options)
+        return OllamaProvider(config, client=client)
     raise ValueError("Unsupported provider type")

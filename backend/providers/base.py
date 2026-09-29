@@ -8,6 +8,12 @@ from typing import Any
 class ProviderDiscoveryError(Exception):
     """A safe provider error that never includes credential-bearing responses."""
 
+    def __init__(self, message: str, *, diagnostic: str | None = None) -> None:
+        super().__init__(message)
+        # Diagnostics are deliberately limited to fixed, non-sensitive labels.
+        # The raw HTTP/SDK exception can contain URLs, headers, or response bodies.
+        self.diagnostic = diagnostic
+
 
 @dataclass(frozen=True)
 class DiscoveredModel:
