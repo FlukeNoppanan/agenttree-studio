@@ -12,6 +12,9 @@ from backend.models.tool import ToolAssignment, ToolConnection
 from backend.models.tree import AgentConfig, TreeVersion
 from backend.schemas.template import (
     AgentModelBindingUpdate,
+    TemplateAgentCreate,
+    TemplateAgentUpdate,
+    TemplateAgentToolsUpdate,
     TemplateAgentSetup,
     TemplateDefinition,
     TemplateReadiness,
@@ -175,6 +178,72 @@ class TemplateSetupService:
         self._database.commit()
         return self.get(tree_id, user)
 
+    def create_agent(self, tree_id: str, payload: TemplateAgentCreate, user: User) -> TemplateSetupRead:
+        tree = self._trees.get_model(tree_id)
+        version = tree.current_version
+        self._trees._ensure_draft(version)
+        parent = next((item for item in version.agents if item.id == payload.parent_agent_id), None)
+        expected = "root" if payload.agent_type == "manager" else "manager"
+        if parent is None or parent.agent_type != expected:
+            raise ServiceError(f"A {payload.agent_type} must belong to a {expected} in this Tree")
+        agent = AgentConfig(
+            tree_version=version, agent_type=payload.agent_type,
+            parent_agent_id=parent.id, name=payload.name, description="",
+            capabilities_json=[], system_instruction=None,
+        )
+        self._database.add(agent)
+        self._database.commit()
+        return self.get(tree_id, user)
+
+    def update_agent(
+        self, tree_id: str, agent_id: str, payload: TemplateAgentUpdate, user: User,
+    ) -> TemplateSetupRead:
+        tree = self._trees.get_model(tree_id)
+        self._trees._ensure_draft(tree.current_version)
+        agent = next((item for item in tree.current_version.agents if item.id == agent_id), None)
+        if agent is None:
+            raise ResourceNotFoundError("Agent not found in this Tree")
+        self._validate_binding(payload.provider_connection_id, payload.model_id)
+        agent.name = payload.name
+        agent.description = payload.description
+        agent.capabilities_json = payload.capabilities
+        agent.system_instruction = payload.system_instruction
+        agent.provider_connection_id = payload.provider_connection_id
+        agent.model_id = payload.model_id
+        self._database.commit()
+        return self.get(tree_id, user)
+
+    def update_agent_tools(
+        self, tree_id: str, agent_id: str, payload: TemplateAgentToolsUpdate, user: User,
+    ) -> TemplateSetupRead:
+        tree = self._trees.get_model(tree_id)
+        version = tree.current_version
+        self._trees._ensure_draft(version)
+        if not any(item.id == agent_id for item in version.agents):
+            raise ResourceNotFoundError("Agent not found in this Tree")
+        tool_ids = list(dict.fromkeys(payload.tool_ids))
+        for tool_id in tool_ids:
+            tool = self._database.get(ToolConnection, tool_id)
+            if tool is None or not tool.enabled or tool.status != "connected":
+                raise ServiceError("Only tested, enabled Tool connections can be assigned")
+            if tool.tool_type == "mcp" and not any(
+                isinstance(item, dict) and item.get("selected") is True
+                for item in tool.discovered_tools_json or []
+            ):
+                raise ServiceError("Select at least one discovered MCP Tool before assigning it")
+        for assignment in list(version.tool_assignments):
+            if assignment.agent_config_id == agent_id and assignment.tool_connection_id not in tool_ids:
+                version.tool_assignments.remove(assignment)
+        for tool_id in tool_ids:
+            if not any(item.agent_config_id == agent_id and item.tool_connection_id == tool_id
+                       for item in version.tool_assignments):
+                version.tool_assignments.append(ToolAssignment(
+                    tree_version_id=version.id, agent_config_id=agent_id,
+                    tool_connection_id=tool_id,
+                ))
+        self._database.commit()
+        return self.get(tree_id, user)
+
     def _readiness(
         self, tree: TreeDetailRead, definition: TemplateDefinition,
         agent_ids: dict[str, str], requirements: list[TemplateToolRequirementStatus],
@@ -191,24 +260,21 @@ class TemplateSetupService:
         missing_models: list[str] = []
         missing_instructions: list[str] = []
         ready_agent_count = 0
-        for definition_agent in definition.agents:
-            agent_id = agent_ids.get(definition_agent.key)
-            agent = agents_by_id.get(agent_id or "")
-            if agent is None:
-                missing_models.append(definition_agent.name)
-                missing_instructions.append(definition_agent.name)
-                continue
+        original_ids = set(agent_ids.values())
+        for agent in tree.version.agents:
             if not (
                 agent.provider_connection_id in connected_provider_ids
                 and (agent.provider_connection_id, agent.model_id or "") in provider_models
             ):
                 missing_models.append(agent.name)
-            if not (agent.system_instruction or "").strip():
+            original_missing_instruction = agent.id in original_ids and not (agent.system_instruction or "").strip()
+            if original_missing_instruction:
                 missing_instructions.append(agent.name)
             if (
                 agent.name.strip() and agent.capabilities
                 and (agent.provider_connection_id, agent.model_id or "") in provider_models
-                and (agent.system_instruction or "").strip()
+                and not original_missing_instruction
+                and not any(issue.agent_id == agent.id for issue in validation)
             ):
                 ready_agent_count += 1
         required = [item for item in requirements if item.requirement == "required"]
@@ -216,7 +282,7 @@ class TemplateSetupService:
         return TemplateReadiness(
             ready=not validation,
             ready_agent_count=ready_agent_count,
-            total_agent_count=len(definition.agents),
+            total_agent_count=len(agents_by_id),
             agents_missing_models=missing_models,
             agents_missing_instructions=missing_instructions,
             required_tools_ready=len(required) - len(unresolved),
@@ -257,6 +323,13 @@ class TemplateSetupService:
                 agent=self._trees._agent_read(agent),
                 requirement_ids=[requirement.id for requirement in definition.tool_requirements if requirement.agent_ref == item.key],
             ))
+        original_ids = {item.agent.id for item in agents}
+        for agent in tree.version.agents:
+            if agent.id not in original_ids:
+                agents.append(TemplateAgentSetup(
+                    agent_ref=None, role=agent.agent_type.title(), agent=agent,
+                    requirement_ids=[],
+                ))
         for warning in definition.metadata.get("portable_tool_warnings", []):
             if isinstance(warning, str):
                 warnings.append(warning)
@@ -365,14 +438,14 @@ class TemplateSetupService:
             package = _PACKAGE_BY_ID.get(status.catalog_key)
             if status.requirement != "required" or status.state != TemplateRequirementState.AVAILABLE_TO_ADD:
                 continue
-            if package is None or package["status"].value != "ready" or any(field["required"] for field in package["config_fields"]):
+            if package is None or package["status"].value != "ready":
                 continue
             target = status.agent_id
             if not target:
                 continue
             if status.action == "assign" and status.tool_id:
                 self._assign(self._database, version, target, status.tool_id)
-            elif status.action == "add":
+            elif status.action == "add" and not any(field["required"] for field in package["config_fields"]):
                 created = ToolCatalogService(self._database).create(
                     status.catalog_key, ToolPackageSetupRequest(),
                 )

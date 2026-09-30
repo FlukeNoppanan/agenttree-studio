@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { ArrowLeft, ArrowRight, Check, CircleAlert, ExternalLink, Pencil, Plus, Wrench } from "lucide-react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 
 import { useAuth } from "@/auth"
+import { CapabilitySelector } from "@/components/tree/capability-selector"
+import { TemplateTreeCanvas } from "@/components/tree/template-tree-canvas"
 import { Notice } from "@/components/notice"
 import { PageHeader } from "@/components/page-header"
 import { Badge } from "@/components/ui/badge"
@@ -14,7 +16,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { api, type Secret, type TemplateAgentSetup, type TemplateSetupRead, type TemplateToolRequirementStatus, type ToolPackageSetup } from "@/lib/api"
+import { api, type AgentDraft, type Secret, type TemplateAgentSetup, type TemplateSetupRead, type TemplateToolRequirementStatus, type ToolConnection, type ToolPackageSetup } from "@/lib/api"
 
 type NoticeState = { tone: "success" | "error"; message: string }
 
@@ -29,7 +31,11 @@ export function TemplateSetupPage() {
   const [notice, setNotice] = useState<NoticeState | null>(null)
   const [defaultProviderId, setDefaultProviderId] = useState("")
   const [defaultModelId, setDefaultModelId] = useState("")
-  const [agentBindings, setAgentBindings] = useState<Record<string, { providerId: string; modelId: string }>>({})
+  const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null)
+  const [agentDraft, setAgentDraft] = useState<AgentDraft | null>(null)
+  const [agentToolIds, setAgentToolIds] = useState<string[]>([])
+  const [availableTools, setAvailableTools] = useState<ToolConnection[]>([])
+  const [adding, setAdding] = useState(false)
   const [saving, setSaving] = useState<string | null>(null)
   const [finishing, setFinishing] = useState(false)
   const [resolvingAll, setResolvingAll] = useState(false)
@@ -49,9 +55,6 @@ export function TemplateSetupPage() {
     try {
       const result = await api.getTemplateSetup(treeId)
       setData(result)
-      setAgentBindings(Object.fromEntries(result.agents.map(({ agent }) => [agent.id, {
-        providerId: agent.provider_connection_id ?? "", modelId: agent.model_id ?? "",
-      }])))
       if (!defaultInitialized.current) {
         const root = result.tree.version.agents.find(agent => agent.agent_type === "root")
         setDefaultProviderId(root?.provider_connection_id ?? "")
@@ -78,32 +81,59 @@ export function TemplateSetupPage() {
 
   function applyResponse(result: TemplateSetupRead) {
     setData(result)
-    setAgentBindings(Object.fromEntries(result.agents.map(({ agent }) => [agent.id, {
-      providerId: agent.provider_connection_id ?? "", modelId: agent.model_id ?? "",
-    }])))
+    if (selectedAgentId) {
+      setAgentDraft(result.agents.find(item => item.agent.id === selectedAgentId)?.agent ?? null)
+      setAgentToolIds(result.tree.version.tool_assignments.filter(item => item.agent_config_id === selectedAgentId).map(item => item.tool_connection_id))
+    }
   }
 
-  function changeAgentBinding(agentId: string, field: "providerId" | "modelId", value: string) {
-    setAgentBindings(current => ({
-      ...current,
-      [agentId]: {
-        providerId: field === "providerId" ? value : current[agentId]?.providerId ?? "",
-        modelId: field === "modelId" ? value : current[agentId]?.modelId ?? "",
-      },
-    }))
+  function selectAgent(item: TemplateAgentSetup) {
+    setSelectedAgentId(item.agent.id)
+    setAgentDraft({ ...item.agent })
+    setAgentToolIds(data?.tree.version.tool_assignments.filter(assignment => assignment.agent_config_id === item.agent.id).map(assignment => assignment.tool_connection_id) ?? [])
   }
 
-  async function saveAgent(agent: TemplateAgentSetup) {
-    const binding = agentBindings[agent.agent.id]
-    if (!binding?.providerId || !binding.modelId) return
-    setSaving(agent.agent.id)
+  async function addAgent(agentType: "manager" | "specialist", parentId: string) {
+    setAdding(true)
     try {
-      applyResponse(await api.bindTemplateAgentModel(treeId, agent.agent.id, {
-        provider_connection_id: binding.providerId, model_id: binding.modelId,
-      }))
-      setNotice({ tone: "success", message: t("templateSetupV1.modelSaved") })
-    } catch (cause) { setNotice({ tone: "error", message: cause instanceof Error ? cause.message : t("templateSetupV1.modelSaveError") }) }
-    finally { setSaving(null) }
+      const before = new Set(data?.agents.map(item => item.agent.id) ?? [])
+      const result = await api.createTemplateAgent(treeId, {
+        agent_type: agentType, parent_agent_id: parentId,
+        name: agentType === "manager" ? t("templateWorkspaceV1.newManager") : t("templateWorkspaceV1.newSpecialist"),
+      })
+      applyResponse(result)
+      void api.listTools().then(setAvailableTools).catch(() => undefined)
+      const created = result.agents.find(item => !before.has(item.agent.id))
+      if (created) {
+        setSelectedAgentId(created.agent.id)
+        setAgentDraft(created.agent)
+        setAgentToolIds([])
+      }
+    } catch (cause) { setNotice({ tone: "error", message: cause instanceof Error ? cause.message : t("templateWorkspaceV1.addError") }) }
+    finally { setAdding(false) }
+  }
+
+  async function saveAgentDetails() {
+    if (!agentDraft || !agentDraft.name.trim()) return
+    setSaving(agentDraft.id)
+    try {
+      let result = await api.updateTemplateAgent(treeId, agentDraft.id, {
+        name: agentDraft.name, description: agentDraft.description,
+        capabilities: agentDraft.capabilities, system_instruction: agentDraft.system_instruction,
+        provider_connection_id: agentDraft.provider_connection_id, model_id: agentDraft.model_id,
+      })
+      const currentTools = result.tree.version.tool_assignments.filter(item => item.agent_config_id === agentDraft.id).map(item => item.tool_connection_id)
+      if (currentTools.length !== agentToolIds.length || currentTools.some(id => !agentToolIds.includes(id))) {
+        result = await api.updateTemplateAgentTools(treeId, agentDraft.id, agentToolIds)
+      }
+      applyResponse(result)
+      setNotice({ tone: "success", message: t("templateWorkspaceV1.agentSaved") })
+      setSelectedAgentId(null)
+      setAgentDraft(null)
+    } catch (cause) {
+      await load()
+      setNotice({ tone: "error", message: cause instanceof Error ? cause.message : t("templateWorkspaceV1.saveError") })
+    } finally { setSaving(null) }
   }
 
   async function applyDefault() {
@@ -135,9 +165,9 @@ export function TemplateSetupPage() {
 
   function scrollToIssue() {
     const first = data?.readiness.validation_issues[0]
-    const key = first?.agent_id ? data?.agents.find(item => item.agent.id === first.agent_id)?.agent_ref : undefined
-    const target = key ? document.getElementById(`agent-${key}`) : document.getElementById("template-tool-requirements")
-    target?.scrollIntoView({ behavior: "smooth", block: "center" })
+    const item = data?.agents.find(candidate => candidate.agent.id === first?.agent_id)
+    if (item) selectAgent(item)
+    else document.getElementById("template-tool-requirements")?.scrollIntoView({ behavior: "smooth", block: "center" })
   }
 
   async function loadSecretsIfAllowed(packageId: string) {
@@ -194,6 +224,7 @@ export function TemplateSetupPage() {
       })
       applyResponse(result)
       const updated = result.tool_requirements.find(candidate => candidate.id === item.id)
+      void api.listTools().then(setAvailableTools).catch(() => undefined)
       if (updated?.catalog_key === "generic-mcp-http" && updated.state === "needs_configuration" && updated.tool_id) {
         setPackageDialog(updated)
         setSelectedMcpTools(updated.discovered_tools.filter(tool => tool.selected).map(tool => tool.name))
@@ -210,6 +241,7 @@ export function TemplateSetupPage() {
     setResolvingAll(true)
     try {
       applyResponse(await api.resolveAllRequiredTemplateTools(treeId))
+      void api.listTools().then(setAvailableTools).catch(() => undefined)
     } catch (cause) { setNotice({ tone: "error", message: cause instanceof Error ? cause.message : t("templateSetupV1.setupError") }) }
     finally { setResolvingAll(false) }
   }
@@ -234,6 +266,7 @@ export function TemplateSetupPage() {
   // Package manifests are source controlled by Studio; fetching the list is
   // best effort and never creates a Tool or makes a remote request.
   useEffect(() => { void api.listToolCatalog().then(setPackages).catch(() => setPackages([])) }, [])
+  useEffect(() => { void api.listTools().then(setAvailableTools).catch(() => setAvailableTools([])) }, [])
 
   if (loading && !data) return <div role="status" className="py-12 text-center text-sm text-muted-foreground">{t("common.loading")}</div>
   if (!data) return <div className="space-y-4"><Notice tone="error" message={error ?? t("templateSetupV1.loadError")} onDismiss={() => setError(null)} /><Button variant="outline" onClick={() => void load()}>{t("templateSetupV1.reload")}</Button></div>
@@ -242,33 +275,14 @@ export function TemplateSetupPage() {
   const defaultModels = providerById.get(defaultProviderId)?.models ?? []
   const requiredAddable = data.tool_requirements.some(item => item.requirement === "required" && item.state === "available_to_add" && item.package_status === "ready" && (item.action === "add" || item.action === "assign"))
 
-  function renderAgent(agent: TemplateAgentSetup, depth: number): ReactNode {
-    const binding = agentBindings[agent.agent.id] ?? { providerId: "", modelId: "" }
-    const availableModels = providerById.get(binding.providerId)?.models ?? []
-    const assigned = requirementByAgentRef.get(agent.agent_ref ?? "") ?? []
-    const children = data!.agents.filter(child => data!.definition.agents.find(item => item.key === child.agent_ref)?.parent_key === agent.agent_ref)
-    return <div key={agent.agent.id} id={`agent-${agent.agent_ref ?? agent.agent.id}`} className={depth ? "ml-3 space-y-3 border-l border-border pl-4 md:ml-6" : "space-y-3"}>
-      <Card>
-        <CardHeader className="pb-3">
-          <div className="flex flex-wrap items-start justify-between gap-3"><div><CardTitle className="text-base">{agent.agent.name}</CardTitle><CardDescription className="mt-1">{agent.agent.description}</CardDescription></div><div className="flex flex-wrap gap-2"><Badge variant="secondary">{agent.role || t(`templatesV3.roles.${agent.agent.agent_type}`)}</Badge><Button size="sm" variant="outline" onClick={() => navigate(`/trees/${treeId}/edit?agent=${agent.agent.id}`)}><Pencil className="size-3.5" />{t("templateSetupV1.editAgent")}</Button></div></div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {agent.agent.capabilities.length ? <div><p className="mb-1 text-xs font-medium text-muted-foreground">{t("templateSetupV1.capabilities")}</p><div className="flex flex-wrap gap-1.5">{agent.agent.capabilities.map(item => <Badge key={item} variant="secondary">{item}</Badge>)}</div></div> : null}
-          <p className="text-sm text-muted-foreground">{agent.agent.system_instruction?.trim() || t("templateSetupV1.instructionMissing")}</p>
-          <div className="grid gap-3 md:grid-cols-2">
-            <div className="space-y-1.5"><Label htmlFor={`provider-${agent.agent.id}`}>{t("templateSetupV1.agentProvider")}</Label><Select id={`provider-${agent.agent.id}`} value={binding.providerId} onChange={event => { changeAgentBinding(agent.agent.id, "providerId", event.target.value); changeAgentBinding(agent.agent.id, "modelId", "") }}><option value="">{t("templateSetupV1.selectProvider")}</option>{providers.map(provider => <option key={provider.id} value={provider.id}>{provider.name}</option>)}</Select></div>
-            <div className="space-y-1.5"><Label htmlFor={`model-${agent.agent.id}`}>{t("templateSetupV1.agentModel")}</Label><Select id={`model-${agent.agent.id}`} value={binding.modelId} disabled={!binding.providerId || availableModels.length === 0} onChange={event => changeAgentBinding(agent.agent.id, "modelId", event.target.value)}><option value="">{t("templateSetupV1.selectModel")}</option>{availableModels.map(model => <option key={model.id} value={model.model_id}>{model.display_name || model.model_id}</option>)}</Select></div>
-          </div>
-          <div className="flex flex-wrap items-center justify-between gap-2"><span className="text-xs text-muted-foreground">{agent.agent.provider_connection_id && binding.modelId ? providerById.get(agent.agent.provider_connection_id)?.name ?? t("templateSetupV1.selectProvider") : t("templateSetupV1.configureModel")}</span><Button size="sm" disabled={!binding.providerId || !binding.modelId || saving === agent.agent.id} onClick={() => void saveAgent(agent)}>{saving === agent.agent.id ? t("templateSetupV1.saving") : t("templateSetupV1.bindModel")}</Button></div>
-          {assigned.length ? <section className="space-y-2"><h3 className="flex items-center gap-2 text-sm font-semibold"><Wrench className="size-4" />{t("templateSetupV1.requirements")}</h3>{assigned.map(item => renderRequirement(item, agent.agent.id))}</section> : null}
-        </CardContent>
-      </Card>
-      {children.map(child => renderAgent(child, depth + 1))}
-    </div>
+  const selectedAgent = data.agents.find(item => item.agent.id === selectedAgentId)
+  const selectedRequirements = data.tool_requirements.filter(item => item.agent_id === selectedAgentId)
+  const selectedProviderModels = providerById.get(agentDraft?.provider_connection_id ?? "")?.models ?? []
+  const selectIssue = (agentId: string | null) => {
+    const item = data.agents.find(candidate => candidate.agent.id === agentId)
+    if (item) selectAgent(item)
+    else document.getElementById("template-tool-requirements")?.scrollIntoView({ behavior: "smooth", block: "center" })
   }
-
-  const rootDefinition = data.definition.agents.find(item => item.agent_type === "root")
-  const rootAgent = data.agents.find(item => item.agent_ref === rootDefinition?.key)
   const shared = requirementByAgentRef.get("shared") ?? []
   const selectingMcpTools = packageDialog?.catalog_key === "generic-mcp-http" && Boolean(packageDialog.tool_id)
   const packageSetupDisabled = Boolean(saving)
@@ -294,7 +308,7 @@ export function TemplateSetupPage() {
       {defaultProviderId && !defaultModels.length ? <div className="flex flex-wrap items-center justify-between gap-2"><p className="text-xs text-muted-foreground">{t("templateSetupV1.noModels")}</p>{can("manage_providers_models") ? <Button variant="ghost" size="sm" asChild><Link to="/providers">{t("templateSetupV1.connectProviders")}<ArrowRight className="size-4" /></Link></Button> : null}</div> : null}
     </CardContent></Card>
 
-    <section className="space-y-3"><div><h2 className="text-lg font-semibold">{t("templateSetupV1.agents")}</h2><p className="text-sm text-muted-foreground">{t("templateSetupV1.configureModel")}</p></div>{rootAgent ? renderAgent(rootAgent, 0) : <Notice tone="error" message={t("templateSetupV1.loadError")} onDismiss={() => setError(null)} />}</section>
+    <section className="space-y-3"><div><h2 className="text-lg font-semibold">{t("templateWorkspaceV1.visualTree")}</h2><p className="text-sm text-muted-foreground">{t("templateWorkspaceV1.selectNode")}</p></div><TemplateTreeCanvas data={data} selectedId={selectedAgentId} onSelect={selectAgent} onAdd={(type, parentId) => void addAgent(type, parentId)} adding={adding} /></section>
 
     {shared.length ? <section id="template-tool-requirements" className="space-y-3"><div><h2 className="text-lg font-semibold">{t("templateSetupV1.shared")}</h2><p className="text-sm text-muted-foreground">{t("templateSetupV1.requirements")}</p></div>{shared.map(item => renderRequirement(item))}</section> : null}
     {data.warnings.length ? <section className="rounded-xl border border-warning/25 bg-warning/5 p-4"><h2 className="mb-2 flex items-center gap-2 text-sm font-semibold"><CircleAlert className="size-4" />{t("templateSetupV1.warnings")}</h2><ul className="list-inside list-disc space-y-1 text-sm text-muted-foreground">{data.warnings.map((warning, index) => <li key={`${index}-${warning}`}>{warning}</li>)}</ul></section> : null}
@@ -305,10 +319,26 @@ export function TemplateSetupPage() {
       {data.readiness.agents_missing_models.length ? <p className="text-sm text-muted-foreground">{t("templateSetupV1.missingModels")}: {data.readiness.agents_missing_models.join(", ")}</p> : null}
       {data.readiness.agents_missing_instructions.length ? <p className="text-sm text-muted-foreground">{t("templateSetupV1.missingInstructions")}: {data.readiness.agents_missing_instructions.join(", ")}</p> : null}
       {data.readiness.required_tools_unresolved.length ? <p className="text-sm text-muted-foreground">{t("templateSetupV1.unresolvedTools")}: {data.readiness.required_tools_unresolved.join(", ")}</p> : null}
-      {data.readiness.validation_issues.length ? <div><h3 className="mb-2 text-sm font-semibold">{t("templateSetupV1.validationIssues")}</h3><ul className="space-y-1 text-sm text-destructive">{data.readiness.validation_issues.slice(0, 8).map((issue, index) => <li key={`${issue.code}-${index}`}>{issue.message}</li>)}</ul><Button variant="ghost" className="px-0" onClick={scrollToIssue}>{t("templateSetupV1.resolveIssue")}</Button></div> : null}
+      {data.readiness.validation_issues.length ? <div><h3 className="mb-2 text-sm font-semibold">{t("templateSetupV1.validationIssues")}</h3><ul className="space-y-1 text-sm text-destructive">{data.readiness.validation_issues.slice(0, 8).map((issue, index) => <li key={`${issue.code}-${index}`}><button type="button" className="text-left underline-offset-2 hover:underline" onClick={() => selectIssue(issue.agent_id)}>{issue.message}</button></li>)}</ul><Button variant="ghost" className="px-0" onClick={scrollToIssue}>{t("templateSetupV1.resolveIssue")}</Button></div> : null}
       {requiredAddable && can("manage_tools_mcp") ? <Button variant="outline" disabled={resolvingAll} onClick={() => void resolveAllRequired()}><Plus className="size-4" />{resolvingAll ? t("templateSetupV1.resolving") : t("templateSetupV1.addAllRequired")}</Button> : null}
       <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4"><Button variant="outline" onClick={() => navigate(`/trees/${treeId}/edit`)}><Pencil className="size-4" />{t("templateSetupV1.advancedEdit")}</Button><Button disabled={!data.readiness.ready || finishing} onClick={() => void finishSetup()}>{finishing ? t("templateSetupV1.finishing") : t("templateSetupV1.finish")}<Check className="size-4" /></Button></div>
     </CardContent></Card>
+
+    <Dialog open={Boolean(selectedAgentId)} onOpenChange={open => { if (!open) { setSelectedAgentId(null); setAgentDraft(null) } }}>
+      <DialogContent className="fixed inset-y-0 right-0 left-auto top-0 h-screen max-h-screen w-full max-w-xl translate-x-0 translate-y-0 rounded-none sm:rounded-l-2xl" aria-describedby="template-agent-help">
+        {agentDraft && selectedAgent ? <>
+          <DialogHeader><DialogTitle>{t("templateWorkspaceV1.agentSettings")}: {selectedAgent.agent.name}</DialogTitle><DialogDescription id="template-agent-help">{t(`templatesV3.roles.${agentDraft.agent_type}`)} · {t("templateWorkspaceV1.settingsHelp")}</DialogDescription></DialogHeader>
+          <div className="space-y-5 pb-20">
+            <div className="space-y-3"><div className="space-y-1.5"><Label htmlFor="setup-agent-name">{t("agents.name")}</Label><Input id="setup-agent-name" value={agentDraft.name} onChange={event => setAgentDraft({ ...agentDraft, name: event.target.value })} /></div><div className="space-y-1.5"><Label htmlFor="setup-agent-description">{t("agents.description")}</Label><Textarea id="setup-agent-description" value={agentDraft.description} onChange={event => setAgentDraft({ ...agentDraft, description: event.target.value })} /></div></div>
+            <section className="space-y-3"><h3 className="font-semibold">{t("templateSetupV1.aiConfig")}</h3><div className="space-y-1.5"><Label htmlFor="setup-agent-provider">{t("templateSetupV1.agentProvider")}</Label><Select id="setup-agent-provider" value={agentDraft.provider_connection_id ?? ""} onChange={event => setAgentDraft({ ...agentDraft, provider_connection_id: event.target.value || null, model_id: null })}><option value="">{t("templateSetupV1.selectProvider")}</option>{providers.map(provider => <option key={provider.id} value={provider.id}>{provider.name}</option>)}</Select></div><div className="space-y-1.5"><Label htmlFor="setup-agent-model">{t("templateSetupV1.agentModel")}</Label><Select id="setup-agent-model" value={agentDraft.model_id ?? ""} disabled={!agentDraft.provider_connection_id || !selectedProviderModels.length} onChange={event => setAgentDraft({ ...agentDraft, model_id: event.target.value || null })}><option value="">{t("templateSetupV1.selectModel")}</option>{selectedProviderModels.map(model => <option key={model.id} value={model.model_id}>{model.display_name || model.model_id}</option>)}</Select></div></section>
+            <section className="space-y-2"><h3 className="font-semibold">{t("agents.capabilities")}</h3><div className="flex flex-wrap gap-1">{agentDraft.capabilities.map(capability => <Badge key={capability} variant="secondary">{capability}</Badge>)}</div><details className="rounded-lg border border-border p-3"><summary className="cursor-pointer text-sm font-medium">{t("templateWorkspaceV1.editCapabilities")}</summary><div className="mt-3"><CapabilitySelector value={agentDraft.capabilities} onChange={capabilities => setAgentDraft(current => current ? { ...current, capabilities } : current)} agentType={agentDraft.agent_type} name={agentDraft.name} description={agentDraft.description} systemInstruction={agentDraft.system_instruction ?? ""} providerConnectionId={agentDraft.provider_connection_id} modelId={agentDraft.model_id} /></div></details></section>
+            <section className="space-y-2"><h3 className="font-semibold">{t("templateSetupV1.requirements")}</h3>{selectedRequirements.map(item => renderRequirement(item, agentDraft.id))}{availableTools.filter(tool => tool.status === "connected" && tool.enabled).map(tool => <label key={tool.id} className="flex items-center gap-2 rounded-lg border border-border p-2 text-sm"><input type="checkbox" checked={agentToolIds.includes(tool.id)} onChange={event => setAgentToolIds(current => event.target.checked ? [...current, tool.id] : current.filter(id => id !== tool.id))} />{tool.name}</label>)}<p className="text-xs text-muted-foreground">{t("templateWorkspaceV1.toolsHelp")}</p><Button variant="outline" size="sm" asChild><Link to="/tools">{t("templateWorkspaceV1.manageTools")}</Link></Button></section>
+            <details className="rounded-lg border border-border p-3"><summary className="cursor-pointer text-sm font-medium">{t("templateWorkspaceV1.advancedInstructions")}</summary><div className="mt-3 space-y-1.5"><Label htmlFor="setup-agent-instruction">{t("agents.systemInstruction")}</Label><Textarea id="setup-agent-instruction" className="min-h-32" value={agentDraft.system_instruction ?? ""} onChange={event => setAgentDraft({ ...agentDraft, system_instruction: event.target.value })} /></div></details>
+          </div>
+          <div className="sticky bottom-0 flex justify-end gap-2 border-t border-border bg-card py-3"><Button variant="outline" onClick={() => { setSelectedAgentId(null); setAgentDraft(null) }}>{t("common.cancel")}</Button><Button disabled={!agentDraft.name.trim() || Boolean(saving)} onClick={() => void saveAgentDetails()}>{saving === agentDraft.id ? t("templateSetupV1.saving") : t("common.save")}</Button></div>
+        </> : null}
+      </DialogContent>
+    </Dialog>
 
     <Dialog open={Boolean(packageDialog)} onOpenChange={open => { if (!open) setPackageDialog(null) }}><DialogContent><DialogHeader><DialogTitle>{t("templateSetupV1.setupPackage", { name: packageDialog ? t(`templateSetupV1.packages.${packageDialog.catalog_key}.name`, { defaultValue: packageDialog.package_name ?? packageDialog.catalog_key }) : "" })}</DialogTitle><DialogDescription>{packageDialog ? t(`templateSetupV1.packages.${packageDialog.catalog_key}.description`, { defaultValue: packageDialog.reason }) : ""}</DialogDescription></DialogHeader>
       {selectingMcpTools ? <div className="space-y-3"><p className="text-sm text-muted-foreground">{packageDialog?.discovered_tools?.length ? t("templateSetupV1.selectMcpTools") : t("templateSetupV1.noMcpToolsFound")}</p>{packageDialog?.discovered_tools.map(tool => <label key={tool.name} className="flex items-start gap-3 rounded-lg border border-border p-3"><input type="checkbox" checked={selectedMcpTools.includes(tool.name)} onChange={event => setSelectedMcpTools(current => event.target.checked ? [...new Set([...current, tool.name])] : current.filter(name => name !== tool.name))} /><span><span className="block text-sm font-medium">{tool.name}</span><span className="text-xs text-muted-foreground">{tool.description}</span></span></label>)}</div> : <div className="space-y-4">

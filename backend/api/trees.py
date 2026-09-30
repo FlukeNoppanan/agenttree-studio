@@ -6,7 +6,10 @@ from sqlalchemy.orm import Session
 from backend.db.session import get_db
 from backend.api.auth import current_user
 from backend.schemas.template import TemplateMetadataCreate, TemplateRead
-from backend.schemas.template import AgentModelBindingUpdate, TemplateSetupRead
+from backend.schemas.template import (
+    AgentModelBindingUpdate, TemplateAgentCreate, TemplateAgentUpdate,
+    TemplateAgentToolsUpdate, TemplateSetupRead,
+)
 from backend.schemas.tree import (
     TreeDetailRead,
     TreeDraftPayload,
@@ -27,6 +30,36 @@ def get_template_setup(
     tree_id: str, request: Request, database: Session = Depends(get_db),
 ) -> TemplateSetupRead:
     return TemplateSetupService(database).get(tree_id, current_user(request, database))
+
+
+@router.post("/{tree_id}/template-setup/agents", response_model=TemplateSetupRead, status_code=status.HTTP_201_CREATED)
+def create_template_agent(
+    tree_id: str, payload: TemplateAgentCreate, request: Request,
+    database: Session = Depends(get_db),
+) -> TemplateSetupRead:
+    return TemplateSetupService(database).create_agent(
+        tree_id, payload, current_user(request, database),
+    )
+
+
+@router.patch("/{tree_id}/template-setup/agents/{agent_id}", response_model=TemplateSetupRead)
+def update_template_agent(
+    tree_id: str, agent_id: str, payload: TemplateAgentUpdate, request: Request,
+    database: Session = Depends(get_db),
+) -> TemplateSetupRead:
+    return TemplateSetupService(database).update_agent(
+        tree_id, agent_id, payload, current_user(request, database),
+    )
+
+
+@router.put("/{tree_id}/template-setup/agents/{agent_id}/tools", response_model=TemplateSetupRead)
+def update_template_agent_tools(
+    tree_id: str, agent_id: str, payload: TemplateAgentToolsUpdate, request: Request,
+    database: Session = Depends(get_db),
+) -> TemplateSetupRead:
+    return TemplateSetupService(database).update_agent_tools(
+        tree_id, agent_id, payload, current_user(request, database),
+    )
 
 
 @router.patch("/{tree_id}/template-setup/agents/{agent_id}/model", response_model=TemplateSetupRead)

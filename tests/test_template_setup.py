@@ -15,6 +15,9 @@ from backend.models.template import TreeTemplate
 from backend.models.tool import ToolConnection
 from backend.schemas.template import (
     AgentModelBindingUpdate,
+    TemplateAgentCreate,
+    TemplateAgentUpdate,
+    TemplateAgentToolsUpdate,
     TemplateMetadataCreate,
     TemplateRequirementState,
     TemplateToolRequirement,
@@ -323,3 +326,114 @@ def test_template_setup_http_flow_returns_models_and_finishes_after_required_too
     finally:
         client.close()
         app.dependency_overrides.clear()
+
+
+def test_blank_visual_setup_adds_hierarchy_and_shares_advanced_editor_data(database):
+    owner = _user(database)
+    tree = TemplateService(database).instantiate("builtin-blank", owner)
+    service = TemplateSetupService(database)
+    root = service.get(tree.id, owner).agents[0].agent
+    assert service.get(tree.id, owner).readiness.total_agent_count == 1
+
+    manager = next(item.agent for item in service.create_agent(tree.id, TemplateAgentCreate(
+        agent_type="manager", parent_agent_id=root.id, name="API Manager",
+    ), owner).agents if item.agent.name == "API Manager")
+    first = next(item.agent for item in service.create_agent(tree.id, TemplateAgentCreate(
+        agent_type="specialist", parent_agent_id=manager.id, name="Endpoint Specialist",
+    ), owner).agents if item.agent.name == "Endpoint Specialist")
+    second_manager = next(item.agent for item in service.create_agent(tree.id, TemplateAgentCreate(
+        agent_type="manager", parent_agent_id=root.id, name="Data Manager",
+    ), owner).agents if item.agent.name == "Data Manager")
+    second = next(item.agent for item in service.create_agent(tree.id, TemplateAgentCreate(
+        agent_type="specialist", parent_agent_id=second_manager.id, name="Data Specialist",
+    ), owner).agents if item.agent.name == "Data Specialist")
+    with pytest.raises(ServiceError, match="must belong to a manager"):
+        service.create_agent(tree.id, TemplateAgentCreate(
+            agent_type="specialist", parent_agent_id=root.id, name="Invalid",
+        ), owner)
+
+    provider, model = _provider(database)
+    service.apply_default(tree.id, AgentModelBindingUpdate(
+        provider_connection_id=provider.id, model_id=model.model_id,
+    ), owner)
+    other_provider, other_model = _provider(database, model_id="qwen3:1.7b")
+    service.update_agent(tree.id, second.id, TemplateAgentUpdate(
+        name=second.name, description="Checks data", capabilities=["analysis"],
+        system_instruction="Analyze the data.", provider_connection_id=other_provider.id,
+        model_id=other_model.model_id,
+    ), owner)
+    for agent_id, capability in ((root.id, "coordination"), (manager.id, "api-analysis"),
+                                  (first.id, "api-review"), (second_manager.id, "data-review")):
+        agent = next(item.agent for item in service.get(tree.id, owner).agents if item.agent.id == agent_id)
+        service.update_agent(tree.id, agent_id, TemplateAgentUpdate(
+            name=agent.name, description=agent.description, capabilities=[capability],
+            system_instruction=agent.system_instruction,
+            provider_connection_id=agent.provider_connection_id, model_id=agent.model_id,
+        ), owner)
+
+    setup = service.get(tree.id, owner)
+    assert setup.readiness.total_agent_count == setup.readiness.ready_agent_count == 5
+    assert setup.readiness.ready
+    by_id = {item.agent.id: item.agent for item in setup.agents}
+    assert by_id[first.id].parent_agent_id == manager.id
+    assert by_id[second.id].parent_agent_id == second_manager.id
+    assert by_id[second.id].model_id == "qwen3:1.7b"
+    assert all(by_id[item].model_id == "gemma4:e4b" for item in (root.id, manager.id, first.id, second_manager.id))
+
+    detail = TreeService(database).get(tree.id)
+    payload = TreeDraftPayload.model_validate({
+        "name": detail.name, "description": detail.description, "template": detail.template,
+        "agents": [{**agent.model_dump(mode="json"), "description": "Edited in Advanced Tree Editor" if agent.id == manager.id else agent.description}
+                   for agent in detail.version.agents],
+        "tool_assignments": [item.model_dump() for item in detail.version.tool_assignments],
+        "trigger": detail.version.trigger.model_dump() if detail.version.trigger else None,
+        "output": detail.version.output.model_dump() if detail.version.output else None,
+    })
+    TreeService(database).save_draft(tree.id, payload)
+    reloaded = service.get(tree.id, owner)
+    assert next(item.agent for item in reloaded.agents if item.agent.id == manager.id).description == "Edited in Advanced Tree Editor"
+    assert reloaded.readiness.ready
+
+
+def test_visual_setup_tool_assignment_rejects_unready_and_persists(database):
+    owner = _user(database)
+    tree = TemplateService(database).instantiate("builtin-blank", owner)
+    service = TemplateSetupService(database)
+    root_id = service.get(tree.id, owner).agents[0].agent.id
+    ready_tool = ToolConnection(name="Ready artifact", tool_type="artifact", enabled=True, status="connected", config_json={})
+    broken_tool = ToolConnection(name="Broken artifact", tool_type="artifact", enabled=False, status="error", config_json={})
+    database.add_all([ready_tool, broken_tool])
+    database.commit()
+    with pytest.raises(ServiceError, match="tested, enabled"):
+        service.update_agent_tools(tree.id, root_id, TemplateAgentToolsUpdate(tool_ids=[broken_tool.id]), owner)
+    assigned = service.update_agent_tools(tree.id, root_id, TemplateAgentToolsUpdate(tool_ids=[ready_tool.id]), owner)
+    assert assigned.tree.version.tool_assignments[0].tool_connection_id == ready_tool.id
+    assert service.get(tree.id, owner).tree.version.tool_assignments[0].agent_config_id == root_id
+
+
+def test_visual_tool_assignment_recalculates_required_readiness(database):
+    owner = _user(database)
+    tree = TemplateService(database).instantiate("builtin-api-data-analysis", owner)
+    service = TemplateSetupService(database)
+    before = service.get(tree.id, owner)
+    required = next(item for item in before.tool_requirements if item.requirement == "required")
+    assert required.state is not TemplateRequirementState.READY
+    tool = ToolConnection(
+        name="Checked API", tool_type="http_api", enabled=True, status="connected",
+        config_json={"catalog_package_id": "web-api-request", "url": "https://example.test/api"},
+    )
+    database.add(tool)
+    database.commit()
+    automatic = service.resolve_all_required(tree.id, owner)
+    assert next(item for item in automatic.tool_requirements if item.id == required.id).state is TemplateRequirementState.READY
+    assert automatic.readiness.required_tools_ready == 1
+    service.update_agent_tools(tree.id, required.agent_id,
+                               TemplateAgentToolsUpdate(tool_ids=[]), owner)
+    assigned = service.update_agent_tools(tree.id, required.agent_id,
+                                          TemplateAgentToolsUpdate(tool_ids=[tool.id]), owner)
+    assert next(item for item in assigned.tool_requirements if item.id == required.id).state is TemplateRequirementState.READY
+    assert assigned.readiness.required_tools_ready == 1
+    removed = service.update_agent_tools(tree.id, required.agent_id,
+                                         TemplateAgentToolsUpdate(tool_ids=[]), owner)
+    assert next(item for item in removed.tool_requirements if item.id == required.id).state is not TemplateRequirementState.READY
+    assert removed.readiness.required_tools_ready == 0

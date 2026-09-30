@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
@@ -7,14 +7,16 @@ import type { TemplateSetupRead, TemplateToolRequirementStatus } from "@/lib/api
 
 const mocks = vi.hoisted(() => ({
   getTemplateSetup: vi.fn(), bindTemplateAgentModel: vi.fn(), applyTemplateDefault: vi.fn(),
+  createTemplateAgent: vi.fn(), updateTemplateAgent: vi.fn(), updateTemplateAgentTools: vi.fn(),
   resolveTemplateRequirement: vi.fn(), resolveAllRequiredTemplateTools: vi.fn(),
-  validateTree: vi.fn(), listToolCatalog: vi.fn(), listSecrets: vi.fn(), can: vi.fn(() => true),
+  validateTree: vi.fn(), listToolCatalog: vi.fn(), listTools: vi.fn(), listCapabilities: vi.fn(), listSecrets: vi.fn(), can: vi.fn(() => true),
 }))
 vi.mock("@/lib/api", () => ({ api: mocks }))
 vi.mock("@/auth", () => ({ useAuth: () => ({ can: mocks.can }) }))
 
 const provider = { id: "local", name: "Local Ollama", provider_type: "ollama" as const, models: [
   { id: "m1", provider_connection_id: "local", model_id: "gemma4:e4b", display_name: "gemma4:e4b", metadata: null, is_available: true, generation_candidate: true, qualification_status: "qualified" as const, qualification_checked_at: null, qualification_error_code: null, qualification_message: null, discovered_at: "now" },
+  { id: "m2", provider_connection_id: "local", model_id: "qwen3:1.7b", display_name: "qwen3:1.7b", metadata: null, is_available: true, generation_candidate: true, qualification_status: "qualified" as const, qualification_checked_at: null, qualification_error_code: null, qualification_message: null, discovered_at: "now" },
 ] }
 const agents = [
   { id: "root-id", agent_type: "root" as const, name: "Analysis Lead", description: "Reviews the answer.", parent_agent_id: null, provider_connection_id: null, model_id: null, system_instruction: "Coordinate the analysis.", capabilities: ["analysis"], settings: {}, created_at: "now", updated_at: "now" },
@@ -72,6 +74,8 @@ describe("Template Setup", () => {
     mocks.can.mockReturnValue(true)
     mocks.getTemplateSetup.mockResolvedValue(fixture())
     mocks.listToolCatalog.mockResolvedValue(catalog)
+    mocks.listTools.mockResolvedValue([])
+    mocks.listCapabilities.mockResolvedValue([])
     mocks.listSecrets.mockResolvedValue([])
     mocks.bindTemplateAgentModel.mockResolvedValue(fixture())
     mocks.applyTemplateDefault.mockResolvedValue(fixture({
@@ -99,19 +103,22 @@ describe("Template Setup", () => {
     await waitFor(() => expect(mocks.applyTemplateDefault).toHaveBeenCalledWith("tree-1", { provider_connection_id: "local", model_id: "gemma4:e4b" }))
   })
 
-  it("saves an individual Agent model binding", async () => {
+  it("opens node settings and saves an individual Agent model binding", async () => {
     renderPage()
     await screen.findByText(/Analysis Tree/)
-    const controls = within(document.getElementById("agent-specialist")!)
-    fireEvent.change(controls.getByLabelText("Provider"), { target: { value: "local" } })
-    fireEvent.change(controls.getByLabelText("Model"), { target: { value: "gemma4:e4b" } })
-    fireEvent.click(controls.getByRole("button", { name: "Save binding" }))
-    await waitFor(() => expect(mocks.bindTemplateAgentModel).toHaveBeenCalledWith("tree-1", "specialist-id", { provider_connection_id: "local", model_id: "gemma4:e4b" }))
+    fireEvent.click(screen.getByRole("button", { name: "Specialist: Research Specialist" }))
+    expect(await screen.findByText(/Agent Settings/)).toBeInTheDocument()
+    fireEvent.change(screen.getByLabelText("Provider"), { target: { value: "local" } })
+    fireEvent.change(screen.getByLabelText("Model"), { target: { value: "gemma4:e4b" } })
+    mocks.updateTemplateAgent.mockResolvedValue(fixture())
+    fireEvent.click(screen.getByRole("button", { name: "Save" }))
+    await waitFor(() => expect(mocks.updateTemplateAgent).toHaveBeenCalledWith("tree-1", "specialist-id", expect.objectContaining({ provider_connection_id: "local", model_id: "gemma4:e4b" })))
   })
 
   it("adds a ready required Tool and shows coming soon recommendations", async () => {
     renderPage()
     await screen.findByText(/Analysis Tree/)
+    fireEvent.click(screen.getByRole("button", { name: "Specialist: Research Specialist" }))
     expect(screen.getByText("Coming soon")).toBeInTheDocument()
     fireEvent.click(screen.getByRole("button", { name: "Add Tool" }))
     await waitFor(() => expect(mocks.resolveTemplateRequirement).toHaveBeenCalledWith("artifact-output", {
@@ -133,6 +140,7 @@ describe("Template Setup", () => {
   it("lets the user select discovered MCP tools before assigning the connection", async () => {
     renderPage()
     await screen.findByText(/Analysis Tree/)
+    fireEvent.click(screen.getByRole("button", { name: "Specialist: Research Specialist" }))
     fireEvent.click(screen.getAllByRole("button", { name: "Set up Tool" })[0])
     const checkbox = await screen.findByRole("checkbox", { name: /search/ })
     fireEvent.click(checkbox)
@@ -147,5 +155,65 @@ describe("Template Setup", () => {
     await screen.findByText(/Analysis Tree/)
     fireEvent.click(screen.getAllByRole("button", { name: "Advanced Tree Editor" })[0])
     expect(await screen.findByText("Advanced editor")).toBeInTheDocument()
+  })
+
+  it("shows Blank Tree hierarchy and adds a Manager directly from setup", async () => {
+    const blank = fixture()
+    blank.tree.name = "Blank Tree"
+    blank.tree.version.agents = [agents[0]]
+    blank.agents = [blank.agents[0]]
+    blank.definition.agents = [blank.definition.agents[0]]
+    blank.tool_requirements = []
+    blank.readiness = { ...blank.readiness, total_agent_count: 1, required_tools_total: 0, required_tools_unresolved: [], validation_issues: [
+      { step: "managers", code: "manager_required", message: "Tree must have at least one Manager", agent_id: null },
+    ] }
+    mocks.getTemplateSetup.mockResolvedValue(blank)
+    const manager = { ...agents[1], id: "new-manager", name: "New Manager" }
+    mocks.createTemplateAgent.mockResolvedValue({ ...blank,
+      tree: { ...blank.tree, version: { ...blank.tree.version, agents: [agents[0], manager] } },
+      agents: [...blank.agents, { agent_ref: null, role: "Manager", agent: manager, requirement_ids: [] }],
+    })
+    renderPage()
+    expect(await screen.findByRole("button", { name: "Root: Analysis Lead" })).toBeInTheDocument()
+    fireEvent.click(screen.getByRole("button", { name: "Add Manager" }))
+    await waitFor(() => expect(mocks.createTemplateAgent).toHaveBeenCalledWith("tree-1", { agent_type: "manager", parent_agent_id: "root-id", name: "New Manager" }))
+    fireEvent.click(await screen.findByRole("button", { name: "Cancel" }))
+    expect(await screen.findByRole("button", { name: "Manager: New Manager" })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "Add Specialist" })).toBeInTheDocument()
+  })
+
+  it("keeps other nodes bound when a Specialist overrides the default model", async () => {
+    const applied = fixture({
+      tree: { ...fixture().tree, version: { ...fixture().tree.version, agents: agents.map(agent => ({ ...agent, provider_connection_id: "local", model_id: "gemma4:e4b" })) } },
+      agents: fixture().agents.map(item => ({ ...item, agent: { ...item.agent, provider_connection_id: "local", model_id: "gemma4:e4b" } })),
+    })
+    mocks.applyTemplateDefault.mockResolvedValue(applied)
+    mocks.updateTemplateAgent.mockResolvedValue({ ...applied,
+      tree: { ...applied.tree, version: { ...applied.tree.version, agents: applied.tree.version.agents.map(agent => agent.id === "specialist-id" ? { ...agent, model_id: "qwen3:1.7b" } : agent) } },
+      agents: applied.agents.map(item => item.agent.id === "specialist-id" ? { ...item, agent: { ...item.agent, model_id: "qwen3:1.7b" } } : item),
+    })
+    renderPage()
+    await screen.findByText(/Analysis Tree/)
+    fireEvent.change(screen.getByLabelText("Default Provider"), { target: { value: "local" } })
+    fireEvent.change(screen.getByLabelText("Default Model"), { target: { value: "gemma4:e4b" } })
+    fireEvent.click(screen.getByRole("button", { name: "Apply to all Agents" }))
+    await waitFor(() => expect(screen.getByRole("button", { name: "Specialist: Research Specialist" })).toHaveTextContent("gemma4:e4b"))
+    fireEvent.click(screen.getByRole("button", { name: "Specialist: Research Specialist" }))
+    fireEvent.change(screen.getByLabelText("Model"), { target: { value: "qwen3:1.7b" } })
+    fireEvent.click(screen.getByRole("button", { name: "Save" }))
+    await waitFor(() => expect(screen.getByRole("button", { name: "Specialist: Research Specialist" })).toHaveTextContent("qwen3:1.7b"))
+    expect(screen.getByRole("button", { name: "Root: Analysis Lead" })).toHaveTextContent("gemma4:e4b")
+    expect(screen.getByRole("button", { name: "Manager: Research Manager" })).toHaveTextContent("gemma4:e4b")
+  })
+
+  it("keeps the Tree visible when Agent save or Tool Catalog loading fails", async () => {
+    mocks.listToolCatalog.mockRejectedValue(new Error("Catalog unavailable"))
+    mocks.updateTemplateAgent.mockRejectedValue(new Error("Agent save failed"))
+    renderPage()
+    await screen.findByRole("button", { name: "Root: Analysis Lead" })
+    fireEvent.click(screen.getByRole("button", { name: "Root: Analysis Lead" }))
+    fireEvent.click(screen.getByRole("button", { name: "Save" }))
+    expect(await screen.findByText("Agent save failed")).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "Root: Analysis Lead", hidden: true })).toBeInTheDocument()
   })
 })

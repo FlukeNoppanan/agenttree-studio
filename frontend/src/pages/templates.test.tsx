@@ -26,7 +26,8 @@ const template: TreeTemplate = {
 function renderPage() {
   return render(<MemoryRouter initialEntries={["/templates"]}><Routes>
     <Route path="/templates" element={<TemplatesPage />} />
-    <Route path="/trees/:treeId/setup" element={<div>Independent draft setup</div>} />
+    <Route path="/trees/:treeId/setup" element={<div>Visual Tree Workspace</div>} />
+    <Route path="/trees/:treeId/edit" element={<div>Advanced Tree Editor</div>} />
   </Routes></MemoryRouter>)
 }
 
@@ -50,7 +51,8 @@ describe("reusable Template catalog", () => {
     mocks.instantiateTemplate.mockResolvedValue({ id: "new-tree" })
     renderPage()
     fireEvent.click(await screen.findByRole("button", { name: "Use Template" }))
-    expect(await screen.findByText("Independent draft setup")).toBeInTheDocument()
+    expect(await screen.findByText("Visual Tree Workspace")).toBeInTheDocument()
+    expect(screen.queryByText("Advanced Tree Editor")).not.toBeInTheDocument()
     expect(mocks.instantiateTemplate).toHaveBeenCalledWith(template.id)
   })
 

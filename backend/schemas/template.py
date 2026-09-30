@@ -5,6 +5,7 @@ from enum import Enum
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from backend.core.capabilities import normalize_capabilities
 
 from backend.schemas.tree import OutputDraft, TriggerDraft
 from backend.schemas.provider import ProviderModelRead, ProviderType
@@ -335,6 +336,56 @@ class AgentModelBindingUpdate(BaseModel):
         if bool(self.provider_connection_id) != bool(self.model_id):
             raise ValueError("Provider and Model must be selected together")
         return self
+
+
+class TemplateAgentCreate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    agent_type: Literal["manager", "specialist"]
+    parent_agent_id: str
+    name: str = Field(min_length=1, max_length=160)
+
+    @field_validator("name")
+    @classmethod
+    def normalize_name(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("Agent name is required")
+        return value
+
+
+class TemplateAgentUpdate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str = Field(min_length=1, max_length=160)
+    description: str = Field(default="", max_length=4_000)
+    capabilities: list[str] = Field(default_factory=list, max_length=40)
+    system_instruction: str | None = Field(default=None, max_length=20_000)
+    provider_connection_id: str | None = None
+    model_id: str | None = Field(default=None, max_length=300)
+
+    @field_validator("name", "description")
+    @classmethod
+    def normalize_text(cls, value: str) -> str:
+        return value.strip()
+
+    @field_validator("capabilities")
+    @classmethod
+    def normalize_capabilities_field(cls, values: list[str]) -> list[str]:
+        return normalize_capabilities(values)
+
+    @model_validator(mode="after")
+    def validate_fields(self) -> "TemplateAgentUpdate":
+        if not self.name:
+            raise ValueError("Agent name is required")
+        if bool(self.provider_connection_id) != bool(self.model_id):
+            raise ValueError("Provider and Model must be selected together")
+        return self
+
+
+class TemplateAgentToolsUpdate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    tool_ids: list[str] = Field(default_factory=list, max_length=100)
 
 
 class TemplateToolRequirementResolveRequest(BaseModel):
