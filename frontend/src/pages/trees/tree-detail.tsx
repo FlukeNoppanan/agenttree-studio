@@ -1,5 +1,5 @@
 import { useAuth } from "@/auth"
-import { Activity, ArrowLeft, Boxes, Eye, Pencil, Play, Settings, Wrench } from "lucide-react"
+import { Activity, ArrowLeft, Boxes, Eye, Pencil, Play, Save, Settings, Wrench } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { useTranslation } from "react-i18next"
@@ -13,6 +13,10 @@ import { ToolStatusBadge } from "@/components/tools/tool-status-badge"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { CardDescription, CardTitle } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { cn } from "@/lib/utils"
@@ -34,6 +38,9 @@ export function TreeDetailPage() {
   const [tab, setTab] = useState<(typeof tabs)[number]>("Overview")
   const [loading, setLoading] = useState(true)
   const [notice, setNotice] = useState<{ tone: "success" | "error"; message: string } | null>(null)
+  const [templateDialogOpen, setTemplateDialogOpen] = useState(false)
+  const [templateSaving, setTemplateSaving] = useState(false)
+  const [templateFields, setTemplateFields] = useState({ name: "", description: "", category: "general" })
 
   useEffect(() => {
     if (!treeId) return
@@ -54,12 +61,24 @@ export function TreeDetailPage() {
     catch (error) { setNotice({ tone: "error", message: error instanceof Error ? error.message : "Unable to delete Tree" }) }
   }
 
+  async function saveAsTemplate() {
+    if (!treeId || !templateFields.name.trim() || !templateFields.category.trim()) return
+    setTemplateSaving(true)
+    try {
+      await api.saveTreeAsTemplate(treeId, templateFields)
+      setTemplateDialogOpen(false)
+      setNotice({ tone: "success", message: t("templatesV3.savedFromTree") })
+    } catch (error) {
+      setNotice({ tone: "error", message: error instanceof Error ? error.message : t("templatesV3.saveError") })
+    } finally { setTemplateSaving(false) }
+  }
+
   if (loading) return <div className="space-y-4"><Skeleton className="h-10 w-72" /><Skeleton className="h-96 w-full" /></div>
   if (!tree) return <div className="space-y-4">{notice ? <Notice {...notice} onDismiss={() => setNotice(null)} /> : null}<Button variant="outline" onClick={() => navigate("/trees")}><ArrowLeft className="size-4" />Back to Trees</Button></div>
 
   return (
     <div className="space-y-7">
-      <div className="flex min-w-0 flex-col gap-5 border-b border-border pb-5 xl:flex-row xl:items-end xl:justify-between"><div className="min-w-0"><button className="mb-3 flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-primary" onClick={() => navigate("/trees")}><ArrowLeft className="size-3.5" />{t("trees.back")}</button><div className="flex flex-wrap items-center gap-3"><h1 className="break-words text-3xl font-semibold tracking-[-0.03em]">{tree.name}</h1><Badge variant={tree.status === "ready" || tree.status === "published" ? "success" : "secondary"}>{t(`status.${tree.status}`)}</Badge></div><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{tree.description || t("trees.noDescription")}</p><p className="mt-3 text-xs text-muted-foreground">{tree.version.agents.length} {t("trees.agents")} · {new Date(tree.updated_at).toLocaleString(i18n.language)}</p></div><div className="flex flex-wrap gap-2">{tree.status === "draft" || tree.status === "ready" ? <Button variant="outline" onClick={() => navigate(`/trees/${tree.id}/edit`)}><Pencil className="size-4" />{t("treeV3.editTree")}</Button> : null}<Button variant="outline" onClick={() => navigate(`/trees/${tree.id}/live`)}><Activity className="size-4" />{t("live.title")}</Button><Button onClick={() => setTestOpen(true)}><Play className="size-4" />{t("common.testRun")}</Button></div></div>
+      <div className="flex min-w-0 flex-col gap-5 border-b border-border pb-5 xl:flex-row xl:items-end xl:justify-between"><div className="min-w-0"><button className="mb-3 flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-primary" onClick={() => navigate("/trees")}><ArrowLeft className="size-3.5" />{t("trees.back")}</button><div className="flex flex-wrap items-center gap-3"><h1 className="break-words text-3xl font-semibold tracking-[-0.03em]">{tree.name}</h1><Badge variant={tree.status === "ready" || tree.status === "published" ? "success" : "secondary"}>{t(`status.${tree.status}`)}</Badge></div><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{tree.description || t("trees.noDescription")}</p><p className="mt-3 text-xs text-muted-foreground">{tree.version.agents.length} {t("trees.agents")} · {new Date(tree.updated_at).toLocaleString(i18n.language)}</p></div><div className="flex flex-wrap gap-2">{can("manage_trees_agents") ? <Button variant="outline" onClick={() => { setTemplateFields({ name: tree.name, description: tree.description, category: "general" }); setTemplateDialogOpen(true) }}><Save className="size-4" />{t("templatesV3.saveAsTemplate")}</Button> : null}{tree.status === "draft" || tree.status === "ready" ? <Button variant="outline" onClick={() => navigate(`/trees/${tree.id}/edit`)}><Pencil className="size-4" />{t("treeV3.editTree")}</Button> : null}<Button variant="outline" onClick={() => navigate(`/trees/${tree.id}/live`)}><Activity className="size-4" />{t("live.title")}</Button><Button onClick={() => setTestOpen(true)}><Play className="size-4" />{t("common.testRun")}</Button></div></div>
       {notice ? <Notice {...notice} onDismiss={() => setNotice(null)} /> : null}
       <div className="studio-tabs">{tabs.map((item) => <button key={item} aria-pressed={tab === item} onClick={() => setTab(item)} className={cn("whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium transition-colors", tab === item ? "text-primary" : "text-muted-foreground hover:bg-muted/60 hover:text-foreground")}>{item === "Overview" ? t("trees.overview") : item === "Agents" ? t("trees.agents") : item === "Connect" ? t("trees.connect") : item === "Versions" ? t("trees.versions") : item === "Settings" ? t("trees.settings") : item === "Tools" ? t("nav.tools") : t("nav.runs")}</button>)}</div>
 
@@ -71,6 +90,7 @@ export function TreeDetailPage() {
       {tab === "Versions" ? <section className="min-w-0"><div className="py-4"><CardTitle className="flex items-center gap-2"><Boxes className="size-5" />{t("trees.versions")}</CardTitle><CardDescription>{t("designV3.versionsHelp")}</CardDescription></div><div><div className="flex items-center justify-between rounded-lg border border-border p-4"><div><p className="font-medium">{t("designV3.version")} {tree.version.version_number}</p><p className="mt-1 text-xs text-muted-foreground">{t("treeV3.created")} {new Date(tree.version.created_at).toLocaleString(i18n.language)}</p></div><Badge variant="secondary">{t(`status.${tree.version.status}`)}</Badge></div></div></section> : null}
       {tab === "Settings" ? <section className="min-w-0"><div className="py-4"><CardTitle className="flex items-center gap-2"><Settings className="size-5" />{t("trees.settings")}</CardTitle><CardDescription>{t("designV3.settingsHelp")}</CardDescription></div><div><Button variant="outline" className="border-red-500/30 text-red-600 hover:bg-red-500/10" onClick={() => void remove()}>{t("designV3.deleteTree")}</Button></div></section> : null}
       <TestRunDialog tree={tree} open={testOpen} onOpenChange={setTestOpen} onFinished={(run) => setRuns((current) => [run, ...current.filter((item) => item.id !== run.id)])} />
+      <Dialog open={templateDialogOpen} onOpenChange={setTemplateDialogOpen}><DialogContent><DialogHeader><DialogTitle>{t("templatesV3.saveAsTemplate")}</DialogTitle><DialogDescription>{t("templatesV3.saveHelp")}</DialogDescription></DialogHeader><div className="space-y-4"><div className="space-y-2"><Label htmlFor="saved-template-name">{t("templatesV3.name")}</Label><Input id="saved-template-name" value={templateFields.name} onChange={event => setTemplateFields(value => ({ ...value, name: event.target.value }))} /></div><div className="space-y-2"><Label htmlFor="saved-template-category">{t("templatesV3.category")}</Label><Input id="saved-template-category" value={templateFields.category} onChange={event => setTemplateFields(value => ({ ...value, category: event.target.value }))} /></div><div className="space-y-2"><Label htmlFor="saved-template-description">{t("templatesV3.descriptionField")}</Label><Textarea id="saved-template-description" value={templateFields.description} onChange={event => setTemplateFields(value => ({ ...value, description: event.target.value }))} /></div></div><DialogFooter><Button variant="outline" onClick={() => setTemplateDialogOpen(false)}>{t("common.cancel")}</Button><Button disabled={templateSaving || !templateFields.name.trim() || !templateFields.category.trim()} onClick={() => void saveAsTemplate()}>{templateSaving ? t("templatesV3.saving") : t("templatesV3.saveTemplate")}</Button></DialogFooter></DialogContent></Dialog>
     </div>
   )
 }

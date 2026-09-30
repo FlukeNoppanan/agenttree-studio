@@ -13,6 +13,7 @@ const DashboardPage = lazy(() => import("@/pages/dashboard").then(module => ({ d
 const ProvidersPage = lazy(() => import("@/pages/providers").then(module => ({ default: module.ProvidersPage })))
 const SecretsPage = lazy(() => import("@/pages/secrets").then(module => ({ default: module.SecretsPage })))
 const TreeDetailPage = lazy(() => import("@/pages/trees/tree-detail").then(module => ({ default: module.TreeDetailPage })))
+const TemplateSetupPage = lazy(() => import("@/pages/trees/template-setup").then(module => ({ default: module.TemplateSetupPage })))
 const TreeLivePage = lazy(() => import("@/pages/trees/tree-live").then(module => ({ default: module.TreeLivePage })))
 const TreeListPage = lazy(() => import("@/pages/trees/tree-list").then(module => ({ default: module.TreeListPage })))
 const TreeWizard = lazy(() => import("@/components/tree/tree-wizard").then(module => ({ default: module.TreeWizard })))
@@ -22,6 +23,7 @@ const TraceListPage = lazy(() => import("@/pages/runs/trace-list").then(module =
 const ToolsPage = lazy(() => import("@/pages/tools").then(module => ({ default: module.ToolsPage })))
 const SettingsPage = lazy(() => import("@/pages/settings").then(module => ({ default: module.SettingsPage })))
 const TemplatesPage = lazy(() => import("@/pages/templates").then(module => ({ default: module.TemplatesPage })))
+const LearningPage = lazy(() => import("@/pages/learning").then(module => ({ default: module.LearningPage })))
 const SecurityEventsPage = lazy(() => import("@/pages/security-events").then(module => ({ default: module.SecurityEventsPage })))
 
 export const router = createBrowserRouter([
@@ -43,9 +45,11 @@ export const router = createBrowserRouter([
         element: <TreeListPage />,
       },
       { path: "trees/new", element: <TreeWizard /> },
+      { path: "trees/:treeId/setup", element: <TemplateSetupPage /> },
       { path: "trees/:treeId/edit", element: <TreeWizard /> },
       { path: "trees/:treeId", element: <TreeDetailPage /> },
       { path: "templates", element: <TemplatesPage /> },
+      { path: "learning", element: <LearningPage /> },
       ] },
       { element: <ProtectedRoute permission="view_executions" />, children: [
       { path: "trees/:treeId/live", element: <TreeLivePage /> },

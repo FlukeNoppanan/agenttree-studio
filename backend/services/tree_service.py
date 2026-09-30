@@ -37,6 +37,8 @@ from backend.services.errors import (
     ResourceNotFoundError,
     ServiceError,
 )
+from backend.schemas.template import upgrade_template_definition
+from backend.services.template_requirements import resolve_requirements
 
 
 class TreeService:
@@ -61,6 +63,10 @@ class TreeService:
         if tree.current_version is None:
             raise ResourceConflictError("Tree has no active version")
         return tree
+
+    def get_model(self, tree_id: str) -> Tree:
+        """Return the current Tree ORM graph for cooperating Studio services."""
+        return self._get_model(tree_id)
 
     @staticmethod
     def _ensure_draft(version: TreeVersion) -> None:
@@ -174,7 +180,9 @@ class TreeService:
                 tool_connection_id=assignment.tool_connection_id,
             ))
 
-    def create(self, payload: TreeDraftPayload) -> TreeDetailRead:
+    def create(
+        self, payload: TreeDraftPayload, *, template_instance: dict | None = None,
+    ) -> TreeDetailRead:
         tree = Tree(
             name=payload.name,
             description=payload.description,
@@ -183,7 +191,10 @@ class TreeService:
         )
         self._trees.add(tree)
         self._database.flush()
-        version = TreeVersion(tree=tree, version_number=1, status="draft")
+        version = TreeVersion(
+            tree=tree, version_number=1, status="draft",
+            template_instance_json=template_instance,
+        )
         self._database.add(version)
         self._database.flush()
         tree.current_version = version
@@ -228,6 +239,9 @@ class TreeService:
         })
         try:
             version = TreeVersion(tree=tree, version_number=old_version.version_number + 1, status="draft")
+            version.template_instance_json = self._remap_template_instance(
+                old_version.template_instance_json, id_map,
+            )
             self._database.add(version)
             self._database.flush()
             tree.current_version = version
@@ -512,6 +526,30 @@ class TreeService:
             ):
                 self._issue(errors, "tools", "mcp_tool_not_selected", "Assigned MCP connection needs a selected Tool", assignment.agent_config_id)
 
+        instance = version.template_instance_json
+        if isinstance(instance, dict) and isinstance(instance.get("definition"), dict):
+            try:
+                definition = upgrade_template_definition(instance["definition"])
+                agent_ids = instance.get("agent_ids") if isinstance(instance.get("agent_ids"), dict) else {}
+                agents_by_id = {agent.id: agent for agent in agents}
+                for item in definition.agents:
+                    agent_id = agent_ids.get(item.key)
+                    agent = agents_by_id.get(agent_id)
+                    if agent is None:
+                        self._issue(errors, "template", "template_agent_missing",
+                                    f"Template Agent '{item.name}' is missing from this Tree", agent_id)
+                    elif not (agent.system_instruction or "").strip():
+                        self._issue(errors, "template", "instruction_required",
+                                    f"{agent.name or 'Agent'} needs a system instruction", agent.id)
+                for item in resolve_requirements(self._database, version, definition, agent_ids):
+                    if item.requirement == "required" and item.state.value != "ready":
+                        self._issue(errors, "tools", "template_tool_requirement_unresolved",
+                                    f"Required Tool '{item.package_name or item.catalog_key}' is not assigned and ready",
+                                    item.agent_id)
+            except (TypeError, ValueError, KeyError) as exc:
+                self._issue(errors, "template", "template_snapshot_invalid",
+                            f"Stored Template setup data is invalid: {exc}")
+
         try:
             self._validate_core_hierarchy(agents)
         except (TypeError, ValueError) as exc:
@@ -524,12 +562,21 @@ class TreeService:
             validated_at=datetime.now(timezone.utc),
         )
 
-
-class ToolCatalogService:
-    def __init__(self, database: Session) -> None:
-        self._database = database
-
-    def list(self) -> list[ToolConnection]:
-        return list(self._database.scalars(
-            select(ToolConnection).order_by(ToolConnection.name),
-        ).all())
+    @staticmethod
+    def _remap_template_instance(instance: dict | None, id_map: dict[str, str]) -> dict | None:
+        if not isinstance(instance, dict):
+            return None
+        copied = dict(instance)
+        previous = copied.get("agent_ids")
+        if isinstance(previous, dict):
+            reverse = {old_id: key for key, old_id in previous.items()}
+            copied["agent_ids"] = {
+                key: id_map.get(old_id, old_id)
+                for key, old_id in previous.items()
+            }
+            # Agent IDs not represented by the original Template stay unmapped;
+            # stale refs are retained so required requirements remain visible.
+            copied["agent_ids"].update({
+                key: id_map[old_id] for old_id, key in reverse.items() if old_id in id_map
+            })
+        return copied

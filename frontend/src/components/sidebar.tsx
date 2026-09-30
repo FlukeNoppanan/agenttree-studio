@@ -1,6 +1,7 @@
 import {
   Activity,
   Boxes,
+  BrainCircuit,
   FileText,
   Gauge,
   KeyRound,
@@ -29,6 +30,7 @@ interface NavItem {
   icon: LucideIcon
   permission?: Permission
   admin?: boolean
+  badge?: string
 }
 
 interface NavGroup {
@@ -53,6 +55,10 @@ const navigation: NavGroup[] = [
       { label: "nav.tools", href: "/tools", icon: Wrench, permission: "manage_tools_mcp" },
       { label: "nav.secrets", href: "/secrets", icon: KeyRound, permission: "manage_secrets" },
     ],
+  },
+  {
+    label: "nav.intelligence",
+    items: [{ label: "nav.learning", href: "/learning", icon: BrainCircuit, badge: "nav.comingSoon" }],
   },
   {
     label: "nav.monitoring",
@@ -98,6 +104,7 @@ function NavigationLink({ item, mobile = false }: { item: NavItem; mobile?: bool
     >
       <Icon className="size-4 shrink-0 transition-transform group-hover:scale-105" />
       {t(item.label)}
+      {item.badge ? <span className="ml-auto rounded-full border border-primary/30 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-primary">{t(item.badge)}</span> : null}
     </NavLink>
   )
 }

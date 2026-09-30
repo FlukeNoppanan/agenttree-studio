@@ -54,6 +54,9 @@ class TreeVersion(TimestampMixin, Base):
     )
     version_number: Mapped[int] = mapped_column(nullable=False, default=1)
     status: Mapped[str] = mapped_column(String(30), nullable=False, default="draft")
+    # Portable Template Definition plus an instance-only Agent ref map. This
+    # snapshot survives source-template edits/deletion and contains no bindings.
+    template_instance_json: Mapped[dict | None] = mapped_column(JSON, nullable=True)
 
     tree = relationship("Tree", back_populates="versions", foreign_keys=[tree_id])
     agents = relationship(

@@ -273,6 +273,58 @@ export interface ToolAssignmentInfo {
   tree_name: string
 }
 
+export type TemplateKind = "builtin" | "user" | "learned"
+export interface TemplateAgentDefinition {
+  key: string; agent_type: AgentType; name: string; role: string; description: string; parent_key: string | null
+  system_instruction: string | null; capabilities: string[]; settings: Record<string, unknown>
+}
+export interface TemplateToolRequirement {
+  id: string; catalog_key: string; requirement: "required" | "recommended"; agent_ref: string | null; reason: string
+}
+export interface TemplateDefinition {
+  schema_version: number; agents: TemplateAgentDefinition[]
+  suggested_tools: Array<{ name: string; description: string; tool_type: string }>
+  tool_requirements: TemplateToolRequirement[]
+  trigger: TriggerDraft | null; output: OutputDraft | null; metadata: Record<string, unknown>
+}
+export interface TreeTemplate {
+  id: string; name: string; description: string; category: string; template_type: TemplateKind
+  definition: TemplateDefinition; agent_count: number; manager_count: number; specialist_count: number
+  created_by: string | null; created_at: string | null; updated_at: string | null
+}
+export interface TemplateMetadataPayload { name: string; description: string; category: string }
+export interface ToolPackage {
+  id: string; name: string; description: string; category: string; version: string; icon: string
+  status: "ready" | "experimental" | "coming_soon"; tool_type: ToolPayload["tool_type"] | null
+  transport_type: ToolPayload["transport_type"]; config_fields: Array<{ key: string; kind: string; required: boolean; options: string[] }>
+  required_secrets: string[]; operations: string[]; setup_instructions: string[]
+}
+export interface ToolPackageSetup {
+  name?: string; description?: string; secret_id?: string | null; url?: string
+  method?: string; auth_mode?: string; request_schema?: Record<string, unknown>
+  test_arguments?: Record<string, unknown>; timeout?: number
+}
+export type TemplateRequirementState = "ready" | "available_to_add" | "needs_configuration" | "missing" | "coming_soon"
+export interface TemplateToolRequirementStatus extends TemplateToolRequirement {
+  agent_id: string | null; package_name: string | null; package_status: ToolPackage["status"] | null
+  state: TemplateRequirementState; tool_id: string | null; action: "none" | "assign" | "add" | "configure"
+  discovered_tools: Array<{ name: string; description: string; input_schema: Record<string, unknown>; selected: boolean }>
+}
+export interface TemplateAgentSetup {
+  agent_ref: string | null; role: string; agent: AgentDraft; requirement_ids: string[]
+}
+export interface TemplateSetupReadiness {
+  ready: boolean; ready_agent_count: number; total_agent_count: number
+  agents_missing_models: string[]; agents_missing_instructions: string[]
+  required_tools_ready: number; required_tools_total: number; required_tools_unresolved: string[]
+  validation_issues: ValidationIssue[]
+}
+export interface TemplateSetupRead {
+  tree: TreeDetail; definition: TemplateDefinition; agents: TemplateAgentSetup[]
+  providers: Array<{ id: string; name: string; provider_type: ProviderType; models: ProviderModel[] }>
+  tool_requirements: TemplateToolRequirementStatus[]; readiness: TemplateSetupReadiness; warnings: string[]
+}
+
 export interface ToolExecution {
   tool_id: string
   success: boolean
@@ -506,9 +558,23 @@ export const api = {
       body: JSON.stringify(payload),
     }),
   deleteTree: (id: string) => request<void>(`/api/trees/${id}`, { method: "DELETE" }),
+  listTemplates: () => request<TreeTemplate[]>("/api/templates"),
+  getTemplate: (id: string) => request<TreeTemplate>(`/api/templates/${id}`),
+  updateTemplate: (id: string, payload: Partial<TemplateMetadataPayload>) => request<TreeTemplate>(`/api/templates/${id}`, { method: "PUT", body: JSON.stringify(payload) }),
+  deleteTemplate: (id: string) => request<void>(`/api/templates/${id}`, { method: "DELETE" }),
+  instantiateTemplate: (id: string, name?: string) => request<TreeDetail>(`/api/templates/${id}/instantiate`, { method: "POST", body: JSON.stringify(name ? { name } : {}) }),
+  saveTreeAsTemplate: (id: string, payload: TemplateMetadataPayload) => request<TreeTemplate>(`/api/trees/${id}/save-as-template`, { method: "POST", body: JSON.stringify(payload) }),
+  getTemplateSetup: (id: string) => request<TemplateSetupRead>(`/api/trees/${id}/template-setup`),
+  bindTemplateAgentModel: (id: string, agentId: string, payload: { provider_connection_id: string | null; model_id: string | null }) => request<TemplateSetupRead>(`/api/trees/${id}/template-setup/agents/${agentId}/model`, { method: "PATCH", body: JSON.stringify(payload) }),
+  applyTemplateDefault: (id: string, payload: { provider_connection_id: string | null; model_id: string | null }) => request<TemplateSetupRead>(`/api/trees/${id}/template-setup/apply-default`, { method: "POST", body: JSON.stringify(payload) }),
+  resolveTemplateRequirement: (packageId: string, payload: { tree_id: string; requirement_id: string; agent_id?: string; setup?: ToolPackageSetup; selected_tools?: string[] }) => request<TemplateSetupRead>(`/api/tool-catalog/${packageId}/resolve-requirement`, { method: "POST", body: JSON.stringify(payload) }),
+  resolveAllRequiredTemplateTools: (treeId: string) => request<TemplateSetupRead>("/api/tool-catalog/resolve-required", { method: "POST", body: JSON.stringify({ tree_id: treeId }) }),
   validateTree: (id: string, markReady = false) =>
     request<TreeValidation>(`/api/trees/${id}/validate?mark_ready=${markReady}`, { method: "POST" }),
   listTools: () => request<ToolConnection[]>("/api/tools"),
+  listToolCatalog: () => request<ToolPackage[]>("/api/tool-catalog"),
+  testToolPackage: (id: string, payload: ToolPackageSetup) => request<{ success: boolean; message: string }>(`/api/tool-catalog/${id}/test`, { method: "POST", body: JSON.stringify(payload) }),
+  createToolFromPackage: (id: string, payload: ToolPackageSetup) => request<{ tool: ToolConnection; message: string }>(`/api/tool-catalog/${id}/create`, { method: "POST", body: JSON.stringify(payload) }),
   getTool: (id: string) => request<ToolConnection>(`/api/tools/${id}`),
   createTool: (payload: ToolPayload) => request<ToolConnection>("/api/tools", {
     method: "POST", body: JSON.stringify(payload),

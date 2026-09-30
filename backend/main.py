@@ -21,6 +21,8 @@ from backend.api.destinations import router as destinations_router
 from backend.api.secrets import router as secrets_router
 from backend.api.tools import router as tools_router
 from backend.api.trees import router as trees_router
+from backend.api.templates import router as templates_router
+from backend.api.tool_catalog import router as tool_catalog_router
 from backend.api.auth import router as auth_router
 from backend.api.public_v1 import router as public_v1_router
 from backend.api.public_v2 import router as public_v2_router
@@ -181,6 +183,8 @@ app.include_router(dashboard_router, prefix="/api")
 app.include_router(secrets_router, prefix="/api")
 app.include_router(providers_router, prefix="/api")
 app.include_router(trees_router, prefix="/api")
+app.include_router(templates_router, prefix="/api")
+app.include_router(tool_catalog_router, prefix="/api")
 app.include_router(tools_router, prefix="/api")
 app.include_router(capabilities_router, prefix="/api")
 app.include_router(runs_router, prefix="/api")

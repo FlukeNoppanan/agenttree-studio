@@ -7,6 +7,7 @@ import type { DiscoveredTool, ToolConnection } from "@/lib/api"
 
 const mocks = vi.hoisted(() => ({
   listTools: vi.fn(), listSecrets: vi.fn(), listTrees: vi.fn(), getTree: vi.fn(),
+  listToolCatalog: vi.fn(),
   testTool: vi.fn(), discoverTool: vi.fn(), getTool: vi.fn(), deleteTool: vi.fn(),
 }))
 
@@ -33,7 +34,9 @@ async function renderPage(tool = connection()) {
   mocks.listTools.mockResolvedValue([tool])
   mocks.listSecrets.mockResolvedValue([])
   mocks.listTrees.mockResolvedValue([])
+  mocks.listToolCatalog.mockResolvedValue([])
   render(<MemoryRouter><ToolsPage /></MemoryRouter>)
+  fireEvent.click(await screen.findByRole("button", { name: /My Tools/ }))
   await screen.findByText(tool.name)
   return tool
 }

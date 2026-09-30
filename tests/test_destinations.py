@@ -100,7 +100,7 @@ def test_alembic_upgrades_an_existing_unversioned_sqlite_schema(tmp_path: Path) 
     assert {"submitted_by_user_id", "submitted_by_token_id",
             "cancellation_requested_at"}.issubset(columns)
     assert "run_idempotency" in tables
-    assert revision == "0009_public_api_v2"
+    assert revision == "0011_template_instances"
 
 
 def test_existing_tree_grants_migrate_to_selected_mode(tmp_path: Path) -> None:

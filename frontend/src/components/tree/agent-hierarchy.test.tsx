@@ -1,10 +1,10 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
-import { beforeEach, describe, expect, it } from "vitest"
+import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { AgentHierarchy } from "@/components/tree/agent-hierarchy"
 import i18n from "@/i18n"
-import type { ProviderConnection, ProviderModel, ToolConnection, TreeDetail } from "@/lib/api"
+import { api, type ProviderConnection, type ProviderModel, type ToolConnection, type TreeDetail, type TreeTemplate } from "@/lib/api"
 import { TemplatesPage } from "@/pages/templates"
 
 const agent = (id: string, name: string, agent_type: "root" | "manager" | "specialist", parent_agent_id: string | null) => ({
@@ -90,9 +90,19 @@ describe("Tree hierarchy and Agent details", () => {
 describe("Existing Blank Tree template", () => {
   it("can be inspected and starts a new Tree without replacing an existing one", async () => {
     await i18n.changeLanguage("en")
+    const blank: TreeTemplate = {
+      id: "builtin-blank", name: "Blank Tree", description: "A clean Root Agent starting point.", category: "general",
+      template_type: "builtin", agent_count: 1, manager_count: 0, specialist_count: 0, created_by: null,
+      created_at: null, updated_at: null, definition: { schema_version: 1, suggested_tools: [], tool_requirements: [], trigger: null,
+        output: null, metadata: {}, agents: [{ key: "root", agent_type: "root", name: "Root Agent",
+          role: "Coordinator",
+          description: "Receives work.", parent_key: null, system_instruction: null, capabilities: [], settings: {} }] },
+    }
+    vi.spyOn(api, "listTemplates").mockResolvedValue([blank])
     render(<MemoryRouter><TemplatesPage /></MemoryRouter>)
-    fireEvent.click(screen.getByRole("button", { name: "Inspect Template" }))
-    expect(screen.getByText("Starting structure")).toBeInTheDocument()
-    expect(screen.getAllByRole("link", { name: "Create Tree" })[0]).toHaveAttribute("href", "/trees/new")
+    fireEvent.click(await screen.findByRole("button", { name: "Preview" }))
+    expect(screen.getByText("Agent structure")).toBeInTheDocument()
+    expect(screen.getByText("Root Agent")).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "Use Template" })).toBeInTheDocument()
   })
 })

@@ -247,7 +247,11 @@ export function TreeWizard() {
 }
 
 function GeneralStep({ state, update }: { state: WizardState; update: (fn: (state: WizardState) => WizardState) => void }) {
-  return <div className="space-y-5"><div className="space-y-2"><Label>Tree Name</Label><Input value={state.name} onChange={(event) => update((current) => ({ ...current, name: event.target.value }))} placeholder="Network Operations Tree" /></div><div className="space-y-2"><Label>Description</Label><Textarea value={state.description} onChange={(event) => update((current) => ({ ...current, description: event.target.value }))} /></div><div className="space-y-2"><Label>Template</Label><Select value={state.template} onChange={(event) => update((current) => ({ ...current, template: event.target.value }))}><option value="blank">Blank Tree</option></Select><p className="text-xs text-muted-foreground">Template support is extensible; only Blank Tree is available now.</p></div></div>
+  const { t } = useTranslation()
+  const sourceTemplate = state.template === "blank"
+    ? t("templatesV3.builtins.builtin-blank.name", { defaultValue: t("templatesV3.blank") })
+    : t(`templatesV3.builtins.${state.template}.name`, { defaultValue: t("templatesV3.sourceTemplate") })
+  return <div className="space-y-5"><div className="space-y-2"><Label>Tree Name</Label><Input value={state.name} onChange={(event) => update((current) => ({ ...current, name: event.target.value }))} placeholder="Network Operations Tree" /></div><div className="space-y-2"><Label>Description</Label><Textarea value={state.description} onChange={(event) => update((current) => ({ ...current, description: event.target.value }))} /></div><div className="space-y-2"><Label>{t("templatesV3.sourceTemplateLabel")}</Label><p className="rounded-md border border-border bg-muted/30 px-3 py-2.5 text-sm">{sourceTemplate}</p><p className="text-xs text-muted-foreground">{t("templatesV3.sourceTemplateHelp")}</p></div></div>
 }
 
 function ManagersStep({ state, update, openEditor }: { state: WizardState; update: (fn: (state: WizardState) => WizardState) => void; openEditor: (editor: Editor) => void }) {

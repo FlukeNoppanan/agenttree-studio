@@ -37,6 +37,8 @@ def required_access(path: str, method: str) -> tuple[str, str | None] | None:
     if path == "/api/studio/runs" or path.startswith("/api/studio/runs/"):
         return ("view_executions", None)
     for prefix, permission in (
+        ("/api/templates", "manage_trees_agents"),
+        ("/api/tool-catalog", "manage_tools_mcp"),
         ("/api/secrets", "manage_secrets"),
         ("/api/providers", "manage_providers_models"),
         ("/api/tools", "manage_tools_mcp"),
