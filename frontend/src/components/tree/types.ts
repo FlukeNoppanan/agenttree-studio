@@ -96,7 +96,7 @@ export function emptyWizard(): WizardState {
   }
 }
 
-function fromAgent(agent: AgentDraft, assignments: Map<string, string[]>): WizardAgent {
+export function fromAgent(agent: AgentDraft, assignments: Map<string, string[]>): WizardAgent {
   return {
     id: agent.id,
     name: agent.name,
@@ -155,7 +155,7 @@ export function wizardFromTree(tree: TreeDetail): WizardState {
   }
 }
 
-function agentPayload(
+export function agentPayload(
   agent: WizardAgent,
   agentType: AgentDraft["agent_type"],
   parentAgentId: string | null,

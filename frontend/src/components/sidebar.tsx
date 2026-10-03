@@ -1,5 +1,4 @@
 import {
-  Activity,
   Boxes,
   BrainCircuit,
   FileText,
@@ -17,11 +16,9 @@ import {
 import { NavLink } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 
-import { ThemeToggle } from "@/components/theme-toggle"
 import { AgentTreeLogoIcon } from "@/components/agenttree-mark"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/auth"
-import { AccountMenu } from "@/components/account-menu"
 import type { Permission } from "@/lib/api"
 
 interface NavItem {
@@ -44,7 +41,7 @@ const navigation: NavGroup[] = [
     label: "nav.workspace",
     items: [
       { label: "nav.trees", href: "/trees", icon: Network, permission: "manage_trees_agents" },
-      { label: "nav.runs", href: "/runs", icon: PlaySquare, permission: "view_executions" },
+      { label: "consolidation.executions", href: "/executions", icon: PlaySquare, permission: "view_executions" },
       { label: "nav.templates", href: "/templates", icon: Boxes, permission: "manage_trees_agents" },
     ],
   },
@@ -63,7 +60,6 @@ const navigation: NavGroup[] = [
   {
     label: "nav.monitoring",
     items: [
-      { label: "nav.trace", href: "/execution-trace", icon: Activity, permission: "view_executions" },
       { label: "audit.title", href: "/security-events", icon: ScrollText, admin: true },
     ],
   },
@@ -74,8 +70,8 @@ function Logo() {
   const { t } = useTranslation()
   return (
     <div className="flex items-center gap-3">
-      <div className="grid size-11 place-items-center rounded-lg bg-blue-500/20 text-cyan-200">
-        <AgentTreeLogoIcon className="size-8" />
+      <div className="grid size-8 place-items-center rounded-xl brand-emblem">
+        <AgentTreeLogoIcon className="size-6" />
       </div>
       <div>
         <p className="text-[15px] font-semibold tracking-[-0.02em] text-[var(--sidebar-foreground)]">AgentTree Studio</p>
@@ -97,8 +93,8 @@ function NavigationLink({ item, mobile = false }: { item: NavItem; mobile?: bool
           "group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-[color,background-color,box-shadow]",
           mobile && "shrink-0 border border-[var(--sidebar-border)] py-2",
           isActive
-            ? "bg-[var(--sidebar-active)] text-[var(--sidebar-foreground)] shadow-[inset_3px_0_0_#22B8CF]"
-            : "text-[var(--sidebar-muted)] hover:bg-white/8 hover:text-[var(--sidebar-foreground)]",
+            ? "bg-[var(--sidebar-active)] text-[var(--sidebar-foreground)] shadow-[inset_3px_0_0_var(--primary)]"
+            : "text-[var(--sidebar-muted)] hover:bg-[var(--sidebar-hover)] hover:text-[var(--sidebar-foreground)]",
         )
       }
     >
@@ -115,15 +111,15 @@ export function Sidebar() {
   const visible = navigation.map(group => ({ ...group, items: group.items.filter(item => (!item.admin || user?.is_admin) && (!item.permission || can(item.permission))) })).filter(group => group.items.length)
   return (
     <>
-      <aside className="fixed inset-y-0 left-0 z-20 hidden w-[248px] flex-col overflow-hidden border-r border-sidebar-border bg-sidebar lg:flex">
-        <div className="relative flex h-20 items-center border-b border-sidebar-border/80 px-5">
+      <aside className="fixed inset-y-0 left-0 z-20 hidden w-[var(--sidebar-width)] flex-col overflow-hidden border-r border-sidebar-border bg-sidebar lg:flex">
+        <div className="relative flex h-[var(--app-topbar-height)] items-center border-b border-sidebar-border/80 px-5">
           <Logo />
         </div>
-        <nav className="relative flex-1 space-y-5 overflow-y-auto px-3 py-5">
+        <nav aria-label={t("integrationPolish.navigation")} className="relative flex-1 space-y-4 overflow-y-auto px-3 py-4">
           {visible.map((group, index) => (
             <div key={group.label ?? index}>
               {group.label ? (
-                <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-[0.17em] text-[var(--sidebar-muted)]">
+                <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--sidebar-muted)]">
                   {t(group.label)}
                 </p>
               ) : null}
@@ -133,18 +129,13 @@ export function Sidebar() {
             </div>
           ))}
         </nav>
-        <div className="relative space-y-3 border-t border-sidebar-border/80 bg-black/10 px-5 py-4">
-          <AccountMenu />
-          <div className="flex items-center justify-between"><div className="flex items-center gap-2 text-xs text-[var(--sidebar-muted)]"><FileText className="size-3.5" />{t("app.version")}</div><ThemeToggle /></div>
+        <div className="relative space-y-3 border-t border-sidebar-border/80 bg-sidebar px-5 py-4">
+          <div className="flex items-center justify-between"><div className="flex items-center gap-2 text-xs text-[var(--sidebar-muted)]"><FileText className="size-3.5" />{t("app.version")}</div></div>
         </div>
       </aside>
 
       <div className="border-b border-sidebar-border bg-sidebar lg:hidden">
-        <div className="flex h-18 items-center justify-between px-4 py-3">
-          <Logo />
-          <div className="flex items-center gap-2"><AccountMenu compact /><ThemeToggle /></div>
-        </div>
-        <nav className="flex gap-2 overflow-x-auto px-4 pb-3 [scrollbar-width:none]">
+        <nav aria-label={t("integrationPolish.navigation")} className="flex gap-2 overflow-x-auto px-4 py-2 [scrollbar-width:none]">
           {visible.flatMap((group) => group.items).map((item) => (
             <NavigationLink key={item.href} item={item} mobile />
           ))}

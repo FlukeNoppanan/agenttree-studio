@@ -1,0 +1,158 @@
+{
+  "providers": [
+    {
+      "id": "829a2753-2240-4401-8d91-a4ea0a8562d7",
+      "name": "gemini",
+      "type": "gemini",
+      "model": "models/gemini-flash-lite-latest",
+      "connection": "passed",
+      "discovery": {
+        "status": "passed",
+        "models": 61,
+        "generation_candidates": 44
+      },
+      "inference": {
+        "status": "qualified",
+        "error_code": null,
+        "duration_ms": 1863
+      },
+      "structured": {
+        "status": "passed",
+        "objective_present": true,
+        "capabilities": [
+          "research",
+          "analysis"
+        ],
+        "duration_ms": 932
+      },
+      "actual_provider": "gemini",
+      "actual_model": "gemini-3.5-flash-lite",
+      "tool_function": {
+        "status": "passed",
+        "evidence": "Ten real Artifact Tool calls in the five full Runs; one neutral function call separately observed."
+      }
+    },
+    {
+      "id": "dd6eadf9-dc4d-4e80-bf3b-45667ca9dec0",
+      "name": "gemini2",
+      "type": "gemini",
+      "model": "models/gemini-flash-lite-latest",
+      "connection": "passed",
+      "discovery": {
+        "status": "passed",
+        "models": 61,
+        "generation_candidates": 44
+      },
+      "inference": {
+        "status": "qualified",
+        "error_code": null,
+        "duration_ms": 876
+      },
+      "structured": {
+        "status": "passed",
+        "objective_present": true,
+        "capabilities": [
+          "research",
+          "analysis"
+        ],
+        "duration_ms": 1001
+      },
+      "actual_provider": "gemini2",
+      "actual_model": "gemini-3.5-flash-lite",
+      "tool_function": {
+        "provider_id": "dd6eadf9-dc4d-4e80-bf3b-45667ca9dec0",
+        "configured_provider": "gemini2",
+        "configured_model": "models/gemini-flash-lite-latest",
+        "requests": 1,
+        "adapter_sha256": "be98ccb1568bd5c1323318a95cdbe6fcd657c1d8cd5a42f7e98898be5ef8e3a4",
+        "status": "passed",
+        "actual_provider": "gemini2",
+        "actual_model": "gemini-3.5-flash-lite",
+        "call_count": 1,
+        "function_names": [
+          "certification_echo"
+        ],
+        "finish_reason": null,
+        "duration_ms": 859
+      }
+    },
+    {
+      "id": "c8b1373b-a73e-49ad-a8c7-8650c2aa2b47",
+      "name": "groq",
+      "type": "groq",
+      "model": "qwen/qwen3.8-27b",
+      "connection": "passed",
+      "discovery": {
+        "status": "passed",
+        "models": 11,
+        "generation_candidates": 11
+      },
+      "inference": {
+        "status": "qualified",
+        "error_code": null,
+        "duration_ms": 258
+      },
+      "structured": {
+        "status": "passed",
+        "objective_present": true,
+        "capabilities": [
+          "analysis"
+        ],
+        "duration_ms": 367
+      },
+      "actual_provider": "groq",
+      "actual_model": "qwen/qwen3.8-27b",
+      "tool_function": {
+        "provider_id": "c8b1373b-a73e-49ad-a8c7-8650c2aa2b47",
+        "configured_provider": "groq",
+        "configured_model": "qwen/qwen3.8-27b",
+        "requests": 1,
+        "adapter_sha256": "be98ccb1568bd5c1323318a95cdbe6fcd657c1d8cd5a42f7e98898be5ef8e3a4",
+        "status": "passed",
+        "actual_provider": "groq",
+        "actual_model": "qwen/qwen3.8-27b",
+        "call_count": 1,
+        "function_names": [
+          "certification_echo"
+        ],
+        "finish_reason": "tool_calls",
+        "duration_ms": 291
+      }
+    },
+    {
+      "id": "79d3f0d4-51f5-4f5c-a465-6f387fe080c4",
+      "name": "test",
+      "type": "ollama",
+      "model": "gemma4:e4b",
+      "connection": "passed",
+      "discovery": {
+        "status": "passed",
+        "models": 2,
+        "generation_candidates": 2
+      },
+      "inference": {
+        "status": "qualified",
+        "error_code": null,
+        "duration_ms": 17786
+      },
+      "structured": {
+        "status": "passed",
+        "objective_present": true,
+        "capabilities": [
+          "research",
+          "analysis"
+        ],
+        "duration_ms": 30145
+      },
+      "actual_provider": "test",
+      "actual_model": "gemma4:e4b",
+      "tool_function": {
+        "status": "no_tool_call",
+        "call_count": 0,
+        "interpretation": "Text and structured generation passed; requested function adherence was not demonstrated."
+      }
+    }
+  ],
+  "harness_corrections": "The initial structured probes incorrectly used Task(input=...), and their initial function declarations used an incompatible nested schema. Those failures are harness mistakes, excluded from Provider health. Corrected decision probes used Task(objective=...) and neutral function declarations. Their top-level name test also mislabelled valid Gemini nested function calls; final Gemini2 and Groq probes inspect function.name correctly.",
+  "rate_limit_diagnosis": "Earlier five Groq Runs failed with normalized PROVIDER_RATE_LIMIT; quota subtype and Retry-After are not retained. Current bounded health probes did not reproduce the limit. No new five-Run Groq sequence was submitted."
+}

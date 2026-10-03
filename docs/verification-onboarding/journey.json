@@ -1,0 +1,16 @@
+{
+  "provider": "gemini",
+  "model": "models/gemini-3-flash-preview",
+  "template": "builtin-general-analysis",
+  "tree_id": "528757da-c37b-4bdb-a7ff-67a47b1c8769",
+  "run_id": "4cc7d33f-9967-40ca-8a24-1dcab8cb80c5",
+  "run_status": "completed",
+  "ready": {
+    "status": "ready",
+    "version": "ready"
+  },
+  "connect_steps_completed": 5,
+  "established_login": "passed",
+  "reload": "passed",
+  "narrow_width": 800
+}

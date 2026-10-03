@@ -6,6 +6,12 @@ from typing import Protocol
 
 import httpx
 from agenttree.providers import ProviderRequest
+from agenttree.providers.exceptions import (
+    MalformedProviderResponseError, ProviderAuthenticationError,
+    ProviderInvalidRequestError, ProviderModelNotFoundError,
+    ProviderRateLimitError, ProviderRuntimeError, ProviderTimeoutError,
+    ProviderUnavailableError,
+)
 from sqlalchemy import update
 from sqlalchemy.orm import Session
 
@@ -64,6 +70,27 @@ def _root_error(error: Exception) -> Exception:
 
 def _qualification_failure(error: Exception) -> tuple[str, str, str]:
     """Classify a failure with a safe reason; never persist exception text."""
+    # Core normalizes SDK errors before they reach Studio. Inspect every cause
+    # so a wrapper cannot turn a temporary provider failure into incompatibility.
+    current: BaseException | None = error
+    visited: set[int] = set()
+    while current is not None and id(current) not in visited:
+        visited.add(id(current))
+        if isinstance(current, ProviderRateLimitError):
+            return "transient_error", "provider_rate_limited", "Provider rate limited — try verification later"
+        if isinstance(current, ProviderAuthenticationError):
+            return "transient_error", "provider_auth_failed", "Check the Provider connection before retrying verification"
+        if isinstance(current, ProviderTimeoutError):
+            return "transient_error", "verification_timeout", "Verification timed out"
+        if isinstance(current, ProviderUnavailableError):
+            return "transient_error", "provider_unavailable", "Provider temporarily unavailable — try verification later"
+        if isinstance(current, ProviderModelNotFoundError):
+            return "unavailable", "model_unavailable", "Model is not available from this Provider"
+        if isinstance(current, (ProviderInvalidRequestError, MalformedProviderResponseError)):
+            return "unavailable", "incompatible_response", "Model does not support the required generation request"
+        if isinstance(current, ProviderRuntimeError):
+            return "transient_error", "generation_failed", "Generation failed — try verification again"
+        current = current.__cause__
     root = _root_error(error)
     if isinstance(root, (TimeoutError, httpx.TimeoutException)):
         return "transient_error", "verification_timeout", "Verification timed out"
@@ -73,11 +100,20 @@ def _qualification_failure(error: Exception) -> tuple[str, str, str]:
             "Incompatible response — no final text was returned",
         )
 
-    status = getattr(root, "status_code", None) or getattr(root, "code", None)
+    status = (getattr(root, "status_code", None) or getattr(root, "code", None)
+              or getattr(getattr(root, "response", None), "status_code", None))
     try:
         numeric_status = int(status) if status is not None else None
     except (TypeError, ValueError):
         numeric_status = None
+    if numeric_status == 429:
+        return "transient_error", "provider_rate_limited", "Provider rate limited — try verification later"
+    if numeric_status in {401, 403}:
+        return "transient_error", "provider_auth_failed", "Check the Provider connection before retrying verification"
+    if numeric_status in {408, 504}:
+        return "transient_error", "verification_timeout", "Verification timed out"
+    if numeric_status is not None and numeric_status >= 500:
+        return "transient_error", "provider_unavailable", "Provider temporarily unavailable — try verification later"
     lowered = str(root).casefold()
     transient = (
         isinstance(root, (ConnectionError, httpx.NetworkError))
@@ -322,7 +358,13 @@ class ModelDiscoveryService:
         catalog = self.discover_catalog(provider_id)
         for model in catalog.models:
             if model.is_available and model.generation_candidate:
-                self.verify_model(provider_id, model.model_id)
+                result = self.verify_model(provider_id, model.model_id)
+                if result.model.qualification_error_code in {
+                    "provider_rate_limited", "provider_auth_failed", "provider_unavailable",
+                }:
+                    # Further model requests cannot resolve a provider-wide
+                    # failure. Keep the remaining diagnostic rows unqualified.
+                    break
 
         provider = self._providers.get(provider_id)
         all_models = self._providers.models(provider_id, include_unusable=True)

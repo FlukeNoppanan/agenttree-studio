@@ -1,0 +1,58 @@
+{
+  "database": {
+    "users": {
+      "before": 3,
+      "after": 3,
+      "same_ids": true
+    },
+    "trees": {
+      "before": 2,
+      "after": 2,
+      "same_ids": true
+    },
+    "providers": {
+      "before": 4,
+      "after": 4,
+      "same_ids": true
+    },
+    "tools": {
+      "before": 4,
+      "after": 4,
+      "same_ids": true
+    },
+    "secrets": {
+      "before": 3,
+      "after": 3,
+      "same_ids": true
+    },
+    "api_tokens": {
+      "before": 7,
+      "after": 7,
+      "same_ids": true
+    },
+    "runs": {
+      "before": 23,
+      "after": 23,
+      "same_ids": true
+    }
+  },
+  "disposable_trees_removed": [
+    "ed243876-3b1e-4a83-b29a-7355e01baaac",
+    "6193ee7b-789e-41d4-823d-e98a07102d8f"
+  ],
+  "original_runs_preserved": 23,
+  "safe_run_evidence_archived_before_normal_cascade": true,
+  "log_lines_inspected": 3502,
+  "error_markers": {
+    "tracebacks": 0,
+    "http_500": 0,
+    "internal_server_error": 0,
+    "uncaught": 0,
+    "unhandled": 0,
+    "serialization_error": 0,
+    "fatal": 0
+  },
+  "access_log_limitation": "HTTP access-log lines are not enabled; this is not an exhaustive status-code audit.",
+  "migration_current_and_head": "0013_run_cancellation_status",
+  "core_diff_sha256": "bc8bd93d8d37ae25326edcb546dc2337c36543cc996836a82ca748d7f43c5d1a"
+}

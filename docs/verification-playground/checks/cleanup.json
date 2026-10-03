@@ -1,0 +1,9 @@
+{
+  "disposable_project": "ats-playground",
+  "containers_and_volumes_removed": true,
+  "original_postgres_volume_retained": true,
+  "original_secret_volume_retained": true,
+  "private_fixture_directory_removed": true,
+  "known_credential_evidence_scan": "clear",
+  "core_worktree_clean": true
+}

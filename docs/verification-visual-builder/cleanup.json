@@ -1,0 +1,55 @@
+{
+  "disposable_project": "ats-visual-builder",
+  "remaining_disposable_containers": "",
+  "remaining_disposable_volumes": "",
+  "own_chrome_processes_stopped": 0,
+  "original_stack": [
+    {
+      "service": "backend",
+      "state": "running",
+      "health": "healthy"
+    },
+    {
+      "service": "frontend",
+      "state": "running",
+      "health": "healthy"
+    },
+    {
+      "service": "postgres",
+      "state": "running",
+      "health": "healthy"
+    }
+  ],
+  "original_proxy_health": {
+    "status": "ok",
+    "studio_api": {
+      "available": true,
+      "version": "0.1.0",
+      "detail": null
+    },
+    "agenttree": {
+      "available": true,
+      "version": "0.2.2",
+      "error": null
+    },
+    "database": {
+      "available": true,
+      "version": null,
+      "detail": "postgresql"
+    },
+    "migrations": {
+      "current": "0012_webhook_integrations",
+      "head": "0012_webhook_integrations",
+      "up_to_date": true
+    },
+    "backend_version": "0.1.0",
+    "frontend_version": "0.1.0",
+    "runtime": {
+      "python_version": "3.12.14",
+      "platform": "Linux"
+    }
+  },
+  "core_git_status": "clean",
+  "git_diff_check": "passed",
+  "private_verification_files": "removed"
+}

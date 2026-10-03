@@ -1,0 +1,696 @@
+{
+  "run_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+  "detail": {
+    "status": 200,
+    "data": {
+      "id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+      "tree_id": "1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "tree_name": "Playground Analysis",
+      "tree_version_id": "608bc0b9-f793-491f-88d9-c0fb934df0d4",
+      "tree_version_number": 1,
+      "status": "failed",
+      "core_execution_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+      "final_status": null,
+      "input": {
+        "input": "This is a complex analysis task requiring delegation to the analysis Manager and its analysis Specialist. Develop an end-to-end resilience plan for a small research team with 20 laptops and two servers. Decompose the work into separate tasks: compare backup recovery risks, evaluate retention and recovery objectives, analyze a simulated regional outage, propose a verification schedule, and review the consistency of the combined recommendations. Use the available analysis capability and Specialist expertise. Return a concise, evidence-based synthesis, with assumptions and tradeoffs. Do not answer directly without delegation."
+      },
+      "metadata": {},
+      "invocation_source": "studio_live",
+      "output": null,
+      "error_code": "EXECUTION_ERROR",
+      "error_message": "Provider execution failed",
+      "started_at": "2026-10-01T16:49:51.551266Z",
+      "finished_at": "2026-10-01T16:50:01.703680Z",
+      "duration_ms": 10124,
+      "usage": null,
+      "metrics": {
+        "queue_duration_ms": 1.127,
+        "execution_duration_ms": null,
+        "checkpoint_count": 0,
+        "recovery_count": 0,
+        "cancellation_count": 0,
+        "operations_total": 3,
+        "operations_reused": 0,
+        "operations_retried": 0,
+        "operations_uncertain": 0,
+        "recovery_block_count": 0
+      },
+      "created_at": "2026-10-01T16:49:51.552186Z",
+      "state": {
+        "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+        "current_phase": "failed",
+        "status": "failed",
+        "triage_result": null,
+        "orchestration_plan": null,
+        "delegation_result": null,
+        "execution_result": null,
+        "manager_review_result": null,
+        "final_result": null,
+        "failed_phase": "triage",
+        "failure_reason": "Run raised ProviderUnavailableError",
+        "trace": {
+          "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+          "events": [
+            {
+              "timestamp": "2026-10-01T16:49:51.680825+00:00",
+              "event_type": "execution.started",
+              "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+              "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T16:49:51.680920+00:00",
+              "event_type": "root.planning.started",
+              "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+              "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T16:49:58.693620+00:00",
+              "event_type": "root.planning.completed",
+              "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+              "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T16:50:01.677989+00:00",
+              "event_type": "execution.failed",
+              "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+              "actor_id": null,
+              "message": "",
+              "metadata": {
+                "error_type": "ProviderUnavailableError"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "failure": {
+            "phase": "triage",
+            "reason": "Run raised ProviderUnavailableError"
+          }
+        }
+      },
+      "trace": [
+        {
+          "id": "9b9b23ed-0157-4248-89c0-095bf57c60ce",
+          "run_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+          "sequence": 1,
+          "core_sequence": 1,
+          "event_type": "execution.queued",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:49:51.677591+00:00",
+            "event_type": "execution.queued",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:49:51.677591Z"
+        },
+        {
+          "id": "088201c2-0604-428f-bd6b-ac65922b5448",
+          "run_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+          "sequence": 2,
+          "core_sequence": 2,
+          "event_type": "execution.started",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:49:51.678080+00:00",
+            "event_type": "execution.started",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:49:51.678080Z"
+        },
+        {
+          "id": "c02e5f7f-b6bf-4343-8ef2-01b19a36f928",
+          "run_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+          "sequence": 3,
+          "core_sequence": 3,
+          "event_type": "execution.phase.started",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:49:51.680595+00:00",
+            "event_type": "execution.phase.started",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": null,
+            "message": "",
+            "metadata": {
+              "phase": "planning"
+            }
+          },
+          "created_at": "2026-10-01T16:49:51.680595Z"
+        },
+        {
+          "id": "bf724cc2-07d2-48fe-8e0b-96177fa1bd09",
+          "run_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+          "sequence": 4,
+          "core_sequence": 4,
+          "event_type": "operation.prepared",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:51.681157+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T16:49:51.681157Z"
+        },
+        {
+          "id": "6b14174b-bc39-4d0f-8e43-8c3b8a730a7f",
+          "run_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+          "sequence": 5,
+          "core_sequence": 5,
+          "event_type": "operation.in_flight",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:51.681291+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T16:49:51.681291Z"
+        },
+        {
+          "id": "dc0841cd-7feb-43b9-adaa-82c14f1b3921",
+          "run_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+          "sequence": 6,
+          "core_sequence": 6,
+          "event_type": "operation.prepared",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:51.681785+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T16:49:51.681785Z"
+        },
+        {
+          "id": "639902dc-b788-4c26-9793-1c4efc541ccc",
+          "run_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+          "sequence": 7,
+          "core_sequence": 7,
+          "event_type": "operation.in_flight",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:51.682470+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T16:49:51.682470Z"
+        },
+        {
+          "id": "ccd2dbae-d57e-4e32-b75e-230a843c6279",
+          "run_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+          "sequence": 8,
+          "core_sequence": 8,
+          "event_type": "operation.committed",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:58.692960+00:00",
+            "event_type": "operation.committed",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T16:49:58.692960Z"
+        },
+        {
+          "id": "ce92f7ae-959c-4e2c-aa1c-861eeb780057",
+          "run_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+          "sequence": 9,
+          "core_sequence": 9,
+          "event_type": "operation.committed",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:58.693373+00:00",
+            "event_type": "operation.committed",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T16:49:58.693373Z"
+        },
+        {
+          "id": "a16a650f-b89f-4fb0-9c61-293adc5b530c",
+          "run_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+          "sequence": 10,
+          "core_sequence": 10,
+          "event_type": "operation.prepared",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:58.694415+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T16:49:58.694415Z"
+        },
+        {
+          "id": "f886d0ff-4c66-4342-b7a3-68aca1dc1090",
+          "run_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+          "sequence": 11,
+          "core_sequence": 11,
+          "event_type": "operation.in_flight",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:58.695036+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T16:49:58.695036Z"
+        },
+        {
+          "id": "8306378e-fd7e-49e9-98d0-d8a46480f97b",
+          "run_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+          "sequence": 12,
+          "core_sequence": 12,
+          "event_type": "operation.failed",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:50:01.677083+00:00",
+            "event_type": "operation.failed",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "failed"
+            }
+          },
+          "created_at": "2026-10-01T16:50:01.677083Z"
+        },
+        {
+          "id": "9436a40a-930b-426a-ba80-1e12179569a9",
+          "run_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+          "sequence": 13,
+          "core_sequence": 13,
+          "event_type": "execution.failed",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:50:01.678773+00:00",
+            "event_type": "execution.failed",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:50:01.678773Z"
+        }
+      ],
+      "delivery_results": [],
+      "artifacts": []
+    }
+  },
+  "state": {
+    "status": 200,
+    "data": {
+      "run_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+      "tree_id": "1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "tree_version_id": "608bc0b9-f793-491f-88d9-c0fb934df0d4",
+      "status": "failed",
+      "final_status": null,
+      "created_at": "2026-10-01T16:49:51.552186Z",
+      "started_at": "2026-10-01T16:49:51.551266Z",
+      "finished_at": "2026-10-01T16:50:01.703680Z",
+      "cancellation_requested": false,
+      "cancellation_requested_at": null,
+      "usage": null,
+      "metrics": {
+        "queue_duration_ms": 1.127,
+        "execution_duration_ms": null,
+        "checkpoint_count": 0,
+        "recovery_count": 0,
+        "cancellation_count": 0,
+        "operations_total": 3,
+        "operations_reused": 0,
+        "operations_retried": 0,
+        "operations_uncertain": 0,
+        "recovery_block_count": 0
+      },
+      "error": {
+        "code": "execution_error",
+        "message": "Provider execution failed"
+      },
+      "artifact_count": 0,
+      "latest_event_sequence": 13,
+      "final_output": null,
+      "links": {
+        "self": "/api/v2/runs/affabc29-ed03-43b7-ac10-54e906d16e3a",
+        "events": "/api/v2/runs/affabc29-ed03-43b7-ac10-54e906d16e3a/events",
+        "stream": "/api/v2/runs/affabc29-ed03-43b7-ac10-54e906d16e3a/stream",
+        "result": "/api/v2/runs/affabc29-ed03-43b7-ac10-54e906d16e3a/result",
+        "artifacts": "/api/v2/runs/affabc29-ed03-43b7-ac10-54e906d16e3a/artifacts",
+        "cancel": "/api/v2/runs/affabc29-ed03-43b7-ac10-54e906d16e3a/cancel"
+      }
+    }
+  },
+  "events": {
+    "status": 200,
+    "data": {
+      "events": [
+        {
+          "sequence": 1,
+          "type": "execution.queued",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:49:51.677591+00:00",
+            "event_type": "execution.queued",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:49:51.677591Z"
+        },
+        {
+          "sequence": 2,
+          "type": "execution.started",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:49:51.678080+00:00",
+            "event_type": "execution.started",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:49:51.678080Z"
+        },
+        {
+          "sequence": 3,
+          "type": "execution.phase.started",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:49:51.680595+00:00",
+            "event_type": "execution.phase.started",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": null,
+            "message": "",
+            "metadata": {
+              "phase": "planning"
+            }
+          },
+          "created_at": "2026-10-01T16:49:51.680595Z"
+        },
+        {
+          "sequence": 4,
+          "type": "operation.prepared",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:51.681157+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T16:49:51.681157Z"
+        },
+        {
+          "sequence": 5,
+          "type": "operation.in_flight",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:51.681291+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T16:49:51.681291Z"
+        },
+        {
+          "sequence": 6,
+          "type": "operation.prepared",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:51.681785+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T16:49:51.681785Z"
+        },
+        {
+          "sequence": 7,
+          "type": "operation.in_flight",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:51.682470+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T16:49:51.682470Z"
+        },
+        {
+          "sequence": 8,
+          "type": "operation.committed",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:58.692960+00:00",
+            "event_type": "operation.committed",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T16:49:58.692960Z"
+        },
+        {
+          "sequence": 9,
+          "type": "operation.committed",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:58.693373+00:00",
+            "event_type": "operation.committed",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T16:49:58.693373Z"
+        },
+        {
+          "sequence": 10,
+          "type": "operation.prepared",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:58.694415+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T16:49:58.694415Z"
+        },
+        {
+          "sequence": 11,
+          "type": "operation.in_flight",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:49:58.695036+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T16:49:58.695036Z"
+        },
+        {
+          "sequence": 12,
+          "type": "operation.failed",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:50:01.677083+00:00",
+            "event_type": "operation.failed",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "failed"
+            }
+          },
+          "created_at": "2026-10-01T16:50:01.677083Z"
+        },
+        {
+          "sequence": 13,
+          "type": "execution.failed",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:50:01.678773+00:00",
+            "event_type": "execution.failed",
+            "task_id": "affabc29-ed03-43b7-ac10-54e906d16e3a",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:50:01.678773Z"
+        }
+      ],
+      "next_after": 13,
+      "has_more": false
+    }
+  }
+}

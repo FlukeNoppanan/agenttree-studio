@@ -12,7 +12,7 @@ describe("branded route error", () => {
 
   it.each([
     ["en", "Something went wrong", "Try Again", "Back to Dashboard"],
-    ["th", "เกิดข้อผิดพลาด", "ลองอีกครั้ง", "กลับไปแดชบอร์ด"],
+    ["th", "เกิดข้อผิดพลาด", "ลองอีกครั้ง", "กลับไป Dashboard"],
   ])("uses %s labels and recovers", async (language, title, retry, dashboard) => {
     await i18n.changeLanguage(language)
     const onRetry = vi.fn()

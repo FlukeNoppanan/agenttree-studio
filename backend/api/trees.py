@@ -19,10 +19,19 @@ from backend.schemas.tree import (
     TreeVersionRead,
 )
 from backend.services.tree_service import TreeService
+from backend.services.auth_service import AuthService
 from backend.services.template_service import TemplateService
 from backend.services.template_setup_service import TemplateSetupService
 
 router = APIRouter(prefix="/trees", tags=["trees"])
+
+
+@router.post("/validate-draft", response_model=TreeValidationRead)
+def preview_tree_draft(
+    payload: TreeDraftPayload, tree_id: str | None = Query(default=None, max_length=80),
+    database: Session = Depends(get_db),
+) -> TreeValidationRead:
+    return TreeService(database).preview_draft(payload, tree_id)
 
 
 @router.get("/{tree_id}/template-setup", response_model=TemplateSetupRead)
@@ -83,16 +92,17 @@ def apply_template_default_model(
 
 
 @router.get("", response_model=list[TreeListRead])
-def list_trees(database: Session = Depends(get_db)) -> list[TreeListRead]:
-    return TreeService(database).list()
+def list_trees(request: Request, database: Session = Depends(get_db)) -> list[TreeListRead]:
+    allowed = {tree.id for tree in AuthService(database).accessible_trees(current_user(request, database))}
+    return [tree for tree in TreeService(database).list() if tree.id in allowed]
 
 
 @router.post("", response_model=TreeDetailRead, status_code=status.HTTP_201_CREATED)
 def create_tree(
-    payload: TreeDraftPayload,
+    payload: TreeDraftPayload, request: Request,
     database: Session = Depends(get_db),
 ) -> TreeDetailRead:
-    return TreeService(database).create(payload)
+    return TreeService(database).create(payload, user=current_user(request, database))
 
 
 @router.post("/{tree_id}/save-as-template", response_model=TemplateRead, status_code=status.HTTP_201_CREATED)
@@ -126,9 +136,10 @@ def delete_tree(tree_id: str, database: Session = Depends(get_db)) -> Response:
 @router.get("/{tree_id}/version", response_model=TreeVersionRead)
 def get_tree_version(
     tree_id: str,
+    version_id: str | None = Query(default=None, max_length=36),
     database: Session = Depends(get_db),
 ) -> TreeVersionRead:
-    return TreeService(database).get_version(tree_id)
+    return TreeService(database).get_version(tree_id, version_id)
 
 
 @router.put("/{tree_id}/version", response_model=TreeDetailRead)

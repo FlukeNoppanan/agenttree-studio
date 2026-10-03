@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import { type FormEvent } from "react"
 
 import { AgentForm } from "@/components/tree/agent-form"
@@ -28,6 +29,8 @@ interface AgentEditorDialogProps {
 }
 
 export function AgentEditorDialog({ open, title, description, value, providers, agentType, reviewLabel, tools = [], onChange, onSave, onOpenChange }: AgentEditorDialogProps) {
+  const { t } = useTranslation()
+
   function submit(event: FormEvent) {
     event.preventDefault()
     onSave()
@@ -36,7 +39,7 @@ export function AgentEditorDialog({ open, title, description, value, providers, 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader><DialogTitle>{title}</DialogTitle><DialogDescription>{description}</DialogDescription></DialogHeader>
-        {value ? <form onSubmit={submit}><AgentForm value={value} onChange={onChange} providers={providers} agentType={agentType} reviewLabel={reviewLabel} tools={tools} /><DialogFooter><Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button><Button type="submit">Save Agent</Button></DialogFooter></form> : null}
+        {value ? <form onSubmit={submit}><AgentForm value={value} onChange={onChange} providers={providers} agentType={agentType} reviewLabel={reviewLabel} tools={tools} /><DialogFooter><Button type="button" variant="outline" onClick={() => onOpenChange(false)}>{t("uiCopy.cancel")}</Button><Button type="submit">{t("uiCopy.saveAgent")}</Button></DialogFooter></form> : null}
       </DialogContent>
     </Dialog>
   )

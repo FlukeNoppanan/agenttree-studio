@@ -1,0 +1,49 @@
+{
+  "original": {
+    "services": {
+      "backend": "healthy",
+      "frontend": "healthy",
+      "postgres": "healthy"
+    },
+    "migration": "0012_webhook_integrations (head)",
+    "logs": {
+      "tracebacks": 0,
+      "http_500": 0,
+      "credential_leaks": 0,
+      "inspected_lines": 578
+    },
+    "health_urls": [
+      "http://127.0.0.1:8000/api/system-health",
+      "http://127.0.0.1:5173/api/system-health"
+    ]
+  },
+  "disposable": {
+    "services": {
+      "backend": "healthy",
+      "frontend": "healthy",
+      "postgres": "healthy"
+    },
+    "migration": "0012_webhook_integrations (head)",
+    "logs": {
+      "tracebacks": 0,
+      "http_500": 0,
+      "credential_leaks": 0,
+      "inspected_lines": 188
+    },
+    "health_urls": [
+      "http://127.0.0.1:18000/api/system-health",
+      "http://127.0.0.1:15173/api/system-health"
+    ]
+  },
+  "persisted_run": {
+    "status": "completed",
+    "source": "studio_live",
+    "submitted_by_user": true,
+    "result_success": true,
+    "trace_events": 24,
+    "api_key_count": 0,
+    "tree_ready": "ready",
+    "version_ready": "ready",
+    "usage_present": true
+  }
+}

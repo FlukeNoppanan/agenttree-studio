@@ -1,0 +1,2284 @@
+{
+  "historical_node_ids": [
+    "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+    "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+    "c043220f-4587-4493-8cf3-a95a43adb375",
+    "bfed8f07-d942-47b7-8a20-766742bae7bd"
+  ],
+  "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+  "state": {
+    "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+    "tree_id": "1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+    "tree_version_id": "bffb9783-fd3f-4282-90aa-b896c4e14b1c",
+    "status": "completed",
+    "final_status": "completed",
+    "created_at": "2026-10-01T17:53:44.600197Z",
+    "started_at": "2026-10-01T17:53:44.599799Z",
+    "finished_at": "2026-10-01T17:53:47.494693Z",
+    "cancellation_requested": false,
+    "cancellation_requested_at": null,
+    "usage": {
+      "input_tokens": 242,
+      "output_tokens": 365,
+      "total_tokens": 607,
+      "unreported_calls": 0,
+      "calls": [
+        {
+          "stage": "root_planning",
+          "provider": "studio-cbef6238-4a16-4a83-98b4-8cb7da697e79-6b089ac598b5",
+          "model": "gemini-3.1-flash-lite",
+          "usage": "ProviderUsage(input_tokens=242, output_tokens=365, total_tokens=607)"
+        }
+      ]
+    },
+    "metrics": {
+      "queue_duration_ms": 1.295,
+      "execution_duration_ms": 2754.151,
+      "checkpoint_count": 1,
+      "recovery_count": 0,
+      "cancellation_count": 0,
+      "operations_total": 3,
+      "operations_reused": 0,
+      "operations_retried": 0,
+      "operations_uncertain": 0,
+      "recovery_block_count": 0
+    },
+    "error": null,
+    "artifact_count": 0,
+    "latest_event_sequence": 15,
+    "final_output": "Testing restored backups is the only way to verify that your data is not just backed up, but actually recoverable. A backup file is merely a placeholder; until it is successfully mounted and verified in a functional environment, you cannot guarantee business continuity or protection against data corruption.\n\n### 10 Practical Backup Restoration Checks:\n\n1. **Data Consistency:** Perform checksum validations (e.g., MD5/SHA) to ensure the restored data matches the original source.\n2. **File Permissions:** Verify that user/group ownership and access control lists (ACLs) are preserved and correctly mapped.\n3. **Recovery Time Objective (RTO):** Measure the total time elapsed from initiating the restore to the system being production-ready.\n4. **Application Integrity:** Launch the dependent application to ensure it can successfully read, write, and index the restored database or files.\n5. **Data Completeness:** Run record counts or row-sum checks on critical tables to confirm no data truncation occurred.\n6. **Configuration Validation:** Check that environment-specific settings (paths, API keys, network configs) remain intact and appropriate for the restore site.\n7. **Service Dependencies:** Ensure that background processes, cron jobs, or auxiliary services restart correctly upon restoration.\n8. **Security Protocols:** Audit that restored accounts, passwords, or certificates haven't been reset or blocked by security policies during migration.\n9. **Network Connectivity:** Test that the restored environment can communicate with external dependencies (APIs, load balancers, or remote databases).\n10. **Transaction Log Replay:** For databases, ensure that transaction logs have been correctly applied to bring the state to the intended point-in-time.",
+    "links": {
+      "self": "/api/v2/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "events": "/api/v2/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/events",
+      "stream": "/api/v2/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/stream",
+      "result": "/api/v2/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/result",
+      "artifacts": "/api/v2/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/artifacts",
+      "cancel": "/api/v2/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/cancel"
+    }
+  },
+  "detail": {
+    "id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+    "tree_id": "1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+    "tree_name": "Playground Analysis",
+    "tree_version_id": "bffb9783-fd3f-4282-90aa-b896c4e14b1c",
+    "tree_version_number": 4,
+    "status": "completed",
+    "core_execution_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+    "final_status": "completed",
+    "input": {
+      "input": "Explain why testing restored backups matters. Give ten concise practical checks, including consistency, permissions and recovery time."
+    },
+    "metadata": {},
+    "invocation_source": "studio_live",
+    "output": {
+      "type": "structured_json",
+      "delivery_type": "show_in_web",
+      "value": "Testing restored backups is the only way to verify that your data is not just backed up, but actually recoverable. A backup file is merely a placeholder; until it is successfully mounted and verified in a functional environment, you cannot guarantee business continuity or protection against data corruption.\n\n### 10 Practical Backup Restoration Checks:\n\n1. **Data Consistency:** Perform checksum validations (e.g., MD5/SHA) to ensure the restored data matches the original source.\n2. **File Permissions:** Verify that user/group ownership and access control lists (ACLs) are preserved and correctly mapped.\n3. **Recovery Time Objective (RTO):** Measure the total time elapsed from initiating the restore to the system being production-ready.\n4. **Application Integrity:** Launch the dependent application to ensure it can successfully read, write, and index the restored database or files.\n5. **Data Completeness:** Run record counts or row-sum checks on critical tables to confirm no data truncation occurred.\n6. **Configuration Validation:** Check that environment-specific settings (paths, API keys, network configs) remain intact and appropriate for the restore site.\n7. **Service Dependencies:** Ensure that background processes, cron jobs, or auxiliary services restart correctly upon restoration.\n8. **Security Protocols:** Audit that restored accounts, passwords, or certificates haven't been reset or blocked by security policies during migration.\n9. **Network Connectivity:** Test that the restored environment can communicate with external dependencies (APIs, load balancers, or remote databases).\n10. **Transaction Log Replay:** For databases, ensure that transaction logs have been correctly applied to bring the state to the intended point-in-time.",
+      "success": true,
+      "core_status": "completed",
+      "orchestration": {
+        "managers": []
+      }
+    },
+    "error_code": null,
+    "error_message": null,
+    "started_at": "2026-10-01T17:53:44.599799Z",
+    "finished_at": "2026-10-01T17:53:47.494693Z",
+    "duration_ms": 2872,
+    "usage": {
+      "input_tokens": 242,
+      "output_tokens": 365,
+      "total_tokens": 607,
+      "unreported_calls": 0,
+      "calls": [
+        {
+          "stage": "root_planning",
+          "provider": "studio-cbef6238-4a16-4a83-98b4-8cb7da697e79-6b089ac598b5",
+          "model": "gemini-3.1-flash-lite",
+          "usage": "ProviderUsage(input_tokens=242, output_tokens=365, total_tokens=607)"
+        }
+      ]
+    },
+    "metrics": {
+      "queue_duration_ms": 1.295,
+      "execution_duration_ms": 2754.151,
+      "checkpoint_count": 1,
+      "recovery_count": 0,
+      "cancellation_count": 0,
+      "operations_total": 3,
+      "operations_reused": 0,
+      "operations_retried": 0,
+      "operations_uncertain": 0,
+      "recovery_block_count": 0
+    },
+    "created_at": "2026-10-01T17:53:44.600197Z",
+    "state": {
+      "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "current_phase": "completed",
+      "status": "completed",
+      "triage_result": null,
+      "orchestration_plan": null,
+      "delegation_result": null,
+      "execution_result": null,
+      "manager_review_result": null,
+      "final_result": {
+        "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "root_agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "success": true,
+        "content": {
+          "managers": []
+        },
+        "status": "completed",
+        "manager_results": [],
+        "final_review": {
+          "decision": "pass",
+          "reviewer_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "feedback": "",
+          "metadata": {
+            "review_performed": false,
+            "direct_response": true
+          }
+        },
+        "final_reviews": [],
+        "revision_count": 0,
+        "revisions": [],
+        "trace": {
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "events": [
+            {
+              "timestamp": "2026-10-01T17:53:44.707396+00:00",
+              "event_type": "execution.started",
+              "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+              "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T17:53:44.707539+00:00",
+              "event_type": "root.planning.started",
+              "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+              "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T17:53:47.453524+00:00",
+              "event_type": "root.planning.completed",
+              "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+              "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T17:53:47.454615+00:00",
+              "event_type": "root.direct_response",
+              "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+              "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T17:53:47.454638+00:00",
+              "event_type": "root.synthesis.completed",
+              "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+              "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T17:53:47.454660+00:00",
+              "event_type": "execution.completed",
+              "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+              "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+              "message": "",
+              "metadata": {}
+            }
+          ]
+        },
+        "metadata": {
+          "direct_response": true
+        },
+        "final_output": "Testing restored backups is the only way to verify that your data is not just backed up, but actually recoverable. A backup file is merely a placeholder; until it is successfully mounted and verified in a functional environment, you cannot guarantee business continuity or protection against data corruption.\n\n### 10 Practical Backup Restoration Checks:\n\n1. **Data Consistency:** Perform checksum validations (e.g., MD5/SHA) to ensure the restored data matches the original source.\n2. **File Permissions:** Verify that user/group ownership and access control lists (ACLs) are preserved and correctly mapped.\n3. **Recovery Time Objective (RTO):** Measure the total time elapsed from initiating the restore to the system being production-ready.\n4. **Application Integrity:** Launch the dependent application to ensure it can successfully read, write, and index the restored database or files.\n5. **Data Completeness:** Run record counts or row-sum checks on critical tables to confirm no data truncation occurred.\n6. **Configuration Validation:** Check that environment-specific settings (paths, API keys, network configs) remain intact and appropriate for the restore site.\n7. **Service Dependencies:** Ensure that background processes, cron jobs, or auxiliary services restart correctly upon restoration.\n8. **Security Protocols:** Audit that restored accounts, passwords, or certificates haven't been reset or blocked by security policies during migration.\n9. **Network Connectivity:** Test that the restored environment can communicate with external dependencies (APIs, load balancers, or remote databases).\n10. **Transaction Log Replay:** For databases, ensure that transaction logs have been correctly applied to bring the state to the intended point-in-time.",
+        "usage": {
+          "input_tokens": 242,
+          "output_tokens": 365,
+          "total_tokens": 607,
+          "unreported_calls": 0,
+          "calls": [
+            {
+              "stage": "root_planning",
+              "provider": "studio-cbef6238-4a16-4a83-98b4-8cb7da697e79-6b089ac598b5",
+              "model": "gemini-3.1-flash-lite",
+              "usage": {
+                "input_tokens": 242,
+                "output_tokens": 365,
+                "total_tokens": 607
+              }
+            }
+          ]
+        },
+        "error": null,
+        "artifacts": []
+      },
+      "failed_phase": null,
+      "failure_reason": null,
+      "trace": {
+        "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "events": [
+          {
+            "timestamp": "2026-10-01T17:53:44.707396+00:00",
+            "event_type": "execution.started",
+            "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+            "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+            "message": "",
+            "metadata": {}
+          },
+          {
+            "timestamp": "2026-10-01T17:53:44.707539+00:00",
+            "event_type": "root.planning.started",
+            "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+            "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+            "message": "",
+            "metadata": {}
+          },
+          {
+            "timestamp": "2026-10-01T17:53:47.453524+00:00",
+            "event_type": "root.planning.completed",
+            "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+            "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+            "message": "",
+            "metadata": {}
+          },
+          {
+            "timestamp": "2026-10-01T17:53:47.454615+00:00",
+            "event_type": "root.direct_response",
+            "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+            "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+            "message": "",
+            "metadata": {}
+          },
+          {
+            "timestamp": "2026-10-01T17:53:47.454638+00:00",
+            "event_type": "root.synthesis.completed",
+            "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+            "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+            "message": "",
+            "metadata": {}
+          },
+          {
+            "timestamp": "2026-10-01T17:53:47.454660+00:00",
+            "event_type": "execution.completed",
+            "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+            "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+            "message": "",
+            "metadata": {}
+          }
+        ]
+      },
+      "metadata": {}
+    },
+    "trace": [
+      {
+        "id": "19097d65-7f11-4005-8815-54b31fe126aa",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 1,
+        "core_sequence": null,
+        "event_type": "execution.queued",
+        "agent_id": null,
+        "agent_name": null,
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.704081+00:00",
+          "event_type": "execution.queued",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": null,
+          "message": "",
+          "metadata": {}
+        },
+        "created_at": "2026-10-01T17:53:44.704081Z"
+      },
+      {
+        "id": "269fc438-6b13-4429-922f-43569482ad61",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 2,
+        "core_sequence": 1,
+        "event_type": "execution.queued",
+        "agent_id": null,
+        "agent_name": null,
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.704270+00:00",
+          "event_type": "execution.queued",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": null,
+          "message": "",
+          "metadata": {}
+        },
+        "created_at": "2026-10-01T17:53:44.704270Z"
+      },
+      {
+        "id": "6b01813f-b7a6-4e25-a587-191c3851177d",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 3,
+        "core_sequence": 2,
+        "event_type": "execution.started",
+        "agent_id": null,
+        "agent_name": null,
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.705044+00:00",
+          "event_type": "execution.started",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": null,
+          "message": "",
+          "metadata": {}
+        },
+        "created_at": "2026-10-01T17:53:44.705044Z"
+      },
+      {
+        "id": "28de408f-a5ff-4291-ba92-2b0140db728b",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 4,
+        "core_sequence": null,
+        "event_type": "execution.started",
+        "agent_id": null,
+        "agent_name": null,
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.705543+00:00",
+          "event_type": "execution.started",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": null,
+          "message": "",
+          "metadata": {}
+        },
+        "created_at": "2026-10-01T17:53:44.705543Z"
+      },
+      {
+        "id": "33f25024-a965-4897-ab1a-856634c04b1d",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 5,
+        "core_sequence": 3,
+        "event_type": "execution.phase.started",
+        "agent_id": null,
+        "agent_name": null,
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.707076+00:00",
+          "event_type": "execution.phase.started",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": null,
+          "message": "",
+          "metadata": {
+            "phase": "planning"
+          }
+        },
+        "created_at": "2026-10-01T17:53:44.707076Z"
+      },
+      {
+        "id": "102123fa-fc58-48d2-a7d7-faf8bc12824b",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 6,
+        "core_sequence": null,
+        "event_type": "execution.started",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.707396+00:00",
+          "event_type": "execution.started",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {}
+        },
+        "created_at": "2026-10-01T17:53:44.707396Z"
+      },
+      {
+        "id": "d8b4b414-9ba7-411c-802b-34c8fdb65d46",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 7,
+        "core_sequence": null,
+        "event_type": "root.planning.started",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.707539+00:00",
+          "event_type": "root.planning.started",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {}
+        },
+        "created_at": "2026-10-01T17:53:44.707539Z"
+      },
+      {
+        "id": "22d78dd1-6748-43ce-9f20-f4ea610d292f",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 8,
+        "core_sequence": 4,
+        "event_type": "operation.prepared",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.707959+00:00",
+          "event_type": "operation.prepared",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:plan",
+            "operation_type": "root.plan",
+            "phase": "planning",
+            "attempt": 0,
+            "status": "prepared"
+          }
+        },
+        "created_at": "2026-10-01T17:53:44.707959Z"
+      },
+      {
+        "id": "0ff0d6ea-e092-4ccf-8ca9-f2a640cb0837",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 9,
+        "core_sequence": 5,
+        "event_type": "operation.in_flight",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.708391+00:00",
+          "event_type": "operation.in_flight",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:plan",
+            "operation_type": "root.plan",
+            "phase": "planning",
+            "attempt": 1,
+            "status": "in_flight"
+          }
+        },
+        "created_at": "2026-10-01T17:53:44.708391Z"
+      },
+      {
+        "id": "63ef23f3-b093-4569-93c2-70e4a8306c9d",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 10,
+        "core_sequence": 6,
+        "event_type": "operation.prepared",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.709069+00:00",
+          "event_type": "operation.prepared",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:plan/provider:1",
+            "operation_type": "provider.generate",
+            "phase": "planning",
+            "attempt": 0,
+            "status": "prepared"
+          }
+        },
+        "created_at": "2026-10-01T17:53:44.709069Z"
+      },
+      {
+        "id": "53104258-9dfd-41ef-b66a-e87e4428d43a",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 11,
+        "core_sequence": 7,
+        "event_type": "operation.in_flight",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.709277+00:00",
+          "event_type": "operation.in_flight",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:plan/provider:1",
+            "operation_type": "provider.generate",
+            "phase": "planning",
+            "attempt": 1,
+            "status": "in_flight"
+          }
+        },
+        "created_at": "2026-10-01T17:53:44.709277Z"
+      },
+      {
+        "id": "dc794c31-81b1-4d58-af02-d925c3c7c53d",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 12,
+        "core_sequence": 8,
+        "event_type": "operation.committed",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.452900+00:00",
+          "event_type": "operation.committed",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:plan/provider:1",
+            "operation_type": "provider.generate",
+            "phase": "planning",
+            "attempt": 1,
+            "status": "committed"
+          }
+        },
+        "created_at": "2026-10-01T17:53:47.452900Z"
+      },
+      {
+        "id": "4315b95e-1783-4039-acd1-a0cf8f09754e",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 13,
+        "core_sequence": 9,
+        "event_type": "operation.committed",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.453333+00:00",
+          "event_type": "operation.committed",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:plan",
+            "operation_type": "root.plan",
+            "phase": "planning",
+            "attempt": 1,
+            "status": "committed"
+          }
+        },
+        "created_at": "2026-10-01T17:53:47.453333Z"
+      },
+      {
+        "id": "91264a40-64c2-4f38-a1ff-ca542b5c98c1",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 14,
+        "core_sequence": null,
+        "event_type": "root.planning.completed",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.453524+00:00",
+          "event_type": "root.planning.completed",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {}
+        },
+        "created_at": "2026-10-01T17:53:47.453524Z"
+      },
+      {
+        "id": "7e743bd4-97ce-4da6-a8df-df560aa4069f",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 15,
+        "core_sequence": 10,
+        "event_type": "operation.prepared",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.453854+00:00",
+          "event_type": "operation.prepared",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:direct_response",
+            "operation_type": "root.direct_response",
+            "phase": "planning",
+            "attempt": 0,
+            "status": "prepared"
+          }
+        },
+        "created_at": "2026-10-01T17:53:47.453854Z"
+      },
+      {
+        "id": "abeebf79-a9b3-4900-92e3-7cfad6289329",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 16,
+        "core_sequence": 11,
+        "event_type": "operation.in_flight",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.454013+00:00",
+          "event_type": "operation.in_flight",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:direct_response",
+            "operation_type": "root.direct_response",
+            "phase": "planning",
+            "attempt": 1,
+            "status": "in_flight"
+          }
+        },
+        "created_at": "2026-10-01T17:53:47.454013Z"
+      },
+      {
+        "id": "1fce48bd-7d6d-4b53-bc29-683637b3eec4",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 17,
+        "core_sequence": 12,
+        "event_type": "operation.committed",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.454325+00:00",
+          "event_type": "operation.committed",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:direct_response",
+            "operation_type": "root.direct_response",
+            "phase": "planning",
+            "attempt": 1,
+            "status": "committed"
+          }
+        },
+        "created_at": "2026-10-01T17:53:47.454325Z"
+      },
+      {
+        "id": "ba0aa947-e26b-4c7d-8baa-552612e401c8",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 18,
+        "core_sequence": null,
+        "event_type": "root.direct_response",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.454615+00:00",
+          "event_type": "root.direct_response",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {}
+        },
+        "created_at": "2026-10-01T17:53:47.454615Z"
+      },
+      {
+        "id": "ea245594-c25d-45ac-86c9-7f493d08fca2",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 19,
+        "core_sequence": null,
+        "event_type": "root.synthesis.completed",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.454638+00:00",
+          "event_type": "root.synthesis.completed",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {}
+        },
+        "created_at": "2026-10-01T17:53:47.454638Z"
+      },
+      {
+        "id": "463fa993-5bf9-4af8-833b-f12f5cdcdad9",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 20,
+        "core_sequence": null,
+        "event_type": "execution.completed",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.454660+00:00",
+          "event_type": "execution.completed",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {}
+        },
+        "created_at": "2026-10-01T17:53:47.454660Z"
+      },
+      {
+        "id": "e4c235c2-49b1-4c0a-bbfd-85c3fad9a6c0",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 21,
+        "core_sequence": null,
+        "event_type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "agent_name": null,
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.455713+00:00",
+          "event_type": "execution.checkpoint.saved",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": null,
+          "message": "",
+          "metadata": {}
+        },
+        "created_at": "2026-10-01T17:53:47.455713Z"
+      },
+      {
+        "id": "80a47951-bd45-4431-aa5a-10bd373cd209",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 22,
+        "core_sequence": 13,
+        "event_type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "agent_name": null,
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.457911+00:00",
+          "event_type": "execution.checkpoint.saved",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": null,
+          "message": "",
+          "metadata": {
+            "phase": "completed",
+            "sequence": 1
+          }
+        },
+        "created_at": "2026-10-01T17:53:47.457911Z"
+      },
+      {
+        "id": "f60cc414-bcc3-47c1-8472-059b5282a4b6",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 23,
+        "core_sequence": 14,
+        "event_type": "output.final.available",
+        "agent_id": null,
+        "agent_name": null,
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.458501+00:00",
+          "event_type": "output.final.available",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": null,
+          "message": "",
+          "metadata": {
+            "sha256": "a319ea428b20e21cbcba93cd089ef93c6381093c597600afd795e8ff87de3496",
+            "size_bytes": 1763
+          }
+        },
+        "created_at": "2026-10-01T17:53:47.458501Z"
+      },
+      {
+        "id": "41bbd76f-7f46-4326-9e43-20452a1277ac",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "sequence": 24,
+        "core_sequence": 15,
+        "event_type": "execution.completed",
+        "agent_id": null,
+        "agent_name": null,
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.458509+00:00",
+          "event_type": "execution.completed",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": null,
+          "message": "",
+          "metadata": {}
+        },
+        "created_at": "2026-10-01T17:53:47.458509Z"
+      }
+    ],
+    "delivery_results": [
+      {
+        "id": "2d69c603-dd95-415e-9d39-9d0ebe3a9a36",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "destination_id": "4fe2b303-f21f-420b-aae8-47ea5f9030fb",
+        "destination_name": "Store in Studio",
+        "destination_type": "store_in_studio",
+        "status": "success",
+        "attempted_at": "2026-10-01T17:53:47.518032Z",
+        "completed_at": "2026-10-01T17:53:47.522633Z",
+        "sanitized_error": null
+      },
+      {
+        "id": "c81c978e-4cba-4820-bf4c-04badcfbba67",
+        "run_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+        "destination_id": "aceffffd-c3ee-47c2-a0ee-b393f446a873",
+        "destination_name": "Return API Response",
+        "destination_type": "api_response",
+        "status": "success",
+        "attempted_at": "2026-10-01T17:53:47.529403Z",
+        "completed_at": "2026-10-01T17:53:47.532716Z",
+        "sanitized_error": null
+      }
+    ],
+    "artifacts": []
+  },
+  "events": {
+    "events": [
+      {
+        "sequence": 1,
+        "type": "execution.queued",
+        "agent_id": null,
+        "agent_name": null,
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.704270+00:00",
+          "event_type": "execution.queued",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": null,
+          "message": "",
+          "metadata": {}
+        },
+        "created_at": "2026-10-01T17:53:44.704270Z"
+      },
+      {
+        "sequence": 2,
+        "type": "execution.started",
+        "agent_id": null,
+        "agent_name": null,
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.705044+00:00",
+          "event_type": "execution.started",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": null,
+          "message": "",
+          "metadata": {}
+        },
+        "created_at": "2026-10-01T17:53:44.705044Z"
+      },
+      {
+        "sequence": 3,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "agent_name": null,
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.707076+00:00",
+          "event_type": "execution.phase.started",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": null,
+          "message": "",
+          "metadata": {
+            "phase": "planning"
+          }
+        },
+        "created_at": "2026-10-01T17:53:44.707076Z"
+      },
+      {
+        "sequence": 4,
+        "type": "operation.prepared",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.707959+00:00",
+          "event_type": "operation.prepared",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:plan",
+            "operation_type": "root.plan",
+            "phase": "planning",
+            "attempt": 0,
+            "status": "prepared"
+          }
+        },
+        "created_at": "2026-10-01T17:53:44.707959Z"
+      },
+      {
+        "sequence": 5,
+        "type": "operation.in_flight",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.708391+00:00",
+          "event_type": "operation.in_flight",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:plan",
+            "operation_type": "root.plan",
+            "phase": "planning",
+            "attempt": 1,
+            "status": "in_flight"
+          }
+        },
+        "created_at": "2026-10-01T17:53:44.708391Z"
+      },
+      {
+        "sequence": 6,
+        "type": "operation.prepared",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.709069+00:00",
+          "event_type": "operation.prepared",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:plan/provider:1",
+            "operation_type": "provider.generate",
+            "phase": "planning",
+            "attempt": 0,
+            "status": "prepared"
+          }
+        },
+        "created_at": "2026-10-01T17:53:44.709069Z"
+      },
+      {
+        "sequence": 7,
+        "type": "operation.in_flight",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:44.709277+00:00",
+          "event_type": "operation.in_flight",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:plan/provider:1",
+            "operation_type": "provider.generate",
+            "phase": "planning",
+            "attempt": 1,
+            "status": "in_flight"
+          }
+        },
+        "created_at": "2026-10-01T17:53:44.709277Z"
+      },
+      {
+        "sequence": 8,
+        "type": "operation.committed",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.452900+00:00",
+          "event_type": "operation.committed",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:plan/provider:1",
+            "operation_type": "provider.generate",
+            "phase": "planning",
+            "attempt": 1,
+            "status": "committed"
+          }
+        },
+        "created_at": "2026-10-01T17:53:47.452900Z"
+      },
+      {
+        "sequence": 9,
+        "type": "operation.committed",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.453333+00:00",
+          "event_type": "operation.committed",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:plan",
+            "operation_type": "root.plan",
+            "phase": "planning",
+            "attempt": 1,
+            "status": "committed"
+          }
+        },
+        "created_at": "2026-10-01T17:53:47.453333Z"
+      },
+      {
+        "sequence": 10,
+        "type": "operation.prepared",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.453854+00:00",
+          "event_type": "operation.prepared",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:direct_response",
+            "operation_type": "root.direct_response",
+            "phase": "planning",
+            "attempt": 0,
+            "status": "prepared"
+          }
+        },
+        "created_at": "2026-10-01T17:53:47.453854Z"
+      },
+      {
+        "sequence": 11,
+        "type": "operation.in_flight",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.454013+00:00",
+          "event_type": "operation.in_flight",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:direct_response",
+            "operation_type": "root.direct_response",
+            "phase": "planning",
+            "attempt": 1,
+            "status": "in_flight"
+          }
+        },
+        "created_at": "2026-10-01T17:53:47.454013Z"
+      },
+      {
+        "sequence": 12,
+        "type": "operation.committed",
+        "agent_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+        "agent_name": "Analysis Root",
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.454325+00:00",
+          "event_type": "operation.committed",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "message": "",
+          "metadata": {
+            "operation_key": "planning/root:direct_response",
+            "operation_type": "root.direct_response",
+            "phase": "planning",
+            "attempt": 1,
+            "status": "committed"
+          }
+        },
+        "created_at": "2026-10-01T17:53:47.454325Z"
+      },
+      {
+        "sequence": 13,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "agent_name": null,
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.457911+00:00",
+          "event_type": "execution.checkpoint.saved",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": null,
+          "message": "",
+          "metadata": {
+            "phase": "completed",
+            "sequence": 1
+          }
+        },
+        "created_at": "2026-10-01T17:53:47.457911Z"
+      },
+      {
+        "sequence": 14,
+        "type": "output.final.available",
+        "agent_id": null,
+        "agent_name": null,
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.458501+00:00",
+          "event_type": "output.final.available",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": null,
+          "message": "",
+          "metadata": {
+            "sha256": "a319ea428b20e21cbcba93cd089ef93c6381093c597600afd795e8ff87de3496",
+            "size_bytes": 1763
+          }
+        },
+        "created_at": "2026-10-01T17:53:47.458501Z"
+      },
+      {
+        "sequence": 15,
+        "type": "execution.completed",
+        "agent_id": null,
+        "agent_name": null,
+        "payload": {
+          "timestamp": "2026-10-01T17:53:47.458509+00:00",
+          "event_type": "execution.completed",
+          "task_id": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+          "actor_id": null,
+          "message": "",
+          "metadata": {}
+        },
+        "created_at": "2026-10-01T17:53:47.458509Z"
+      }
+    ],
+    "next_after": 15,
+    "has_more": false
+  },
+  "observations": [
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "running"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "running"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "running"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "running"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "running"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "running"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "running"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "running"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "running"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "running"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "running"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "running"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "running"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "completed"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "completed"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    },
+    {
+      "run": "5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "interrupted": true,
+      "nodes": [
+        {
+          "id": "987348b8-f781-4e1e-83d0-9c25a764b8a5",
+          "state": "completed"
+        },
+        {
+          "id": "e675712c-05a0-4dd8-87a8-999e8566d4cd",
+          "state": "idle"
+        },
+        {
+          "id": "e6487a13-f21f-428f-8701-cc972d159b68",
+          "state": "idle"
+        },
+        {
+          "id": "64c054bc-4a08-41c5-92bf-3bd8e79a2dc8",
+          "state": "idle"
+        }
+      ]
+    }
+  ],
+  "sse_requests": [
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/stream?after=0",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/stream?after=5",
+      "status": 200
+    }
+  ],
+  "sse_reconnections": 1,
+  "completed_reload": true,
+  "trace_url": "/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98?trace=1",
+  "active_reload_id": "364e502a-9714-4b14-b68a-644f676585a7",
+  "cancel_requested_state": {
+    "run_id": "364e502a-9714-4b14-b68a-644f676585a7",
+    "tree_id": "1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+    "tree_version_id": "bffb9783-fd3f-4282-90aa-b896c4e14b1c",
+    "status": "cancelled",
+    "final_status": null,
+    "created_at": "2026-10-01T17:53:53.273670Z",
+    "started_at": "2026-10-01T17:53:53.273070Z",
+    "finished_at": "2026-10-01T17:53:55.036719Z",
+    "cancellation_requested": true,
+    "cancellation_requested_at": "2026-10-01T17:53:55.001473Z",
+    "usage": null,
+    "metrics": {
+      "queue_duration_ms": 1.091,
+      "execution_duration_ms": null,
+      "checkpoint_count": 0,
+      "recovery_count": 0,
+      "cancellation_count": 0,
+      "operations_total": 2,
+      "operations_reused": 0,
+      "operations_retried": 0,
+      "operations_uncertain": 0,
+      "recovery_block_count": 0
+    },
+    "error": null,
+    "artifact_count": 0,
+    "latest_event_sequence": 9,
+    "final_output": null,
+    "links": {
+      "self": "/api/v2/runs/364e502a-9714-4b14-b68a-644f676585a7",
+      "events": "/api/v2/runs/364e502a-9714-4b14-b68a-644f676585a7/events",
+      "stream": "/api/v2/runs/364e502a-9714-4b14-b68a-644f676585a7/stream",
+      "result": "/api/v2/runs/364e502a-9714-4b14-b68a-644f676585a7/result",
+      "artifacts": "/api/v2/runs/364e502a-9714-4b14-b68a-644f676585a7/artifacts",
+      "cancel": "/api/v2/runs/364e502a-9714-4b14-b68a-644f676585a7/cancel"
+    }
+  },
+  "cancel_final_state": {
+    "run_id": "364e502a-9714-4b14-b68a-644f676585a7",
+    "tree_id": "1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+    "tree_version_id": "bffb9783-fd3f-4282-90aa-b896c4e14b1c",
+    "status": "cancelled",
+    "final_status": null,
+    "created_at": "2026-10-01T17:53:53.273670Z",
+    "started_at": "2026-10-01T17:53:53.273070Z",
+    "finished_at": "2026-10-01T17:53:55.036719Z",
+    "cancellation_requested": true,
+    "cancellation_requested_at": "2026-10-01T17:53:55.001473Z",
+    "usage": null,
+    "metrics": {
+      "queue_duration_ms": 1.091,
+      "execution_duration_ms": null,
+      "checkpoint_count": 0,
+      "recovery_count": 0,
+      "cancellation_count": 0,
+      "operations_total": 2,
+      "operations_reused": 0,
+      "operations_retried": 0,
+      "operations_uncertain": 0,
+      "recovery_block_count": 0
+    },
+    "error": null,
+    "artifact_count": 0,
+    "latest_event_sequence": 9,
+    "final_output": null,
+    "links": {
+      "self": "/api/v2/runs/364e502a-9714-4b14-b68a-644f676585a7",
+      "events": "/api/v2/runs/364e502a-9714-4b14-b68a-644f676585a7/events",
+      "stream": "/api/v2/runs/364e502a-9714-4b14-b68a-644f676585a7/stream",
+      "result": "/api/v2/runs/364e502a-9714-4b14-b68a-644f676585a7/result",
+      "artifacts": "/api/v2/runs/364e502a-9714-4b14-b68a-644f676585a7/artifacts",
+      "cancel": "/api/v2/runs/364e502a-9714-4b14-b68a-644f676585a7/cancel"
+    }
+  },
+  "structured_run": {
+    "run_id": "1a524035-6f71-49db-962c-536aedbae6e2",
+    "tree_id": "1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+    "tree_version_id": "bffb9783-fd3f-4282-90aa-b896c4e14b1c",
+    "status": "failed",
+    "final_status": null,
+    "created_at": "2026-10-01T17:53:58.765252Z",
+    "started_at": "2026-10-01T17:53:58.764700Z",
+    "finished_at": "2026-10-01T17:54:12.216419Z",
+    "cancellation_requested": false,
+    "cancellation_requested_at": null,
+    "usage": null,
+    "metrics": {
+      "queue_duration_ms": 0.703,
+      "execution_duration_ms": null,
+      "checkpoint_count": 0,
+      "recovery_count": 0,
+      "cancellation_count": 0,
+      "operations_total": 2,
+      "operations_reused": 0,
+      "operations_retried": 0,
+      "operations_uncertain": 0,
+      "recovery_block_count": 0
+    },
+    "error": {
+      "code": "execution_error",
+      "message": "Provider execution failed"
+    },
+    "artifact_count": 0,
+    "latest_event_sequence": 10,
+    "final_output": null,
+    "links": {
+      "self": "/api/v2/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "events": "/api/v2/runs/1a524035-6f71-49db-962c-536aedbae6e2/events",
+      "stream": "/api/v2/runs/1a524035-6f71-49db-962c-536aedbae6e2/stream",
+      "result": "/api/v2/runs/1a524035-6f71-49db-962c-536aedbae6e2/result",
+      "artifacts": "/api/v2/runs/1a524035-6f71-49db-962c-536aedbae6e2/artifacts",
+      "cancel": "/api/v2/runs/1a524035-6f71-49db-962c-536aedbae6e2/cancel"
+    }
+  },
+  "network": [
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9/events?after=0&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9/result",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/version?version_id=608bc0b9-f793-491f-88d9-c0fb934df0d4",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/version?version_id=608bc0b9-f793-491f-88d9-c0fb934df0d4",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs",
+      "status": 202
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/events?after=0&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/stream?after=0",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/stream?after=5",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/events?after=7&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/result",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/events?after=0&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/events?after=0&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/result",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/events?after=0&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/result",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs",
+      "status": 202
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/364e502a-9714-4b14-b68a-644f676585a7",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/364e502a-9714-4b14-b68a-644f676585a7",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/364e502a-9714-4b14-b68a-644f676585a7/events?after=0&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/364e502a-9714-4b14-b68a-644f676585a7/stream?after=0",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/364e502a-9714-4b14-b68a-644f676585a7",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/364e502a-9714-4b14-b68a-644f676585a7",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/364e502a-9714-4b14-b68a-644f676585a7",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/364e502a-9714-4b14-b68a-644f676585a7/events?after=0&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/364e502a-9714-4b14-b68a-644f676585a7/stream?after=7",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/364e502a-9714-4b14-b68a-644f676585a7/cancel",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/364e502a-9714-4b14-b68a-644f676585a7",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/364e502a-9714-4b14-b68a-644f676585a7",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/364e502a-9714-4b14-b68a-644f676585a7/events?after=7&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/364e502a-9714-4b14-b68a-644f676585a7/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/364e502a-9714-4b14-b68a-644f676585a7/result",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/364e502a-9714-4b14-b68a-644f676585a7",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/364e502a-9714-4b14-b68a-644f676585a7",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/364e502a-9714-4b14-b68a-644f676585a7",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs",
+      "status": 202
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2/events?after=0&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2/stream?after=0",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2/events?after=7&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/1a524035-6f71-49db-962c-536aedbae6e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/1a524035-6f71-49db-962c-536aedbae6e2/result",
+      "status": 200
+    }
+  ],
+  "console": [],
+  "network_failures": [
+    {
+      "requestId": "1907435.4750",
+      "timestamp": 133930.799776,
+      "type": "Fetch",
+      "errorText": "net::ERR_ABORTED",
+      "canceled": true
+    },
+    {
+      "requestId": "1907435.5044",
+      "timestamp": 133941.068094,
+      "type": "Fetch",
+      "errorText": "net::ERR_ABORTED",
+      "canceled": true
+    }
+  ]
+}

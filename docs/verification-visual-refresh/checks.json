@@ -1,0 +1,12 @@
+{
+  "backend_tests": 224,
+  "frontend_tests": 158,
+  "frontend_test_files": 30,
+  "typescript": "passed",
+  "production_build": "passed",
+  "diff_check": "passed",
+  "backend_warning": "Existing Starlette per-request cookie deprecation",
+  "build_warning": "Existing main bundle exceeds 500kB minified advisory",
+  "core_status": "clean",
+  "source_files_changed_in_refresh": 57
+}

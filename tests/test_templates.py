@@ -137,3 +137,55 @@ def test_template_access_policy_reuses_existing_permissions():
     from backend.core.authz import required_access
     assert required_access("/api/templates", "GET") == ("manage_trees_agents", None)
     assert required_access("/api/tool-catalog", "GET") == ("manage_tools_mcp", None)
+    assert required_access("/api/templates/source/draft", "GET") == ("manage_trees_agents", None)
+    assert required_access("/api/templates/source/validate-draft", "POST") == ("manage_trees_agents", None)
+
+
+def test_unsaved_template_draft_and_readiness_do_not_write_trees(database):
+    from sqlalchemy import select, func
+    from backend.models.tree import Tree
+    owner = user(database)
+    service = TemplateService(database)
+    before = database.scalar(select(func.count()).select_from(Tree))
+    draft = service.prepare_draft('builtin-general-analysis', owner)
+    assert len(draft.configuration.agents) == 5
+    assert set(draft.agent_ids.values()) == {a.id for a in draft.configuration.agents}
+    assert all(a.provider_connection_id is None and a.model_id is None for a in draft.configuration.agents)
+    assert draft.configuration.tool_assignments == []
+    validation = service.preview_configuration('builtin-general-analysis', owner, draft.configuration, draft.agent_ids)
+    assert not validation.valid
+    assert database.scalar(select(func.count()).select_from(Tree)) == before
+
+
+def test_save_edited_template_draft_preserves_identity_and_requirements(database):
+    from backend.models.tree import TreeVersion
+    owner = user(database)
+    service = TemplateService(database)
+    draft = service.prepare_draft('builtin-general-analysis', owner)
+    draft.configuration.name = 'Edited before first Save'
+    draft.configuration.agents[0].name = 'Edited Root'
+    tree = service.instantiate('builtin-general-analysis', owner, configuration=draft.configuration, agent_ids=draft.agent_ids)
+    assert tree.name == 'Edited before first Save'
+    assert {a.id for a in tree.version.agents} == set(draft.agent_ids.values())
+    version = database.get(TreeVersion, tree.current_version_id)
+    assert version.template_instance_json['agent_ids'] == draft.agent_ids
+    assert version.template_instance_json['definition']['tool_requirements']
+    assert version.template_instance_json['source_template_id'] == 'builtin-general-analysis'
+
+
+@pytest.mark.parametrize('invalid', ['missing', 'duplicate', 'wrong_role'])
+def test_template_identity_mapping_rejects_invalid_inputs_without_writes(database, invalid):
+    from sqlalchemy import select, func
+    from backend.models.tree import Tree
+    from backend.services.errors import ServiceError
+    owner = user(database)
+    service = TemplateService(database)
+    draft = service.prepare_draft('builtin-general-analysis', owner)
+    ids = draft.agent_ids.copy()
+    keys = list(ids)
+    if invalid == 'missing': ids.pop(keys[0])
+    elif invalid == 'duplicate': ids[keys[1]] = ids[keys[0]]
+    else: draft.configuration.agents[0].agent_type = 'specialist'
+    with pytest.raises(ServiceError):
+        service.instantiate('builtin-general-analysis', owner, configuration=draft.configuration, agent_ids=ids)
+    assert database.scalar(select(func.count()).select_from(Tree)) == 0

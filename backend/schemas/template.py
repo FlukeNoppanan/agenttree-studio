@@ -7,7 +7,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from backend.core.capabilities import normalize_capabilities
 
-from backend.schemas.tree import OutputDraft, TriggerDraft
+from backend.schemas.tree import OutputDraft, TriggerDraft, TreeDraftPayload
 from backend.schemas.provider import ProviderModelRead, ProviderType
 from backend.schemas.tree import AgentRead, TreeDetailRead, ValidationIssue
 
@@ -178,6 +178,8 @@ class TemplateUpdate(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     name: str | None = Field(default=None, min_length=1, max_length=160)
+    configuration: TreeDraftPayload | None = None
+    agent_ids: dict[str, str] | None = None
     description: str | None = Field(default=None, max_length=4_000)
     category: str | None = Field(default=None, min_length=1, max_length=80)
     definition: TemplateDefinition | None = None
@@ -188,10 +190,17 @@ class TemplateUpdate(BaseModel):
         return value.strip() if value is not None else None
 
 
+class TemplateDraftRead(BaseModel):
+    configuration: TreeDraftPayload
+    agent_ids: dict[str, str]
+
+
 class TemplateInstantiateRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     name: str | None = Field(default=None, min_length=1, max_length=160)
+    configuration: TreeDraftPayload | None = None
+    agent_ids: dict[str, str] | None = None
 
 
 class TemplateRead(BaseModel):

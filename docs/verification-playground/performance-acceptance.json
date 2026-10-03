@@ -1,0 +1,227 @@
+{
+  "tree_id": "2397f993-867a-4ff0-8b79-e86f498f50c4",
+  "agents": 25,
+  "navigation_and_fit_ms": 3868,
+  "idle_dom_changes": 0,
+  "narrow_overflow": false,
+  "full_trace_open": true,
+  "console": [],
+  "network": [
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees",
+      "status": 201
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/2397f993-867a-4ff0-8b79-e86f498f50c4/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/2397f993-867a-4ff0-8b79-e86f498f50c4",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/2397f993-867a-4ff0-8b79-e86f498f50c4/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/2397f993-867a-4ff0-8b79-e86f498f50c4/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/2397f993-867a-4ff0-8b79-e86f498f50c4/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/2397f993-867a-4ff0-8b79-e86f498f50c4",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/events?after=0&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/result",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/events?after=0&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/result",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/5f007636-e68a-474a-8c33-5c5c13dc8c98",
+      "status": 200
+    }
+  ]
+}

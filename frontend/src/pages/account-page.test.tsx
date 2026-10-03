@@ -15,7 +15,7 @@ const member: StudioUser = { id: "u1", username: "member", is_admin: false, is_p
 function mount(user: StudioUser, start = "/account") {
   vi.spyOn(api, "me").mockResolvedValue(user)
   vi.spyOn(api, "account").mockResolvedValue({ user, session_expires_at: null,
-    allowed_trees: user.is_admin || user.permissions.includes("use_trees") ? [{ id: "tree-1", name: "Coding Assistant" }] : [], active_token_count: 0 })
+    allowed_trees: user.is_admin || user.permissions.includes("use_trees") || user.permissions.includes("manage_trees_agents") ? [{ id: "tree-1", name: "Coding Assistant" }] : [], active_token_count: 0 })
   return render(<AuthProvider><MemoryRouter initialEntries={[start]}><Routes>
     <Route path="/my-trees" element={<MyTreesRedirect />} />
     <Route path="/account" element={<AccountPage />} />
@@ -41,9 +41,17 @@ describe("Account sections and legacy route", () => {
     expect(await screen.findByText("Administrator access · All Trees")).toBeInTheDocument()
   })
 
+  it("shows selected Tree access for a manager without execution permission", async () => {
+    mount({ ...member, permissions: ["manage_trees_agents"] }, "/account?section=tree-access")
+    expect(await screen.findByText("Coding Assistant")).toBeInTheDocument()
+    expect(screen.getByText(/Permissions determine what you can do/)).toBeInTheDocument()
+    fireEvent.click(screen.getByRole("tab", { name: "API Keys" }))
+    expect(screen.getByText(/API keys are unavailable/)).toBeInTheDocument()
+  })
+
   it("does not offer API key creation or self-grant to a user without Tree permission", async () => {
     mount({ ...member, permissions: [], allowed_tree_ids: [] }, "/account?section=tree-access")
-    expect(await screen.findByText(/Your account cannot use Trees/)).toBeInTheDocument()
+    expect(await screen.findByText(/Your account has no Tree action permissions/)).toBeInTheDocument()
     fireEvent.click(screen.getByRole("tab", { name: "API Keys" }))
     expect(screen.getByText(/API keys are unavailable/)).toBeInTheDocument()
     expect(screen.queryByRole("button", { name: "Create API Key" })).not.toBeInTheDocument()

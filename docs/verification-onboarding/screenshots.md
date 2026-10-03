@@ -1,0 +1,16 @@
+# Real browser screenshots
+
+- [01-new-user-dashboard.png](screenshots/01-new-user-dashboard.png)
+- [02-provider-empty.png](screenshots/02-provider-empty.png)
+- [03-tree-empty.png](screenshots/03-tree-empty.png)
+- [04-getting-started-partial.png](screenshots/04-getting-started-partial.png)
+- [05-getting-started-ready.png](screenshots/05-getting-started-ready.png)
+- [06-tools-empty.png](screenshots/06-tools-empty.png)
+- [07-runs-empty.png](screenshots/07-runs-empty.png)
+- [08-real-run-trace.png](screenshots/08-real-run-trace.png)
+- [09-after-successful-run.png](screenshots/09-after-successful-run.png)
+- [10-onboarding-connect.png](screenshots/10-onboarding-connect.png)
+- [11-contextual-help.png](screenshots/11-contextual-help.png)
+- [12-established-dashboard.png](screenshots/12-established-dashboard.png)
+- [13-narrow-getting-started.png](screenshots/13-narrow-getting-started.png)
+- [14-restricted-connect.png](screenshots/14-restricted-connect.png)

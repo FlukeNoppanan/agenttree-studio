@@ -1,0 +1,25 @@
+{
+  "run_id": "8b4c1c74-49eb-464e-8547-f2f4b45104da",
+  "run_status": "completed",
+  "provider": "Gemini",
+  "model": "models/gemini-3.1-flash-lite",
+  "picker_configure": "1c1495ed-faa3-470e-8214-da4f10eb9536",
+  "picker_run": "1c1495ed-faa3-470e-8214-da4f10eb9536",
+  "picker_connect": "d0ad3e66-8f25-4624-a297-e274899b3566",
+  "welcome_snoozes": [
+    "session",
+    "today",
+    "3",
+    "7",
+    "14"
+  ],
+  "run_trace_reload": "passed",
+  "progress_reload": "passed",
+  "theme_pages": 17,
+  "languages": [
+    "en",
+    "th"
+  ],
+  "narrow_width": 800,
+  "console_entries": 0
+}

@@ -1,0 +1,50 @@
+{
+  "light": {
+    "roles": [
+      {
+        "role": "root",
+        "width": "3px",
+        "color": "rgb(93, 74, 232)"
+      },
+      {
+        "role": "manager",
+        "width": "3px",
+        "color": "rgb(8, 123, 154)"
+      },
+      {
+        "role": "specialist",
+        "width": "3px",
+        "color": "rgb(101, 112, 139)"
+      }
+    ],
+    "selected": {
+      "role": "manager",
+      "background": "rgb(238, 234, 254)",
+      "ring": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.52909 0.042326 -0.222719 / 0.2) 0px 0px 0px 2px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px"
+    }
+  },
+  "dark": {
+    "roles": [
+      {
+        "role": "root",
+        "width": "3px",
+        "color": "rgb(165, 155, 255)"
+      },
+      {
+        "role": "manager",
+        "width": "3px",
+        "color": "rgb(88, 200, 232)"
+      },
+      {
+        "role": "specialist",
+        "width": "3px",
+        "color": "rgb(172, 183, 209)"
+      }
+    ],
+    "selected": {
+      "role": "manager",
+      "background": "rgb(48, 45, 78)",
+      "ring": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.738722 0.0415163 -0.136083 / 0.2) 0px 0px 0px 2px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px"
+    }
+  }
+}

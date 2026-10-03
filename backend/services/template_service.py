@@ -14,14 +14,15 @@ from backend.models.template import TreeTemplate
 from backend.models.tool import ToolConnection
 from backend.schemas.template import (
     TemplateDefinition,
+    TemplateDraftRead,
     TemplateMetadataCreate,
     TemplateRead,
     TemplateType,
     TemplateUpdate,
     upgrade_template_definition,
 )
-from backend.schemas.tree import AgentDraft, OutputDraft, TreeDraftPayload, TriggerDraft
-from backend.services.errors import ResourceConflictError, ResourceNotFoundError
+from backend.schemas.tree import AgentDraft, OutputDraft, TreeDraftPayload, TreeValidationRead, TriggerDraft
+from backend.services.errors import ResourceConflictError, ResourceNotFoundError, ServiceError
 from backend.services.template_requirements import catalog_key_for_tool
 from backend.services.tree_service import TreeService
 from backend.templates.builtin import BUILTIN_TEMPLATES
@@ -272,7 +273,7 @@ class TemplateService:
         self._database.delete(item)
         self._database.commit()
 
-    def instantiate(self, template_id: str, user: User, *, name: str | None = None):
+    def prepare_draft(self, template_id: str, user: User, *, name: str | None = None) -> TemplateDraftRead:
         template = self.get(template_id, user)
         definition = sanitize_definition(template.definition)
         id_by_key = {agent.key: str(uuid4()) for agent in definition.agents}
@@ -308,9 +309,44 @@ class TemplateService:
             trigger=TriggerDraft.model_validate(definition.trigger.model_dump()) if definition.trigger else None,
             output=OutputDraft.model_validate(definition.output.model_dump()) if definition.output else None,
         )
-        return TreeService(self._database).create(payload, template_instance={
+        return TemplateDraftRead(configuration=payload, agent_ids=id_by_key)
+
+    def instantiate(
+        self, template_id: str, user: User, *, name: str | None = None,
+        configuration: TreeDraftPayload | None = None, agent_ids: dict[str, str] | None = None,
+    ):
+        prepared = self.prepare_draft(template_id, user, name=name)
+        definition = sanitize_definition(self.get(template_id, user).definition)
+        payload, id_by_key = prepared.configuration, prepared.agent_ids
+        if configuration is not None:
+            self.validate_agent_mapping(definition, configuration, agent_ids)
+            payload = configuration.model_copy(update={"template": template_id})
+            id_by_key = dict(agent_ids)
+        elif agent_ids is not None:
+            raise ServiceError("Template Agent mapping requires a configuration")
+        return TreeService(self._database).create(payload, user=user, template_instance={
             "schema_version": 1,
-            "source_template_id": template.id,
+            "source_template_id": template_id,
             "definition": definition.model_dump(mode="json"),
             "agent_ids": dict(id_by_key),
+        })
+
+    @staticmethod
+    def validate_agent_mapping(definition: TemplateDefinition, configuration: TreeDraftPayload, agent_ids: dict[str, str] | None) -> None:
+        if agent_ids is None or set(agent_ids) != {a.key for a in definition.agents}:
+            raise ServiceError("Template Agent identity mapping is invalid")
+        if len(set(agent_ids.values())) != len(agent_ids):
+            raise ServiceError("Template Agent identities must be unique")
+        by_id = {a.id: a for a in configuration.agents}
+        for source in definition.agents:
+            agent = by_id.get(agent_ids[source.key])
+            if agent is not None and agent.agent_type != source.agent_type:
+                raise ServiceError("Template Agent role cannot change")
+
+    def preview_configuration(self, template_id: str, user: User, configuration: TreeDraftPayload, agent_ids: dict[str, str] | None) -> TreeValidationRead:
+        definition = sanitize_definition(self.get(template_id, user).definition)
+        self.validate_agent_mapping(definition, configuration, agent_ids)
+        return TreeService(self._database).preview_draft(configuration, template_instance={
+            "schema_version": 1, "source_template_id": template_id,
+            "definition": definition.model_dump(mode="json"), "agent_ids": agent_ids,
         })

@@ -1,0 +1,63 @@
+{
+  "retained_run": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+  "removed_user": "f98045d4-73ba-48ea-a112-c9161a2876f7",
+  "removed_trees": [
+    "b2d57c2a-acae-4cc5-8ee4-7db8784ccbdf"
+  ],
+  "removed_focused_run": "3784cf09-94c2-4adf-a643-ac8396eb63fc",
+  "general_configuration_unchanged": true,
+  "old_partial_truth_preserved": true,
+  "secret_scan_passed": true,
+  "unchanged_tables": [
+    "secrets",
+    "trees",
+    "users",
+    "api_tokens",
+    "provider_connections",
+    "result_destinations",
+    "tool_connections",
+    "tree_templates",
+    "tree_versions",
+    "user_permissions",
+    "user_tree_access",
+    "webhook_integrations",
+    "agent_configs",
+    "output_configs",
+    "provider_models",
+    "trigger_configs",
+    "run_idempotency",
+    "tool_assignments"
+  ],
+  "changed_tables": [
+    "runs",
+    "result_deliveries",
+    "run_artifacts",
+    "trace_events"
+  ],
+  "counts": {
+    "secrets": 2,
+    "trees": 2,
+    "users": 3,
+    "api_tokens": 7,
+    "provider_connections": 3,
+    "result_destinations": 4,
+    "security_events": 314,
+    "tool_connections": 4,
+    "tree_templates": 0,
+    "tree_versions": 7,
+    "user_permissions": 4,
+    "user_sessions": 5,
+    "user_tree_access": 0,
+    "webhook_integrations": 0,
+    "agent_configs": 31,
+    "output_configs": 7,
+    "provider_models": 521,
+    "runs": 10,
+    "trigger_configs": 7,
+    "result_deliveries": 10,
+    "run_artifacts": 2,
+    "run_idempotency": 0,
+    "tool_assignments": 6,
+    "trace_events": 725
+  }
+}

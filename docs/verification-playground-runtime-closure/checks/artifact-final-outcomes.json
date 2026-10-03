@@ -1,0 +1,727 @@
+{
+  "run_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+  "status": "completed",
+  "final_status": "completed",
+  "duration_ms": 70199,
+  "outcomes": [
+    [
+      "/status",
+      "completed"
+    ],
+    [
+      "/orchestration_plan/status",
+      "ready"
+    ],
+    [
+      "/delegation_result/manager_delegations/0/assignments/0/status",
+      "ready"
+    ],
+    [
+      "/delegation_result/manager_delegations/0/assignments/1/status",
+      "ready"
+    ],
+    [
+      "/delegation_result/manager_delegations/0/status",
+      "ready"
+    ],
+    [
+      "/delegation_result/manager_delegations/1/assignments/0/status",
+      "ready"
+    ],
+    [
+      "/delegation_result/manager_delegations/1/assignments/1/status",
+      "ready"
+    ],
+    [
+      "/delegation_result/manager_delegations/1/status",
+      "ready"
+    ],
+    [
+      "/delegation_result/status",
+      "ready"
+    ],
+    [
+      "/execution_result/manager_executions/0/specialist_executions/0/status",
+      "completed"
+    ],
+    [
+      "/execution_result/manager_executions/0/specialist_executions/0/agent_result/success",
+      true
+    ],
+    [
+      "/execution_result/manager_executions/0/specialist_executions/1/status",
+      "completed"
+    ],
+    [
+      "/execution_result/manager_executions/0/specialist_executions/1/agent_result/success",
+      true
+    ],
+    [
+      "/execution_result/manager_executions/0/status",
+      "completed"
+    ],
+    [
+      "/execution_result/manager_executions/1/specialist_executions/0/status",
+      "completed"
+    ],
+    [
+      "/execution_result/manager_executions/1/specialist_executions/0/agent_result/success",
+      true
+    ],
+    [
+      "/execution_result/manager_executions/1/specialist_executions/1/status",
+      "completed"
+    ],
+    [
+      "/execution_result/manager_executions/1/specialist_executions/1/agent_result/success",
+      true
+    ],
+    [
+      "/execution_result/manager_executions/1/status",
+      "completed"
+    ],
+    [
+      "/execution_result/status",
+      "completed"
+    ],
+    [
+      "/execution_result/delegation/manager_delegations/0/assignments/0/status",
+      "ready"
+    ],
+    [
+      "/execution_result/delegation/manager_delegations/0/assignments/1/status",
+      "ready"
+    ],
+    [
+      "/execution_result/delegation/manager_delegations/0/status",
+      "ready"
+    ],
+    [
+      "/execution_result/delegation/manager_delegations/1/assignments/0/status",
+      "ready"
+    ],
+    [
+      "/execution_result/delegation/manager_delegations/1/assignments/1/status",
+      "ready"
+    ],
+    [
+      "/execution_result/delegation/manager_delegations/1/status",
+      "ready"
+    ],
+    [
+      "/execution_result/delegation/status",
+      "ready"
+    ],
+    [
+      "/manager_review_result/manager_results/0/subtask_outcomes/0/decision",
+      "pass"
+    ],
+    [
+      "/manager_review_result/manager_results/0/subtask_outcomes/0/executions/0/status",
+      "completed"
+    ],
+    [
+      "/manager_review_result/manager_results/0/subtask_outcomes/0/executions/0/agent_result/success",
+      true
+    ],
+    [
+      "/manager_review_result/manager_results/0/subtask_outcomes/0/reviews/0/decision",
+      "pass"
+    ],
+    [
+      "/manager_review_result/manager_results/0/subtask_outcomes/0/status",
+      "passed"
+    ],
+    [
+      "/manager_review_result/manager_results/0/subtask_outcomes/1/decision",
+      "pass"
+    ],
+    [
+      "/manager_review_result/manager_results/0/subtask_outcomes/1/executions/0/status",
+      "completed"
+    ],
+    [
+      "/manager_review_result/manager_results/0/subtask_outcomes/1/executions/0/agent_result/success",
+      true
+    ],
+    [
+      "/manager_review_result/manager_results/0/subtask_outcomes/1/reviews/0/decision",
+      "pass"
+    ],
+    [
+      "/manager_review_result/manager_results/0/subtask_outcomes/1/status",
+      "passed"
+    ],
+    [
+      "/manager_review_result/manager_results/0/status",
+      "passed"
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/0/decision",
+      "pass"
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/0/executions/0/status",
+      "completed"
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/0/executions/0/agent_result/success",
+      true
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/0/executions/1/status",
+      "completed"
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/0/executions/1/agent_result/success",
+      true
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/0/reviews/0/decision",
+      "revise"
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/0/reviews/1/decision",
+      "pass"
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/0/revisions/0/executions/0/status",
+      "completed"
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/0/revisions/0/executions/0/agent_result/success",
+      true
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/0/revisions/0/status",
+      "completed"
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/0/status",
+      "passed"
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/1/decision",
+      "pass"
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/1/executions/0/status",
+      "completed"
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/1/executions/0/agent_result/success",
+      true
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/1/reviews/0/decision",
+      "pass"
+    ],
+    [
+      "/manager_review_result/manager_results/1/subtask_outcomes/1/status",
+      "passed"
+    ],
+    [
+      "/manager_review_result/manager_results/1/status",
+      "passed"
+    ],
+    [
+      "/manager_review_result/status",
+      "passed"
+    ],
+    [
+      "/manager_review_result/execution/manager_executions/0/specialist_executions/0/status",
+      "completed"
+    ],
+    [
+      "/manager_review_result/execution/manager_executions/0/specialist_executions/0/agent_result/success",
+      true
+    ],
+    [
+      "/manager_review_result/execution/manager_executions/0/specialist_executions/1/status",
+      "completed"
+    ],
+    [
+      "/manager_review_result/execution/manager_executions/0/specialist_executions/1/agent_result/success",
+      true
+    ],
+    [
+      "/manager_review_result/execution/manager_executions/0/status",
+      "completed"
+    ],
+    [
+      "/manager_review_result/execution/manager_executions/1/specialist_executions/0/status",
+      "completed"
+    ],
+    [
+      "/manager_review_result/execution/manager_executions/1/specialist_executions/0/agent_result/success",
+      true
+    ],
+    [
+      "/manager_review_result/execution/manager_executions/1/specialist_executions/1/status",
+      "completed"
+    ],
+    [
+      "/manager_review_result/execution/manager_executions/1/specialist_executions/1/agent_result/success",
+      true
+    ],
+    [
+      "/manager_review_result/execution/manager_executions/1/status",
+      "completed"
+    ],
+    [
+      "/manager_review_result/execution/status",
+      "completed"
+    ],
+    [
+      "/manager_review_result/execution/delegation/manager_delegations/0/assignments/0/status",
+      "ready"
+    ],
+    [
+      "/manager_review_result/execution/delegation/manager_delegations/0/assignments/1/status",
+      "ready"
+    ],
+    [
+      "/manager_review_result/execution/delegation/manager_delegations/0/status",
+      "ready"
+    ],
+    [
+      "/manager_review_result/execution/delegation/manager_delegations/1/assignments/0/status",
+      "ready"
+    ],
+    [
+      "/manager_review_result/execution/delegation/manager_delegations/1/assignments/1/status",
+      "ready"
+    ],
+    [
+      "/manager_review_result/execution/delegation/manager_delegations/1/status",
+      "ready"
+    ],
+    [
+      "/manager_review_result/execution/delegation/status",
+      "ready"
+    ],
+    [
+      "/final_result/success",
+      true
+    ],
+    [
+      "/final_result/status",
+      "completed"
+    ],
+    [
+      "/final_result/manager_results/0/subtask_outcomes/0/decision",
+      "pass"
+    ],
+    [
+      "/final_result/manager_results/0/subtask_outcomes/0/executions/0/status",
+      "completed"
+    ],
+    [
+      "/final_result/manager_results/0/subtask_outcomes/0/executions/0/agent_result/success",
+      true
+    ],
+    [
+      "/final_result/manager_results/0/subtask_outcomes/0/reviews/0/decision",
+      "pass"
+    ],
+    [
+      "/final_result/manager_results/0/subtask_outcomes/0/status",
+      "passed"
+    ],
+    [
+      "/final_result/manager_results/0/subtask_outcomes/1/decision",
+      "pass"
+    ],
+    [
+      "/final_result/manager_results/0/subtask_outcomes/1/executions/0/status",
+      "completed"
+    ],
+    [
+      "/final_result/manager_results/0/subtask_outcomes/1/executions/0/agent_result/success",
+      true
+    ],
+    [
+      "/final_result/manager_results/0/subtask_outcomes/1/reviews/0/decision",
+      "pass"
+    ],
+    [
+      "/final_result/manager_results/0/subtask_outcomes/1/status",
+      "passed"
+    ],
+    [
+      "/final_result/manager_results/0/status",
+      "passed"
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/0/decision",
+      "pass"
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/0/executions/0/status",
+      "completed"
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/0/executions/0/agent_result/success",
+      true
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/0/executions/1/status",
+      "completed"
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/0/executions/1/agent_result/success",
+      true
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/0/reviews/0/decision",
+      "revise"
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/0/reviews/1/decision",
+      "pass"
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/0/revisions/0/executions/0/status",
+      "completed"
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/0/revisions/0/executions/0/agent_result/success",
+      true
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/0/revisions/0/status",
+      "completed"
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/0/status",
+      "passed"
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/1/decision",
+      "pass"
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/1/executions/0/status",
+      "completed"
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/1/executions/0/agent_result/success",
+      true
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/1/reviews/0/decision",
+      "pass"
+    ],
+    [
+      "/final_result/manager_results/1/subtask_outcomes/1/status",
+      "passed"
+    ],
+    [
+      "/final_result/manager_results/1/status",
+      "passed"
+    ],
+    [
+      "/final_result/final_review/decision",
+      "pass"
+    ],
+    [
+      "/final_result/final_reviews/0/decision",
+      "pass"
+    ],
+    [
+      "/failed_phase",
+      null
+    ],
+    [
+      "/failure_reason",
+      null
+    ]
+  ],
+  "tool_metrics": null,
+  "tool_events": [
+    {
+      "event_type": "specialist.tool.requested",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": null,
+        "call_id": "call_60964",
+        "status": "requested",
+        "duration_ms": null
+      }
+    },
+    {
+      "event_type": "specialist.tool.authorized",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": "068f8b1d-1298-4b34-8ff9-c4138613443c",
+        "call_id": "call_60964",
+        "status": "authorized",
+        "duration_ms": null
+      }
+    },
+    {
+      "event_type": "specialist.tool.started",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": "068f8b1d-1298-4b34-8ff9-c4138613443c",
+        "call_id": "call_60964",
+        "status": "started",
+        "duration_ms": null
+      }
+    },
+    {
+      "event_type": "specialist.tool.completed",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": "068f8b1d-1298-4b34-8ff9-c4138613443c",
+        "call_id": "call_60964",
+        "status": "completed",
+        "duration_ms": 14.2
+      }
+    },
+    {
+      "event_type": "specialist.tool.requested",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": null,
+        "call_id": "call_57943",
+        "status": "requested",
+        "duration_ms": null
+      }
+    },
+    {
+      "event_type": "specialist.tool.authorized",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": "068f8b1d-1298-4b34-8ff9-c4138613443c",
+        "call_id": "call_57943",
+        "status": "authorized",
+        "duration_ms": null
+      }
+    },
+    {
+      "event_type": "specialist.tool.started",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": "068f8b1d-1298-4b34-8ff9-c4138613443c",
+        "call_id": "call_57943",
+        "status": "started",
+        "duration_ms": null
+      }
+    },
+    {
+      "event_type": "specialist.tool.failed",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": "068f8b1d-1298-4b34-8ff9-c4138613443c",
+        "call_id": "call_57943",
+        "status": "failed",
+        "duration_ms": 0.88
+      }
+    },
+    {
+      "event_type": "specialist.tool.requested",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": null,
+        "call_id": "call_104567",
+        "status": "requested",
+        "duration_ms": null
+      }
+    },
+    {
+      "event_type": "specialist.tool.authorized",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": "068f8b1d-1298-4b34-8ff9-c4138613443c",
+        "call_id": "call_104567",
+        "status": "authorized",
+        "duration_ms": null
+      }
+    },
+    {
+      "event_type": "specialist.tool.started",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": "068f8b1d-1298-4b34-8ff9-c4138613443c",
+        "call_id": "call_104567",
+        "status": "started",
+        "duration_ms": null
+      }
+    },
+    {
+      "event_type": "specialist.tool.failed",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": "068f8b1d-1298-4b34-8ff9-c4138613443c",
+        "call_id": "call_104567",
+        "status": "failed",
+        "duration_ms": 0.77
+      }
+    },
+    {
+      "event_type": "specialist.tool.requested",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": null,
+        "call_id": "call_118480",
+        "status": "requested",
+        "duration_ms": null
+      }
+    },
+    {
+      "event_type": "specialist.tool.authorized",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": "068f8b1d-1298-4b34-8ff9-c4138613443c",
+        "call_id": "call_118480",
+        "status": "authorized",
+        "duration_ms": null
+      }
+    },
+    {
+      "event_type": "specialist.tool.started",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": "068f8b1d-1298-4b34-8ff9-c4138613443c",
+        "call_id": "call_118480",
+        "status": "started",
+        "duration_ms": null
+      }
+    },
+    {
+      "event_type": "specialist.tool.failed",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": "068f8b1d-1298-4b34-8ff9-c4138613443c",
+        "call_id": "call_118480",
+        "status": "failed",
+        "duration_ms": 0.6
+      }
+    },
+    {
+      "event_type": "specialist.tool.requested",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": null,
+        "call_id": "call_120309",
+        "status": "requested",
+        "duration_ms": null
+      }
+    },
+    {
+      "event_type": "specialist.tool.authorized",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": "068f8b1d-1298-4b34-8ff9-c4138613443c",
+        "call_id": "call_120309",
+        "status": "authorized",
+        "duration_ms": null
+      }
+    },
+    {
+      "event_type": "specialist.tool.started",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": "068f8b1d-1298-4b34-8ff9-c4138613443c",
+        "call_id": "call_120309",
+        "status": "started",
+        "duration_ms": null
+      }
+    },
+    {
+      "event_type": "specialist.tool.completed",
+      "actor_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "execution_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+        "agent_role": "specialist",
+        "tool_id": "068f8b1d-1298-4b34-8ff9-c4138613443c",
+        "call_id": "call_120309",
+        "status": "completed",
+        "duration_ms": 12.21
+      }
+    }
+  ],
+  "state_trace_event_count": 71,
+  "trace_failures": [],
+  "artifacts": [
+    {
+      "id": "deb486ae-c7a1-4604-b851-a6b05b994171",
+      "core_artifact_id": "1f71b5292e0553178ab2195aa8319369a8ba648388d525400b1c57e9914645b0",
+      "artifact_type": "text",
+      "name": "AI_in_Universities_Analysis.md",
+      "logical_path": "AI_in_Universities_Analysis.md",
+      "operation": "none",
+      "media_type": "text/markdown",
+      "size_bytes": 15102,
+      "sha256": "aeb336b16e1d3ae792701a5f76cceb71576a8b0f5ec39e07b00e3cebf02f350d",
+      "producer_role": "tool",
+      "producer_agent_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "owner_manager_id": "0ff944f6-57d9-484c-81f1-073fb5311428"
+      },
+      "is_final": false,
+      "created_at": "2026-10-02T11:45:13.738517Z",
+      "integrity_verified": true,
+      "utf8_verified": true
+    },
+    {
+      "id": "622fcd77-31c4-4ddb-bff7-4f9c240cf51f",
+      "core_artifact_id": "07eae3af27691a194529ee2ae9b310bab3601fd92414840490ddbe6c54c6e190",
+      "artifact_type": "text",
+      "name": "ai_in_universities_analysis_report.md",
+      "logical_path": null,
+      "operation": "none",
+      "media_type": "text/markdown",
+      "size_bytes": 17203,
+      "sha256": "9ddbcbfa56109e0e1cab3b99a482cabfbfb63dac57ce89a400987155e8fd5665",
+      "producer_role": "tool",
+      "producer_agent_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+      "metadata": {
+        "owner_manager_id": "0ff944f6-57d9-484c-81f1-073fb5311428"
+      },
+      "is_final": true,
+      "created_at": "2026-10-02T11:45:48.867464Z",
+      "integrity_verified": true,
+      "utf8_verified": true
+    }
+  ]
+}

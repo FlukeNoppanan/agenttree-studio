@@ -3,6 +3,8 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from backend.models.auth import User
+from backend.services.auth_service import AuthService
 from backend.models.destination import ResultDestination
 from backend.models.provider import ProviderConnection
 from backend.models.secret import Secret
@@ -13,13 +15,20 @@ from backend.services.errors import ResourceNotFoundError
 
 
 class DependencyService:
-    def __init__(self, database: Session) -> None:
+    def __init__(self, database: Session, user: User | None = None) -> None:
         self._database = database
+        self._user = user
 
-    @staticmethod
-    def _result(kind: str, resource, dependencies: list[ResourceDependency]) -> ResourceDependencies:
+    def _result(self, kind: str, resource, dependencies: list[ResourceDependency]) -> ResourceDependencies:
+        can_delete = not dependencies  # Hidden dependencies still prevent deletion.
+        if self._user is not None:
+            auth = AuthService(self._database)
+            dependencies = [item for item in dependencies if item.tree_id is None or (
+                auth.has_permission(self._user, "manage_trees_agents")
+                and auth.can_access_tree(self._user, item.tree_id)
+            )]
         return ResourceDependencies(
-            can_delete=not dependencies,
+            can_delete=can_delete,
             resource=ResourceIdentity(type=kind, id=resource.id, name=resource.name),
             dependencies=dependencies,
         )

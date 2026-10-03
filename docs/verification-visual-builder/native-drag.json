@@ -1,0 +1,66 @@
+{
+  "drag_source": "real mouse drag from palette; browser-intercepted HTML DragData",
+  "drop_feedback": "active border",
+  "insertion": "canonical new Manager",
+  "undo": "restores original Agent count",
+  "keyboard_configuration": "Tab-focusable Configure button + Enter opens drawer",
+  "browser_errors": [],
+  "network": [
+    {
+      "url": "http://127.0.0.1:15173/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/validate-draft?tree_id=7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/validate-draft?tree_id=7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/validate-draft?tree_id=7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers/9956dcbe-37cb-43f6-976c-6d416622c9ba/models",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers/9956dcbe-37cb-43f6-976c-6d416622c9ba/models",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/capabilities",
+      "status": 200
+    }
+  ]
+}

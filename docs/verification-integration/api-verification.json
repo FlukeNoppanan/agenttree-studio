@@ -1,0 +1,107 @@
+{
+  "runs": {
+    "v2_run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0",
+    "v1_run_id": "b01d2120-bdc2-46c9-88ce-455fce65baf1",
+    "webhook_run_id": "5c3fa329-95b7-4e9d-97c7-4e918c1baf8e"
+  },
+  "requests": [
+    {
+      "method": "POST",
+      "path": "/api/v2/runs",
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/result",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v2/runs",
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/artifacts",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0/invoke",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/webhooks/wh_1b45ec9b9b7f3d7119509e0701bb9601",
+      "status": 404
+    },
+    {
+      "method": "POST",
+      "path": "/api/webhooks/wh_1b45ec9b9b7f3d7119509e0701bb9601",
+      "status": 202
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/events",
+      "status": 200
+    }
+  ],
+  "sse_event_count": 15,
+  "v2_final_status": "completed",
+  "artifact_count": 0
+}

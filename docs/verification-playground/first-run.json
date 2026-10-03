@@ -1,0 +1,2543 @@
+{
+  "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+  "state": {
+    "status": 200,
+    "data": {
+      "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+      "tree_id": "1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "tree_version_id": "608bc0b9-f793-491f-88d9-c0fb934df0d4",
+      "status": "completed",
+      "final_status": "completed",
+      "created_at": "2026-10-01T16:43:52.660241Z",
+      "started_at": "2026-10-01T16:43:52.658282Z",
+      "finished_at": "2026-10-01T16:44:02.793303Z",
+      "cancellation_requested": false,
+      "cancellation_requested_at": null,
+      "usage": {
+        "input_tokens": 251,
+        "output_tokens": 215,
+        "total_tokens": 466,
+        "unreported_calls": 0,
+        "calls": [
+          {
+            "stage": "root_planning",
+            "provider": "studio-cbef6238-4a16-4a83-98b4-8cb7da697e79-6b089ac598b5",
+            "model": "gemini-3.1-flash-lite",
+            "usage": "ProviderUsage(input_tokens=251, output_tokens=215, total_tokens=466)"
+          }
+        ]
+      },
+      "metrics": {
+        "queue_duration_ms": 2.038,
+        "execution_duration_ms": 8447.110999999999,
+        "checkpoint_count": 1,
+        "recovery_count": 0,
+        "cancellation_count": 0,
+        "operations_total": 3,
+        "operations_reused": 0,
+        "operations_retried": 0,
+        "operations_uncertain": 0,
+        "recovery_block_count": 0
+      },
+      "error": null,
+      "artifact_count": 0,
+      "latest_event_sequence": 15,
+      "final_output": "Reliability Tradeoffs:\n- Local-only: Offers high speed and accessibility, but is vulnerable to localized disasters (fire, theft, hardware failure). It creates a single point of failure.\n- Offsite backup: Provides geographic redundancy and protection against site-specific disasters, but introduces dependency on network stability and potentially higher latency or costs.\n\nTwo Risks:\n1. Hardware/Site Failure: Local-only storage can be physically destroyed, rendering the backup useless.\n2. Data Corruption/Ransomware: If local backups are constantly connected, they can be encrypted or corrupted alongside primary data, whereas offsite/offline copies can act as an immutable barrier.\n\nRecommended Verification Plan:\n1. Monthly 'Restore Test': Attempt to restore a random file (or folder) from your backup to a different location to ensure data integrity.\n2. Automated Status Check: Enable email or push notifications for your backup software to alert you immediately if a scheduled backup fails or is missed.",
+      "links": {
+        "self": "/api/v2/runs/9caed002-cea4-45da-844b-5afb339020c9",
+        "events": "/api/v2/runs/9caed002-cea4-45da-844b-5afb339020c9/events",
+        "stream": "/api/v2/runs/9caed002-cea4-45da-844b-5afb339020c9/stream",
+        "result": "/api/v2/runs/9caed002-cea4-45da-844b-5afb339020c9/result",
+        "artifacts": "/api/v2/runs/9caed002-cea4-45da-844b-5afb339020c9/artifacts",
+        "cancel": "/api/v2/runs/9caed002-cea4-45da-844b-5afb339020c9/cancel"
+      }
+    }
+  },
+  "detail": {
+    "status": 200,
+    "data": {
+      "id": "9caed002-cea4-45da-844b-5afb339020c9",
+      "tree_id": "1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "tree_name": "Playground Analysis",
+      "tree_version_id": "608bc0b9-f793-491f-88d9-c0fb934df0d4",
+      "tree_version_number": 1,
+      "status": "completed",
+      "core_execution_id": "9caed002-cea4-45da-844b-5afb339020c9",
+      "final_status": "completed",
+      "input": {
+        "input": "Analyze the reliability tradeoffs of local-only backups versus an offsite backup copy. Identify two risks and recommend a simple backup verification plan."
+      },
+      "metadata": {},
+      "invocation_source": "studio_live",
+      "output": {
+        "type": "structured_json",
+        "delivery_type": "show_in_web",
+        "value": "Reliability Tradeoffs:\n- Local-only: Offers high speed and accessibility, but is vulnerable to localized disasters (fire, theft, hardware failure). It creates a single point of failure.\n- Offsite backup: Provides geographic redundancy and protection against site-specific disasters, but introduces dependency on network stability and potentially higher latency or costs.\n\nTwo Risks:\n1. Hardware/Site Failure: Local-only storage can be physically destroyed, rendering the backup useless.\n2. Data Corruption/Ransomware: If local backups are constantly connected, they can be encrypted or corrupted alongside primary data, whereas offsite/offline copies can act as an immutable barrier.\n\nRecommended Verification Plan:\n1. Monthly 'Restore Test': Attempt to restore a random file (or folder) from your backup to a different location to ensure data integrity.\n2. Automated Status Check: Enable email or push notifications for your backup software to alert you immediately if a scheduled backup fails or is missed.",
+        "success": true,
+        "core_status": "completed",
+        "orchestration": {
+          "managers": []
+        }
+      },
+      "error_code": null,
+      "error_message": null,
+      "started_at": "2026-10-01T16:43:52.658282Z",
+      "finished_at": "2026-10-01T16:44:02.793303Z",
+      "duration_ms": 10072,
+      "usage": {
+        "input_tokens": 251,
+        "output_tokens": 215,
+        "total_tokens": 466,
+        "unreported_calls": 0,
+        "calls": [
+          {
+            "stage": "root_planning",
+            "provider": "studio-cbef6238-4a16-4a83-98b4-8cb7da697e79-6b089ac598b5",
+            "model": "gemini-3.1-flash-lite",
+            "usage": "ProviderUsage(input_tokens=251, output_tokens=215, total_tokens=466)"
+          }
+        ]
+      },
+      "metrics": {
+        "queue_duration_ms": 2.038,
+        "execution_duration_ms": 8447.110999999999,
+        "checkpoint_count": 1,
+        "recovery_count": 0,
+        "cancellation_count": 0,
+        "operations_total": 3,
+        "operations_reused": 0,
+        "operations_retried": 0,
+        "operations_uncertain": 0,
+        "recovery_block_count": 0
+      },
+      "created_at": "2026-10-01T16:43:52.660241Z",
+      "state": {
+        "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+        "current_phase": "completed",
+        "status": "completed",
+        "triage_result": null,
+        "orchestration_plan": null,
+        "delegation_result": null,
+        "execution_result": null,
+        "manager_review_result": null,
+        "final_result": {
+          "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "root_agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "success": true,
+          "content": {
+            "managers": []
+          },
+          "status": "completed",
+          "manager_results": [],
+          "final_review": {
+            "decision": "pass",
+            "reviewer_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "feedback": "",
+            "metadata": {
+              "review_performed": false,
+              "direct_response": true
+            }
+          },
+          "final_reviews": [],
+          "revision_count": 0,
+          "revisions": [],
+          "trace": {
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "events": [
+              {
+                "timestamp": "2026-10-01T16:43:54.284225+00:00",
+                "event_type": "execution.started",
+                "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+                "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+                "message": "",
+                "metadata": {}
+              },
+              {
+                "timestamp": "2026-10-01T16:43:54.284340+00:00",
+                "event_type": "root.planning.started",
+                "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+                "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+                "message": "",
+                "metadata": {}
+              },
+              {
+                "timestamp": "2026-10-01T16:44:02.722685+00:00",
+                "event_type": "root.planning.completed",
+                "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+                "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+                "message": "",
+                "metadata": {}
+              },
+              {
+                "timestamp": "2026-10-01T16:44:02.724041+00:00",
+                "event_type": "root.direct_response",
+                "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+                "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+                "message": "",
+                "metadata": {}
+              },
+              {
+                "timestamp": "2026-10-01T16:44:02.724068+00:00",
+                "event_type": "root.synthesis.completed",
+                "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+                "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+                "message": "",
+                "metadata": {}
+              },
+              {
+                "timestamp": "2026-10-01T16:44:02.724086+00:00",
+                "event_type": "execution.completed",
+                "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+                "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+                "message": "",
+                "metadata": {}
+              }
+            ]
+          },
+          "metadata": {
+            "direct_response": true
+          },
+          "final_output": "Reliability Tradeoffs:\n- Local-only: Offers high speed and accessibility, but is vulnerable to localized disasters (fire, theft, hardware failure). It creates a single point of failure.\n- Offsite backup: Provides geographic redundancy and protection against site-specific disasters, but introduces dependency on network stability and potentially higher latency or costs.\n\nTwo Risks:\n1. Hardware/Site Failure: Local-only storage can be physically destroyed, rendering the backup useless.\n2. Data Corruption/Ransomware: If local backups are constantly connected, they can be encrypted or corrupted alongside primary data, whereas offsite/offline copies can act as an immutable barrier.\n\nRecommended Verification Plan:\n1. Monthly 'Restore Test': Attempt to restore a random file (or folder) from your backup to a different location to ensure data integrity.\n2. Automated Status Check: Enable email or push notifications for your backup software to alert you immediately if a scheduled backup fails or is missed.",
+          "usage": {
+            "input_tokens": 251,
+            "output_tokens": 215,
+            "total_tokens": 466,
+            "unreported_calls": 0,
+            "calls": [
+              {
+                "stage": "root_planning",
+                "provider": "studio-cbef6238-4a16-4a83-98b4-8cb7da697e79-6b089ac598b5",
+                "model": "gemini-3.1-flash-lite",
+                "usage": {
+                  "input_tokens": 251,
+                  "output_tokens": 215,
+                  "total_tokens": 466
+                }
+              }
+            ]
+          },
+          "error": null,
+          "artifacts": []
+        },
+        "failed_phase": null,
+        "failure_reason": null,
+        "trace": {
+          "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "events": [
+            {
+              "timestamp": "2026-10-01T16:43:54.284225+00:00",
+              "event_type": "execution.started",
+              "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+              "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T16:43:54.284340+00:00",
+              "event_type": "root.planning.started",
+              "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+              "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T16:44:02.722685+00:00",
+              "event_type": "root.planning.completed",
+              "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+              "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T16:44:02.724041+00:00",
+              "event_type": "root.direct_response",
+              "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+              "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T16:44:02.724068+00:00",
+              "event_type": "root.synthesis.completed",
+              "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+              "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T16:44:02.724086+00:00",
+              "event_type": "execution.completed",
+              "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+              "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+              "message": "",
+              "metadata": {}
+            }
+          ]
+        },
+        "metadata": {}
+      },
+      "trace": [
+        {
+          "id": "abeba446-20be-4e1f-a7d6-9fed80770c2f",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 1,
+          "core_sequence": null,
+          "event_type": "execution.queued",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.281474+00:00",
+            "event_type": "execution.queued",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:43:54.281474Z"
+        },
+        {
+          "id": "0a9f94bd-81fa-444a-bcaf-501c91bad949",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 2,
+          "core_sequence": 1,
+          "event_type": "execution.queued",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.281841+00:00",
+            "event_type": "execution.queued",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:43:54.281841Z"
+        },
+        {
+          "id": "9a1445db-0263-40b6-8757-dc51b24ccb30",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 3,
+          "core_sequence": 2,
+          "event_type": "execution.started",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.282430+00:00",
+            "event_type": "execution.started",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:43:54.282430Z"
+        },
+        {
+          "id": "be738103-2ef7-4824-951c-cbc469c00afe",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 4,
+          "core_sequence": null,
+          "event_type": "execution.started",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.282681+00:00",
+            "event_type": "execution.started",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:43:54.282681Z"
+        },
+        {
+          "id": "011f0823-452c-4818-bcb9-55aec0bec529",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 5,
+          "core_sequence": 3,
+          "event_type": "execution.phase.started",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.283931+00:00",
+            "event_type": "execution.phase.started",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": null,
+            "message": "",
+            "metadata": {
+              "phase": "planning"
+            }
+          },
+          "created_at": "2026-10-01T16:43:54.283931Z"
+        },
+        {
+          "id": "22bcd822-906a-47b9-92ba-c8430cdfe946",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 6,
+          "core_sequence": null,
+          "event_type": "execution.started",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.284225+00:00",
+            "event_type": "execution.started",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:43:54.284225Z"
+        },
+        {
+          "id": "e728819b-7a2e-41ec-8d60-1bea5e4e5bc1",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 7,
+          "core_sequence": null,
+          "event_type": "root.planning.started",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.284340+00:00",
+            "event_type": "root.planning.started",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:43:54.284340Z"
+        },
+        {
+          "id": "01417631-8fc9-48c8-a7c4-054daefce64b",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 8,
+          "core_sequence": 4,
+          "event_type": "operation.prepared",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.284802+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T16:43:54.284802Z"
+        },
+        {
+          "id": "f5ef2ce1-81b8-45db-8c74-8099b0b44948",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 9,
+          "core_sequence": 5,
+          "event_type": "operation.in_flight",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.285143+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T16:43:54.285143Z"
+        },
+        {
+          "id": "ccc5541f-3a03-4387-aa93-a996e7695175",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 10,
+          "core_sequence": 6,
+          "event_type": "operation.prepared",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.285759+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T16:43:54.285759Z"
+        },
+        {
+          "id": "98b2ba69-0520-4d37-8166-6ae6c0693bd0",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 11,
+          "core_sequence": 7,
+          "event_type": "operation.in_flight",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.285910+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T16:43:54.285910Z"
+        },
+        {
+          "id": "c213f270-bcf4-41b4-b494-9ea88918c078",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 12,
+          "core_sequence": 8,
+          "event_type": "operation.committed",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.721316+00:00",
+            "event_type": "operation.committed",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T16:44:02.721316Z"
+        },
+        {
+          "id": "5211d05c-c44c-4a5d-8e9f-3fa78271d919",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 13,
+          "core_sequence": 9,
+          "event_type": "operation.committed",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.722175+00:00",
+            "event_type": "operation.committed",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T16:44:02.722175Z"
+        },
+        {
+          "id": "52726eb2-ac41-4d74-8852-12cee24cc4ec",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 14,
+          "core_sequence": null,
+          "event_type": "root.planning.completed",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.722685+00:00",
+            "event_type": "root.planning.completed",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:44:02.722685Z"
+        },
+        {
+          "id": "332c32c1-cc65-48cc-9ca2-872319662f49",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 15,
+          "core_sequence": 10,
+          "event_type": "operation.prepared",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.723051+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:direct_response",
+              "operation_type": "root.direct_response",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T16:44:02.723051Z"
+        },
+        {
+          "id": "1acaaa20-1de7-4ac3-806b-1750ac0cea52",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 16,
+          "core_sequence": 11,
+          "event_type": "operation.in_flight",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.723215+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:direct_response",
+              "operation_type": "root.direct_response",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T16:44:02.723215Z"
+        },
+        {
+          "id": "f61b796d-3c9f-4e76-a03d-c25f51635fbc",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 17,
+          "core_sequence": 12,
+          "event_type": "operation.committed",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.723601+00:00",
+            "event_type": "operation.committed",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:direct_response",
+              "operation_type": "root.direct_response",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T16:44:02.723601Z"
+        },
+        {
+          "id": "bbeea2db-8931-4100-92b3-961d79ded16a",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 18,
+          "core_sequence": null,
+          "event_type": "root.direct_response",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.724041+00:00",
+            "event_type": "root.direct_response",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:44:02.724041Z"
+        },
+        {
+          "id": "24d9253a-fc7f-4c4a-9500-3ff89e5bfb7a",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 19,
+          "core_sequence": null,
+          "event_type": "root.synthesis.completed",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.724068+00:00",
+            "event_type": "root.synthesis.completed",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:44:02.724068Z"
+        },
+        {
+          "id": "fa0d0a02-645f-4c6a-aa43-e64177be2f00",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 20,
+          "core_sequence": null,
+          "event_type": "execution.completed",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.724086+00:00",
+            "event_type": "execution.completed",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:44:02.724086Z"
+        },
+        {
+          "id": "556fa627-dc82-4558-bc3e-207e16deee6a",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 21,
+          "core_sequence": null,
+          "event_type": "execution.checkpoint.saved",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.725265+00:00",
+            "event_type": "execution.checkpoint.saved",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:44:02.725265Z"
+        },
+        {
+          "id": "99e4de85-4bb3-42a4-957f-7a7a3d2be25f",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 22,
+          "core_sequence": 13,
+          "event_type": "execution.checkpoint.saved",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.727486+00:00",
+            "event_type": "execution.checkpoint.saved",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": null,
+            "message": "",
+            "metadata": {
+              "phase": "completed",
+              "sequence": 1
+            }
+          },
+          "created_at": "2026-10-01T16:44:02.727486Z"
+        },
+        {
+          "id": "1aa4eeca-12de-4721-8664-cea0eae246b5",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 23,
+          "core_sequence": 14,
+          "event_type": "output.final.available",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.728723+00:00",
+            "event_type": "output.final.available",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": null,
+            "message": "",
+            "metadata": {
+              "sha256": "ccfce02d0b992bc96bf52da7d4d1e32378840fd0dd485cf254e8b71cf5cf671b",
+              "size_bytes": 1008
+            }
+          },
+          "created_at": "2026-10-01T16:44:02.728723Z"
+        },
+        {
+          "id": "828909cf-bb46-4ead-aa17-9d9b9d66db23",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "sequence": 24,
+          "core_sequence": 15,
+          "event_type": "execution.completed",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.728745+00:00",
+            "event_type": "execution.completed",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:44:02.728745Z"
+        }
+      ],
+      "delivery_results": [
+        {
+          "id": "c335b55f-7836-45c2-a086-13cd19e75c77",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "destination_id": "4fe2b303-f21f-420b-aae8-47ea5f9030fb",
+          "destination_name": "Store in Studio",
+          "destination_type": "store_in_studio",
+          "status": "success",
+          "attempted_at": "2026-10-01T16:44:02.845364Z",
+          "completed_at": "2026-10-01T16:44:02.855725Z",
+          "sanitized_error": null
+        },
+        {
+          "id": "82321563-a377-4971-8c65-17b1617f0093",
+          "run_id": "9caed002-cea4-45da-844b-5afb339020c9",
+          "destination_id": "aceffffd-c3ee-47c2-a0ee-b393f446a873",
+          "destination_name": "Return API Response",
+          "destination_type": "api_response",
+          "status": "success",
+          "attempted_at": "2026-10-01T16:44:02.867149Z",
+          "completed_at": "2026-10-01T16:44:02.874987Z",
+          "sanitized_error": null
+        }
+      ],
+      "artifacts": []
+    }
+  },
+  "events": {
+    "status": 200,
+    "data": {
+      "events": [
+        {
+          "sequence": 1,
+          "type": "execution.queued",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.281841+00:00",
+            "event_type": "execution.queued",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:43:54.281841Z"
+        },
+        {
+          "sequence": 2,
+          "type": "execution.started",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.282430+00:00",
+            "event_type": "execution.started",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:43:54.282430Z"
+        },
+        {
+          "sequence": 3,
+          "type": "execution.phase.started",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.283931+00:00",
+            "event_type": "execution.phase.started",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": null,
+            "message": "",
+            "metadata": {
+              "phase": "planning"
+            }
+          },
+          "created_at": "2026-10-01T16:43:54.283931Z"
+        },
+        {
+          "sequence": 4,
+          "type": "operation.prepared",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.284802+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T16:43:54.284802Z"
+        },
+        {
+          "sequence": 5,
+          "type": "operation.in_flight",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.285143+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T16:43:54.285143Z"
+        },
+        {
+          "sequence": 6,
+          "type": "operation.prepared",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.285759+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T16:43:54.285759Z"
+        },
+        {
+          "sequence": 7,
+          "type": "operation.in_flight",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:43:54.285910+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T16:43:54.285910Z"
+        },
+        {
+          "sequence": 8,
+          "type": "operation.committed",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.721316+00:00",
+            "event_type": "operation.committed",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T16:44:02.721316Z"
+        },
+        {
+          "sequence": 9,
+          "type": "operation.committed",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.722175+00:00",
+            "event_type": "operation.committed",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T16:44:02.722175Z"
+        },
+        {
+          "sequence": 10,
+          "type": "operation.prepared",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.723051+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:direct_response",
+              "operation_type": "root.direct_response",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T16:44:02.723051Z"
+        },
+        {
+          "sequence": 11,
+          "type": "operation.in_flight",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.723215+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:direct_response",
+              "operation_type": "root.direct_response",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T16:44:02.723215Z"
+        },
+        {
+          "sequence": 12,
+          "type": "operation.committed",
+          "agent_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.723601+00:00",
+            "event_type": "operation.committed",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:direct_response",
+              "operation_type": "root.direct_response",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T16:44:02.723601Z"
+        },
+        {
+          "sequence": 13,
+          "type": "execution.checkpoint.saved",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.727486+00:00",
+            "event_type": "execution.checkpoint.saved",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": null,
+            "message": "",
+            "metadata": {
+              "phase": "completed",
+              "sequence": 1
+            }
+          },
+          "created_at": "2026-10-01T16:44:02.727486Z"
+        },
+        {
+          "sequence": 14,
+          "type": "output.final.available",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.728723+00:00",
+            "event_type": "output.final.available",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": null,
+            "message": "",
+            "metadata": {
+              "sha256": "ccfce02d0b992bc96bf52da7d4d1e32378840fd0dd485cf254e8b71cf5cf671b",
+              "size_bytes": 1008
+            }
+          },
+          "created_at": "2026-10-01T16:44:02.728723Z"
+        },
+        {
+          "sequence": 15,
+          "type": "execution.completed",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T16:44:02.728745+00:00",
+            "event_type": "execution.completed",
+            "task_id": "9caed002-cea4-45da-844b-5afb339020c9",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T16:44:02.728745Z"
+        }
+      ],
+      "next_after": 15,
+      "has_more": false
+    }
+  },
+  "observed_running": [
+    "root"
+  ],
+  "observations": [
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "idle",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "it View\nROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nMANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n\nReal operation events appear here when you start a Run.\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n0.0s \u00b7 0 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "idle",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "it View\nROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nMANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n\nReal operation events appear here when you start a Run.\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n0.0s \u00b7 0 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "idle",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "it View\nROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nMANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n\nReal operation events appear here when you start a Run.\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n0.0s \u00b7 0 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "idle",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "it View\nROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nMANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n\nReal operation events appear here when you start a Run.\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n1.1s \u00b7 0 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "idle",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "it View\nROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nMANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n\nReal operation events appear here when you start a Run.\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n1.1s \u00b7 0 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "idle",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "it View\nROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nMANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n\nReal operation events appear here when you start a Run.\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n1.1s \u00b7 0 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "idle",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "it View\nROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nMANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n\nReal operation events appear here when you start a Run.\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n1.1s \u00b7 0 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n1.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n2.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n2.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n2.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n3.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n3.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n3.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n3.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n3.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n4.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n4.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n4.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n4.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n4.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n5.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n5.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n5.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n5.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n5.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n6.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n6.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n6.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n6.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n6.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n7.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n7.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n7.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n7.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n8.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n8.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n8.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n8.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n8.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n9.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n9.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n9.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n9.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n9.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    },
+    {
+      "url": "http://127.0.0.1:15183/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/playground?run=9caed002-cea4-45da-844b-5afb339020c9",
+      "run": "9caed002-cea4-45da-844b-5afb339020c9",
+      "nodes": [
+        {
+          "id": "9aebea7a-0e92-4c00-9a3b-f8c58a57ad09",
+          "state": "running",
+          "text": "ROOT\nAnalysis Root\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nRunning\nprovider.generate"
+        },
+        {
+          "id": "99374dbe-cf2e-4e5b-adcf-fac81a6f558f",
+          "state": "idle",
+          "text": "MANAGER\nAnalysis Manager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "c043220f-4587-4493-8cf3-a95a43adb375",
+          "state": "idle",
+          "text": "SPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        },
+        {
+          "id": "bfed8f07-d942-47b7-8a20-766742bae7bd",
+          "state": "idle",
+          "text": "SPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle"
+        }
+      ],
+      "text": "anager\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nAnalysis Specialist\n\nanalysis\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nSPECIALIST\nCreative Specialist\n\ncreative-writing\n\nGemini verification\nmodels/gemini-3.1-flash-lite\n\u2713 Configured\n0 Tools\nIdle\nReact Flow\nIdle\nQueued\nRunning\nCompleted\nFailed\nCancelled\nEXECUTION TIMELINE\n11:43:54 PM\nRun queued\n11:43:54 PM\nRun started\n11:43:54 PM\nexecution.phase.started\n11:43:54 PM\nAnalysis Root \u00b7 root.plan \u00b7 Running\n11:43:54 PM\nAnalysis Root \u00b7 provider.generate \u00b7 Running\n\n9caed002-cea4-45da-844b-5afb339020c9\n\nRunning\n10.1s \u00b7 7 durable events\nOpen Execution Trace\nView Run"
+    }
+  ],
+  "network": [
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 401
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 401
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/login",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/dashboard/summary",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/dashboard/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/dashboard/summary",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/dashboard/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs",
+      "status": 202
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9/events?after=0&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9/stream?after=0",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9/events?after=15&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9/result",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/9caed002-cea4-45da-844b-5afb339020c9",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/9caed002-cea4-45da-844b-5afb339020c9/events?after=0&limit=500",
+      "status": 200
+    }
+  ]
+}

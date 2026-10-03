@@ -1,0 +1,9 @@
+{
+  "window": "preceding 30 minutes",
+  "line_count": 350,
+  "tracebacks": 0,
+  "http_500_markers": 0,
+  "uncaught_markers": 0,
+  "credential_pattern_matches": 0,
+  "raw_log_contents_saved": false
+}

@@ -1,0 +1,10 @@
+{
+  "finalWarningErrorEntries": [],
+  "deletionDialog": {
+    "cancelKeptDisposableTree": true,
+    "confirmedDeletionRemovedOnlyDisposableTree": true,
+    "cancelInitiallyFocused": true,
+    "busyButtonsDisabled": true
+  },
+  "languageSwitchTransientNotice": "Existing notices retain the language in which the action occurred until dismissed; route UI switches immediately."
+}

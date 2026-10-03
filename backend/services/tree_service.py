@@ -13,6 +13,8 @@ from sqlalchemy.orm import Session, selectinload
 
 from backend.models.provider import ProviderConnection, ProviderModel
 from backend.models.tool import ToolAssignment, ToolConnection
+from backend.models.auth import User
+from backend.services.auth_service import AuthService
 from backend.models.tree import AgentConfig, OutputConfig, Tree, TreeVersion, TriggerConfig
 from backend.models.destination import ResultDestination
 from backend.repositories.protocols import TreeRepository
@@ -39,6 +41,7 @@ from backend.services.errors import (
 )
 from backend.schemas.template import upgrade_template_definition
 from backend.services.template_requirements import resolve_requirements
+from backend.services.tree_contracts import invalid_manager_peers
 
 
 class TreeService:
@@ -75,7 +78,7 @@ class TreeService:
                 "Only the active draft version can be edited directly",
             )
 
-    def _validate_draft_references(self, payload: TreeDraftPayload) -> None:
+    def _validate_draft_references(self, payload: TreeDraftPayload, *, check_tool_loop: bool = True) -> None:
         agent_ids = [agent.id for agent in payload.agents]
         duplicates = [agent_id for agent_id, count in Counter(agent_ids).items() if count > 1]
         if duplicates:
@@ -114,7 +117,7 @@ class TreeService:
         assigned_agent_ids = {agent_id for agent_id, _ in assignment_pairs}
         for agent in payload.agents:
             if (
-                agent.agent_type.value == "specialist"
+                check_tool_loop and agent.agent_type.value == "specialist"
                 and ToolLoopSettings.from_mapping(agent.settings).enabled
                 and agent.id not in assigned_agent_ids
             ):
@@ -130,6 +133,13 @@ class TreeService:
     ) -> None:
         self._ensure_draft(version)
         self._validate_draft_references(payload)
+        # Known Agent IDs from another Tree/version cannot be inserted here.
+        foreign = self._database.scalar(select(AgentConfig.id).where(
+            AgentConfig.id.in_([agent.id for agent in payload.agents]),
+            AgentConfig.tree_version_id != version.id,
+        ).limit(1))
+        if foreign is not None:
+            raise ResourceNotFoundError("Agent not found in this Tree")
         tree.name = payload.name
         tree.description = payload.description
         tree.template = payload.template
@@ -181,7 +191,7 @@ class TreeService:
             ))
 
     def create(
-        self, payload: TreeDraftPayload, *, template_instance: dict | None = None,
+        self, payload: TreeDraftPayload, *, template_instance: dict | None = None, user: User | None = None,
     ) -> TreeDetailRead:
         tree = Tree(
             name=payload.name,
@@ -203,6 +213,8 @@ class TreeService:
             ResultDestination(name="Store in Studio", destination_type="store_in_studio", enabled=True, configuration_json={}),
             ResultDestination(name="Return API Response", destination_type="api_response", enabled=True, configuration_json={}),
         ])
+        if user is not None:
+            AuthService(self._database).grant_created_tree(user, tree.id)
         self._database.commit()
         self._database.expire_all()
         return self.get(tree.id)
@@ -232,6 +244,7 @@ class TreeService:
             "agents": [agent.model_copy(update={
                 "id": id_map[agent.id],
                 "parent_agent_id": id_map.get(agent.parent_agent_id, agent.parent_agent_id),
+                "settings": self._remap_agent_settings(agent.settings, id_map),
             }) for agent in payload.agents],
             "tool_assignments": [assignment.model_copy(update={
                 "agent_config_id": id_map.get(assignment.agent_config_id, assignment.agent_config_id),
@@ -351,8 +364,12 @@ class TreeService:
             created_at=tree.created_at,
         )
 
-    def get_version(self, tree_id: str) -> TreeVersionRead:
-        return self._version_read(self._get_model(tree_id).current_version)
+    def get_version(self, tree_id: str, version_id: str | None = None) -> TreeVersionRead:
+        tree = self._get_model(tree_id)
+        version = tree.current_version if version_id is None else self._database.get(TreeVersion, version_id)
+        if version is None or version.tree_id != tree.id:
+            raise ResourceNotFoundError("Tree version not found")
+        return self._version_read(version)
 
     def update(self, tree_id: str, payload: TreeUpdate) -> TreeDetailRead:
         tree = self._get_model(tree_id)
@@ -410,6 +427,10 @@ class TreeService:
             return
         if provider.status != "connected":
             self._issue(errors, step, "provider_not_connected", f"Provider for {agent.name or 'Agent'} is not connected", agent.id)
+        if provider.provider_type != "ollama" and not provider.secret_id:
+            self._issue(errors, step, "provider_credential_required", "Agent provider credential is missing", agent.id)
+        if provider.provider_type == "openai_compatible" and not provider.base_url:
+            self._issue(errors, step, "provider_url_required", "Custom provider base URL is missing", agent.id)
         if not agent.model_id:
             self._issue(errors, step, "model_required", f"{agent.name or 'Agent'} needs a model", agent.id)
             return
@@ -464,6 +485,27 @@ class TreeService:
             self._database.commit()
         return result
 
+    def preview_draft(self, payload: TreeDraftPayload, tree_id: str | None = None, *, template_instance: dict | None = None) -> TreeValidationRead:
+        """Validate an unsaved canvas using the normal rules, without writing rows."""
+        self._validate_draft_references(payload, check_tool_loop=False)
+        existing = self._get_model(tree_id).current_version if tree_id else None
+        version = TreeVersion(id=str(uuid4()), status="draft", template_instance_json=(
+            existing.template_instance_json if existing else template_instance
+        ))
+        version.agents = [AgentConfig(
+            id=item.id, tree_version_id=version.id, agent_type=item.agent_type,
+            name=item.name, description=item.description, parent_agent_id=item.parent_agent_id,
+            provider_connection_id=item.provider_connection_id, model_id=item.model_id,
+            system_instruction=item.system_instruction, capabilities_json=item.capabilities,
+            settings_json=item.settings,
+        ) for item in payload.agents]
+        version.tool_assignments = [ToolAssignment(
+            tree_version_id=version.id, agent_config_id=item.agent_config_id,
+            tool_connection_id=item.tool_connection_id,
+        ) for item in payload.tool_assignments]
+        with self._database.no_autoflush:
+            return self._validate_version(version)
+
     def _validate_version(self, version: TreeVersion) -> TreeValidationRead:
         # Relationship assignment and explicit insertion may temporarily show
         # the same pending Agent twice before a commit expires the collection.
@@ -492,6 +534,10 @@ class TreeService:
                 self._issue(errors, "managers", "manager_parent", f"{agent.name or 'Manager'} must belong to the Root Agent", agent.id)
 
         manager_ids = {manager.id for manager in managers}
+        for manager_id in invalid_manager_peers(agents):
+            self._issue(errors, "managers", "manager_peers_invalid",
+                        "Manager collaboration peers must reference other Managers in this Tree version",
+                        manager_id)
         specialists_by_manager = Counter(
             specialist.parent_agent_id for specialist in specialists
             if specialist.parent_agent_id in manager_ids
@@ -561,6 +607,18 @@ class TreeService:
             errors=errors,
             validated_at=datetime.now(timezone.utc),
         )
+
+    @staticmethod
+    def _remap_agent_settings(settings: dict | None, id_map: dict[str, str]) -> dict:
+        copied = dict(settings or {})
+        peers = copied.get("allowed_manager_peer_ids")
+        if isinstance(peers, list):
+            # Keep unknown/malformed references for validation to reject; never
+            # silently discard an invalid requested permission.
+            copied["allowed_manager_peer_ids"] = [
+                id_map.get(peer, peer) if isinstance(peer, str) else peer for peer in peers
+            ]
+        return copied
 
     @staticmethod
     def _remap_template_instance(instance: dict | None, id_map: dict[str, str]) -> dict | None:

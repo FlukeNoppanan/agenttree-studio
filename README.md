@@ -7,6 +7,18 @@ with live model discovery, versioned reusable Tree runtimes, and a React
 administration workflow. Every invocation creates an independent Run with its
 own input, result, trace, and Result Delivery outcomes.
 
+## First Tree Run
+
+After signing in, the **Welcome** dialog introduces the Agent hierarchy. Start
+the dedicated **Getting Started** tutorial, or continue to the Dashboard with
+its compact progress card. Welcome can be snoozed for a session, today, or
+3/7/14 days; Getting Started always remains available in the sidebar.
+The tutorial explains the workflow before Provider setup, then guides Tree
+creation, explicit Tree selection, configuration, running and Connect.
+Progress uses real Provider, Tree readiness and Run state; no API Key is
+required to finish the guide. See the
+[Getting Started guide](docs/getting-started.md) for permissions and progress rules.
+
 ## Architecture
 
 ```text
@@ -241,8 +253,10 @@ Implemented:
 - Persisted Run history, final output/state snapshots, and genuine Core trace events
 - Generic JSON Test Run input, optional legacy-friendly form mode, delivery
   outcomes, Run Detail, and trace timeline UI
-- Stable `POST /api/runtime/trees/{tree_id}/invoke` API with generic `input` and
-  optional caller `metadata`
+- Recommended asynchronous Public API V2 and synchronous Public API V1,
+  with deployment-aware cURL/Python/JavaScript examples in Tree → Connect
+- Authenticated incoming Webhook Triggers using separate secrets and the existing
+  Run coordinator, with creation, rotation, enable/disable, and deletion
 - Store in Studio, API Response, and generic Webhook Result Destinations with
   Secret-backed authentication and independently persisted outcomes
 - Tree, Run, and Destination repository contracts plus a lightweight Unit of Work
@@ -403,15 +417,15 @@ even if grants or All Trees mode remain. Admins, including the Primary Admin,
 always have full Tree access without grants. **Account → Tree Access** lists only
 effectively accessible Trees; the bookmarked `/my-trees` URL redirects there.
 **Account → API Keys** manages personal credentials. New key values are
-shown once, stored only as hashes, and usable only for the existing synchronous
-`POST /api/runtime/trees/{tree_id}/invoke` endpoint. Every invocation rechecks
-the account, permission, and Tree Access mode. The long-running Runtime/Input API
-remains unimplemented; these keys do not create such a runtime. The backend
+shown once and stored only as SHA-256 hashes. Use these keys with recommended
+asynchronous **Public API V2** or synchronous **Public API V1**. Every request
+rechecks the account, current permissions, and Tree Access mode. Tree → Connect
+links to this existing key manager and shows integration examples. The backend
 retains its `api_tokens` table and `/api/auth/tokens` paths; the naming change
 is user-facing and requires no migration. Administrators can review paginated,
 filtered, metadata-only Security Events in the Studio UI.
 
-# Live View (first version)
+## Live Runs
 
 Open a Tree and choose **Live View** (`/trees/:treeId/live`). The page polls
 `GET /api/trees/:treeId/live` every two seconds while visible. It reads the
@@ -419,16 +433,37 @@ persisted PostgreSQL/SQLite Run and TraceEvent records; the Inspector remains
 available at `/runs/:runId` after an execution completes or fails. A Run is one
 independent execution/input, not the lifetime of a Tree.
 
-The current execution backend is synchronous per request. It does **not** have
-an authoritative long-running Tree Runtime controller, queue worker, Start/Stop
-operations, cancellation, or incremental trace persistence. Live View therefore
-labels Tree Runtime as unavailable and never infers its status from Tree
-configuration or an individual Run. Running/pending Run counts are database
-facts, but agent/tool progress appears only when the trace has been persisted
-(currently at execution completion). SSE would not improve fidelity without a
-real incremental event source. Historical Tree versions without a matching
-current version use only observed trace actor names for the hierarchy; their
-trace and results remain inspectable.
-# Public API v1
+Studio live Runs and Public API V2 use the existing background coordinator and
+AgentTree Core ExecutionRuntime, with incremental persisted events, SSE output,
+cancellation, results, and artifacts. V1 remains synchronous. Each Run pins its
+Tree version. A Tree definition has no separate persistent Start/Stop lifecycle.
+Run records, durable events, results, and artifacts persist; active Core
+executions are process local. On backend startup, interrupted active Runs are
+marked failed with `RECOVERY_UNAVAILABLE`, rather than resumed. See
+[live Run behavior](docs/live-view-v2.md) and [V2](docs/public-api-v2.md).
+
+## Public API v1
 
 External applications can use AgentTree Studio with only a backend Base URL and a personal Bearer API key. Generate a key at **Account → API Keys**, then use `GET /api/v1/me`, `GET /api/v1/trees`, `POST /api/v1/trees/{tree_id}/invoke`, and `GET /api/v1/runs/{run_id}`. Keys inherit **current** user permissions and Tree grants, not a permanent snapshot. See [Public API v1 contract](docs/public-api-v1.md) for curl/Python examples, security guidance, and the full response contract.
+
+## External integrations
+
+Open a Ready Tree’s **Connect** tab. **Async API · Recommended** submits to
+`POST /api/v2/runs` and supports progress, cancellation, results, and artifacts.
+**Simple synchronous API** invokes `POST /api/v1/trees/{tree_id}/invoke` and waits
+for the result. Both use personal API keys from **Account → API Keys**.
+
+**Webhook Trigger** receives external events at `POST /api/webhooks/{webhook_id}`
+using a separate once-visible `athw_…` bearer secret, stored only as a hash. It
+returns HTTP 202 and creates a normal asynchronous Run under its owner’s current
+Tree access. Retries create separate Runs; deduplicate in the sender.
+**Webhook Result Destination** sends completed results from AgentTree to an
+external URL using the existing Secret-backed outgoing delivery service.
+Legacy Tree webhook route metadata remains readable and does not authorize or
+receive requests.
+
+Connect uses `AGENTTREE_STUDIO_PUBLIC_ORIGIN` when configured, otherwise the
+browser origin and its `/api` proxy. Set a public HTTPS origin for deployment;
+internal Docker proxy targets are not shown as integration endpoints. See
+[the integration guide](docs/external-integrations.md) for authentication,
+payloads, response handling, and operational limits.

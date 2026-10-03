@@ -5,7 +5,8 @@ import en from "@/locales/en/translation.json"
 import th from "@/locales/th/translation.json"
 
 export const LANGUAGE_STORAGE_KEY = "agenttree-studio-language"
-const saved = window.localStorage.getItem(LANGUAGE_STORAGE_KEY)
+let saved: string | null = null
+try { saved = window.localStorage.getItem(LANGUAGE_STORAGE_KEY) } catch { /* Fall back to English. */ }
 const initialLanguage = saved === "th" || saved === "en" ? saved : "en"
 
 void i18n.use(initReactI18next).init({
@@ -17,7 +18,7 @@ void i18n.use(initReactI18next).init({
 
 i18n.on("languageChanged", (language) => {
   const normalized = language.startsWith("th") ? "th" : "en"
-  window.localStorage.setItem(LANGUAGE_STORAGE_KEY, normalized)
+  try { window.localStorage.setItem(LANGUAGE_STORAGE_KEY, normalized) } catch { /* Live switching still works. */ }
   document.documentElement.lang = normalized
 })
 document.documentElement.lang = initialLanguage

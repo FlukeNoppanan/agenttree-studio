@@ -1,9 +1,11 @@
 """Synchronous Test Run and persisted run-history endpoints."""
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Request
 from sqlalchemy.orm import Session
 
 from backend.db.session import get_db
+from backend.api.auth import current_user
+from backend.services.auth_service import AuthService
 from backend.schemas.run import RunDetailRead, RunRead, RunStatus, TestRunRequest, TraceEventRead, TreeLiveRead
 from backend.services.run_service import RunService
 
@@ -27,14 +29,15 @@ def test_run(
 
 @router.get("/runs", response_model=list[RunRead])
 def list_runs(
+    request: Request,
     status: RunStatus | None = Query(default=None),
     tree_id: str | None = Query(default=None),
     database: Session = Depends(get_db),
 ) -> list[RunRead]:
-    return RunService(database).list(
-        status=status.value if status else None,
-        tree_id=tree_id,
-    )
+    allowed = {tree.id for tree in AuthService(database).accessible_trees(current_user(request, database))}
+    return [run for run in RunService(database).list(
+        status=status.value if status else None, tree_id=tree_id,
+    ) if run.tree_id in allowed]
 
 
 @router.get("/runs/{run_id}", response_model=RunDetailRead)

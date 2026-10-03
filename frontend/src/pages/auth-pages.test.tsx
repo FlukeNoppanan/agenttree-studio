@@ -7,6 +7,7 @@ import { api, ApiError, type StudioUser } from "@/lib/api"
 import { ChangePasswordPage, LoginPage } from "@/pages/auth-pages"
 import { AccountPage } from "@/pages/account-page"
 import { Sidebar } from "@/components/sidebar"
+import { AppTopbar } from "@/components/app-topbar"
 
 const member: StudioUser = { id: "u1", username: "member", is_admin: false, is_primary_admin: false, is_active: true,
   must_change_password: false, permissions: ["use_trees"], allowed_tree_ids: ["tree-1"], tree_access_mode: "selected",
@@ -17,7 +18,7 @@ function renderRoutes(start = "/") {
     <Route path="login" element={<LoginPage />} />
     <Route path="change-password" element={<ChangePasswordPage />} />
     <Route element={<ProtectedRoute />}><Route path="account" element={<AccountPage />} /></Route>
-    <Route element={<ProtectedRoute />}><Route path="/" element={<><Sidebar /><p>Studio content</p></>} /></Route>
+    <Route element={<ProtectedRoute />}><Route path="/" element={<><Sidebar /><AppTopbar /><p>Studio content</p></>} /></Route>
     <Route element={<ProtectedRoute permission="manage_secrets" />}><Route path="secrets" element={<p>Secret content</p>} /></Route>
   </Routes></MemoryRouter></AuthProvider>)
 }

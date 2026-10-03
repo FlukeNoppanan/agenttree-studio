@@ -1,0 +1,21 @@
+{
+  "core_commit": "f01856b99a079c01e00c60988d3657819c95a188",
+  "version": "0.2.2",
+  "all_audited_runtime_modules_match": true,
+  "modules": {
+    "core/artifacts.py": true,
+    "core/decomposition.py": true,
+    "core/final_review.py": true,
+    "core/review.py": true,
+    "core/root.py": true,
+    "core/structured_output.py": true,
+    "core/triage.py": true,
+    "exceptions.py": true,
+    "providers/_adapter.py": true,
+    "providers/compatible.py": true,
+    "providers/exceptions.py": true,
+    "providers/gemini.py": true,
+    "providers/models.py": true,
+    "tools/runtime.py": true
+  }
+}

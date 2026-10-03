@@ -1,0 +1,518 @@
+{
+  "flows": {
+    "connections": "passed",
+    "invalid_connection": "rejected without extra edge",
+    "movement": "passed",
+    "undo_redo": "passed",
+    "auto_layout": "animated",
+    "reduced_motion": "passed",
+    "tool_mcp": "actual assignments and real MCP echo execution",
+    "advanced_editor": "round-trip passed",
+    "light_dark": "passed",
+    "en_th": "passed",
+    "real_run": "completed",
+    "trace_events": 24,
+    "reload": "passed"
+  },
+  "motion_samples": [
+    {
+      "ms": 0.8999999910593033,
+      "transform": "translate(291.275px, 82.732px)"
+    },
+    {
+      "ms": 12.199999988079071,
+      "transform": "translate(291.275px, 82.732px)"
+    },
+    {
+      "ms": 44.8999999910593,
+      "transform": "translate(281.64px, 76.4191px)"
+    },
+    {
+      "ms": 59.5,
+      "transform": "translate(281.64px, 76.4191px)"
+    },
+    {
+      "ms": 100.09999999403954,
+      "transform": "translate(251.461px, 56.6469px)"
+    },
+    {
+      "ms": 114.59999999403954,
+      "transform": "translate(251.461px, 56.6469px)"
+    },
+    {
+      "ms": 150.69999998807907,
+      "transform": "translate(216.69px, 33.8659px)"
+    },
+    {
+      "ms": 165.79999999701977,
+      "transform": "translate(216.69px, 33.8659px)"
+    },
+    {
+      "ms": 201.19999998807907,
+      "transform": "translate(192.809px, 18.2198px)"
+    },
+    {
+      "ms": 215.79999999701977,
+      "transform": "translate(192.809px, 18.2198px)"
+    },
+    {
+      "ms": 237.59999999403954,
+      "transform": "translate(177.674px, 8.30336px)"
+    },
+    {
+      "ms": 243.69999998807907,
+      "transform": "translate(177.674px, 8.30336px)"
+    },
+    {
+      "ms": 253.59999999403954,
+      "transform": "translate(171.512px, 4.26659px)"
+    },
+    {
+      "ms": 267.79999999701977,
+      "transform": "translate(169.368px, 2.86194px)"
+    },
+    {
+      "ms": 279.3999999910593,
+      "transform": "translate(167.756px, 1.80534px)"
+    },
+    {
+      "ms": 295.69999998807907,
+      "transform": "translate(166.604px, 1.051px)"
+    },
+    {
+      "ms": 313.09999999403954,
+      "transform": "translate(165.825px, 0.540519px)"
+    },
+    {
+      "ms": 329.29999999701977,
+      "transform": "translate(165.353px, 0.231095px)"
+    },
+    {
+      "ms": 345.19999998807907,
+      "transform": "translate(165.106px, 0.0696951px)"
+    },
+    {
+      "ms": 361.79999999701977,
+      "transform": "translate(165.014px, 0.0091813px)"
+    },
+    {
+      "ms": 379.79999999701977,
+      "transform": "translate(165px, 3.83019e-07px)"
+    },
+    {
+      "ms": 396.5,
+      "transform": "translate(165px, 0px)"
+    },
+    {
+      "ms": 411,
+      "transform": "translate(165px, 0px)"
+    },
+    {
+      "ms": 427.19999998807907,
+      "transform": "translate(165px, 0px)"
+    },
+    {
+      "ms": 443.29999999701977,
+      "transform": "translate(165px, 0px)"
+    }
+  ],
+  "browser_errors": [],
+  "network": [
+    {
+      "url": "http://127.0.0.1:15173/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/validate-draft?tree_id=7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/validate-draft?tree_id=7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/validate-draft?tree_id=7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/validate-draft?tree_id=7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools/6e261ee7-a3fb-4451-b6d7-470de0635261/discover",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools/6e261ee7-a3fb-4451-b6d7-470de0635261",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools/6e261ee7-a3fb-4451-b6d7-470de0635261/test-execute",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/validate-draft?tree_id=7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers/9956dcbe-37cb-43f6-976c-6d416622c9ba/models",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers/9956dcbe-37cb-43f6-976c-6d416622c9ba/models",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/validate-draft?tree_id=7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers/9956dcbe-37cb-43f6-976c-6d416622c9ba/models",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers/9956dcbe-37cb-43f6-976c-6d416622c9ba/models",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2/configuration",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/validate-draft?tree_id=7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2/configuration",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/validate-draft?tree_id=7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/validate-draft?tree_id=7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/validate-draft?tree_id=7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers/9956dcbe-37cb-43f6-976c-6d416622c9ba/models",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers/9956dcbe-37cb-43f6-976c-6d416622c9ba/models",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/validate-draft?tree_id=7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2/configuration",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers/9956dcbe-37cb-43f6-976c-6d416622c9ba/models?include_unusable=true",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/providers/9956dcbe-37cb-43f6-976c-6d416622c9ba/models?include_unusable=true",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/runtime/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2/invoke",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/studio/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/studio/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/studio/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/studio/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677/events?after=0&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/studio/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/studio/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677/result",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/studio/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/studio/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/studio/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/studio/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/trees/7a358c38-8c71-4724-9728-b31b75a0c3e2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/studio/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677/events?after=0&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/studio/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/studio/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/studio/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677/result",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15173/api/runs/2c9180b0-115e-4b1c-bdd1-64d85be7c677",
+      "status": 200
+    }
+  ]
+}

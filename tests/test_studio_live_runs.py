@@ -9,6 +9,27 @@ from sqlalchemy import select
 from datetime import datetime, timezone
 
 
+def test_active_cancellation_status_fits_database_column(database, monkeypatch):
+    from types import SimpleNamespace
+    from agenttree.core.execution_store import ExecutionState
+    from backend.services.run_service import RunService
+
+    tree, _, _ = runtime_tree(database)
+    run = Run(tree_id=tree.id, tree_version_id=tree.version.id,
+              status="running", input_json={"input": "test"}, metadata_json={},
+              started_at=datetime.now(timezone.utc))
+    database.add(run)
+    database.commit()
+    service = RunService(database)
+    monkeypatch.setattr(service._core_runtime, "cancel", lambda _: SimpleNamespace(
+        state=ExecutionState.CANCELLATION_REQUESTED,
+        cancellation_requested_at=datetime.now(timezone.utc), finished_at=None,
+    ))
+    result = service.cancel_run(run.id)
+    assert result.status == "cancellation_requested"
+    assert Run.__table__.c.status.type.length >= len(result.status)
+
+
 def test_studio_live_submit_status_cancel_and_cookie_boundary(clients, monkeypatch):
     admin, external, factory = clients
     with factory() as database:
@@ -52,3 +73,16 @@ def test_interrupted_run_is_closed_with_durable_recovery_error(database):
     events = list(database.scalars(select(TraceEvent).where(TraceEvent.run_id == run.id)))
     assert [(item.core_sequence, item.event_type) for item in events] == [(1, "execution.failed")]
     assert reconcile_interrupted_runs(database) == 0
+
+
+def test_pinned_tree_version_http_selector_remains_authorized_and_scoped(clients):
+    admin, external, factory = clients
+    with factory() as database:
+        service = TreeService(database)
+        tree, _, _ = runtime_tree(database)
+        other, _, _ = runtime_tree(database)
+        tree_id, version_id, other_version_id = tree.id, tree.version.id, other.version.id
+    endpoint = f"/api/trees/{tree_id}/version?version_id={version_id}"
+    assert admin.get(endpoint).json()["id"] == version_id
+    assert external.get(endpoint).status_code == 401
+    assert admin.get(f"/api/trees/{tree_id}/version?version_id={other_version_id}").status_code == 404

@@ -1,12 +1,10 @@
 import {
   ArrowLeft,
   ArrowRight,
-  FileInput,
   Plus,
   Play,
   Save,
   Trash2,
-  Webhook,
   Wrench,
 } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
@@ -23,7 +21,6 @@ import { TreeStructurePreview } from "@/components/tree/tree-structure-preview"
 import {
   emptyAgent,
   emptyWizard,
-  type ManualField,
   type WizardAgent,
   type WizardState,
   wizardFromTree,
@@ -31,7 +28,6 @@ import {
 } from "@/components/tree/types"
 import { ValidationPanel } from "@/components/tree/validation-panel"
 import { WizardStepper } from "@/components/tree/wizard-stepper"
-import { generateClientId } from "@/lib/client-id"
 import { Notice } from "@/components/notice"
 import { ToolStatusBadge } from "@/components/tools/tool-status-badge"
 import { Button } from "@/components/ui/button"
@@ -161,10 +157,10 @@ export function TreeWizard() {
       setValidation(result)
       if (result.valid) setRunnableTree(saved)
       if (result.valid && markReady) {
-        setNotice({ tone: "success", message: "Tree configuration is Ready." })
+        setNotice({ tone: "success", message: t("playground.ready") })
         navigate(`/trees/${saved.id}`)
       } else if (result.valid) {
-        setNotice({ tone: "success", message: "Tree validation passed." })
+        setNotice({ tone: "success", message: t("integrationPolish.configurationValid") })
       }
     } catch (error) {
       setNotice({ tone: "error", message: error instanceof Error ? error.message : "Validation failed" })
@@ -211,6 +207,7 @@ export function TreeWizard() {
         <div className="relative"><p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">{t("wizard.builder")} · {t("wizardV2.stepCount", { current: step + 1, total: steps.length })}</p><h1 className="mt-2 text-3xl font-semibold tracking-tight">{t(currentTreeId ? "wizard.edit" : "wizard.create")}</h1><p className="mt-2 max-w-xl text-sm text-muted-foreground">{t("wizard.description")}</p></div>
         <div className="relative flex gap-2"><Button variant="outline" onClick={cancel}>{t("common.cancel")}</Button><Button onClick={() => void saveDraft()} disabled={saving}><Save className="size-4" />{saving ? t("wizard.saving") : editingReady ? t("treeV3.saveChanges") : t("wizard.saveDraft")}</Button></div>
       </div>
+      {!currentTreeId && <div className="rounded-lg border border-border bg-card p-4"><p className="text-sm text-muted-foreground">{t("onboarding.templatesHelp")}</p><Button variant="outline" className="mt-3" onClick={() => { if (!dirty || window.confirm("Leave this wizard? Unsaved changes will be lost.")) navigate("/templates") }}>{t("onboarding.fromTemplate")}</Button></div>}
       {notice ? <Notice {...notice} onDismiss={() => setNotice(null)} /> : null}
       <WizardStepper steps={(t("wizard.steps", { returnObjects: true }) as string[])} current={step} onSelect={setStep} />
 
@@ -222,7 +219,7 @@ export function TreeWizard() {
           {step === 2 ? <ManagersStep state={state} update={update} openEditor={setEditor} /> : null}
           {step === 3 ? <SpecialistsStep state={state} update={update} managerCursor={managerCursor} setManagerCursor={setManagerCursor} openEditor={setEditor} /> : null}
           {step === 4 ? <ToolsStep agents={allAssignableAgents} tools={tools} updateAgent={(agent) => update((current) => ({ ...current, root: current.root.id === agent.id ? agent : current.root, managers: current.managers.map((manager) => manager.agent.id === agent.id ? { ...manager, agent } : { ...manager, specialists: manager.specialists.map((specialist) => specialist.id === agent.id ? agent : specialist) }) }))} /> : null}
-          {step === 5 ? <div className="space-y-6"><TreeSummary state={state} providers={providers} tools={tools} /><ValidationPanel validation={validation} /><div className="flex flex-wrap justify-end gap-3">{validation?.valid && runnableTree ? <Button variant="outline" onClick={() => setTestOpen(true)}><Play className="size-4" />Test Run</Button> : null}{!editingReady ? <Button variant="outline" onClick={() => void validate(false)} disabled={saving}>Validate Draft</Button> : null}<Button onClick={() => void validate(true)} disabled={saving}>{editingReady ? t("treeV3.validateSave") : "Validate & Mark Ready"}</Button></div></div> : null}
+          {step === 5 ? <div className="space-y-6"><TreeSummary state={state} providers={providers} tools={tools} /><ValidationPanel validation={validation} /><div className="flex flex-wrap justify-end gap-3">{validation?.valid && runnableTree ? <Button variant="outline" onClick={() => setTestOpen(true)}><Play className="size-4" />{t("uiCopy.testRun")}</Button> : null}{!editingReady ? <Button variant="outline" onClick={() => void validate(false)} disabled={saving}>{t("uiCopy.validateDraft")}</Button> : null}<Button onClick={() => void validate(true)} disabled={saving}>{editingReady ? t("treeV3.validateSave") : t("integrationPolish.markReady")}</Button></div></div> : null}
         </CardContent>
       </Card><aside className="hidden xl:block"><TreeStructurePreview state={state} /></aside></div>
 
@@ -236,7 +233,7 @@ export function TreeWizard() {
         providers={providers}
         tools={tools}
         agentType={editor?.kind === "manager" ? "manager" : "specialist"}
-        reviewLabel={editor?.kind === "manager" ? "Manager Review enabled" : undefined}
+        reviewLabel={editor?.kind === "manager" ? t("uiCopy.managerReviewEnabled") : undefined}
         onChange={(value) => setEditor((current) => current ? { ...current, value } : null)}
         onSave={saveEditor}
         onOpenChange={(open) => { if (!open) setEditor(null) }}
@@ -251,22 +248,26 @@ function GeneralStep({ state, update }: { state: WizardState; update: (fn: (stat
   const sourceTemplate = state.template === "blank"
     ? t("templatesV3.builtins.builtin-blank.name", { defaultValue: t("templatesV3.blank") })
     : t(`templatesV3.builtins.${state.template}.name`, { defaultValue: t("templatesV3.sourceTemplate") })
-  return <div className="space-y-5"><div className="space-y-2"><Label>Tree Name</Label><Input value={state.name} onChange={(event) => update((current) => ({ ...current, name: event.target.value }))} placeholder="Network Operations Tree" /></div><div className="space-y-2"><Label>Description</Label><Textarea value={state.description} onChange={(event) => update((current) => ({ ...current, description: event.target.value }))} /></div><div className="space-y-2"><Label>{t("templatesV3.sourceTemplateLabel")}</Label><p className="rounded-md border border-border bg-muted/30 px-3 py-2.5 text-sm">{sourceTemplate}</p><p className="text-xs text-muted-foreground">{t("templatesV3.sourceTemplateHelp")}</p></div></div>
+  return <div className="space-y-5"><div className="space-y-2"><Label>{t("uiCopy.treeName")}</Label><Input value={state.name} onChange={(event) => update((current) => ({ ...current, name: event.target.value }))} placeholder="Network Operations Tree" /></div><div className="space-y-2"><Label>{t("uiCopy.description")}</Label><Textarea value={state.description} onChange={(event) => update((current) => ({ ...current, description: event.target.value }))} /></div><div className="space-y-2"><Label>{t("templatesV3.sourceTemplateLabel")}</Label><p className="rounded-md border border-border bg-muted/30 px-3 py-2.5 text-sm">{sourceTemplate}</p><p className="text-xs text-muted-foreground">{t("templatesV3.sourceTemplateHelp")}</p></div></div>
 }
 
 function ManagersStep({ state, update, openEditor }: { state: WizardState; update: (fn: (state: WizardState) => WizardState) => void; openEditor: (editor: Editor) => void }) {
   const { t } = useTranslation()
-  return <div className="space-y-4"><div className="flex justify-end"><Button type="button" onClick={() => openEditor({ kind: "manager", managerIndex: null, value: emptyAgent("New Manager") })}><Plus className="size-4" />Add Manager</Button></div>{state.managers.length ? <div className="grid gap-4 lg:grid-cols-2">{state.managers.map((manager, index) => <ManagerCard key={manager.agent.id} manager={manager} onEdit={() => openEditor({ kind: "manager", managerIndex: index, value: { ...manager.agent } })} onDelete={() => { if (window.confirm(`Delete “${manager.agent.name}” and its Specialists?`)) update((current) => ({ ...current, managers: current.managers.filter((_, itemIndex) => itemIndex !== index).map((item) => ({ ...item, agent: { ...item.agent, allowed_manager_peer_ids: item.agent.allowed_manager_peer_ids.filter((id) => id !== manager.agent.id) } })) })) }} />)}</div> : <p className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">No Managers yet. At least one is required for readiness.</p>}{state.managers.length > 1 ? <section className="rounded-lg border border-border p-4"><h3 className="font-semibold">{t("treeParity.directionalPeers")}</h3><p className="mt-1 text-sm text-muted-foreground">{t("treeParity.directionalHelp")}</p><div className="mt-4 space-y-4">{state.managers.map((manager, index) => <div key={manager.agent.id}><p className="text-sm font-medium">{manager.agent.name} →</p><div className="mt-2 flex flex-wrap gap-4">{state.managers.filter((peer) => peer.agent.id !== manager.agent.id).map((peer) => <label key={peer.agent.id} className="flex items-center gap-2 text-sm"><input type="checkbox" aria-label={t("treeParity.mayContact", { source: manager.agent.name, target: peer.agent.name })} checked={manager.agent.allowed_manager_peer_ids.includes(peer.agent.id)} onChange={(event) => update((current) => ({ ...current, managers: current.managers.map((item, itemIndex) => itemIndex === index ? { ...item, agent: { ...item.agent, allowed_manager_peer_ids: event.target.checked ? [...item.agent.allowed_manager_peer_ids, peer.agent.id] : item.agent.allowed_manager_peer_ids.filter((id) => id !== peer.agent.id) } } : item) }))} />{peer.agent.name}</label>)}</div></div>)}</div></section> : null}</div>
+  return <div className="space-y-4"><div className="flex justify-end"><Button type="button" onClick={() => openEditor({ kind: "manager", managerIndex: null, value: emptyAgent("New Manager") })}><Plus className="size-4" />{t("uiCopy.addManager")}</Button></div>{state.managers.length ? <div className="grid gap-4 lg:grid-cols-2">{state.managers.map((manager, index) => <ManagerCard key={manager.agent.id} manager={manager} onEdit={() => openEditor({ kind: "manager", managerIndex: index, value: { ...manager.agent } })} onDelete={() => { if (window.confirm(t("uiCopy.deleteManagerConfirm", { name: manager.agent.name }))) update((current) => ({ ...current, managers: current.managers.filter((_, itemIndex) => itemIndex !== index).map((item) => ({ ...item, agent: { ...item.agent, allowed_manager_peer_ids: item.agent.allowed_manager_peer_ids.filter((id) => id !== manager.agent.id) } })) })) }} />)}</div> : <p className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">{t("uiCopy.noManagersYetAtLeastOneIsRequiredForReadiness")}</p>}{state.managers.length > 1 ? <section className="rounded-lg border border-border p-4"><h3 className="font-semibold">{t("treeParity.directionalPeers")}</h3><p className="mt-1 text-sm text-muted-foreground">{t("treeParity.directionalHelp")}</p><div className="mt-4 space-y-4">{state.managers.map((manager, index) => <div key={manager.agent.id}><p className="text-sm font-medium">{manager.agent.name} →</p><div className="mt-2 flex flex-wrap gap-4">{state.managers.filter((peer) => peer.agent.id !== manager.agent.id).map((peer) => <label key={peer.agent.id} className="flex items-center gap-2 text-sm"><input type="checkbox" aria-label={t("treeParity.mayContact", { source: manager.agent.name, target: peer.agent.name })} checked={manager.agent.allowed_manager_peer_ids.includes(peer.agent.id)} onChange={(event) => update((current) => ({ ...current, managers: current.managers.map((item, itemIndex) => itemIndex === index ? { ...item, agent: { ...item.agent, allowed_manager_peer_ids: event.target.checked ? [...item.agent.allowed_manager_peer_ids, peer.agent.id] : item.agent.allowed_manager_peer_ids.filter((id) => id !== peer.agent.id) } } : item) }))} />{peer.agent.name}</label>)}</div></div>)}</div></section> : null}</div>
 }
 
 function SpecialistsStep({ state, update, managerCursor, setManagerCursor, openEditor }: { state: WizardState; update: (fn: (state: WizardState) => WizardState) => void; managerCursor: number; setManagerCursor: (index: number) => void; openEditor: (editor: Editor) => void }) {
+  const { t } = useTranslation()
+
   const manager = state.managers[managerCursor]
-  if (!manager) return <p className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">Add a Manager before configuring Specialists.</p>
-  return <div className="space-y-5"><div className="flex items-center justify-between rounded-lg bg-muted/40 p-4"><div><p className="text-xs text-muted-foreground">Manager {managerCursor + 1} / {state.managers.length}</p><p className="mt-1 font-semibold">{manager.agent.name}</p></div><div className="flex gap-2"><Button type="button" variant="outline" size="icon" disabled={managerCursor === 0} onClick={() => setManagerCursor(managerCursor - 1)}><ArrowLeft className="size-4" /></Button><Button type="button" variant="outline" size="icon" disabled={managerCursor === state.managers.length - 1} onClick={() => setManagerCursor(managerCursor + 1)}><ArrowRight className="size-4" /></Button></div></div><div className="flex justify-end"><Button type="button" onClick={() => openEditor({ kind: "specialist", managerIndex: managerCursor, specialistIndex: null, value: emptyAgent("New Specialist") })}><Plus className="size-4" />Add Specialist</Button></div><div className="space-y-3">{manager.specialists.map((specialist, specialistIndex) => <SpecialistCard key={specialist.id} specialist={specialist} onEdit={() => openEditor({ kind: "specialist", managerIndex: managerCursor, specialistIndex, value: { ...specialist } })} onDelete={() => update((current) => ({ ...current, managers: current.managers.map((item, index) => index === managerCursor ? { ...item, specialists: item.specialists.filter((_, targetIndex) => targetIndex !== specialistIndex) } : item) }))} />)}{manager.specialists.length === 0 ? <p className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">This Manager needs at least one Specialist.</p> : null}</div></div>
+  if (!manager) return <p className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">{t("uiCopy.addAManagerBeforeConfiguringSpecialists")}</p>
+  return <div className="space-y-5"><div className="flex items-center justify-between rounded-lg bg-muted/40 p-4"><div><p className="text-xs text-muted-foreground">Manager {managerCursor + 1} / {state.managers.length}</p><p className="mt-1 font-semibold">{manager.agent.name}</p></div><div className="flex gap-2"><Button type="button" variant="outline" size="icon" disabled={managerCursor === 0} onClick={() => setManagerCursor(managerCursor - 1)}><ArrowLeft className="size-4" /></Button><Button type="button" variant="outline" size="icon" disabled={managerCursor === state.managers.length - 1} onClick={() => setManagerCursor(managerCursor + 1)}><ArrowRight className="size-4" /></Button></div></div><div className="flex justify-end"><Button type="button" onClick={() => openEditor({ kind: "specialist", managerIndex: managerCursor, specialistIndex: null, value: emptyAgent("New Specialist") })}><Plus className="size-4" />{t("uiCopy.addSpecialist")}</Button></div><div className="space-y-3">{manager.specialists.map((specialist, specialistIndex) => <SpecialistCard key={specialist.id} specialist={specialist} onEdit={() => openEditor({ kind: "specialist", managerIndex: managerCursor, specialistIndex, value: { ...specialist } })} onDelete={() => update((current) => ({ ...current, managers: current.managers.map((item, index) => index === managerCursor ? { ...item, specialists: item.specialists.filter((_, targetIndex) => targetIndex !== specialistIndex) } : item) }))} />)}{manager.specialists.length === 0 ? <p className="rounded-lg border border-dashed border-border p-8 text-center text-sm text-muted-foreground">{t("uiCopy.thisManagerNeedsAtLeastOneSpecialist")}</p> : null}</div></div>
 }
 
 function ToolsStep({ agents, tools, updateAgent }: { agents: WizardAgent[]; tools: ToolConnection[]; updateAgent: (agent: WizardAgent) => void }) {
-  if (!tools.length) return <div className="rounded-lg border border-dashed border-border p-8 text-center"><Wrench className="mx-auto size-6 text-muted-foreground" /><p className="mt-3 font-medium">No Tool connections available</p><p className="mt-1 text-sm text-muted-foreground">Add and test an HTTP API or MCP connection on the Tools page first.</p></div>
+  const { t } = useTranslation()
+
+  if (!tools.length) return <div className="rounded-lg border border-dashed border-border p-8 text-center"><Wrench className="mx-auto size-6 text-muted-foreground" /><p className="mt-3 font-medium">{t("uiCopy.noToolConnectionsAvailable")}</p><p className="mt-1 text-sm text-muted-foreground">{t("uiCopy.optionalToolsHelp")}</p></div>
   return <div className="space-y-5">{agents.map((agent) => <div key={agent.id} className="rounded-lg border border-border p-4"><p className="font-medium">{agent.name}</p><div className="mt-3 grid gap-2 sm:grid-cols-2">{tools.map((tool) => {
     const usable = tool.enabled && tool.status === "connected" && (tool.tool_type !== "mcp" || tool.discovered_tools.some((item) => item.selected))
     const assigned = agent.tool_connection_ids.includes(tool.id)
@@ -275,13 +276,4 @@ function ToolsStep({ agents, tools, updateAgent }: { agents: WizardAgent[]; tool
       updateAgent({ ...agent, tool_connection_ids })
     }} /><span className="truncate">{tool.name}</span></span><ToolStatusBadge status={tool.status} /></label>
   })}</div></div>)}</div>
-}
-
-function TriggerStep({ state, update, treeId }: { state: WizardState; update: (fn: (state: WizardState) => WizardState) => void; treeId: string | null }) {
-  function updateField(index: number, patch: Partial<ManualField>) { update((current) => ({ ...current, manualFields: current.manualFields.map((field, itemIndex) => itemIndex === index ? { ...field, ...patch } : field) })) }
-  return <div className="space-y-5"><div className="grid gap-3 sm:grid-cols-2"><button type="button" onClick={() => update((current) => ({ ...current, triggerType: "manual_form" }))} className={`rounded-lg border p-4 text-left ${state.triggerType === "manual_form" ? "border-primary bg-primary/5" : "border-border"}`}><FileInput className="size-5" /><p className="mt-2 font-medium">Manual Form</p><p className="mt-1 text-xs text-muted-foreground">Collect configured fields in Studio.</p></button><button type="button" onClick={() => update((current) => ({ ...current, triggerType: "webhook" }))} className={`rounded-lg border p-4 text-left ${state.triggerType === "webhook" ? "border-primary bg-primary/5" : "border-border"}`}><Webhook className="size-5" /><p className="mt-2 font-medium">Webhook</p><p className="mt-1 text-xs text-muted-foreground">Reserve a Tree-specific POST route. Execution is deferred.</p></button></div>{state.triggerType === "manual_form" ? <div className="space-y-3"><div className="flex justify-between"><div><p className="font-medium">Form fields</p><p className="text-xs text-muted-foreground">Text, textarea, number, select, and file are supported.</p></div><Button type="button" variant="outline" onClick={() => update((current) => ({ ...current, manualFields: [...current.manualFields, { id: generateClientId(), name: "", type: "text", required: false, options: [] }] }))}><Plus className="size-4" />Add Field</Button></div>{state.manualFields.map((field, index) => <div key={field.id} className="grid gap-3 rounded-lg border border-border p-4 sm:grid-cols-[1fr_160px_auto_auto]"><Input value={field.name} onChange={(event) => updateField(index, { name: event.target.value })} placeholder="Field label" /><Select value={field.type} onChange={(event) => updateField(index, { type: event.target.value as ManualField["type"] })}><option value="text">Text</option><option value="textarea">Textarea</option><option value="number">Number</option><option value="select">Select</option><option value="file">File</option></Select><label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={field.required} onChange={(event) => updateField(index, { required: event.target.checked })} className="accent-primary" />Required</label><Button type="button" variant="ghost" size="icon" onClick={() => update((current) => ({ ...current, manualFields: current.manualFields.filter((_, itemIndex) => itemIndex !== index) }))}><Trash2 className="size-4" /></Button>{field.type === "select" ? <Input className="sm:col-span-4" value={field.options.join(", ")} onChange={(event) => updateField(index, { options: event.target.value.split(",").map((item) => item.trim()).filter(Boolean) })} placeholder="Options separated by commas" /> : null}</div>)}</div> : <div className="rounded-lg border border-border bg-muted/25 p-4"><p className="text-sm font-medium">Generated after save</p><p className="mt-1 font-mono text-xs text-muted-foreground">POST /api/trees/{treeId ?? "{tree_id}"}/webhook</p><p className="mt-2 text-xs text-muted-foreground">This phase stores route configuration only; it does not execute the Tree.</p></div>}</div>
-}
-
-function OutputStep({ state, update }: { state: WizardState; update: (fn: (state: WizardState) => WizardState) => void }) {
-  return <div className="grid gap-5 sm:grid-cols-2"><div className="space-y-2"><Label>Output type</Label><Select value={state.outputType ?? ""} onChange={(event) => update((current) => ({ ...current, outputType: event.target.value as WizardState["outputType"] }))}><option value="text">Text</option><option value="structured_json">Structured JSON</option></Select></div><div className="space-y-2"><Label>Delivery</Label><Select value={state.deliveryType ?? ""} onChange={(event) => update((current) => ({ ...current, deliveryType: event.target.value as WizardState["deliveryType"] }))}><option value="show_in_web">Show in web</option><option value="api_response">API response</option></Select></div></div>
 }

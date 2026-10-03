@@ -11,11 +11,14 @@ from agenttree import SpecialistAgent
 from agenttree.models import ExecutionTrace
 from agenttree.tools import ToolBindingRegistry, ToolExecutor, ToolRegistry
 from agenttree.tools.mcp import MCPTool, MCPToolLoader
+from fastapi import HTTPException
 from sqlalchemy import delete, func, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, selectinload
 
 from backend.core.sanitization import sanitize_value
+from backend.models.auth import User
+from backend.services.auth_service import AuthService
 from backend.models.secret import Secret
 from backend.models.tool import ToolAssignment, ToolConnection
 from backend.models.tree import AgentConfig, TreeVersion
@@ -359,7 +362,9 @@ class ToolService:
         except Exception as error:
             raise ToolOperationError(self._safe_error(error, "Tool execution failed")) from error
 
-    def assignments(self, tool_id: str) -> ToolAssignmentsResponse:
+    def assignments(self, tool_id: str, user: User | None = None) -> ToolAssignmentsResponse:
+        if user is not None and not AuthService.has_permission(user, "manage_trees_agents"):
+            raise HTTPException(403, "Access denied")
         self._get(tool_id)
         rows = self._database.scalars(select(ToolAssignment).options(
             selectinload(ToolAssignment.agent_config),
@@ -370,11 +375,13 @@ class ToolService:
             agent_name=item.agent_config.name,
             tree_id=item.tree_version.tree_id,
             tree_name=item.tree_version.tree.name,
-        ) for item in rows])
+        ) for item in rows if user is None or AuthService(self._database).can_access_tree(user, item.tree_version.tree_id)])
 
     def replace_assignments(
-        self, tool_id: str, payload: ToolAssignmentsUpdate,
+        self, tool_id: str, payload: ToolAssignmentsUpdate, user: User | None = None,
     ) -> ToolAssignmentsResponse:
+        if user is not None and not AuthService.has_permission(user, "manage_trees_agents"):
+            raise HTTPException(403, "Access denied")
         tool = self._get(tool_id)
         if payload.agent_ids and (not tool.enabled or tool.status != "connected"):
             raise ResourceConflictError("Only connected Tools can be assigned")
@@ -386,7 +393,15 @@ class ToolService:
         agents = list(self._database.scalars(select(AgentConfig).where(AgentConfig.id.in_(agent_ids))).all()) if agent_ids else []
         if len(agents) != len(agent_ids):
             raise ServiceError("Assignment references a missing Agent")
-        self._database.execute(delete(ToolAssignment).where(ToolAssignment.tool_connection_id == tool.id))
+        if user is not None:
+            for agent in agents:
+                AuthService(self._database).require_tree_access(user, agent.tree_version.tree_id)
+        removal = delete(ToolAssignment).where(ToolAssignment.tool_connection_id == tool.id)
+        if user is not None:
+            # Updating visible assignments must not remove bindings in other Trees.
+            versions = select(TreeVersion.id).where(AuthService.tree_access_filter(user, TreeVersion.tree_id))
+            removal = removal.where(ToolAssignment.tree_version_id.in_(versions))
+        self._database.execute(removal)
         for agent in agents:
             self._database.add(ToolAssignment(
                 tree_version_id=agent.tree_version_id,
@@ -394,7 +409,7 @@ class ToolService:
                 tool_connection_id=tool.id,
             ))
         self._database.commit()
-        return self.assignments(tool.id)
+        return self.assignments(tool.id, user)
 
     @staticmethod
     def _safe_error(

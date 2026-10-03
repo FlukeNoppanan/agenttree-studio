@@ -1,3 +1,4 @@
+import type { TFunction } from "i18next"
 import {
   ChevronDown,
   ChevronUp,
@@ -11,6 +12,8 @@ import {
 import { Fragment, type FormEvent, useCallback, useEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
+import { Link } from "react-router-dom"
+import { useAuth } from "@/auth"
 import { EmptyState } from "@/components/empty-state"
 import { Notice } from "@/components/notice"
 import { PageHeader } from "@/components/page-header"
@@ -39,6 +42,7 @@ import {
   type ProviderType,
   type Secret,
 } from "@/lib/api"
+import { isProviderVerificationBlocked, isUsableModel } from "@/lib/provider-models"
 
 const providerLabels: Record<ProviderType, string> = {
   openai: "OpenAI",
@@ -50,16 +54,10 @@ const providerLabels: Record<ProviderType, string> = {
   ollama: "Ollama",
 }
 
-const statusLabels: Record<ProviderStatus, string> = {
-  not_configured: "Not configured",
-  testing: "Testing",
-  connected: "Connected",
-  error: "Error",
-}
-
 function ProviderStatusBadge({ status }: { status: ProviderStatus }) {
+  const { t } = useTranslation()
   const variant = status === "connected" ? "success" : status === "error" ? "destructive" : "secondary"
-  return <Badge variant={variant}>{statusLabels[status]}</Badge>
+  return <Badge variant={variant}>{t(status === "not_configured" ? "status.notConfigured" : `status.${status}`)}</Badge>
 }
 
 const emptyForm: ProviderPayload = {
@@ -69,7 +67,7 @@ const emptyForm: ProviderPayload = {
   base_url: null,
 }
 
-type ProviderWorkflowStep = "connecting" | "connected" | "discovering" | "verifying" | "ready" | "connection_failed" | "discovery_failed"
+type ProviderWorkflowStep = "connecting" | "connected" | "discovering" | "verifying" | "ready" | "verification_paused" | "connection_failed" | "discovery_failed"
 interface ProviderWorkflow {
   step: ProviderWorkflowStep
   message?: string
@@ -78,24 +76,19 @@ interface ProviderWorkflow {
   total?: number
 }
 
-function workflowLabel(workflow: ProviderWorkflow): string {
-  if (workflow.step === "connecting") return "Connecting…"
-  if (workflow.step === "connected") return "Connected"
-  if (workflow.step === "discovering") return "Discovering models…"
-  if (workflow.step === "verifying") return `Verifying ${workflow.modelId} (${workflow.current}/${workflow.total})…`
-  if (workflow.step === "ready") return "Ready"
-  if (workflow.step === "connection_failed") return `Connection failed — ${workflow.message ?? "Connection test failed"}`
-  return `Model discovery failed — ${workflow.message ?? "Model discovery failed"}`
-}
-
-function modelStateLabel(status: ProviderModel["qualification_status"]): string {
-  if (status === "qualified") return "Ready"
-  if (status === "verifying") return "Verifying…"
-  if (status === "unknown") return "Queued"
-  return "Unavailable"
+function workflowLabel(workflow: ProviderWorkflow, t: TFunction): string {
+  if (workflow.step === "connecting") return t("uiCopy.connecting")
+  if (workflow.step === "connected") return t("status.connected")
+  if (workflow.step === "discovering") return t("uiCopy.discoveringModels")
+  if (workflow.step === "verifying") return t("uiCopy.providerVerifying", { model: workflow.modelId, current: workflow.current, total: workflow.total })
+  if (workflow.step === "ready") return t("status.ready")
+  if (workflow.step === "verification_paused") return t("uiCopy.providerVerificationPaused")
+  if (workflow.step === "connection_failed") return t("uiCopy.providerConnectionFailed", { message: workflow.message ?? t("uiCopy.providerConnectionTestFailed") })
+  return t("uiCopy.providerDiscoveryFailed", { message: workflow.message ?? t("uiCopy.providerModelDiscoveryFailed") })
 }
 
 export function ProvidersPage() {
+  const { can } = useAuth()
   const { t, i18n } = useTranslation()
   const [providers, setProviders] = useState<ProviderConnection[]>([])
   const [secrets, setSecrets] = useState<Secret[]>([])
@@ -114,7 +107,7 @@ export function ProvidersPage() {
   const loadPage = useCallback(async () => {
     setLoading(true)
     try {
-      const [providerResult, secretResult] = await Promise.allSettled([api.listProviders(), api.listSecrets()])
+      const [providerResult, secretResult] = await Promise.allSettled([api.listProviders(), can("manage_secrets") ? api.listSecrets() : Promise.resolve([])])
       if (providerResult.status === "rejected") throw providerResult.reason
       setProviders(providerResult.value)
       if (secretResult.status === "fulfilled") {
@@ -255,6 +248,7 @@ export function ProvidersPage() {
         setWorkflowByProvider((current) => ({ ...current, [provider.id]: { step: "connection_failed", message } }))
         setNotice({ tone: "error", message })
         activeProviderWork.current.delete(provider.id)
+        setBusy(null)
         return
       }
     }
@@ -266,6 +260,7 @@ export function ProvidersPage() {
       let models = catalog.models
       setModelsByProvider((current) => ({ ...current, [provider.id]: models }))
       const candidates = models.filter((model) => model.is_available && model.generation_candidate)
+      let verificationPaused = false
 
       for (const [index, model] of candidates.entries()) {
         setWorkflowByProvider((current) => ({
@@ -283,26 +278,29 @@ export function ProvidersPage() {
           const result = await api.verifyProviderModel(provider.id, model.model_id)
           replaceProvider(result.provider)
           models = models.map((item) => item.model_id === result.model.model_id ? result.model : item)
+          verificationPaused = isProviderVerificationBlocked(result.model)
         } catch {
-          // Continue with the other models. Keep a safe, actionable fallback if
-          // the verification API itself failed before returning a model result.
+          // A transport failure is not evidence that the model is incompatible.
+          // Pause rather than sending more requests while the API is unavailable.
+          verificationPaused = true
           models = models.map((item) => item.model_id === model.model_id
             ? {
               ...item,
-              qualification_status: "unavailable",
+              qualification_status: "transient_error",
               qualification_error_code: "verification_failed",
-              qualification_message: "Generation failed",
+              qualification_message: "Verification interrupted — try again later",
             }
             : item)
         }
         setModelsByProvider((current) => ({ ...current, [provider.id]: models }))
+        if (verificationPaused) break
       }
 
-      setWorkflowByProvider((current) => ({ ...current, [provider.id]: { step: "ready" } }))
-      setNotice({ tone: "success", message: t("providers.discovered", {
+      setWorkflowByProvider((current) => ({ ...current, [provider.id]: { step: verificationPaused ? "verification_paused" : "ready" } }))
+      setNotice({ tone: verificationPaused ? "error" : "success", message: verificationPaused ? t("uiCopy.providerVerificationPausedHelp") : t("providers.discovered", {
         discovered: catalog.summary.discovered_count,
         candidates: candidates.length,
-        usable: models.filter((model) => model.qualification_status === "qualified").length,
+        usable: models.filter(isUsableModel).length,
         unavailable: models.filter((model) => model.qualification_status === "unavailable" || model.qualification_status === "transient_error").length,
       }) })
     } catch (error) {
@@ -338,7 +336,7 @@ export function ProvidersPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       <PageHeader
         title={t("providers.title")}
         description={t("providers.description")}
@@ -356,6 +354,7 @@ export function ProvidersPage() {
           title={t("providers.empty")}
           description={t("providers.emptyHelp")}
           icon={ServerCog}
+          action={<Button onClick={openCreate}>{t("onboarding.providerAction")}</Button>}
         />
       ) : (
         <div className="overflow-hidden border-y border-border bg-card">
@@ -371,8 +370,8 @@ export function ProvidersPage() {
                   <TableCell><div className="flex items-center gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-primary"><ServerCog className="size-5" /></span><div><p className="font-semibold">{provider.name}</p><p className="mt-1 text-xs text-muted-foreground">{providerLabels[provider.provider_type]}</p></div></div></TableCell>
                   <TableCell>
                     <ProviderStatusBadge status={provider.status} />
-                    {workflowByProvider[provider.id] ? <p className={`mt-1.5 max-w-64 text-xs ${workflowByProvider[provider.id].step.endsWith("failed") ? "text-red-600 dark:text-red-400" : "text-muted-foreground"}`}>{workflowLabel(workflowByProvider[provider.id])}</p> : null}
-                    {!workflowByProvider[provider.id] && provider.last_error ? <p className="mt-1.5 max-w-48 text-xs text-red-600 dark:text-red-400">{provider.last_error}</p> : null}
+                    {workflowByProvider[provider.id] ? <p className={`mt-1.5 max-w-64 text-xs ${workflowByProvider[provider.id].step.endsWith("failed") ? "text-destructive" : "text-muted-foreground"}`}>{workflowLabel(workflowByProvider[provider.id], t)}</p> : null}
+                    {!workflowByProvider[provider.id] && provider.last_error ? <p className="mt-1.5 max-w-48 text-xs text-destructive">{provider.last_error}</p> : null}
                   </TableCell>
                   <TableCell>
                     <p>{t("providers.modelsReady", { count: provider.models_count })}</p>
@@ -390,16 +389,16 @@ export function ProvidersPage() {
                       <Button variant="ghost" className="h-8 px-2" title={t(expandedProviders.has(provider.id) ? "providers.hideModels" : "providers.viewModels")} aria-label={t(expandedProviders.has(provider.id) ? "providers.hideModels" : "providers.viewModels")} aria-expanded={expandedProviders.has(provider.id)} aria-controls={`models-${provider.id}`} disabled={busy !== null} onClick={() => void viewModels(provider)}>
                         {expandedProviders.has(provider.id) ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}<span className="hidden xl:inline">{t(expandedProviders.has(provider.id) ? "providers.hideModels" : "providers.viewModels")}</span>
                       </Button>
-                      <Button variant="ghost" size="icon" title="Edit provider" disabled={busy !== null} onClick={() => openEdit(provider)}>
-                        <Pencil className="size-4" /><span className="sr-only">Edit</span>
+                      <Button variant="ghost" size="icon" title={t("uiCopy.editProvider")} disabled={busy !== null} onClick={() => openEdit(provider)}>
+                        <Pencil className="size-4" /><span className="sr-only">{t("uiCopy.edit")}</span>
                       </Button>
-                      <Button variant="ghost" size="icon" title="Delete provider" disabled={busy !== null} onClick={() => setDeletingProvider(provider)}>
-                        <Trash2 className="size-4" /><span className="sr-only">Delete</span>
+                      <Button variant="ghost" size="icon" title={t("uiCopy.deleteProvider")} disabled={busy !== null} onClick={() => setDeletingProvider(provider)}>
+                        <Trash2 className="size-4" /><span className="sr-only">{t("uiCopy.delete")}</span>
                       </Button>
                     </div>
                   </TableCell>
                 </TableRow>
-                {expandedProviders.has(provider.id) ? <TableRow id={`models-${provider.id}`} className="bg-secondary/20"><TableCell colSpan={5} className="p-4 sm:p-6"><div className="border-l-2 border-earth/40 pl-4 sm:pl-5"><h3 className="font-semibold">Discovered models ({modelsByProvider[provider.id]?.length ?? 0})</h3>{modelsByProvider[provider.id]?.length ? <div className="mt-3 divide-y divide-border">{modelsByProvider[provider.id].map((model) => { const state = modelStateLabel(model.qualification_status); const failed = model.qualification_status === "unavailable" || model.qualification_status === "transient_error"; return <div key={model.id} className="flex flex-wrap items-center justify-between gap-3 py-3"><div className="min-w-0"><p className="break-words font-medium">{model.display_name || model.model_id.replace(/^models\//, "")}</p><p className="mt-1 break-all font-mono text-xs text-muted-foreground">{model.model_id}</p>{failed && model.qualification_message ? <p className="mt-1 text-xs text-red-600 dark:text-red-400">Unavailable — {model.qualification_message}</p> : null}</div><Badge variant={model.qualification_status === "qualified" ? "success" : failed ? "destructive" : "secondary"}>{state}</Badge></div> })}</div> : <p className="mt-3 text-sm text-muted-foreground">No models were discovered from this provider.</p>}</div></TableCell></TableRow> : null}
+                {expandedProviders.has(provider.id) ? <TableRow id={`models-${provider.id}`} className="bg-secondary/20"><TableCell colSpan={5} className="p-4 sm:p-6"><div className="border-l-2 border-primary/40 pl-4 sm:pl-5"><h3 className="font-semibold">{t("uiCopy.usableModels")} ({modelsByProvider[provider.id]?.filter(isUsableModel).length ?? 0})</h3>{modelsByProvider[provider.id]?.some(isUsableModel) ? <div className="mt-3 divide-y divide-border">{modelsByProvider[provider.id].filter(isUsableModel).map((model) => <div key={model.id} className="flex flex-wrap items-center justify-between gap-3 py-3"><div className="min-w-0"><p className="break-words font-medium">{model.display_name || model.model_id.replace(/^models\//, "")}</p><p className="mt-1 break-all font-mono text-xs text-muted-foreground">{model.model_id}</p></div><Badge variant="success">{t("status.ready")}</Badge></div>)}</div> : <p className="mt-3 text-sm text-muted-foreground">{t("uiCopy.noVerifiedModelsHelp")}</p>}</div></TableCell></TableRow> : null}
                 </Fragment>
               ))}
             </TableBody>
@@ -410,35 +409,35 @@ export function ProvidersPage() {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{editing ? "Edit provider" : "Add provider"}</DialogTitle>
-            <DialogDescription>Agents will reference this connection and a discovered model ID, never a raw credential.</DialogDescription>
+            <DialogTitle>{editing ? t("uiCopy.editProvider") : t("uiCopy.addProvider")}</DialogTitle>
+            <DialogDescription>{t("uiCopy.providerCredentialHelp")}</DialogDescription>
           </DialogHeader>
           <form onSubmit={submit}>
             <div className="space-y-4">
-              <div className="space-y-2"><Label htmlFor="provider-name">Name</Label><Input id="provider-name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="OpenAI Main" required autoFocus /></div>
-              <div className="space-y-2"><Label htmlFor="provider-type">Provider type</Label><Select id="provider-type" value={form.provider_type} onChange={(e) => setProviderType(e.target.value as ProviderType)}><option value="openai">OpenAI</option><option value="gemini">Gemini</option><option value="groq">Groq</option><option value="openrouter">OpenRouter</option><option value="cerebras">Cerebras</option><option value="openai_compatible">Custom OpenAI-compatible</option><option value="ollama">Ollama</option></Select></div>
+              <div className="space-y-2"><Label htmlFor="provider-name">{t("uiCopy.name")}</Label><Input id="provider-name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="OpenAI Main" required autoFocus /></div>
+              <div className="space-y-2"><Label htmlFor="provider-type">{t("uiCopy.providerType")}</Label><Select id="provider-type" value={form.provider_type} onChange={(e) => setProviderType(e.target.value as ProviderType)}><option value="openai">OpenAI</option><option value="gemini">Gemini</option><option value="groq">Groq</option><option value="openrouter">OpenRouter</option><option value="cerebras">Cerebras</option><option value="openai_compatible">Custom OpenAI-compatible</option><option value="ollama">Ollama</option></Select></div>
 
               {form.provider_type !== "ollama" ? (
                 <div className="space-y-2">
                   <Label htmlFor="provider-secret">Secret</Label>
                   <Select id="provider-secret" value={form.secret_id ?? ""} onChange={(e) => setForm({ ...form, secret_id: e.target.value || null })} required>
-                    <option value="" disabled>Select a saved secret</option>
+                    <option value="" disabled>{t("uiCopy.selectASavedSecret")}</option>
                     {secrets.map((secret) => <option key={secret.id} value={secret.id}>{secret.name} · {secret.masked_value}</option>)}
                   </Select>
-                  {secrets.length === 0 ? <p className="text-xs text-amber-700 dark:text-amber-300">Add a secret before creating this provider.</p> : null}
+                  {secrets.length === 0 ? <p className="text-xs text-warning">{can("manage_secrets") ? <Link className="underline underline-offset-2" to="/secrets">{t("onboarding.saveSecret")}</Link> : t("uiCopy.askAnAdministratorToSaveProviderCredentialsInSecretsFirst")}</p> : null}
                 </div>
               ) : null}
 
               {form.provider_type === "ollama" || form.provider_type === "openai" || form.provider_type === "openai_compatible" ? (
                 <div className="space-y-2">
-                  <Label htmlFor="provider-base-url">Base URL {form.provider_type === "openai" ? "(optional)" : ""}</Label>
+                  <Label htmlFor="provider-base-url">Base URL {form.provider_type === "openai" ? t("uiCopy.optional") : ""}</Label>
                   <Input id="provider-base-url" type="url" value={form.base_url ?? ""} onChange={(e) => setForm({ ...form, base_url: e.target.value || null })} placeholder={form.provider_type === "ollama" ? "http://localhost:11434" : "https://api.example.com/v1"} required={form.provider_type !== "openai"} />
                 </div>
               ) : null}
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
-              <Button type="submit" disabled={busy !== null || (form.provider_type !== "ollama" && !form.secret_id)}>{busy === "save" ? "Saving…" : editing ? "Save changes" : "Add provider"}</Button>
+              <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>{t("uiCopy.cancel")}</Button>
+              <Button type="submit" disabled={busy !== null || (form.provider_type !== "ollama" && !form.secret_id)}>{busy === "save" ? t("uiCopy.saving") : editing ? t("uiCopy.saveChanges") : t("uiCopy.addProvider")}</Button>
             </DialogFooter>
           </form>
         </DialogContent>

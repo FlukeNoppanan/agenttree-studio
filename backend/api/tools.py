@@ -1,9 +1,10 @@
 """Executable Tool CRUD, discovery, testing, and assignment endpoints."""
 
-from fastapi import APIRouter, Depends, Response, status
+from fastapi import APIRouter, Depends, Response, Request, status
 from sqlalchemy.orm import Session
 
 from backend.db.session import get_db
+from backend.api.auth import current_user
 from backend.schemas.tool import (
     MCPDiscoveryResponse,
     ToolAssignmentsResponse,
@@ -23,8 +24,8 @@ router = APIRouter(prefix="/tools", tags=["tools"])
 
 
 @router.get("/{tool_id}/dependencies", response_model=ResourceDependencies)
-def tool_dependencies(tool_id: str, database: Session = Depends(get_db)) -> ResourceDependencies:
-    return DependencyService(database).tool(tool_id)
+def tool_dependencies(tool_id: str, request: Request, database: Session = Depends(get_db)) -> ResourceDependencies:
+    return DependencyService(database, current_user(request, database)).tool(tool_id)
 
 
 @router.get("", response_model=list[ToolConnectionRead])
@@ -84,16 +85,16 @@ def test_execute_tool(
 
 @router.get("/{tool_id}/assignments", response_model=ToolAssignmentsResponse)
 def get_tool_assignments(
-    tool_id: str,
+    tool_id: str, request: Request,
     database: Session = Depends(get_db),
 ) -> ToolAssignmentsResponse:
-    return ToolService(database).assignments(tool_id)
+    return ToolService(database).assignments(tool_id, current_user(request, database))
 
 
 @router.put("/{tool_id}/assignments", response_model=ToolAssignmentsResponse)
 def update_tool_assignments(
     tool_id: str,
-    payload: ToolAssignmentsUpdate,
+    payload: ToolAssignmentsUpdate, request: Request,
     database: Session = Depends(get_db),
 ) -> ToolAssignmentsResponse:
-    return ToolService(database).replace_assignments(tool_id, payload)
+    return ToolService(database).replace_assignments(tool_id, payload, current_user(request, database))

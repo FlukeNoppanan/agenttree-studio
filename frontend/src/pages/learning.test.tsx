@@ -31,7 +31,8 @@ describe("Learning roadmap placeholder", () => {
     expect(await screen.findAllByRole("link", { name: /Learning.*Coming Soon/ })).toHaveLength(2)
     await i18n.changeLanguage("th")
     render(<LearningPage />)
-    expect(screen.getAllByText("การเรียนรู้")).toHaveLength(3)
+    expect(screen.getAllByRole("link", { name: /Learning/ })).toHaveLength(2)
+    expect(screen.getAllByText("การเรียนรู้")).toHaveLength(1) // existing placeholder content stays untouched
     expect(screen.getAllByText("เร็ว ๆ นี้").length).toBeGreaterThanOrEqual(6)
   })
 })

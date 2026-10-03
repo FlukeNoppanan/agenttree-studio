@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { ArrowRight, Boxes, Eye, Pencil, Trash2, Users } from "lucide-react"
+import { ArrowRight, Boxes, Eye, Pencil, Trash2 } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 
@@ -7,7 +7,6 @@ import { Notice } from "@/components/notice"
 import { PageHeader } from "@/components/page-header"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -83,33 +82,25 @@ export function TemplatesPage() {
     finally { setBusy(null) }
   }
   async function useTemplate(template: TreeTemplate) {
-    setBusy(template.id)
-    try {
-      const tree = await api.instantiateTemplate(template.id)
-      navigate(`/trees/${tree.id}/setup`)
-    } catch (error) { setNotice({ tone: "error", message: error instanceof Error ? error.message : t("templatesV3.instantiateError") }) }
-    finally { setBusy(null) }
+    navigate(`/trees/new/visual?template=${encodeURIComponent(template.id)}`)
   }
 
-  return <div className="space-y-7">
+  return <div className="space-y-4">
     <PageHeader title={t("nav.templates")} description={t("templatesV3.description")} />
+    <p className="text-xs leading-5 text-muted-foreground">{t("onboarding.templatesHelp")}</p>
     {notice ? <Notice {...notice} onDismiss={() => setNotice(null)} /> : null}
-    {loading ? <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{[1, 2, 3].map(item => <div key={item} className="h-64 animate-pulse rounded-xl border border-border bg-muted/30" />)}</div> : grouped.length ? <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-      {grouped.map(template => <Card key={template.id} className="flex min-w-0 flex-col">
-        <CardHeader className="space-y-3">
-          <div className="flex items-start justify-between gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary"><Boxes className="size-5" /></span><Badge variant={template.template_type === "builtin" ? "secondary" : "info"}>{t(`templatesV3.types.${template.template_type}`)}</Badge></div>
-          <div><CardTitle>{templateText(template, "name")}</CardTitle><CardDescription className="mt-1">{templateText(template, "description")}</CardDescription></div>
-        </CardHeader>
-        <CardContent className="mt-auto space-y-4">
-          <div className="flex flex-wrap gap-2 text-xs"><Badge variant="secondary">{categoryName(template.category)}</Badge><Badge variant="secondary"><Users className="mr-1 size-3" />{t("templatesV3.agentsCount", { count: template.agent_count })}</Badge><Badge variant="secondary">{t("templatesV3.managersCount", { count: template.manager_count })}</Badge><Badge variant="secondary">{t("templatesV3.specialistsCount", { count: template.specialist_count })}</Badge></div>
-          {(template.definition.tool_requirements ?? []).length ? <div><p className="text-xs font-medium text-muted-foreground">{t("templateSetupV1.requirements")}</p><div className="mt-1 flex flex-wrap gap-1.5">{template.definition.tool_requirements.map(tool => <Badge key={tool.id} variant={tool.requirement === "required" ? "warning" : "secondary"}>{toolDisplayName(tool.catalog_key)}</Badge>)}</div></div> : null}
-          <div className="flex flex-wrap gap-2 border-t border-border pt-3">
-            <Button variant="outline" size="sm" onClick={() => setPreview(template)}><Eye className="size-4" />{t("templatesV3.preview")}</Button>
-            <Button size="sm" disabled={busy === template.id} onClick={() => void useTemplate(template)}>{t("templatesV3.use")}<ArrowRight className="size-4" /></Button>
-            {template.template_type === "user" ? <><Button variant="ghost" size="sm" aria-label={t("templatesV3.edit")} onClick={() => openEdit(template)}><Pencil className="size-4" /></Button><Button variant="ghost" size="sm" aria-label={t("templatesV3.delete")} onClick={() => setDeleting(template)}><Trash2 className="size-4 text-destructive" /></Button></> : null}
-          </div>
-        </CardContent>
-      </Card>)}
+    {loading ? <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">{[1, 2, 3].map(item => <div key={item} className="h-44 animate-pulse rounded-md border border-border bg-muted/30" />)}</div> : grouped.length ? <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+      {grouped.map(template => <article key={template.id} className="flex min-w-0 flex-col rounded-md border border-border bg-card p-3.5" aria-label={templateText(template, "name")}>
+        <div className="flex items-center gap-2"><Boxes className="size-4 shrink-0 text-primary" /><h2 className="min-w-0 flex-1 text-sm font-semibold">{templateText(template, "name")}</h2><Badge variant="secondary">{t(`templatesV3.types.${template.template_type}`)}</Badge></div>
+        <p className="mt-1.5 line-clamp-2 text-xs leading-5 text-muted-foreground">{templateText(template, "description")}</p>
+        <p className="mt-2 text-xs text-muted-foreground">{t("templatesV3.agentsCount", { count: template.agent_count })} · {t("templatesV3.managersCount", { count: template.manager_count })} · {t("templatesV3.specialistsCount", { count: template.specialist_count })}</p>
+        <p className="mt-1 text-xs text-muted-foreground">{categoryName(template.category)}{template.definition.tool_requirements?.length ? ` · ${template.definition.tool_requirements.map(tool => toolDisplayName(tool.catalog_key)).join(' · ')}` : ''}</p>
+        <div className="mt-auto flex flex-wrap justify-end gap-1 pt-3">
+          <Button variant="ghost" size="sm" onClick={() => setPreview(template)}><Eye className="size-3.5" />{t("templatesV3.preview")}</Button>
+          <Button size="sm" onClick={() => void useTemplate(template)}>{t("templatesV3.use")}<ArrowRight className="size-3.5" /></Button>
+          {template.template_type === "user" ? <><Button variant="ghost" size="sm" aria-label={t("templatesV3.edit")} onClick={() => openEdit(template)}><Pencil className="size-3.5" /></Button><Button variant="ghost" size="sm" aria-label={t("templatesV3.delete")} onClick={() => setDeleting(template)}><Trash2 className="size-3.5 text-destructive" /></Button></> : null}
+        </div>
+      </article>)}
     </div> : <div className="rounded-xl border border-dashed border-border p-10 text-center text-sm text-muted-foreground">{t("templatesV3.empty")}</div>}
 
     <Dialog open={Boolean(preview)} onOpenChange={open => { if (!open) setPreview(null) }}>

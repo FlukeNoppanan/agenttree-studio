@@ -30,6 +30,22 @@ describe("Account management and API Access UI", () => {
     await waitFor(() => expect(create).toHaveBeenCalledWith(expect.objectContaining({ username: "newmember", permissions: ["use_trees"], allowed_tree_ids: [tree.id] })))
   })
 
+  it("allows Tree grants for management without granting execution", async () => {
+    vi.spyOn(api, "listUsers").mockResolvedValue([])
+    vi.spyOn(api, "listTrees").mockResolvedValue([tree])
+    const create = vi.spyOn(api, "createUser").mockResolvedValue({ ...existing, username: "manager" })
+    render(<MemoryRouter><UsersPage /></MemoryRouter>)
+    await screen.findByText("Coding Assistant")
+    fireEvent.change(screen.getByLabelText("Username"), { target: { value: "manager" } })
+    fireEvent.change(screen.getByLabelText("Password"), { target: { value: "temporary-strong-password" } })
+    fireEvent.change(screen.getByLabelText("Confirm Password"), { target: { value: "temporary-strong-password" } })
+    fireEvent.click(screen.getByLabelText("Trees & Agents"))
+    fireEvent.click(screen.getByLabelText("Coding Assistant"))
+    fireEvent.click(screen.getByRole("button", { name: "Save" }))
+    await waitFor(() => expect(create).toHaveBeenCalledWith(expect.objectContaining({ permissions: ["manage_trees_agents"], allowed_tree_ids: [tree.id] })))
+    expect(screen.getByLabelText("Can use Trees")).not.toBeChecked()
+  })
+
   it("edits permissions and Tree grant, while Admin has full access", async () => {
     vi.spyOn(api, "listUsers").mockResolvedValue([existing])
     vi.spyOn(api, "listTrees").mockResolvedValue([tree])
@@ -57,7 +73,7 @@ describe("Account management and API Access UI", () => {
     fireEvent.click(screen.getByLabelText("Select All Visible"))
     expect(screen.getByText("Selected: 1 Trees")).toBeInTheDocument()
     fireEvent.click(screen.getByLabelText("All Trees"))
-    expect(screen.getByText("All current and future Trees")).toBeInTheDocument()
+    expect(screen.getByText("All current and future Trees, within the account’s action permissions")).toBeInTheDocument()
     fireEvent.change(screen.getByLabelText("Username"), { target: { value: "newmember" } })
     fireEvent.change(screen.getByLabelText("Password"), { target: { value: "temporary-strong-password" } })
     fireEvent.change(screen.getByLabelText("Confirm Password"), { target: { value: "temporary-strong-password" } })

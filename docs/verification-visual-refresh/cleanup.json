@@ -1,0 +1,27 @@
+{
+  "disposable_project_removed": "ats-visual-refresh",
+  "disposable_volumes_removed": true,
+  "private_fixture_and_browser_profile_removed": true,
+  "original_services": {
+    "backend": {
+      "health": "healthy",
+      "container_id": "bf3ce57d593c"
+    },
+    "frontend": {
+      "health": "healthy",
+      "container_id": "5e579e9ad6ff"
+    },
+    "postgres": {
+      "health": "healthy",
+      "container_id": "b086839e646f"
+    }
+  },
+  "migration": "0012_webhook_integrations (head)",
+  "health_endpoints": {
+    "8000": "ok",
+    "5173": "ok"
+  },
+  "final_log_lines_inspected": 191,
+  "credential_leaks": 0,
+  "tracebacks": 0
+}

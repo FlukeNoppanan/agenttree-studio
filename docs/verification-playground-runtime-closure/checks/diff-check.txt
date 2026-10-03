@@ -1,0 +1,60 @@
+Working tree: exit 0
+
+Staged changes (includes prior evidence): exit 2
+docs/verification-integration/v2-stream.txt:62: new blank line at EOF.
+docs/verification-playground/checks/disposable-cleanup.log:1: trailing whitespace.
++ Container ats-playground-frontend-1 Stopping
+docs/verification-playground/checks/disposable-cleanup.log:2: trailing whitespace.
++ Container ats-playground-frontend-1 Stopped
+docs/verification-playground/checks/disposable-cleanup.log:3: trailing whitespace.
++ Container ats-playground-frontend-1 Removing
+docs/verification-playground/checks/disposable-cleanup.log:4: trailing whitespace.
++ Container ats-playground-frontend-1 Removed
+docs/verification-playground/checks/disposable-cleanup.log:5: trailing whitespace.
++ Container ats-playground-backend-1 Stopping
+docs/verification-playground/checks/disposable-cleanup.log:6: trailing whitespace.
++ Container ats-playground-backend-1 Stopped
+docs/verification-playground/checks/disposable-cleanup.log:7: trailing whitespace.
++ Container ats-playground-backend-1 Removing
+docs/verification-playground/checks/disposable-cleanup.log:8: trailing whitespace.
++ Container ats-playground-backend-1 Removed
+docs/verification-playground/checks/disposable-cleanup.log:9: trailing whitespace.
++ Container ats-playground-postgres-1 Stopping
+docs/verification-playground/checks/disposable-cleanup.log:10: trailing whitespace.
++ Container ats-playground-postgres-1 Stopped
+docs/verification-playground/checks/disposable-cleanup.log:11: trailing whitespace.
++ Container ats-playground-postgres-1 Removing
+docs/verification-playground/checks/disposable-cleanup.log:12: trailing whitespace.
++ Container ats-playground-postgres-1 Removed
+docs/verification-playground/checks/disposable-cleanup.log:13: trailing whitespace.
++ Volume ats-playground_postgres_data Removing
+docs/verification-playground/checks/disposable-cleanup.log:14: trailing whitespace.
++ Volume ats-playground_studio_key Removing
+docs/verification-playground/checks/disposable-cleanup.log:15: trailing whitespace.
++ Network ats-playground_default Removing
+docs/verification-playground/checks/disposable-cleanup.log:16: trailing whitespace.
++ Volume ats-playground_postgres_data Removed
+docs/verification-playground/checks/disposable-cleanup.log:17: trailing whitespace.
++ Volume ats-playground_studio_key Removed
+docs/verification-playground/checks/disposable-cleanup.log:18: trailing whitespace.
++ Network ats-playground_default Removed
+docs/verification-playground/checks/frontend-final.log:17: new blank line at EOF.
+docs/verification-playground/checks/isolated-frontend-docker.log:1: trailing whitespace.
++frontend-1  |
+docs/verification-playground/checks/isolated-frontend-docker.log:4: trailing whitespace.
++frontend-1  |
+docs/verification-playground/checks/isolated-frontend-docker.log:5: trailing whitespace.
++frontend-1  |
+docs/verification-playground/checks/isolated-frontend-docker.log:7: trailing whitespace.
++frontend-1  |
+docs/verification-playground/checks/original-frontend-docker.log:1: trailing whitespace.
++frontend-1  |
+docs/verification-playground/checks/original-frontend-docker.log:4: trailing whitespace.
++frontend-1  |
+docs/verification-playground/checks/original-frontend-docker.log:5: trailing whitespace.
++frontend-1  |
+docs/verification-playground/checks/original-frontend-docker.log:7: trailing whitespace.
++frontend-1  |
+docs/verification-visual-builder/frontend-tests.log:17: new blank line at EOF.
+
+Core: exit 0

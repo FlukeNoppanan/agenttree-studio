@@ -1,0 +1,494 @@
+[
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/tool-catalog",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/tools",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/tool-catalog",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/tools",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/template-setup",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/template-setup",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/template-setup/apply-default",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/validate?mark_ready=true",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/tools",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/runs",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/tools",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/runs",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers/f033d187-c136-4531-b014-bf696fdef740/models?include_unusable=true",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers/f033d187-c136-4531-b014-bf696fdef740/models?include_unusable=true",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/summary",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/summary",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/live",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/live",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs",
+    "status": 202
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5/events?after=0&limit=500",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5/stream?after=7",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5/result",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5/result",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5/events?after=0&limit=500",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/4cc7d33f-9967-40ca-8a24-1dcab8cb80c5/result",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/runs",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/tools",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/runs",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/tools",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers/f033d187-c136-4531-b014-bf696fdef740/models?include_unusable=true",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/integration-config",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers/f033d187-c136-4531-b014-bf696fdef740/models?include_unusable=true",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/secrets",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/integration-config",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/destinations",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/webhooks",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/secrets",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/destinations",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/webhooks",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/tools",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/runs",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/tools",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers/f033d187-c136-4531-b014-bf696fdef740/models?include_unusable=true",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/integration-config",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/runs",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/secrets",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/destinations",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/integration-config",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/secrets",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers/f033d187-c136-4531-b014-bf696fdef740/models?include_unusable=true",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/webhooks",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/destinations",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769/webhooks",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/tools",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/528757da-c37b-4bdb-a7ff-67a47b1c8769",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/tools",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers/f033d187-c136-4531-b014-bf696fdef740/models",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers/f033d187-c136-4531-b014-bf696fdef740/models",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/capabilities",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/summary",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/summary",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/logout",
+    "status": 204
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/login",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/summary",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/summary",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/dashboard/me",
+    "status": 200
+  }
+]

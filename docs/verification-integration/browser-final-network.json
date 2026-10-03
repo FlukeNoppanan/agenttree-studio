@@ -1,0 +1,166 @@
+[
+  {
+    "url": "http://127.0.0.1:15173/api/auth/tokens/972356c4-5bc2-447e-bfd0-82fbb9a81062",
+    "status": 204
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/events?after=0&limit=500",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/result",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/events?after=0&limit=500",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/result",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/events?after=0&limit=500",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/result",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/events?after=0&limit=500",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/result",
+    "status": 200
+  }
+]

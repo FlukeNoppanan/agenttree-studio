@@ -2,6 +2,11 @@
 
 Public API v1 lets an independent CLI, service, or browser application discover and synchronously invoke Trees using only a Base URL and a personal API key. It does not provide Studio administration, Provider/Secret access, streaming, files, or a Coding Playground.
 
+Tree → Connect presents V1 as **Simple synchronous API**, alongside recommended
+[Async API V2](public-api-v2.md). Both reuse **Account → API Keys**. The
+[integration guide](external-integrations.md) distinguishes application calls,
+incoming Webhook Triggers, and outgoing result destinations.
+
 ## Base URL and authentication
 
 The Base URL is the backend origin, for example `http://localhost:8000` or your LAN backend address. Generate a personal key in **Account → API Keys**. The raw `ats_…` key is displayed once; only its SHA-256 digest is stored. Keep it outside source control and send it only over trusted HTTPS networks when deployed beyond local development.

@@ -5,18 +5,19 @@ import type { WizardAgent } from "@/components/tree/types"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import type { AgentType, ProviderConnection, ToolConnection } from "@/lib/api"
+import type { AgentType, ProviderConnection, ProviderModel, ToolConnection } from "@/lib/api"
 
 interface AgentFormProps {
   value: WizardAgent
   onChange: (value: WizardAgent) => void
   providers: ProviderConnection[]
+  modelCatalogs?: Record<string, ProviderModel[]>
   agentType: AgentType
   reviewLabel?: string
   tools?: ToolConnection[]
 }
 
-export function AgentForm({ value, onChange, providers, agentType, reviewLabel }: AgentFormProps) {
+export function AgentForm({ value, onChange, providers, modelCatalogs, agentType, reviewLabel }: AgentFormProps) {
   const { t } = useTranslation()
   const update = <K extends keyof WizardAgent>(key: K, next: WizardAgent[K]) =>
     onChange({ ...value, [key]: next })
@@ -27,6 +28,7 @@ export function AgentForm({ value, onChange, providers, agentType, reviewLabel }
       <div className="space-y-2"><Label htmlFor={`description-${value.id}`}>{t("agents.description")}</Label><Textarea id={`description-${value.id}`} value={value.description} onChange={(event) => update("description", event.target.value)} placeholder={t("designV3.nameHelp")} /></div>
       <ProviderModelSelector
         providers={providers}
+        modelCatalogs={modelCatalogs}
         providerId={value.provider_connection_id}
         modelId={value.model_id}
         onProviderChange={(providerId) => onChange({

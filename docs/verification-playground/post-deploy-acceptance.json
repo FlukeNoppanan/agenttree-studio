@@ -1,0 +1,222 @@
+{
+  "run_id": "32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c",
+  "status": "completed",
+  "trace_count": 24,
+  "root_running_observed": true,
+  "structured_run": "adec6c0d-a573-45fd-ad30-a3562a60ed6a",
+  "console": [],
+  "network": [
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/adec6c0d-a573-45fd-ad30-a3562a60ed6a",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/tools",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/adec6c0d-a573-45fd-ad30-a3562a60ed6a",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/providers",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/adec6c0d-a573-45fd-ad30-a3562a60ed6a/events?after=0&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/adec6c0d-a573-45fd-ad30-a3562a60ed6a/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/adec6c0d-a573-45fd-ad30-a3562a60ed6a",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/adec6c0d-a573-45fd-ad30-a3562a60ed6a/result",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/version?version_id=9c29495b-efc1-4507-8481-5dd0436af06f",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/validate?mark_ready=false",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs",
+      "status": 202
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c/events?after=0&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c/stream?after=0",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c/events?after=7&limit=500",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/trees/1a6e2277-ed2e-439f-b4b6-c96a2f0f7368/runs",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c/result",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/studio/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c/artifacts",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:15183/api/runs/32977c5b-e3a6-4c7c-9c66-ffd857cb5c0c",
+      "status": 200
+    }
+  ]
+}

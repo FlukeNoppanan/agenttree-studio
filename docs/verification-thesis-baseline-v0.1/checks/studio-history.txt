@@ -1,0 +1,10 @@
+4086b80 (HEAD -> main, origin/main) feat: enhance template setup page with visual tree representation and agent management
+0cfee49 feat: complete template setup and tool resolution workflow
+5e887eb feat: Enhance provider connection workflow and model discovery
+bcab9ba Avoid duplicate Railway startup migration
+23d8435 feat: Update AgentTree Core to version 0.2.2 and adjust related tests
+b128b99 feat: Implement live run streaming and event handling
+6fa4b91 Add comprehensive tests for public API, resource dependencies, and persistence
+e9fc083 fix: integrate frontend into AgentTree Studio repository
+e6ccdc3 feat: add HTTP API tool for credential-safe synchronous requests
+df2994a 2 commit

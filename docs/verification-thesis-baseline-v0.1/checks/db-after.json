@@ -1,0 +1,50 @@
+{
+  "users": {
+    "count": 3,
+    "id_set_sha256": "ed2942814d9fadd5fd4cb6d26e8b89f70ae6c977aafa59d5f46f80fa0a8405e3"
+  },
+  "trees": {
+    "count": 2,
+    "id_set_sha256": "c68f299b422096f21050c8c1ba3feb48522e707500d29203a5c18ddb7b32115b"
+  },
+  "provider_connections": {
+    "count": 4,
+    "id_set_sha256": "f073476a5dfb260d17370eadc1a420b1910a77f664639b40731f62e38141bb80"
+  },
+  "tool_connections": {
+    "count": 4,
+    "id_set_sha256": "61f5521862648fcfc9469b041a27e844afa5b816c6dd52edbd3844fa1027e7f0"
+  },
+  "secrets": {
+    "count": 3,
+    "id_set_sha256": "4bb0c8c72a431ca4d1bc84b57eb62d70193a1cf4d7827b642933b87b1b64591f"
+  },
+  "api_tokens": {
+    "count": 7,
+    "id_set_sha256": "26791ff99e750a9677211fea436e5c91bcc5b094f1fc8d5f1176d4ea0bd99b69"
+  },
+  "runs": {
+    "count": 23,
+    "id_set_sha256": "e3d7c0a32125138377cbe2b7b031ab22053de4a6899dd7ae084feaebac8d4740"
+  },
+  "tree_versions": {
+    "count": 10,
+    "id_set_sha256": "e2769cc1788887d9b30bdf3bf7bfb9bda676c24a9adce854479af9becd13ddab"
+  },
+  "trace_events": {
+    "count": 1906,
+    "id_set_sha256": "7282950b604733287a1e0d1658d1966abc0ca7d7635e6ac58d543cd5e4241cc1"
+  },
+  "run_artifacts": {
+    "count": 15,
+    "id_set_sha256": "75a5cd11a7d50b59ac3a7defb922c2d014c3ffe5934cd9a8cbe5bdb73bc53869"
+  },
+  "result_destinations": {
+    "count": 4,
+    "id_set_sha256": "dd27d3730c661607a05ae76147760f36a04af07eb2a092bfd6e163045feaa5f2"
+  },
+  "webhook_integrations": {
+    "count": 0,
+    "id_set_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  }
+}

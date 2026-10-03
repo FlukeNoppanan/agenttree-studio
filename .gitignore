@@ -17,6 +17,9 @@ frontend/node_modules/
 frontend/dist/
 docs/verification-v3/
 
+# Generated after the baseline commit; annotated tags retain revision identity.
+docs/verification-thesis-baseline-v0.1/freeze-receipt.json
+
 # Database
 *.db
 *.sqlite

@@ -89,6 +89,6 @@ describe("dependency-aware deletion dialog", () => {
     await i18n.changeLanguage("th")
     show(base, vi.fn().mockResolvedValue(inspection([dependency()])))
     expect(await screen.findByText("ลบ Provider ไม่ได้")).toBeInTheDocument()
-    expect(screen.getByText(/โปรดเปลี่ยน Provider และโมเดลของ Agent ก่อนลบ/)).toBeInTheDocument()
+    expect(screen.getByText(/โปรดเปลี่ยน Provider และ Model ของ Agent ก่อนลบ/)).toBeInTheDocument()
   })
 })

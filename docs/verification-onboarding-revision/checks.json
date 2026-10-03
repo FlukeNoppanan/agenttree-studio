@@ -1,0 +1,19 @@
+{
+  "backend_tests": 224,
+  "frontend_tests": 150,
+  "frontend_test_files": 29,
+  "typescript": "passed",
+  "production_build": "passed",
+  "build_advisory": "Existing main bundle exceeds 500 kB",
+  "diff_check": "passed",
+  "core_git_status": "clean",
+  "network_statuses": {
+    "200": 402,
+    "204": 3,
+    "401": 8,
+    "202": 1
+  },
+  "unexpected_http_errors": 0,
+  "expected_401": "GET /api/auth/me while signed out",
+  "database_changes_in_revision": false
+}

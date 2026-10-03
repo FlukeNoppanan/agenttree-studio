@@ -1,0 +1,9 @@
+frontend-1  |
+frontend-1  | > agenttree-studio-frontend@0.1.0 dev
+frontend-1  | > vite --host 0.0.0.0
+frontend-1  |
+frontend-1  |
+frontend-1  |   VITE v7.3.6  ready in 294 ms
+frontend-1  |
+frontend-1  |   ➜  Local:   http://localhost:5173/
+frontend-1  |   ➜  Network: http://172.19.0.4:5173/

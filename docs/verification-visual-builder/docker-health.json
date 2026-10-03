@@ -1,0 +1,166 @@
+{
+  "agenttree-studio": {
+    "containers": [
+      {
+        "service": "backend",
+        "state": "running",
+        "health": "healthy"
+      },
+      {
+        "service": "frontend",
+        "state": "running",
+        "health": "healthy"
+      },
+      {
+        "service": "postgres",
+        "state": "running",
+        "health": "healthy"
+      }
+    ],
+    "migration_current": "INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.\nINFO  [alembic.runtime.migration] Will assume transactional DDL.\n0012_webhook_integrations (head)",
+    "migration_heads": "0012_webhook_integrations (head)",
+    "system_health": {
+      "status": "ok",
+      "studio_api": {
+        "available": true,
+        "version": "0.1.0",
+        "detail": null
+      },
+      "agenttree": {
+        "available": true,
+        "version": "0.2.2",
+        "error": null
+      },
+      "database": {
+        "available": true,
+        "version": null,
+        "detail": "postgresql"
+      },
+      "migrations": {
+        "current": "0012_webhook_integrations",
+        "head": "0012_webhook_integrations",
+        "up_to_date": true
+      },
+      "backend_version": "0.1.0",
+      "frontend_version": "0.1.0",
+      "runtime": {
+        "python_version": "3.12.14",
+        "platform": "Linux"
+      }
+    },
+    "proxy_health": {
+      "status": "ok",
+      "studio_api": {
+        "available": true,
+        "version": "0.1.0",
+        "detail": null
+      },
+      "agenttree": {
+        "available": true,
+        "version": "0.2.2",
+        "error": null
+      },
+      "database": {
+        "available": true,
+        "version": null,
+        "detail": "postgresql"
+      },
+      "migrations": {
+        "current": "0012_webhook_integrations",
+        "head": "0012_webhook_integrations",
+        "up_to_date": true
+      },
+      "backend_version": "0.1.0",
+      "frontend_version": "0.1.0",
+      "runtime": {
+        "python_version": "3.12.14",
+        "platform": "Linux"
+      }
+    },
+    "logs_lines_reviewed": 412,
+    "unexplained_server_exceptions": [],
+    "private_fixture_secret_scan": "no matches"
+  },
+  "ats-visual-builder": {
+    "containers": [
+      {
+        "service": "backend",
+        "state": "running",
+        "health": "healthy"
+      },
+      {
+        "service": "frontend",
+        "state": "running",
+        "health": "healthy"
+      },
+      {
+        "service": "postgres",
+        "state": "running",
+        "health": "healthy"
+      }
+    ],
+    "migration_current": "INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.\nINFO  [alembic.runtime.migration] Will assume transactional DDL.\n0012_webhook_integrations (head)",
+    "migration_heads": "0012_webhook_integrations (head)",
+    "system_health": {
+      "status": "ok",
+      "studio_api": {
+        "available": true,
+        "version": "0.1.0",
+        "detail": null
+      },
+      "agenttree": {
+        "available": true,
+        "version": "0.2.2",
+        "error": null
+      },
+      "database": {
+        "available": true,
+        "version": null,
+        "detail": "postgresql"
+      },
+      "migrations": {
+        "current": "0012_webhook_integrations",
+        "head": "0012_webhook_integrations",
+        "up_to_date": true
+      },
+      "backend_version": "0.1.0",
+      "frontend_version": "0.1.0",
+      "runtime": {
+        "python_version": "3.12.14",
+        "platform": "Linux"
+      }
+    },
+    "proxy_health": {
+      "status": "ok",
+      "studio_api": {
+        "available": true,
+        "version": "0.1.0",
+        "detail": null
+      },
+      "agenttree": {
+        "available": true,
+        "version": "0.2.2",
+        "error": null
+      },
+      "database": {
+        "available": true,
+        "version": null,
+        "detail": "postgresql"
+      },
+      "migrations": {
+        "current": "0012_webhook_integrations",
+        "head": "0012_webhook_integrations",
+        "up_to_date": true
+      },
+      "backend_version": "0.1.0",
+      "frontend_version": "0.1.0",
+      "runtime": {
+        "python_version": "3.12.14",
+        "platform": "Linux"
+      }
+    },
+    "logs_lines_reviewed": 1148,
+    "unexplained_server_exceptions": [],
+    "private_fixture_secret_scan": "no matches"
+  }
+}

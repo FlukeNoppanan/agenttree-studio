@@ -1,0 +1,549 @@
+{
+  "tree": {
+    "id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+    "name": "General Analysis",
+    "status": "ready",
+    "version_id": "1ee77b8a-c1fc-475f-84bb-72988d03f43a",
+    "version_number": 7,
+    "backend_valid": true,
+    "issues": []
+  },
+  "runs": [
+    {
+      "number": 1,
+      "run_id": "fb51e905-4c06-4944-86e9-ced099cf9100",
+      "core_execution_id": "fb51e905-4c06-4944-86e9-ced099cf9100",
+      "created_at": "2026-10-02T14:36:02.210608+00:00",
+      "started_at": "2026-10-02T14:36:02.208335+00:00",
+      "finished_at": "2026-10-02T14:36:07.238021+00:00",
+      "status": "failed",
+      "core_final_status": null,
+      "duration_ms": 4990,
+      "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+      "tree_version_id": "1ee77b8a-c1fc-475f-84bb-72988d03f43a",
+      "version_number": 7,
+      "invocation_source": "studio_live",
+      "submitted_by_user_id": "c15512b2-eb69-4039-84f2-99a9801725b8",
+      "input_sha256": "a978c1f357e533d467f3d427e27b3386df9b8f44957c6599dac6ca671675abe0",
+      "error_code": "PROVIDER_RATE_LIMIT",
+      "safe_error_message": "Provider rate limit exceeded",
+      "final_result_available": false,
+      "artifact_count": 0,
+      "durable_event_count": 38,
+      "all_trace_row_count": 38,
+      "sequences_contiguous": true,
+      "terminal_event": "execution.failed",
+      "validation_failures": 2,
+      "repair_started": 2,
+      "repair_succeeded": 1,
+      "repair_failed": 1,
+      "provider_generate_operations": 5,
+      "manager_review_attempts": 0,
+      "activity_path": [
+        {
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "name": "Analysis Lead",
+          "role": "root"
+        },
+        {
+          "agent_id": "405fa683-c65d-433b-bfb9-3a191f4cc1c9",
+          "name": "Research Manager",
+          "role": "manager"
+        }
+      ],
+      "structured_events": [
+        {
+          "sequence": 6,
+          "type": "structured_decision.decision_attempt",
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "agent_name": "Analysis Lead",
+          "metadata": {
+            "strategy": "root_planning",
+            "decision_attempt": 1,
+            "collaboration_turn": 0,
+            "is_repair": false
+          }
+        },
+        {
+          "sequence": 11,
+          "type": "structured_decision.decision_attempt",
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "agent_name": "Analysis Lead",
+          "metadata": {
+            "strategy": "triage",
+            "decision_attempt": 1,
+            "collaboration_turn": 0,
+            "is_repair": false
+          }
+        },
+        {
+          "sequence": 15,
+          "type": "structured_decision.validation_failed",
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "agent_name": "Analysis Lead",
+          "metadata": {
+            "strategy": "triage",
+            "failure_class": "schema_invalid",
+            "decision_attempt": 1,
+            "collaboration_turn": 0
+          }
+        },
+        {
+          "sequence": 16,
+          "type": "structured_decision.repair.started",
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "agent_name": "Analysis Lead",
+          "metadata": {
+            "strategy": "triage",
+            "failure_class": "schema_invalid",
+            "repair_attempt": 1,
+            "decision_attempt": 2
+          }
+        },
+        {
+          "sequence": 17,
+          "type": "structured_decision.decision_attempt",
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "agent_name": "Analysis Lead",
+          "metadata": {
+            "strategy": "triage",
+            "decision_attempt": 2,
+            "collaboration_turn": 0,
+            "is_repair": true
+          }
+        },
+        {
+          "sequence": 21,
+          "type": "structured_decision.repair.succeeded",
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "agent_name": "Analysis Lead",
+          "metadata": {
+            "strategy": "triage",
+            "failure_class": "schema_invalid",
+            "repair_attempt": 1,
+            "decision_attempt": 2
+          }
+        },
+        {
+          "sequence": 26,
+          "type": "structured_decision.decision_attempt",
+          "agent_id": "405fa683-c65d-433b-bfb9-3a191f4cc1c9",
+          "agent_name": "Research Manager",
+          "metadata": {
+            "strategy": "decomposition",
+            "decision_attempt": 1,
+            "collaboration_turn": 0,
+            "is_repair": false
+          }
+        },
+        {
+          "sequence": 30,
+          "type": "structured_decision.validation_failed",
+          "agent_id": "405fa683-c65d-433b-bfb9-3a191f4cc1c9",
+          "agent_name": "Research Manager",
+          "metadata": {
+            "strategy": "decomposition",
+            "failure_class": "malformed_syntax",
+            "decision_attempt": 1,
+            "collaboration_turn": 0
+          }
+        },
+        {
+          "sequence": 31,
+          "type": "structured_decision.repair.started",
+          "agent_id": "405fa683-c65d-433b-bfb9-3a191f4cc1c9",
+          "agent_name": "Research Manager",
+          "metadata": {
+            "strategy": "decomposition",
+            "failure_class": "malformed_syntax",
+            "repair_attempt": 1,
+            "decision_attempt": 2
+          }
+        },
+        {
+          "sequence": 32,
+          "type": "structured_decision.decision_attempt",
+          "agent_id": "405fa683-c65d-433b-bfb9-3a191f4cc1c9",
+          "agent_name": "Research Manager",
+          "metadata": {
+            "strategy": "decomposition",
+            "decision_attempt": 2,
+            "collaboration_turn": 0,
+            "is_repair": true
+          }
+        },
+        {
+          "sequence": 36,
+          "type": "structured_decision.repair.failed",
+          "agent_id": "405fa683-c65d-433b-bfb9-3a191f4cc1c9",
+          "agent_name": "Research Manager",
+          "metadata": {
+            "strategy": "decomposition",
+            "failure_class": "provider_failure",
+            "provider_error_type": "ProviderRateLimitError",
+            "repair_attempt": 1,
+            "decision_attempt": 2
+          }
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "run_id": "2ff79c80-4621-4c52-a642-b7609d6134dd",
+      "core_execution_id": "2ff79c80-4621-4c52-a642-b7609d6134dd",
+      "created_at": "2026-10-02T14:37:33.832975+00:00",
+      "started_at": "2026-10-02T14:37:33.832318+00:00",
+      "finished_at": "2026-10-02T14:37:36.305248+00:00",
+      "status": "failed",
+      "core_final_status": null,
+      "duration_ms": 2439,
+      "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+      "tree_version_id": "1ee77b8a-c1fc-475f-84bb-72988d03f43a",
+      "version_number": 7,
+      "invocation_source": "studio_live",
+      "submitted_by_user_id": "c15512b2-eb69-4039-84f2-99a9801725b8",
+      "input_sha256": "a978c1f357e533d467f3d427e27b3386df9b8f44957c6599dac6ca671675abe0",
+      "error_code": "PROVIDER_RATE_LIMIT",
+      "safe_error_message": "Provider rate limit exceeded",
+      "final_result_available": false,
+      "artifact_count": 0,
+      "durable_event_count": 31,
+      "all_trace_row_count": 31,
+      "sequences_contiguous": true,
+      "terminal_event": "execution.failed",
+      "validation_failures": 1,
+      "repair_started": 1,
+      "repair_succeeded": 0,
+      "repair_failed": 1,
+      "provider_generate_operations": 4,
+      "manager_review_attempts": 0,
+      "activity_path": [
+        {
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "name": "Analysis Lead",
+          "role": "root"
+        },
+        {
+          "agent_id": "405fa683-c65d-433b-bfb9-3a191f4cc1c9",
+          "name": "Research Manager",
+          "role": "manager"
+        }
+      ],
+      "structured_events": [
+        {
+          "sequence": 6,
+          "type": "structured_decision.decision_attempt",
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "agent_name": "Analysis Lead",
+          "metadata": {
+            "strategy": "root_planning",
+            "decision_attempt": 1,
+            "collaboration_turn": 0,
+            "is_repair": false
+          }
+        },
+        {
+          "sequence": 11,
+          "type": "structured_decision.decision_attempt",
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "agent_name": "Analysis Lead",
+          "metadata": {
+            "strategy": "triage",
+            "decision_attempt": 1,
+            "collaboration_turn": 0,
+            "is_repair": false
+          }
+        },
+        {
+          "sequence": 19,
+          "type": "structured_decision.decision_attempt",
+          "agent_id": "405fa683-c65d-433b-bfb9-3a191f4cc1c9",
+          "agent_name": "Research Manager",
+          "metadata": {
+            "strategy": "decomposition",
+            "decision_attempt": 1,
+            "collaboration_turn": 0,
+            "is_repair": false
+          }
+        },
+        {
+          "sequence": 23,
+          "type": "structured_decision.validation_failed",
+          "agent_id": "405fa683-c65d-433b-bfb9-3a191f4cc1c9",
+          "agent_name": "Research Manager",
+          "metadata": {
+            "strategy": "decomposition",
+            "failure_class": "malformed_syntax",
+            "decision_attempt": 1,
+            "collaboration_turn": 0
+          }
+        },
+        {
+          "sequence": 24,
+          "type": "structured_decision.repair.started",
+          "agent_id": "405fa683-c65d-433b-bfb9-3a191f4cc1c9",
+          "agent_name": "Research Manager",
+          "metadata": {
+            "strategy": "decomposition",
+            "failure_class": "malformed_syntax",
+            "repair_attempt": 1,
+            "decision_attempt": 2
+          }
+        },
+        {
+          "sequence": 25,
+          "type": "structured_decision.decision_attempt",
+          "agent_id": "405fa683-c65d-433b-bfb9-3a191f4cc1c9",
+          "agent_name": "Research Manager",
+          "metadata": {
+            "strategy": "decomposition",
+            "decision_attempt": 2,
+            "collaboration_turn": 0,
+            "is_repair": true
+          }
+        },
+        {
+          "sequence": 29,
+          "type": "structured_decision.repair.failed",
+          "agent_id": "405fa683-c65d-433b-bfb9-3a191f4cc1c9",
+          "agent_name": "Research Manager",
+          "metadata": {
+            "strategy": "decomposition",
+            "failure_class": "provider_failure",
+            "provider_error_type": "ProviderRateLimitError",
+            "repair_attempt": 1,
+            "decision_attempt": 2
+          }
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "run_id": "0797d450-8f65-4c52-a832-09f5a778f49c",
+      "core_execution_id": "0797d450-8f65-4c52-a832-09f5a778f49c",
+      "created_at": "2026-10-02T14:38:33.487133+00:00",
+      "started_at": "2026-10-02T14:38:33.486102+00:00",
+      "finished_at": "2026-10-02T14:38:36.352288+00:00",
+      "status": "failed",
+      "core_final_status": null,
+      "duration_ms": 2833,
+      "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+      "tree_version_id": "1ee77b8a-c1fc-475f-84bb-72988d03f43a",
+      "version_number": 7,
+      "invocation_source": "studio_live",
+      "submitted_by_user_id": "c15512b2-eb69-4039-84f2-99a9801725b8",
+      "input_sha256": "a978c1f357e533d467f3d427e27b3386df9b8f44957c6599dac6ca671675abe0",
+      "error_code": "PROVIDER_RATE_LIMIT",
+      "safe_error_message": "Provider rate limit exceeded",
+      "final_result_available": false,
+      "artifact_count": 0,
+      "durable_event_count": 18,
+      "all_trace_row_count": 18,
+      "sequences_contiguous": true,
+      "terminal_event": "execution.failed",
+      "validation_failures": 1,
+      "repair_started": 1,
+      "repair_succeeded": 0,
+      "repair_failed": 1,
+      "provider_generate_operations": 2,
+      "manager_review_attempts": 0,
+      "activity_path": [
+        {
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "name": "Analysis Lead",
+          "role": "root"
+        }
+      ],
+      "structured_events": [
+        {
+          "sequence": 6,
+          "type": "structured_decision.decision_attempt",
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "agent_name": "Analysis Lead",
+          "metadata": {
+            "strategy": "root_planning",
+            "decision_attempt": 1,
+            "collaboration_turn": 0,
+            "is_repair": false
+          }
+        },
+        {
+          "sequence": 10,
+          "type": "structured_decision.validation_failed",
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "agent_name": "Analysis Lead",
+          "metadata": {
+            "strategy": "root_planning",
+            "failure_class": "malformed_syntax",
+            "decision_attempt": 1,
+            "collaboration_turn": 0
+          }
+        },
+        {
+          "sequence": 11,
+          "type": "structured_decision.repair.started",
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "agent_name": "Analysis Lead",
+          "metadata": {
+            "strategy": "root_planning",
+            "failure_class": "malformed_syntax",
+            "repair_attempt": 1,
+            "decision_attempt": 2
+          }
+        },
+        {
+          "sequence": 12,
+          "type": "structured_decision.decision_attempt",
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "agent_name": "Analysis Lead",
+          "metadata": {
+            "strategy": "root_planning",
+            "decision_attempt": 2,
+            "collaboration_turn": 0,
+            "is_repair": true
+          }
+        },
+        {
+          "sequence": 16,
+          "type": "structured_decision.repair.failed",
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "agent_name": "Analysis Lead",
+          "metadata": {
+            "strategy": "root_planning",
+            "failure_class": "provider_failure",
+            "provider_error_type": "ProviderRateLimitError",
+            "repair_attempt": 1,
+            "decision_attempt": 2
+          }
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "run_id": "a5ba5cf7-c5c6-4942-8604-6de7bb6e0334",
+      "core_execution_id": "a5ba5cf7-c5c6-4942-8604-6de7bb6e0334",
+      "created_at": "2026-10-02T14:39:27.725640+00:00",
+      "started_at": "2026-10-02T14:39:27.724492+00:00",
+      "finished_at": "2026-10-02T14:39:28.058931+00:00",
+      "status": "failed",
+      "core_final_status": null,
+      "duration_ms": 312,
+      "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+      "tree_version_id": "1ee77b8a-c1fc-475f-84bb-72988d03f43a",
+      "version_number": 7,
+      "invocation_source": "studio_live",
+      "submitted_by_user_id": "c15512b2-eb69-4039-84f2-99a9801725b8",
+      "input_sha256": "a978c1f357e533d467f3d427e27b3386df9b8f44957c6599dac6ca671675abe0",
+      "error_code": "PROVIDER_RATE_LIMIT",
+      "safe_error_message": "Provider rate limit exceeded",
+      "final_result_available": false,
+      "artifact_count": 0,
+      "durable_event_count": 11,
+      "all_trace_row_count": 11,
+      "sequences_contiguous": true,
+      "terminal_event": "execution.failed",
+      "validation_failures": 0,
+      "repair_started": 0,
+      "repair_succeeded": 0,
+      "repair_failed": 0,
+      "provider_generate_operations": 1,
+      "manager_review_attempts": 0,
+      "activity_path": [
+        {
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "name": "Analysis Lead",
+          "role": "root"
+        }
+      ],
+      "structured_events": [
+        {
+          "sequence": 6,
+          "type": "structured_decision.decision_attempt",
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "agent_name": "Analysis Lead",
+          "metadata": {
+            "strategy": "root_planning",
+            "decision_attempt": 1,
+            "collaboration_turn": 0,
+            "is_repair": false
+          }
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "run_id": "b72772c9-07ae-4f7f-a1b0-642e2ff7bd11",
+      "core_execution_id": "b72772c9-07ae-4f7f-a1b0-642e2ff7bd11",
+      "created_at": "2026-10-02T14:40:02.172566+00:00",
+      "started_at": "2026-10-02T14:40:02.171631+00:00",
+      "finished_at": "2026-10-02T14:40:02.608371+00:00",
+      "status": "failed",
+      "core_final_status": null,
+      "duration_ms": 381,
+      "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+      "tree_version_id": "1ee77b8a-c1fc-475f-84bb-72988d03f43a",
+      "version_number": 7,
+      "invocation_source": "studio_live",
+      "submitted_by_user_id": "c15512b2-eb69-4039-84f2-99a9801725b8",
+      "input_sha256": "a978c1f357e533d467f3d427e27b3386df9b8f44957c6599dac6ca671675abe0",
+      "error_code": "PROVIDER_RATE_LIMIT",
+      "safe_error_message": "Provider rate limit exceeded",
+      "final_result_available": false,
+      "artifact_count": 0,
+      "durable_event_count": 11,
+      "all_trace_row_count": 11,
+      "sequences_contiguous": true,
+      "terminal_event": "execution.failed",
+      "validation_failures": 0,
+      "repair_started": 0,
+      "repair_succeeded": 0,
+      "repair_failed": 0,
+      "provider_generate_operations": 1,
+      "manager_review_attempts": 0,
+      "activity_path": [
+        {
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "name": "Analysis Lead",
+          "role": "root"
+        }
+      ],
+      "structured_events": [
+        {
+          "sequence": 6,
+          "type": "structured_decision.decision_attempt",
+          "agent_id": "2b7c25fb-87f8-4557-b2a7-fb414156bc72",
+          "agent_name": "Analysis Lead",
+          "metadata": {
+            "strategy": "root_planning",
+            "decision_attempt": 1,
+            "collaboration_turn": 0,
+            "is_repair": false
+          }
+        }
+      ]
+    }
+  ],
+  "final_counts": {
+    "users": 3,
+    "trees": 2,
+    "provider_connections": 3,
+    "secrets": 2,
+    "tool_connections": 4,
+    "runs": 16
+  },
+  "preserved_existing_run_ids": [
+    "37b811bf-fe69-4d6d-86ec-f146aabc8989",
+    "c835fbcf-6539-46cd-8410-ae10c7adafc0",
+    "be15f651-5995-4f57-b8da-dd96bd8b9d58",
+    "adb30f47-f57e-4885-9ae0-f6c351c71394",
+    "13860d72-7d7f-4917-ac41-5a260dffedc3",
+    "5cedd707-d6d7-412b-9240-540dddcf2506",
+    "58c05680-e346-4c3d-b776-25351a0324bc",
+    "ac48fc54-4ba0-4ffb-b58b-5fda415b259c",
+    "2c3cef82-fc98-4e9a-8c55-53d64e814e03",
+    "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+    "6dc233f5-4850-4515-995a-7f55f963ecc9"
+  ],
+  "sequential": true,
+  "identical_inputs": true
+}

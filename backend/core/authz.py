@@ -7,6 +7,7 @@ from fastapi import Request
 from fastapi.responses import JSONResponse
 
 from backend.db.session import SessionLocal
+from backend.models.run import Run
 from backend.core.config import settings
 from backend.core.public_api import rate_limited
 from backend.services.auth_service import AuthService, COOKIE_NAME
@@ -14,6 +15,8 @@ from backend.services.auth_service import AuthService, COOKIE_NAME
 
 def required_access(path: str, method: str) -> tuple[str, str | None] | None:
     """Return the sole authorization policy for every Studio API route."""
+    if path.startswith("/api/webhooks/") and method == "POST":
+        return ("webhook_ingress", None)
     if path == "/api/v1/health" and method == "GET":
         return None
     if path.startswith("/api/v1/") or path.startswith("/api/v2/"):
@@ -21,6 +24,8 @@ def required_access(path: str, method: str) -> tuple[str, str | None] | None:
     if path in {"/api/health", "/api/system-health", "/api/auth/login"}:
         return None
     if path in {"/api/auth/me", "/api/auth/account", "/api/auth/logout", "/api/auth/change-password"}:
+        return ("authenticated", None)
+    if path == "/api/auth/integration-config" and method == "GET":
         return ("authenticated", None)
     if path.startswith("/api/auth/tokens"):
         return ("use_trees", None)
@@ -53,10 +58,12 @@ def required_access(path: str, method: str) -> tuple[str, str | None] | None:
         pieces = path.split("/")
         tree_id = pieces[3]
         if len(pieces) == 5 and pieces[4] in {"runs", "live"} and method == "GET":
-            return ("view_executions", None)
+            return ("view_executions", tree_id)
         if len(pieces) == 5 and pieces[4] == "test-run" and method == "POST":
             return ("tree_use", tree_id)
-    if path == "/api/trees" or path.startswith("/api/trees/"):
+        if tree_id != "validate-draft":
+            return ("manage_trees_agents", tree_id)
+    if path == "/api/trees" or path == "/api/trees/validate-draft":
         return ("manage_trees_agents", None)
     return ("deny", None)
 
@@ -77,6 +84,22 @@ class AuthMiddleware:
             await self.app(scope, receive, send)
             return
         policy = required_access(path, request.method)
+        if policy == ("webhook_ingress", None):
+            request_id = f"req_{uuid4().hex}"
+            request.state.request_id = request_id
+
+            async def webhook_send(message):
+                if message["type"] == "http.response.start":
+                    message.setdefault("headers", []).append((b"x-request-id", request_id.encode()))
+                await send(message)
+
+            if rate_limited("webhook_peer", request.client.host if request.client else "unknown", limit=120):
+                await JSONResponse({"error": {"code": "rate_limited", "message": "Too many requests.", "request_id": request_id}},
+                                   status_code=429)(scope, receive, webhook_send)
+                return
+            # The ingress handler verifies its own credential; cookie sessions and ats_ keys do not authorize it.
+            await self.app(scope, receive, webhook_send)
+            return
         if path.startswith(("/api/v1/", "/api/v2/")):
             incoming_id = request.headers.get("x-request-id", "")
             request_id = incoming_id if re.fullmatch(r"[A-Za-z0-9._:-]{1,64}", incoming_id) else f"req_{uuid4().hex}"
@@ -169,11 +192,19 @@ class AuthMiddleware:
             if need == "deny":
                 await reject(403, "Access denied")
                 return
+            if path == "/api/trees/validate-draft" or path == "/api/runs":
+                tree_id = request.query_params.get("tree_id")
+            elif path.startswith("/api/runs/"):
+                run = database.get(Run, path.split("/")[3])
+                if run is not None:
+                    tree_id = run.tree_id
             if not user.is_admin:
                 permissions = {item.permission for item in user.permissions}
                 allowed = need == "authenticated" or need in permissions
                 if need == "tree_use":
                     allowed = service.can_use_tree(user, tree_id)
+                if tree_id and not service.can_access_tree(user, tree_id):
+                    allowed = False
                 if not allowed:
                     await reject(403, "Access denied")
                     return

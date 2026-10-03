@@ -1,0 +1,10 @@
+ M docs/artifacts-and-streaming.md
+ M src/agenttree/core/artifacts.py
+ M src/agenttree/providers/_adapter.py
+ M src/agenttree/providers/compatible.py
+ M src/agenttree/providers/exceptions.py
+ M src/agenttree/providers/gemini.py
+ M src/agenttree/providers/models.py
+ M src/agenttree/tools/runtime.py
+?? tests/test_artifact_argument_policy.py
+?? tests/test_provider_runtime_certification.py

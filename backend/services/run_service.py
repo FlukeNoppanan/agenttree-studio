@@ -442,8 +442,15 @@ class RunService:
         )
         for item in chain:
             for kind, code, message in provider_categories:
-                if isinstance(item, kind):
+                # Core background handles intentionally retain only a safe
+                # failure class name, never SDK payloads or credential text.
+                if isinstance(item, kind) or str(item) == kind.__name__:
                     return code, message
+        if any(str(item) == "FinalReviewFailed" for item in chain):
+            return "EXECUTION_ERROR", "Tree did not pass final review; inspect Execution Trace for failed Agent results"
+        if any(type(item).__name__ in {"DecisionOutputError", "DecisionParseError"}
+               or str(item) in {"DecisionOutputError", "DecisionParseError"} for item in chain):
+            return "EXECUTION_ERROR", "Provider returned an invalid structured decision; retry or verify the selected Model"
         fingerprint = " ".join(
             f"{type(item).__name__} {item}" for item in chain
         ).casefold()

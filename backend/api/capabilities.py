@@ -1,9 +1,10 @@
 """Studio capability catalog and AI suggestion endpoints."""
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, Request
 from sqlalchemy.orm import Session
 
 from backend.db.session import get_db
+from backend.api.auth import current_user
 from backend.schemas.capability import (
     CapabilityCatalogItem,
     CapabilitySuggestionRequest,
@@ -16,10 +17,11 @@ router = APIRouter(prefix="/capabilities", tags=["capabilities"])
 
 @router.get("", response_model=list[CapabilityCatalogItem])
 def list_capabilities(
+    request: Request,
     q: str | None = Query(default=None, max_length=100),
     database: Session = Depends(get_db),
 ) -> list[CapabilityCatalogItem]:
-    return CapabilityCatalogService(database).search(q)
+    return CapabilityCatalogService(database).search(q, current_user(request, database))
 
 
 @router.post("/suggest", response_model=CapabilitySuggestionResponse)

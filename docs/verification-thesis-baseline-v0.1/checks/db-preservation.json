@@ -1,0 +1,17 @@
+{
+  "all_12_counts_and_id_sets_unchanged": true,
+  "tables": [
+    "users",
+    "trees",
+    "provider_connections",
+    "tool_connections",
+    "secrets",
+    "api_tokens",
+    "runs",
+    "tree_versions",
+    "trace_events",
+    "run_artifacts",
+    "result_destinations",
+    "webhook_integrations"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "responses": 58,
+  "status_counts": {
+    "200": 58
+  },
+  "paths": [
+    "/api/auth/me",
+    "/api/providers",
+    "/api/runs",
+    "/api/runs/284078e8-bb6b-4ffe-a58b-b1a292155d69",
+    "/api/runs/af2a223e-ba38-451c-9b02-7fd6c0505d50",
+    "/api/secrets",
+    "/api/studio/runs/284078e8-bb6b-4ffe-a58b-b1a292155d69",
+    "/api/studio/runs/284078e8-bb6b-4ffe-a58b-b1a292155d69/artifacts",
+    "/api/studio/runs/284078e8-bb6b-4ffe-a58b-b1a292155d69/artifacts/17a06b37-a794-4f19-81c2-0cdd6cb7b376",
+    "/api/studio/runs/284078e8-bb6b-4ffe-a58b-b1a292155d69/events",
+    "/api/studio/runs/284078e8-bb6b-4ffe-a58b-b1a292155d69/result",
+    "/api/studio/runs/af2a223e-ba38-451c-9b02-7fd6c0505d50",
+    "/api/studio/runs/af2a223e-ba38-451c-9b02-7fd6c0505d50/artifacts",
+    "/api/studio/runs/af2a223e-ba38-451c-9b02-7fd6c0505d50/events",
+    "/api/studio/runs/af2a223e-ba38-451c-9b02-7fd6c0505d50/result",
+    "/api/system-health",
+    "/api/templates/builtin-general-analysis",
+    "/api/templates/builtin-general-analysis/draft",
+    "/api/templates/builtin-general-analysis/validate-draft",
+    "/api/tool-catalog",
+    "/api/tools",
+    "/api/trees",
+    "/api/trees/187a22f4-8a43-4565-9846-c0d3990b3305",
+    "/api/trees/4aa0304a-ba85-4867-a419-e3823b340c1b"
+  ],
+  "capture": "Temporary local HTTP first-line observer; headers and bodies not retained; container timestamps are UTC."
+}

@@ -25,7 +25,7 @@ describe("Tree Live View", () => {
   beforeEach(async () => { await i18n.changeLanguage("en"); vi.spyOn(api, "getTreeLive").mockResolvedValue(snapshot) })
 
   it("shows independent concurrent executions, filters and opens the selected Inspector", async () => {
-    render(<MemoryRouter initialEntries={["/trees/tree-1/live"]}><Routes><Route path="/trees/:treeId/live" element={<TreeLivePage />} /><Route path="/runs/:runId" element={<p>Inspector route</p>} /></Routes></MemoryRouter>)
+    render(<MemoryRouter initialEntries={["/trees/tree-1/live"]}><Routes><Route path="/trees/:treeId/live" element={<TreeLivePage />} /><Route path="/executions/:runId" element={<p>Inspector route</p>} /></Routes></MemoryRouter>)
     expect(await screen.findByText("Coding Assistant")).toBeInTheDocument()
     expect(screen.getAllByText("Runtime unavailable").length).toBeGreaterThan(0)
     expect(screen.getByText("Task run-a")).toBeInTheDocument()
@@ -45,12 +45,15 @@ describe("Tree Live View", () => {
     await i18n.changeLanguage("th")
     render(<MemoryRouter initialEntries={["/trees/tree-1/live"]}><Routes><Route path="/trees/:treeId/live" element={<TreeLivePage />} /></Routes></MemoryRouter>)
     expect((await screen.findAllByText("ยังไม่มีสถานะ Runtime")).length).toBeGreaterThan(0)
-    expect(screen.getByText("มุมมองสด")).toBeInTheDocument()
+    expect(screen.getByText("Live View")).toBeInTheDocument()
+    expect(screen.queryByText(/live\.(สำเร็จ|ล้มเหลว|Completed|Failed)/)).not.toBeInTheDocument()
+    expect(screen.getAllByText("สำเร็จ").length).toBeGreaterThan(0)
+    expect(screen.getAllByText("ล้มเหลว").length).toBeGreaterThan(0)
   })
 
   it("searches executions, reports an empty result, and opens persisted recent activity", async () => {
     vi.mocked(api.getTreeLive).mockResolvedValue({ ...snapshot, recent_activity: [event(1, "studio.tool_observation")] })
-    render(<MemoryRouter initialEntries={["/trees/tree-1/live"]}><Routes><Route path="/trees/:treeId/live" element={<TreeLivePage />} /><Route path="/runs/:runId" element={<p>Selected activity inspector</p>} /></Routes></MemoryRouter>)
+    render(<MemoryRouter initialEntries={["/trees/tree-1/live"]}><Routes><Route path="/trees/:treeId/live" element={<TreeLivePage />} /><Route path="/executions/:runId" element={<p>Selected activity inspector</p>} /></Routes></MemoryRouter>)
     await screen.findByText("Coding Assistant")
     const search = screen.getByRole("textbox", { name: "Search executions…" })
     fireEvent.change(search, { target: { value: "Task run-e" } })

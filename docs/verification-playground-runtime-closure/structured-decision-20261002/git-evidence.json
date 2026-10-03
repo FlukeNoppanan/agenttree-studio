@@ -1,0 +1,21 @@
+{
+  "studio": {
+    "head": "4086b80",
+    "branch": "main",
+    "status_counts": {
+      "??": 21,
+      "A ": 417,
+      "M ": 106
+    },
+    "working_tree_diff_check_exit": 0
+  },
+  "core": {
+    "head": "1f9649e",
+    "branch": "main",
+    "status_counts": {
+      " M": 15,
+      "??": 3
+    },
+    "working_tree_diff_check_exit": 0
+  }
+}

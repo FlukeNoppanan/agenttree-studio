@@ -6,6 +6,8 @@ import i18n from "@/i18n"
 import { api, type ProviderConnection, type ProviderModel } from "@/lib/api"
 import { ProvidersPage } from "@/pages/providers"
 
+vi.mock("@/auth", () => ({ useAuth: () => ({ can: () => true }) }))
+
 function provider(id: string, name: string, provider_type: ProviderConnection["provider_type"] = "gemini"): ProviderConnection {
   return { id, name, provider_type, secret_id: null, base_url: null, status: "connected",
     last_checked_at: null, last_error: null, models_count: 1, discovered_models_count: 3,
@@ -55,17 +57,17 @@ describe("Provider onboarding and model visibility", () => {
     expect(types).toEqual(["openai", "gemini", "groq", "openrouter", "cerebras", "openai_compatible", "ollama"])
   })
 
-  it("shows every discovered model and its verification state", async () => {
+  it("shows only usable models while retaining diagnostic data", async () => {
     render(<MemoryRouter><ProvidersPage /></MemoryRouter>)
     expect(await screen.findByText("Gemini Main")).toBeInTheDocument()
     expect(screen.queryByText("Ready Alpha")).not.toBeInTheDocument()
     expect(api.listModels).not.toHaveBeenCalled()
     fireEvent.click(within(row("gemini")).getByRole("button", { name: "View Models" }))
-    expect(await screen.findByText("Discovered models (3)")).toBeInTheDocument()
+    expect(await screen.findByText("Usable models (1)")).toBeInTheDocument()
     expect(screen.getByText("Ready Alpha")).toBeInTheDocument()
-    expect(screen.getByText("Unavailable Beta")).toBeInTheDocument()
-    expect(screen.getByText("Unavailable — No final response was returned")).toBeInTheDocument()
-    expect(screen.getByText("Transient Gamma")).toBeInTheDocument()
+    expect(screen.queryByText("Unavailable Beta")).not.toBeInTheDocument()
+    expect(screen.queryByText("Unavailable — No final response was returned")).not.toBeInTheDocument()
+    expect(screen.queryByText("Transient Gamma")).not.toBeInTheDocument()
     expect(within(row("gemini")).getByRole("button", { name: "Hide Models" })).toHaveAttribute("aria-expanded", "true")
     expect(within(row("openai")).getByRole("button", { name: "View Models" })).toHaveAttribute("aria-expanded", "false")
     fireEvent.click(within(row("gemini")).getByRole("button", { name: "Hide Models" }))
@@ -99,7 +101,7 @@ describe("Provider onboarding and model visibility", () => {
     render(<MemoryRouter><ProvidersPage /></MemoryRouter>)
     await screen.findByText("Gemini Main")
     fireEvent.click(within(row("gemini")).getByRole("button", { name: "Discover & Verify Models" }))
-    expect(await screen.findByText("Discovered models (4)")).toBeInTheDocument()
+    expect(await screen.findByText("Usable models (4)")).toBeInTheDocument()
     expect(await screen.findByText("Ready Alpha")).toBeInTheDocument()
     expect(screen.getByText("Ready Delta")).toBeInTheDocument()
     expect(screen.getByText("Unavailable Beta")).toBeInTheDocument()
@@ -157,7 +159,8 @@ describe("Provider onboarding and model visibility", () => {
     fireEvent.change(within(dialog).getByLabelText("Provider type"), { target: { value: "ollama" } })
     fireEvent.click(within(dialog).getByRole("button", { name: "Add provider" }))
 
-    expect(await screen.findByText("Verifying…")).toBeInTheDocument()
+    expect(await screen.findByText("Verifying qwen3:1.7b (1/1)…")).toBeInTheDocument()
+    expect(screen.queryByText("qwen3:1.7b", { exact: true })).not.toBeInTheDocument()
     expect(within(row("ollama")).getByText("Verifying qwen3:1.7b (1/1)…")).toBeInTheDocument()
     finishVerification({
       provider: { ...connected, models_count: 1 },
@@ -183,6 +186,7 @@ describe("Provider onboarding and model visibility", () => {
 
     expect(await screen.findByText(/Connection failed — Ollama connection test failed/)).toBeInTheDocument()
     expect(within(row("ollama")).getByText("Error")).toBeInTheDocument()
+    expect(within(row("ollama")).getByRole("button", { name: "Test Connection" })).toBeEnabled()
     expect(api.discoverModelCatalog).not.toHaveBeenCalled()
     expect(api.verifyProviderModel).not.toHaveBeenCalled()
   })
@@ -263,14 +267,53 @@ describe("Provider onboarding and model visibility", () => {
     expect(api.discoverModelCatalog).toHaveBeenCalledTimes(1)
   })
 
+  it("excludes non-generation and missing catalog entries even if previously qualified", async () => {
+    vi.mocked(api.listModels).mockResolvedValue([
+      ...allModels,
+      { ...model("Embedding", "qualified"), generation_candidate: false },
+      { ...model("Removed model", "qualified"), is_available: false },
+    ])
+    render(<MemoryRouter><ProvidersPage /></MemoryRouter>)
+    await screen.findByText("Gemini Main")
+    fireEvent.click(within(row("gemini")).getByRole("button", { name: "View Models" }))
+    await screen.findByText("Usable models (1)")
+    expect(screen.queryByText("Embedding")).not.toBeInTheDocument()
+    expect(screen.queryByText("Removed model")).not.toBeInTheDocument()
+  })
+
+  it("pauses on a provider rate limit without probing more models", async () => {
+    const candidates = [model("First", "unknown"), model("Second", "unknown")]
+    vi.mocked(api.discoverModelCatalog).mockResolvedValue(discovery(providers[0], candidates))
+    vi.mocked(api.verifyProviderModel).mockResolvedValue({ provider: providers[0], model: {
+      ...candidates[0], qualification_status: "transient_error", qualification_error_code: "provider_rate_limited",
+    } })
+    render(<MemoryRouter><ProvidersPage /></MemoryRouter>)
+    await screen.findByText("Gemini Main")
+    fireEvent.click(within(row("gemini")).getByRole("button", { name: "Discover & Verify Models" }))
+    await screen.findByText("Verification paused")
+    expect(api.verifyProviderModel).toHaveBeenCalledTimes(1)
+    expect(screen.queryByText("First", { exact: true })).not.toBeInTheDocument()
+    expect(screen.queryByText("Second", { exact: true })).not.toBeInTheDocument()
+  })
+
+  it("does not misclassify a verification transport error as permanent incompatibility", async () => {
+    vi.mocked(api.verifyProviderModel).mockRejectedValue(new Error("Connection interrupted"))
+    render(<MemoryRouter><ProvidersPage /></MemoryRouter>)
+    await screen.findByText("Gemini Main")
+    fireEvent.click(within(row("gemini")).getByRole("button", { name: "Discover & Verify Models" }))
+    await screen.findByText("Verification paused")
+    expect(api.verifyProviderModel).toHaveBeenCalledTimes(1)
+    expect(screen.queryByText("Ready Alpha")).not.toBeInTheDocument()
+  })
+
   it("uses Thai labels for both toggle states", async () => {
     await i18n.changeLanguage("th")
     render(<MemoryRouter><ProvidersPage /></MemoryRouter>)
     await screen.findByText("Gemini Main")
-    fireEvent.click(within(row("gemini")).getByRole("button", { name: "ดูโมเดล" }))
-    expect(await screen.findByText("Discovered models (3)")).toBeInTheDocument()
-    expect(within(row("gemini")).getByRole("button", { name: "ซ่อนโมเดล" })).toBeInTheDocument()
-    fireEvent.click(within(row("gemini")).getByRole("button", { name: "ซ่อนโมเดล" }))
+    fireEvent.click(within(row("gemini")).getByRole("button", { name: "ดู Model" }))
+    expect(await screen.findByText("Models ที่พร้อมใช้งาน (1)")).toBeInTheDocument()
+    expect(within(row("gemini")).getByRole("button", { name: "ซ่อน Model" })).toBeInTheDocument()
+    fireEvent.click(within(row("gemini")).getByRole("button", { name: "ซ่อน Model" }))
     expect(screen.queryByText("Ready Alpha")).not.toBeInTheDocument()
   })
 })

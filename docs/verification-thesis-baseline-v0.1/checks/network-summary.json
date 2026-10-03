@@ -1,0 +1,9 @@
+{
+  "observed_response_count": 90,
+  "statuses": {
+    "200": 90
+  },
+  "unexpected_failures": [],
+  "capture": "temporary read-only HTTP first-line observer; no headers, cookies, bodies or query strings retained",
+  "scope": "sampled smoke requests, not a complete HAR"
+}

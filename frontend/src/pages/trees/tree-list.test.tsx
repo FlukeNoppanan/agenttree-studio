@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react"
+import { fireEvent, render, screen, within, waitFor } from "@testing-library/react"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
@@ -22,5 +22,29 @@ describe("Tree list", () => {
     expect(screen.queryByText("Draft Assistant")).not.toBeInTheDocument()
     fireEvent.click(screen.getByRole("button", { name: "Edit" }))
     expect(screen.getByText("Editing Tree")).toBeInTheDocument()
+  })
+
+  it("requires explicit confirmation and Cancel makes no deletion request", async () => {
+    const remove = vi.spyOn(api, "deleteTree").mockResolvedValue(undefined)
+    render(<MemoryRouter><TreeListPage /></MemoryRouter>)
+    const row = (await screen.findByText("Ready Assistant")).closest('tr')!
+    fireEvent.click(within(row).getByRole('button', { name: 'Delete' }))
+    const dialog = await screen.findByRole('dialog')
+    expect(within(dialog).getByText(/associated Runs and Trace/)).toBeVisible()
+    expect(remove).not.toHaveBeenCalled()
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Cancel' }))
+    expect(remove).not.toHaveBeenCalled()
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  })
+
+  it("deletes only the confirmed Tree and retains other rows", async () => {
+    const remove = vi.spyOn(api, "deleteTree").mockResolvedValue(undefined)
+    render(<MemoryRouter><TreeListPage /></MemoryRouter>)
+    const row = (await screen.findByText("Ready Assistant")).closest('tr')!
+    fireEvent.click(within(row).getByRole('button', { name: 'Delete' }))
+    fireEvent.click(within(await screen.findByRole('dialog')).getByRole('button', { name: 'Delete' }))
+    await waitFor(() => expect(remove).toHaveBeenCalledExactlyOnceWith('ready-1'))
+    expect(screen.getByText('Draft Assistant')).toBeVisible()
+    expect(screen.queryByText('Ready Assistant')).not.toBeInTheDocument()
   })
 })

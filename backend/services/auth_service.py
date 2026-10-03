@@ -9,7 +9,7 @@ from time import monotonic
 from argon2 import PasswordHasher, Type
 from argon2.exceptions import InvalidHashError, VerifyMismatchError, VerificationError
 from fastapi import HTTPException
-from sqlalchemy import delete, func, select
+from sqlalchemy import delete, func, select, true
 from sqlalchemy.orm import Session
 
 from backend.models.auth import ApiToken, SecurityEvent, User, UserPermission, UserSession, UserTreeAccess
@@ -124,7 +124,8 @@ class AuthService:
         self.db.commit()
 
     def account(self, user: User, session: UserSession | None) -> AccountRead:
-        trees = self.my_trees(user)
+        trees = self.accessible_trees(user) if any(self.has_permission(user, p) for p in
+            ("manage_trees_agents", "use_trees", "view_executions")) else []
         count = self.db.scalar(select(func.count()).select_from(ApiToken).where(
             ApiToken.user_id == user.id, ApiToken.revoked_at.is_(None))) or 0
         return AccountRead(user=self.read(user), session_expires_at=session.expires_at if session else None,
@@ -280,25 +281,48 @@ class AuthService:
         self.db.delete(user)
         self.db.commit()
 
+    @staticmethod
+    def has_permission(user: User, permission: str) -> bool:
+        return user.is_admin or any(item.permission == permission for item in user.permissions)
+
+    @staticmethod
+    def tree_access_filter(user: User, tree_id=Tree.id):
+        """Resource scope only; callers must separately check action permission."""
+        if user.is_admin or user.tree_access_mode == "all":
+            return true()
+        return tree_id.in_(select(UserTreeAccess.tree_id).where(UserTreeAccess.user_id == user.id))
+
+    def can_access_tree(self, user: User, tree_id: str) -> bool:
+        return self.db.scalar(select(Tree.id).where(
+            Tree.id == tree_id, self.tree_access_filter(user),
+        )) is not None
+
+    def require_tree_access(self, user: User, tree_id: str) -> None:
+        if not self.can_access_tree(user, tree_id):
+            raise HTTPException(403, "Access denied")
+
+    def require_tree_permission(self, user: User, tree_id: str, permission: str) -> None:
+        if not self.has_permission(user, permission) or not self.can_access_tree(user, tree_id):
+            raise HTTPException(403, "Access denied")
+
+    def accessible_trees(self, user: User) -> list[Tree]:
+        return list(self.db.scalars(select(Tree).where(self.tree_access_filter(user)).order_by(Tree.name)))
+
     def my_trees(self, user: User) -> list[Tree]:
-        query = select(Tree).order_by(Tree.name)
-        if not user.is_admin and not any(item.permission == "use_trees" for item in user.permissions):
-            return []
-        if not user.is_admin and user.tree_access_mode == "selected":
-            query = query.join(UserTreeAccess, UserTreeAccess.tree_id == Tree.id).where(UserTreeAccess.user_id == user.id)
-        return list(self.db.scalars(query))
+        # Execution-facing contract used by Public APIs and /me/trees.
+        return self.accessible_trees(user) if self.has_permission(user, "use_trees") else []
 
     def can_use_tree(self, user: User, tree_id: str) -> bool:
-        """Identity-based rule shared by cookie and API-token requests."""
-        if user.is_admin:
-            return True
-        if not any(item.permission == "use_trees" for item in user.permissions):
-            return False
-        if user.tree_access_mode == "all":
-            return True
-        return self.db.scalar(select(UserTreeAccess).where(
-            UserTreeAccess.user_id == user.id, UserTreeAccess.tree_id == tree_id,
-        )) is not None
+        """Action permission AND resource scope, shared by sessions/API keys."""
+        return self.has_permission(user, "use_trees") and self.can_access_tree(user, tree_id)
+
+    def grant_created_tree(self, user: User, tree_id: str) -> None:
+        """Keep selected-mode creators able to edit their newly created Tree.
+
+        Added inside the Tree creation transaction; never grants existing Trees.
+        """
+        if not user.is_admin and user.tree_access_mode == "selected":
+            self.db.add(UserTreeAccess(user_id=user.id, tree_id=tree_id))
 
     def create_token(self, user: User, name: str) -> TokenCreated:
         if not name.strip():

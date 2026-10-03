@@ -91,7 +91,23 @@ class DashboardSummary(BaseModel):
     needs_attention: list[AttentionItem]
 
 
+class GettingStartedTree(BaseModel):
+    id: str
+    name: str
+    template: str
+    ready: bool
+
+
+class GettingStartedState(BaseModel):
+    provider_ready: bool | None = None
+    trees: list[GettingStartedTree] = Field(default_factory=list)
+    runnable_tree_id: str | None = None
+    successful_run_id: str | None = None
+    has_successful_run: bool | None = None
+
+
 class MyDashboard(BaseModel):
+    onboarding: GettingStartedState = Field(default_factory=GettingStartedState)
     trees_count: int | None = None
     available_trees: list[dict[str, str]] = Field(default_factory=list)
     providers_count: int | None = None

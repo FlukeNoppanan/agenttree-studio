@@ -26,7 +26,7 @@ const template: TreeTemplate = {
 function renderPage() {
   return render(<MemoryRouter initialEntries={["/templates"]}><Routes>
     <Route path="/templates" element={<TemplatesPage />} />
-    <Route path="/trees/:treeId/setup" element={<div>Visual Tree Workspace</div>} />
+    <Route path="/trees/new/visual" element={<div>Visual Builder draft</div>} />
     <Route path="/trees/:treeId/edit" element={<div>Advanced Tree Editor</div>} />
   </Routes></MemoryRouter>)
 }
@@ -41,19 +41,19 @@ describe("reusable Template catalog", () => {
     renderPage()
     fireEvent.click(await screen.findByRole("button", { name: "Preview" }))
     expect(await screen.findByText("Research Specialist")).toBeInTheDocument()
-    expect(screen.getAllByText("Web/API Request")).toHaveLength(2)
+    expect(screen.getAllByText(/Web\/API Request/)).toHaveLength(2)
     expect(screen.getByText("Manual form")).toBeInTheDocument()
     expect(screen.getByText("Text · Show in Studio")).toBeInTheDocument()
     expect(mocks.instantiateTemplate).not.toHaveBeenCalled()
   })
 
-  it("creates a new draft before opening Template Setup", async () => {
+  it("opens unsaved Visual Builder directly without instantiating a Tree", async () => {
     mocks.instantiateTemplate.mockResolvedValue({ id: "new-tree" })
     renderPage()
     fireEvent.click(await screen.findByRole("button", { name: "Use Template" }))
-    expect(await screen.findByText("Visual Tree Workspace")).toBeInTheDocument()
+    expect(await screen.findByText("Visual Builder draft")).toBeInTheDocument()
     expect(screen.queryByText("Advanced Tree Editor")).not.toBeInTheDocument()
-    expect(mocks.instantiateTemplate).toHaveBeenCalledWith(template.id)
+    expect(mocks.instantiateTemplate).not.toHaveBeenCalled()
   })
 
   it("offers edit and delete only for User Templates", async () => {

@@ -1,0 +1,56 @@
+{
+  "diagnostic": "Temporary standalone verification process; no Core source edit",
+  "core_failure_type": "DecisionOutputError",
+  "known_reason": "Missing required field: objective",
+  "locations": [
+    [
+      "structured_output.py",
+      "required",
+      63
+    ],
+    [
+      "triage.py",
+      "triage",
+      112
+    ],
+    [
+      "triage.py",
+      "triage_with_capabilities",
+      129
+    ],
+    [
+      "engine.py",
+      "orchestrate",
+      124
+    ],
+    [
+      "context.py",
+      "planning",
+      195
+    ],
+    [
+      "context.py",
+      "run_phase",
+      79
+    ],
+    [
+      "sequential.py",
+      "run",
+      15
+    ],
+    [
+      "framework.py",
+      "run",
+      496
+    ],
+    [
+      "execution_runtime.py",
+      "_execute",
+      602
+    ]
+  ],
+  "observed_actors": [
+    "Analysis Root"
+  ],
+  "manager_or_specialist_activity_observed": false
+}

@@ -1,0 +1,61 @@
+: connected
+
+id: 1
+event: run.status
+data: {"run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "sequence": 1, "type": "execution.queued", "agent_id": null, "agent_name": null, "payload": {"timestamp": "2026-10-01T00:28:50.514047+00:00", "event_type": "execution.queued", "task_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "actor_id": null, "message": "", "metadata": {}}, "created_at": "2026-10-01 00:28:50.514047+00:00"}
+
+id: 2
+event: run.status
+data: {"run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "sequence": 2, "type": "execution.started", "agent_id": null, "agent_name": null, "payload": {"timestamp": "2026-10-01T00:28:50.514579+00:00", "event_type": "execution.started", "task_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "actor_id": null, "message": "", "metadata": {}}, "created_at": "2026-10-01 00:28:50.514579+00:00"}
+
+id: 3
+event: execution.event
+data: {"run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "sequence": 3, "type": "execution.phase.started", "agent_id": null, "agent_name": null, "payload": {"timestamp": "2026-10-01T00:28:50.515544+00:00", "event_type": "execution.phase.started", "task_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "actor_id": null, "message": "", "metadata": {"phase": "planning"}}, "created_at": "2026-10-01 00:28:50.515544+00:00"}
+
+id: 4
+event: execution.event
+data: {"run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "sequence": 4, "type": "operation.prepared", "agent_id": "6e6f5809-28e4-4298-b320-b425bac76567", "agent_name": "Integration Root", "payload": {"timestamp": "2026-10-01T00:28:50.516254+00:00", "event_type": "operation.prepared", "task_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "actor_id": "6e6f5809-28e4-4298-b320-b425bac76567", "message": "", "metadata": {"operation_key": "planning/root:plan", "operation_type": "root.plan", "phase": "planning", "attempt": 0, "status": "prepared"}}, "created_at": "2026-10-01 00:28:50.516254+00:00"}
+
+id: 5
+event: execution.event
+data: {"run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "sequence": 5, "type": "operation.in_flight", "agent_id": "6e6f5809-28e4-4298-b320-b425bac76567", "agent_name": "Integration Root", "payload": {"timestamp": "2026-10-01T00:28:50.516448+00:00", "event_type": "operation.in_flight", "task_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "actor_id": "6e6f5809-28e4-4298-b320-b425bac76567", "message": "", "metadata": {"operation_key": "planning/root:plan", "operation_type": "root.plan", "phase": "planning", "attempt": 1, "status": "in_flight"}}, "created_at": "2026-10-01 00:28:50.516448+00:00"}
+
+id: 6
+event: execution.event
+data: {"run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "sequence": 6, "type": "operation.prepared", "agent_id": "6e6f5809-28e4-4298-b320-b425bac76567", "agent_name": "Integration Root", "payload": {"timestamp": "2026-10-01T00:28:50.516937+00:00", "event_type": "operation.prepared", "task_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "actor_id": "6e6f5809-28e4-4298-b320-b425bac76567", "message": "", "metadata": {"operation_key": "planning/root:plan/provider:1", "operation_type": "provider.generate", "phase": "planning", "attempt": 0, "status": "prepared"}}, "created_at": "2026-10-01 00:28:50.516937+00:00"}
+
+id: 7
+event: execution.event
+data: {"run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "sequence": 7, "type": "operation.in_flight", "agent_id": "6e6f5809-28e4-4298-b320-b425bac76567", "agent_name": "Integration Root", "payload": {"timestamp": "2026-10-01T00:28:50.517141+00:00", "event_type": "operation.in_flight", "task_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "actor_id": "6e6f5809-28e4-4298-b320-b425bac76567", "message": "", "metadata": {"operation_key": "planning/root:plan/provider:1", "operation_type": "provider.generate", "phase": "planning", "attempt": 1, "status": "in_flight"}}, "created_at": "2026-10-01 00:28:50.517141+00:00"}
+
+id: 8
+event: execution.event
+data: {"run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "sequence": 8, "type": "operation.committed", "agent_id": "6e6f5809-28e4-4298-b320-b425bac76567", "agent_name": "Integration Root", "payload": {"timestamp": "2026-10-01T00:28:52.730364+00:00", "event_type": "operation.committed", "task_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "actor_id": "6e6f5809-28e4-4298-b320-b425bac76567", "message": "", "metadata": {"operation_key": "planning/root:plan/provider:1", "operation_type": "provider.generate", "phase": "planning", "attempt": 1, "status": "committed"}}, "created_at": "2026-10-01 00:28:52.730364+00:00"}
+
+id: 9
+event: execution.event
+data: {"run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "sequence": 9, "type": "operation.committed", "agent_id": "6e6f5809-28e4-4298-b320-b425bac76567", "agent_name": "Integration Root", "payload": {"timestamp": "2026-10-01T00:28:52.730665+00:00", "event_type": "operation.committed", "task_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "actor_id": "6e6f5809-28e4-4298-b320-b425bac76567", "message": "", "metadata": {"operation_key": "planning/root:plan", "operation_type": "root.plan", "phase": "planning", "attempt": 1, "status": "committed"}}, "created_at": "2026-10-01 00:28:52.730665+00:00"}
+
+id: 10
+event: execution.event
+data: {"run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "sequence": 10, "type": "operation.prepared", "agent_id": "6e6f5809-28e4-4298-b320-b425bac76567", "agent_name": "Integration Root", "payload": {"timestamp": "2026-10-01T00:28:52.731009+00:00", "event_type": "operation.prepared", "task_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "actor_id": "6e6f5809-28e4-4298-b320-b425bac76567", "message": "", "metadata": {"operation_key": "planning/root:direct_response", "operation_type": "root.direct_response", "phase": "planning", "attempt": 0, "status": "prepared"}}, "created_at": "2026-10-01 00:28:52.731009+00:00"}
+
+id: 11
+event: execution.event
+data: {"run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "sequence": 11, "type": "operation.in_flight", "agent_id": "6e6f5809-28e4-4298-b320-b425bac76567", "agent_name": "Integration Root", "payload": {"timestamp": "2026-10-01T00:28:52.731106+00:00", "event_type": "operation.in_flight", "task_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "actor_id": "6e6f5809-28e4-4298-b320-b425bac76567", "message": "", "metadata": {"operation_key": "planning/root:direct_response", "operation_type": "root.direct_response", "phase": "planning", "attempt": 1, "status": "in_flight"}}, "created_at": "2026-10-01 00:28:52.731106+00:00"}
+
+id: 12
+event: execution.event
+data: {"run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "sequence": 12, "type": "operation.committed", "agent_id": "6e6f5809-28e4-4298-b320-b425bac76567", "agent_name": "Integration Root", "payload": {"timestamp": "2026-10-01T00:28:52.731238+00:00", "event_type": "operation.committed", "task_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "actor_id": "6e6f5809-28e4-4298-b320-b425bac76567", "message": "", "metadata": {"operation_key": "planning/root:direct_response", "operation_type": "root.direct_response", "phase": "planning", "attempt": 1, "status": "committed"}}, "created_at": "2026-10-01 00:28:52.731238+00:00"}
+
+id: 13
+event: execution.event
+data: {"run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "sequence": 13, "type": "execution.checkpoint.saved", "agent_id": null, "agent_name": null, "payload": {"timestamp": "2026-10-01T00:28:52.734068+00:00", "event_type": "execution.checkpoint.saved", "task_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "actor_id": null, "message": "", "metadata": {"phase": "completed", "sequence": 1}}, "created_at": "2026-10-01 00:28:52.734068+00:00"}
+
+id: 14
+event: output.final.available
+data: {"run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "sequence": 14, "type": "output.final.available", "agent_id": null, "agent_name": null, "payload": {"timestamp": "2026-10-01T00:28:52.734535+00:00", "event_type": "output.final.available", "task_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "actor_id": null, "message": "", "metadata": {"sha256": "59b4cefea37e507d0df48bf4f41029cf0f44800801fc3ea5a431c5ff6fac730f", "size_bytes": 350}}, "created_at": "2026-10-01 00:28:52.734535+00:00"}
+
+id: 15
+event: run.completed
+data: {"run_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "sequence": 15, "type": "execution.completed", "agent_id": null, "agent_name": null, "payload": {"timestamp": "2026-10-01T00:28:52.734541+00:00", "event_type": "execution.completed", "task_id": "299f2793-9e69-4a9f-943e-7d32cca831c0", "actor_id": null, "message": "", "metadata": {}}, "created_at": "2026-10-01 00:28:52.734541+00:00"}

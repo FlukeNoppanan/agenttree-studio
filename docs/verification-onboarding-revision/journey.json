@@ -1,0 +1,24 @@
+{
+  "welcome": "passed",
+  "session_snooze": "passed",
+  "fresh_tab_session": "passed",
+  "today_local_midnight": "passed",
+  "three_days": "passed",
+  "seven_days": "passed",
+  "fourteen_days": "passed",
+  "expiry": "passed",
+  "picker_configure_tree": "72ced65c-430f-465a-99dd-1cdf2467073b",
+  "picker_run_tree": "72ced65c-430f-465a-99dd-1cdf2467073b",
+  "picker_connect_tree": "e582b26e-6014-4541-8386-988b8afca561",
+  "run_id": "ecb3c72c-69c5-4ff6-a716-4cf48153db7f",
+  "run_status": "completed",
+  "theme_pages": 8,
+  "languages": [
+    "en",
+    "th"
+  ],
+  "narrow_width": 800,
+  "run_trace_reload": "passed",
+  "progress_reload": "passed",
+  "picker_escape": "passed"
+}

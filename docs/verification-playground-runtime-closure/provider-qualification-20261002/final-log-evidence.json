@@ -1,0 +1,9 @@
+{
+  "lines": 82,
+  "http_status_counts": {},
+  "unexpected_4xx_5xx_count": 0,
+  "traceback_markers": 0,
+  "runtime_exception_markers": 0,
+  "requests_by_path": {},
+  "scope": "Final available container logs after rebuilt backend reload and Provider catalog verification; prior container logs and a complete browser HAR are unavailable."
+}

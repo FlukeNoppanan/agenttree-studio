@@ -102,8 +102,8 @@ export function SecretsPage() {
         <div className="overflow-hidden border-y border-border bg-card">
           <Table>
             <TableHeader><TableRow>
-              <TableHead>Name</TableHead><TableHead>Type</TableHead><TableHead>Masked value</TableHead>
-              <TableHead>Created</TableHead><TableHead className="text-right">Actions</TableHead>
+              <TableHead>{t("uiCopy.name")}</TableHead><TableHead>{t("uiCopy.type")}</TableHead><TableHead>{t("uiCopy.maskedValue")}</TableHead>
+              <TableHead>{t("uiCopy.created")}</TableHead><TableHead className="text-right">{t("uiCopy.actions")}</TableHead>
             </TableRow></TableHeader>
             <TableBody>
               {secrets.map((secret) => (
@@ -114,7 +114,7 @@ export function SecretsPage() {
                   <TableCell className="whitespace-nowrap text-muted-foreground">{formatDate(secret.created_at)}</TableCell>
                   <TableCell className="text-right">
                     <Button variant="ghost" size="icon" onClick={() => setDeletingSecret(secret)} title="Delete secret">
-                      <Trash2 className="size-4" /><span className="sr-only">Delete</span>
+                      <Trash2 className="size-4" /><span className="sr-only">{t("uiCopy.delete")}</span>
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -127,18 +127,18 @@ export function SecretsPage() {
       <Dialog open={dialogOpen} onOpenChange={changeDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Add secret</DialogTitle>
-            <DialogDescription>The value is encrypted before storage and will not be retrievable through the API.</DialogDescription>
+            <DialogTitle>{t("uiCopy.addSecret")}</DialogTitle>
+            <DialogDescription>{t("uiCopy.secretStorageHelp")}</DialogDescription>
           </DialogHeader>
           <form onSubmit={submit}>
             <div className="space-y-4">
-              <div className="space-y-2"><Label htmlFor="secret-name">Name</Label><Input id="secret-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="OpenAI Main Key" required autoFocus /></div>
-              <div className="space-y-2"><Label htmlFor="secret-type">Type</Label><Input id="secret-type" value={secretType} onChange={(e) => setSecretType(e.target.value)} required /></div>
-              <div className="space-y-2"><Label htmlFor="secret-value">Value</Label><Input id="secret-value" type="password" value={value} onChange={(e) => setValue(e.target.value)} autoComplete="new-password" required /><p className="text-xs text-muted-foreground">This plaintext is cleared from the form immediately after saving.</p></div>
+              <div className="space-y-2"><Label htmlFor="secret-name">{t("uiCopy.name")}</Label><Input id="secret-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="OpenAI Main Key" required autoFocus /></div>
+              <div className="space-y-2"><Label htmlFor="secret-type">{t("uiCopy.type")}</Label><Input id="secret-type" value={secretType} onChange={(e) => setSecretType(e.target.value)} required /></div>
+              <div className="space-y-2"><Label htmlFor="secret-value">{t("uiCopy.value")}</Label><Input id="secret-value" type="password" value={value} onChange={(e) => setValue(e.target.value)} autoComplete="new-password" required /><p className="text-xs text-muted-foreground">{t("uiCopy.thisPlaintextIsClearedFromTheFormImmediatelyAfterSaving")}</p></div>
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => changeDialog(false)}>Cancel</Button>
-              <Button type="submit" disabled={saving}>{saving ? "Saving…" : "Save secret"}</Button>
+              <Button type="button" variant="outline" onClick={() => changeDialog(false)}>{t("uiCopy.cancel")}</Button>
+              <Button type="submit" disabled={saving}>{saving ? t("uiCopy.saving") : "Save secret"}</Button>
             </DialogFooter>
           </form>
         </DialogContent>

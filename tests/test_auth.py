@@ -47,6 +47,23 @@ def make_user(admin, name="member", permissions=None, tree_ids=None):
     return response.json()
 
 
+def test_template_builder_draft_http_boundary_is_read_only_and_permission_checked(clients):
+    admin, member, factory = clients
+    path = '/api/templates/builtin-general-analysis'
+    prepared = admin.get(path + '/draft')
+    assert prepared.status_code == 200
+    assert len(prepared.json()['configuration']['agents']) == 5
+    validation = admin.post(path + '/validate-draft', json=prepared.json())
+    assert validation.status_code == 200 and not validation.json()['valid']
+    with factory() as db:
+        assert db.scalars(select(Tree)).all() == []
+    make_user(admin, name='draft-restricted', permissions=['use_trees'])
+    assert member.post('/api/auth/login', json={'username':'draft-restricted', 'password':USER_PASSWORD}).status_code == 200
+    assert member.get(path + '/draft').status_code == 403
+    assert member.post(path + '/validate-draft', json=prepared.json()).status_code == 403
+    assert member.post(path + '/instantiate', json=prepared.json()).status_code == 403
+
+
 def test_every_registered_api_route_has_an_explicit_policy():
     """Catch future endpoints that accidentally fall through the deny policy."""
     for route in app.routes:
@@ -423,3 +440,220 @@ def test_login_rate_limit_and_last_admin_delete(clients):
     assert user.post("/api/auth/login", json={"username": "rootadmin", "password": ADMIN_PASSWORD}).status_code == 200
     admin_id = admin.get("/api/auth/me").json()["id"]
     assert admin.delete(f"/api/users/{admin_id}").status_code == 409
+
+
+def test_builder_preview_requires_studio_tree_management_and_csrf(clients):
+    admin, user, _ = clients
+    payload = {'name': 'Canvas', 'agents': []}
+    assert user.post('/api/trees/validate-draft', json=payload).status_code == 401
+    make_user(admin, name='previewreader', permissions=['use_trees'])
+    assert user.post('/api/auth/login', json={'username': 'previewreader', 'password': USER_PASSWORD}).status_code == 200
+    assert user.post('/api/trees/validate-draft', json=payload).status_code == 403
+    assert admin.post('/api/trees/validate-draft', json=payload, headers={'Origin': 'https://untrusted.invalid'}).status_code == 403
+    result = admin.post('/api/trees/validate-draft', json=payload)
+    assert result.status_code == 200
+    assert not result.json()['valid']
+
+# Tree-scoped Builder regression: actions and resources are independent dimensions.
+@pytest.fixture
+def scoped_trees(clients):
+    admin, member, factory = clients
+    roots = []
+    for name in ("Allowed Tree", "Hidden Tree"):
+        response = admin.post('/api/trees', json={'name': name, 'agents': [
+            {'agent_type': 'root', 'name': name + ' Root', 'capabilities': [name.lower().replace(' ', '-')]},
+        ]})
+        assert response.status_code == 201
+        roots.append(response.json())
+    return admin, member, factory, roots[0], roots[1]
+
+
+def scoped_login(admin, client, tree, permissions, mode='selected'):
+    account = make_user(admin, permissions=permissions, tree_ids=[tree['id']])
+    if mode != 'selected':
+        assert admin.put('/api/users/' + account['id'], json={'tree_access_mode': mode}).status_code == 200
+    assert client.post('/api/auth/login', json={'username': 'member', 'password': USER_PASSWORD}).status_code == 200
+    assert client.post('/api/auth/change-password', json={
+        'current_password': USER_PASSWORD, 'new_password': 'isolated-matrix-password-2026',
+    }).status_code == 200
+    return account
+
+
+@pytest.mark.parametrize('permission,granted,status', [
+    ('manage_trees_agents', True, 200), ('manage_trees_agents', False, 403),
+    ('use_trees', True, 403), ('use_trees', False, 403),
+])
+def test_builder_action_and_resource_matrix(scoped_trees, permission, granted, status):
+    admin, member, _, allowed, hidden = scoped_trees
+    scoped_login(admin, member, allowed, [permission])
+    target = allowed if granted else hidden
+    assert member.get('/api/trees/' + target['id']).status_code == status
+    assert member.put('/api/trees/' + target['id'], json={'description': 'harmless edit'}).status_code == status
+    if status == 200:
+        assert member.get('/api/trees/' + target['id']).json()['description'] == 'harmless edit'
+    else:
+        assert admin.get('/api/trees/' + target['id']).json()['description'] == ''
+
+
+@pytest.mark.parametrize('permission,granted,status', [
+    ('use_trees', True, 422), ('use_trees', False, 403),
+    ('manage_trees_agents', True, 403), ('manage_trees_agents', False, 403),
+])
+def test_execution_action_and_resource_matrix(scoped_trees, permission, granted, status):
+    admin, member, _, allowed, hidden = scoped_trees
+    scoped_login(admin, member, allowed, [permission])
+    target = allowed if granted else hidden
+    # Invalid payload stops at validation, so no provider execution is spent.
+    assert member.post('/api/trees/' + target['id'] + '/test-run', json={'input': 'invalid'}).status_code == status
+    assert member.post('/api/runtime/trees/' + target['id'] + '/invoke', json={'input': 'invalid'}).status_code == status
+
+
+@pytest.mark.parametrize('mode', ['selected', 'all'])
+def test_tree_list_account_dashboard_and_capabilities_are_scoped(scoped_trees, mode):
+    admin, member, _, allowed, hidden = scoped_trees
+    scoped_login(admin, member, allowed, ['manage_trees_agents'], mode)
+    ids = {allowed['id']} if mode == 'selected' else {allowed['id'], hidden['id']}
+    assert {t['id'] for t in member.get('/api/trees').json()} == ids
+    dashboard = member.get('/api/dashboard/me').json()
+    assert {t['id'] for t in dashboard['onboarding']['trees']} == ids
+    assert dashboard['trees_count'] == len(ids)
+    assert {t['id'] for t in member.get('/api/auth/account').json()['allowed_trees']} == ids
+    assert member.get('/api/me/trees').status_code == 403  # Management isn't execution.
+    catalog = {t['id'] for t in member.get('/api/capabilities').json()}
+    assert 'allowed-tree' in catalog
+    assert ('hidden-tree' in catalog) == (mode == 'all')
+    assert {t['id'] for t in admin.get('/api/trees').json()} == {allowed['id'], hidden['id']}
+    assert admin.get('/api/trees/' + hidden['id']).status_code == 200
+    assert admin.put('/api/trees/' + hidden['id'], json={'description': 'Admin global'}).status_code == 200
+    assert admin.post('/api/trees/' + hidden['id'] + '/test-run', json={'input': 'invalid'}).status_code == 422
+
+
+@pytest.mark.parametrize('method,suffix,body', [
+    ('GET', '', None), ('GET', '/version', None), ('GET', '/template-setup', None),
+    ('GET', '/destinations', None), ('GET', '/webhooks', None),
+    ('PUT', '', {'description': 'deny'}), ('DELETE', '', None),
+    ('PUT', '/version', {'name': 'deny', 'agents': []}),
+    ('PUT', '/configuration', {'name': 'deny', 'agents': []}),
+    ('POST', '/validate?mark_ready=true', None),
+    ('POST', '/save-as-template', {}),
+    ('POST', '/template-setup/agents', {}),
+    ('PATCH', '/template-setup/agents/{agent}', {'name': 'deny'}),
+    ('PUT', '/template-setup/agents/{agent}/tools', {'tool_ids': []}),
+    ('PATCH', '/template-setup/agents/{agent}/model', {}),
+    ('POST', '/template-setup/apply-default', {}),
+    ('POST', '/destinations', {}),
+])
+def test_ungranted_tree_routes_reject_before_read_or_mutation(scoped_trees, method, suffix, body):
+    admin, member, _, allowed, hidden = scoped_trees
+    scoped_login(admin, member, allowed, ['manage_trees_agents'])
+    url = '/api/trees/' + hidden['id'] + suffix.replace('{agent}', hidden['root']['id'])
+    response = member.request(method, url, json=body)
+    assert response.status_code == 403
+    assert response.json() == {'detail': 'Access denied'}
+    assert admin.get('/api/trees/' + hidden['id']).json() == hidden
+
+
+def test_preview_query_and_foreign_agent_version_ids_cannot_bypass_scope(scoped_trees):
+    admin, member, _, allowed, hidden = scoped_trees
+    scoped_login(admin, member, allowed, ['manage_trees_agents'])
+    assert member.post('/api/trees/validate-draft', params={'tree_id': hidden['id']}, json={'name': 'preview'}).status_code == 403
+    assert member.post('/api/trees/validate-draft', params={'tree_id': allowed['id']}, json={'name': 'preview'}).status_code == 200
+    assert member.post('/api/trees/validate-draft', json={'name': 'new unsaved'}).status_code == 200
+    assert member.get('/api/trees/' + allowed['id'] + '/version', params={'version_id': hidden['current_version_id']}).status_code == 404
+    assert member.patch('/api/trees/' + allowed['id'] + '/template-setup/agents/' + hidden['root']['id'], json={'name': 'deny'}).status_code == 404
+    assert member.put('/api/trees/' + allowed['id'] + '/template-setup/agents/' + hidden['root']['id'] + '/tools', json={'tool_ids': []}).status_code == 404
+    forged = {'name': allowed['name'], 'agents': hidden['version']['agents']}
+    assert member.put('/api/trees/' + allowed['id'] + '/version', json=forged).status_code == 404
+    assert member.post('/api/trees', json=forged).status_code == 404
+    assert admin.get('/api/trees/' + hidden['id']).json() == hidden
+
+
+def test_selected_creator_keeps_blank_and_template_access_without_execution(scoped_trees):
+    admin, member, _, allowed, hidden = scoped_trees
+    scoped_login(admin, member, allowed, ['manage_trees_agents'])
+    created = member.post('/api/trees', json={'name': 'Own new Tree', 'agents': []})
+    assert created.status_code == 201
+    tid = created.json()['id']
+    assert member.get('/api/trees/' + tid).status_code == 200
+    assert tid in member.get('/api/auth/me').json()['allowed_tree_ids']
+    assert member.post('/api/trees/' + tid + '/test-run', json={'input': 'invalid'}).status_code == 403
+    template = member.get('/api/templates').json()[0]
+    created = member.post('/api/templates/' + template['id'] + '/instantiate', json={'name': 'Own template Tree'})
+    assert created.status_code == 201
+    assert member.get('/api/trees/' + created.json()['id']).status_code == 200
+    assert member.get('/api/trees/' + hidden['id']).status_code == 403
+
+
+def test_tool_assignment_and_catalog_body_ids_cannot_bypass_scope(scoped_trees):
+    admin, member, factory, allowed, hidden = scoped_trees
+    scoped_login(admin, member, allowed, ['manage_trees_agents', 'manage_tools_mcp'])
+    tool = admin.post('/api/tools', json={'name': 'Safe artifact', 'tool_type': 'artifact'}).json()
+    assert admin.post('/api/tools/' + tool['id'] + '/test').status_code == 200
+    path = '/api/tools/' + tool['id'] + '/assignments'
+    assert admin.put(path, json={'agent_ids': [allowed['root']['id'], hidden['root']['id']]}).status_code == 200
+    assert [a['tree_id'] for a in member.get(path).json()['assignments']] == [allowed['id']]
+    assert member.put(path, json={'agent_ids': [hidden['root']['id']]}).status_code == 403
+    assert member.put(path, json={'agent_ids': []}).status_code == 200
+    assert [a['tree_id'] for a in admin.get(path).json()['assignments']] == [hidden['id']]
+    assert member.put(path, json={'agent_ids': [allowed['root']['id']]}).status_code == 200
+    assert len(admin.get(path).json()['assignments']) == 2
+    for url,payload in [('/api/tool-catalog/resolve-required', {'tree_id': hidden['id']}),
+                        ('/api/tool-catalog/http-api/resolve-requirement', {'tree_id': hidden['id'], 'requirement_id': 'any'})]:
+        assert member.post(url, json=payload).status_code == 403
+    assert admin.put('/api/users/' + member.get('/api/auth/me').json()['id'], json={'permissions': ['manage_tools_mcp']}).status_code == 200
+    assert member.get(path).status_code == 403
+    assert member.put(path, json={'agent_ids': []}).status_code == 403
+    assert member.post('/api/tool-catalog/resolve-required', json={'tree_id': allowed['id']}).status_code == 403
+
+
+def test_run_history_ids_and_dashboard_follow_tree_scope(scoped_trees):
+    from backend.models.run import Run
+    admin, member, factory, allowed, hidden = scoped_trees
+    with factory() as db:
+        runs = [Run(tree_id=t['id'], tree_version_id=t['current_version_id'], input_json={'input': 'test'}, started_at=datetime.now()) for t in (allowed, hidden)]
+        db.add_all(runs); db.commit()
+        run_ids = [r.id for r in runs]
+    scoped_login(admin, member, allowed, ['view_executions'])
+    assert {r['id'] for r in member.get('/api/runs').json()} == {run_ids[0]}
+    assert member.get('/api/runs/' + run_ids[0]).status_code == 200
+    assert member.get('/api/runs/' + run_ids[1]).status_code == 403
+    assert member.get('/api/runs/' + run_ids[1] + '/trace').status_code == 403
+    assert member.get('/api/runs', params={'tree_id': hidden['id']}).status_code == 403
+    assert member.get('/api/trees/' + hidden['id'] + '/live').status_code == 403
+    assert member.get('/api/trees/' + hidden['id'] + '/runs').status_code == 403
+    dashboard = member.get('/api/dashboard/me').json()
+    assert dashboard['runs_count'] == 1
+    assert [r['id'] for r in dashboard['recent_runs']] == [run_ids[0]]
+
+@pytest.mark.parametrize('kind,permission', [('tool','manage_tools_mcp'), ('provider','manage_providers_models'), ('secret','manage_secrets')])
+def test_resource_dependencies_hide_ungranted_tree_configuration_but_preserve_delete_guard(scoped_trees, kind, permission):
+    from backend.models.provider import ProviderConnection
+    from backend.models.secret import Secret
+    from backend.models.destination import ResultDestination
+    from backend.models.tool import ToolConnection, ToolAssignment
+    from backend.models.tree import AgentConfig
+    admin, member, factory, allowed, hidden = scoped_trees
+    scoped_login(admin, member, allowed, ['manage_trees_agents', permission])
+    with factory() as db:
+        resource = {'provider': lambda: ProviderConnection(name='Dependency Provider',provider_type='ollama'),
+                    'tool': lambda: ToolConnection(name='Dependency Tool',tool_type='artifact'),
+                    'secret': lambda: Secret(name='Dependency Secret',secret_type='api_key',encrypted_value='isolated-unused-test-ciphertext')}[kind]()
+        db.add(resource);db.flush()
+        for tree in [allowed,hidden]:
+            agent=db.get(AgentConfig,tree['root']['id'])
+            if kind=='provider':agent.provider_connection_id=resource.id
+            elif kind=='tool':db.add(ToolAssignment(tree_version_id=tree['current_version_id'],agent_config_id=agent.id,tool_connection_id=resource.id))
+            else:db.add(ResultDestination(tree_id=tree['id'],name='Dependency destination',destination_type='webhook',secret_id=resource.id))
+        db.commit();rid=resource.id
+    path='/api/'+ {'tool':'tools','provider':'providers','secret':'secrets'}[kind]+'/'+rid+'/dependencies'
+    result=member.get(path)
+    assert result.status_code==200
+    assert [item['tree_id'] for item in result.json()['dependencies']]==[allowed['id']]
+    assert hidden['id'] not in result.text and hidden['root']['id'] not in result.text
+    assert not result.json()['can_delete']
+    user_id=member.get('/api/auth/me').json()['id']
+    assert admin.put('/api/users/'+user_id,json={'allowed_tree_ids':[]}).status_code==200
+    result=member.get(path).json()
+    assert result['dependencies']==[] and not result['can_delete']
+    assert len(admin.get(path).json()['dependencies'])==2
+    assert member.delete(path.removesuffix('/dependencies')).status_code==409

@@ -1,0 +1,650 @@
+[
+  {
+    "run_id": "3784cf09-94c2-4adf-a643-ac8396eb63fc",
+    "tree_id": "b2d57c2a-acae-4cc5-8ee4-7db8784ccbdf",
+    "status": "completed",
+    "final_status": "completed",
+    "duration_ms": null,
+    "event_count": 23,
+    "result_available": true,
+    "operation_failures": [],
+    "operations": [
+      [
+        "4e3a296d-9c1e-4b94-a50e-8f113f6cdb3a",
+        "Analysis Lead",
+        "operation.in_flight",
+        "root.plan"
+      ],
+      [
+        "4e3a296d-9c1e-4b94-a50e-8f113f6cdb3a",
+        "Analysis Lead",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "4e3a296d-9c1e-4b94-a50e-8f113f6cdb3a",
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "4e3a296d-9c1e-4b94-a50e-8f113f6cdb3a",
+        "Analysis Lead",
+        "operation.in_flight",
+        "tool.call"
+      ],
+      [
+        "4e3a296d-9c1e-4b94-a50e-8f113f6cdb3a",
+        "Analysis Lead",
+        "operation.committed",
+        "tool.call"
+      ],
+      [
+        "4e3a296d-9c1e-4b94-a50e-8f113f6cdb3a",
+        "Analysis Lead",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "4e3a296d-9c1e-4b94-a50e-8f113f6cdb3a",
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "4e3a296d-9c1e-4b94-a50e-8f113f6cdb3a",
+        "Analysis Lead",
+        "operation.committed",
+        "root.plan"
+      ],
+      [
+        "4e3a296d-9c1e-4b94-a50e-8f113f6cdb3a",
+        "Analysis Lead",
+        "operation.in_flight",
+        "root.direct_response"
+      ],
+      [
+        "4e3a296d-9c1e-4b94-a50e-8f113f6cdb3a",
+        "Analysis Lead",
+        "operation.committed",
+        "root.direct_response"
+      ]
+    ],
+    "terminal_events": [
+      "operation.committed",
+      "operation.prepared",
+      "operation.in_flight",
+      "operation.committed",
+      "artifact.committed",
+      "execution.checkpoint.saved",
+      "output.final.available",
+      "execution.completed"
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "3142ebdb-c4b4-46ff-a668-0d9871d14a79",
+        "type": "text",
+        "name": "university-ai-report.txt",
+        "path": "university-ai-report.txt",
+        "operation": "none",
+        "media_type": "text/plain",
+        "size_bytes": 39342,
+        "sha256": "4b63effdea44c5e7d8dbd16c25979d05b19a91211fee99c64a78d41817f974df",
+        "producer_role": "tool",
+        "producer_agent_id": "4e3a296d-9c1e-4b94-a50e-8f113f6cdb3a",
+        "supersedes_artifact_id": null,
+        "is_final": false,
+        "body_available": true,
+        "created_at": "2026-10-02T11:43:31.387267Z"
+      }
+    ]
+  },
+  {
+    "run_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+    "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+    "status": "completed",
+    "final_status": "completed",
+    "duration_ms": null,
+    "event_count": 141,
+    "result_available": true,
+    "operation_failures": [],
+    "operations": [
+      [
+        "f92dd784-eb80-4b77-8539-46ffb1516436",
+        "Analysis Lead",
+        "operation.in_flight",
+        "root.plan"
+      ],
+      [
+        "f92dd784-eb80-4b77-8539-46ffb1516436",
+        "Analysis Lead",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "f92dd784-eb80-4b77-8539-46ffb1516436",
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "f92dd784-eb80-4b77-8539-46ffb1516436",
+        "Analysis Lead",
+        "operation.committed",
+        "root.plan"
+      ],
+      [
+        "f92dd784-eb80-4b77-8539-46ffb1516436",
+        "Analysis Lead",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "f92dd784-eb80-4b77-8539-46ffb1516436",
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "a601bea4-b936-4535-b269-76e95bdafee7",
+        "Research Manager",
+        "operation.in_flight",
+        "manager.decompose"
+      ],
+      [
+        "a601bea4-b936-4535-b269-76e95bdafee7",
+        "Research Manager",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "a601bea4-b936-4535-b269-76e95bdafee7",
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "a601bea4-b936-4535-b269-76e95bdafee7",
+        "Research Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.in_flight",
+        "manager.decompose"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "2c7e9d72-84c2-4f55-8312-635194109599",
+        "Research Specialist",
+        "operation.in_flight",
+        "specialist.generate"
+      ],
+      [
+        "2c7e9d72-84c2-4f55-8312-635194109599",
+        "Research Specialist",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "2c7e9d72-84c2-4f55-8312-635194109599",
+        "Research Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "2c7e9d72-84c2-4f55-8312-635194109599",
+        "Research Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "2c7e9d72-84c2-4f55-8312-635194109599",
+        "Research Specialist",
+        "operation.in_flight",
+        "specialist.generate"
+      ],
+      [
+        "2c7e9d72-84c2-4f55-8312-635194109599",
+        "Research Specialist",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "2c7e9d72-84c2-4f55-8312-635194109599",
+        "Research Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "2c7e9d72-84c2-4f55-8312-635194109599",
+        "Research Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "specialist.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "tool.call"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "tool.call"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "specialist.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "tool.call"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "tool.call"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "tool.call"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "tool.call"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "tool.call"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "tool.call"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "a601bea4-b936-4535-b269-76e95bdafee7",
+        "Research Manager",
+        "operation.in_flight",
+        "manager.review"
+      ],
+      [
+        "a601bea4-b936-4535-b269-76e95bdafee7",
+        "Research Manager",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "a601bea4-b936-4535-b269-76e95bdafee7",
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "a601bea4-b936-4535-b269-76e95bdafee7",
+        "Research Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "a601bea4-b936-4535-b269-76e95bdafee7",
+        "Research Manager",
+        "operation.in_flight",
+        "manager.review"
+      ],
+      [
+        "a601bea4-b936-4535-b269-76e95bdafee7",
+        "Research Manager",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "a601bea4-b936-4535-b269-76e95bdafee7",
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "a601bea4-b936-4535-b269-76e95bdafee7",
+        "Research Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.in_flight",
+        "manager.review"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "specialist.revision"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "tool.call"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "tool.call"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.revision"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.in_flight",
+        "manager.review"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.in_flight",
+        "manager.review"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "0ff944f6-57d9-484c-81f1-073fb5311428",
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "f92dd784-eb80-4b77-8539-46ffb1516436",
+        "Analysis Lead",
+        "operation.in_flight",
+        "root.final_review"
+      ],
+      [
+        "f92dd784-eb80-4b77-8539-46ffb1516436",
+        "Analysis Lead",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "f92dd784-eb80-4b77-8539-46ffb1516436",
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "f92dd784-eb80-4b77-8539-46ffb1516436",
+        "Analysis Lead",
+        "operation.committed",
+        "root.final_review"
+      ],
+      [
+        "f92dd784-eb80-4b77-8539-46ffb1516436",
+        "Analysis Lead",
+        "operation.in_flight",
+        "root.synthesis"
+      ],
+      [
+        "f92dd784-eb80-4b77-8539-46ffb1516436",
+        "Analysis Lead",
+        "operation.in_flight",
+        "provider.generate"
+      ],
+      [
+        "f92dd784-eb80-4b77-8539-46ffb1516436",
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "f92dd784-eb80-4b77-8539-46ffb1516436",
+        "Analysis Lead",
+        "operation.committed",
+        "root.synthesis"
+      ]
+    ],
+    "terminal_events": [
+      "operation.in_flight",
+      "operation.prepared",
+      "operation.in_flight",
+      "operation.committed",
+      "operation.committed",
+      "execution.checkpoint.saved",
+      "output.final.available",
+      "execution.completed"
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "deb486ae-c7a1-4604-b851-a6b05b994171",
+        "type": "text",
+        "name": "AI_in_Universities_Analysis.md",
+        "path": "AI_in_Universities_Analysis.md",
+        "operation": "none",
+        "media_type": "text/markdown",
+        "size_bytes": 15102,
+        "sha256": "aeb336b16e1d3ae792701a5f76cceb71576a8b0f5ec39e07b00e3cebf02f350d",
+        "producer_role": "tool",
+        "producer_agent_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "supersedes_artifact_id": null,
+        "is_final": false,
+        "body_available": true,
+        "created_at": "2026-10-02T11:45:13.738517Z"
+      },
+      {
+        "artifact_id": "622fcd77-31c4-4ddb-bff7-4f9c240cf51f",
+        "type": "text",
+        "name": "ai_in_universities_analysis_report.md",
+        "path": null,
+        "operation": "none",
+        "media_type": "text/markdown",
+        "size_bytes": 17203,
+        "sha256": "9ddbcbfa56109e0e1cab3b99a482cabfbfb63dac57ce89a400987155e8fd5665",
+        "producer_role": "tool",
+        "producer_agent_id": "e8fc6f6e-6a0e-4b2d-8873-3fcb9a8080be",
+        "supersedes_artifact_id": null,
+        "is_final": true,
+        "body_available": true,
+        "created_at": "2026-10-02T11:45:48.867464Z"
+      }
+    ]
+  }
+]

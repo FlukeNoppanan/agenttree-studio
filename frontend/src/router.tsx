@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom"
 import { ProtectedRoute } from "@/auth"
 import { MyTreesRedirect } from "@/pages/legacy-my-trees-redirect"
 import { AppLayout } from "@/components/app-layout"
+import { LegacyExecutionRoute } from "@/components/legacy-execution-route"
 import { RouteError } from "@/components/route-error"
 
 const UsersPage = lazy(() => import("@/pages/users").then(module => ({ default: module.UsersPage })))
@@ -10,21 +11,25 @@ const LoginPage = lazy(() => import("@/pages/auth-pages").then(module => ({ defa
 const ChangePasswordPage = lazy(() => import("@/pages/auth-pages").then(module => ({ default: module.ChangePasswordPage })))
 const AccountPage = lazy(() => import("@/pages/account-page").then(module => ({ default: module.AccountPage })))
 const DashboardPage = lazy(() => import("@/pages/dashboard").then(module => ({ default: module.DashboardPage })))
+const GettingStartedPage = lazy(() => import("@/pages/getting-started").then(module => ({ default: module.GettingStartedPage })))
 const ProvidersPage = lazy(() => import("@/pages/providers").then(module => ({ default: module.ProvidersPage })))
 const SecretsPage = lazy(() => import("@/pages/secrets").then(module => ({ default: module.SecretsPage })))
 const TreeDetailPage = lazy(() => import("@/pages/trees/tree-detail").then(module => ({ default: module.TreeDetailPage })))
 const TemplateSetupPage = lazy(() => import("@/pages/trees/template-setup").then(module => ({ default: module.TemplateSetupPage })))
 const TreeLivePage = lazy(() => import("@/pages/trees/tree-live").then(module => ({ default: module.TreeLivePage })))
 const TreeListPage = lazy(() => import("@/pages/trees/tree-list").then(module => ({ default: module.TreeListPage })))
+const TreeBuilderPage = lazy(() => import("@/pages/trees/tree-builder").then(module => ({ default: module.TreeBuilderPage })))
+const CreateTreePage = lazy(() => import("@/pages/trees/create-tree").then(module => ({ default: module.CreateTreePage })))
 const TreeWizard = lazy(() => import("@/components/tree/tree-wizard").then(module => ({ default: module.TreeWizard })))
 const RunDetailPage = lazy(() => import("@/pages/runs/run-detail").then(module => ({ default: module.RunDetailPage })))
 const RunListPage = lazy(() => import("@/pages/runs/run-list").then(module => ({ default: module.RunListPage })))
-const TraceListPage = lazy(() => import("@/pages/runs/trace-list").then(module => ({ default: module.TraceListPage })))
 const ToolsPage = lazy(() => import("@/pages/tools").then(module => ({ default: module.ToolsPage })))
 const SettingsPage = lazy(() => import("@/pages/settings").then(module => ({ default: module.SettingsPage })))
 const TemplatesPage = lazy(() => import("@/pages/templates").then(module => ({ default: module.TemplatesPage })))
 const LearningPage = lazy(() => import("@/pages/learning").then(module => ({ default: module.LearningPage })))
 const SecurityEventsPage = lazy(() => import("@/pages/security-events").then(module => ({ default: module.SecurityEventsPage })))
+
+const TreePlaygroundPage = lazy(() => import("@/pages/trees/tree-playground").then(module => ({ default: module.TreePlaygroundPage })))
 
 export const router = createBrowserRouter([
   { path: "login", element: <Suspense fallback={<div role="status" className="p-6">Loading…</div>}><LoginPage /></Suspense>, errorElement: <RouteError /> },
@@ -36,6 +41,7 @@ export const router = createBrowserRouter([
     { element: <Suspense fallback={<div role="status" className="p-6 text-muted-foreground">Loading…</div>}><AppLayout /></Suspense>, children: [
       { index: true, element: <DashboardPage /> },
       { path: "dashboard", element: <DashboardPage /> },
+      { path: "getting-started", element: <GettingStartedPage /> },
       { path: "account", element: <AccountPage /> },
       { path: "my-trees", element: <MyTreesRedirect /> },
       { path: "users", element: <ProtectedRoute admin />, children: [{ index: true, element: <UsersPage /> }] },
@@ -44,7 +50,11 @@ export const router = createBrowserRouter([
         path: "trees",
         element: <TreeListPage />,
       },
-      { path: "trees/new", element: <TreeWizard /> },
+      { path: "trees/new", element: <CreateTreePage /> },
+      { path: "trees/new/visual", element: <TreeBuilderPage /> },
+      { path: "trees/new/advanced", element: <TreeWizard /> },
+      { path: "trees/:treeId/playground", element: <ProtectedRoute permission="view_executions" />, children: [{ index: true, element: <TreePlaygroundPage /> }] },
+      { path: "trees/:treeId/build", element: <TreeBuilderPage /> },
       { path: "trees/:treeId/setup", element: <TemplateSetupPage /> },
       { path: "trees/:treeId/edit", element: <TreeWizard /> },
       { path: "trees/:treeId", element: <TreeDetailPage /> },
@@ -54,11 +64,13 @@ export const router = createBrowserRouter([
       { element: <ProtectedRoute permission="view_executions" />, children: [
       { path: "trees/:treeId/live", element: <TreeLivePage /> },
       {
-        path: "runs",
+        path: "executions",
         element: <RunListPage />,
       },
-      { path: "runs/:runId", element: <RunDetailPage /> },
-      { path: "execution-trace", element: <TraceListPage /> },
+      { path: "executions/:runId", element: <RunDetailPage /> },
+      { path: "runs", element: <LegacyExecutionRoute /> },
+      { path: "runs/:runId", element: <LegacyExecutionRoute /> },
+      { path: "execution-trace", element: <LegacyExecutionRoute /> },
       ] },
       { element: <ProtectedRoute permission="manage_providers_models" />, children: [
       {

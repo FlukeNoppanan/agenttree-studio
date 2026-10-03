@@ -1,0 +1,69 @@
+{
+  "run_id": "3784cf09-94c2-4adf-a643-ac8396eb63fc",
+  "tree_id": "b2d57c2a-acae-4cc5-8ee4-7db8784ccbdf",
+  "status": "completed",
+  "final_status": "completed",
+  "duration_ms": 21088,
+  "observed_calls": [
+    {
+      "agent_id": "4e3a296d-9c1e-4b94-a50e-8f113f6cdb3a",
+      "execution_id": "3784cf09-94c2-4adf-a643-ac8396eb63fc",
+      "keys": [
+        "operation",
+        "content",
+        "media_type",
+        "type",
+        "path",
+        "name"
+      ],
+      "argument_bytes": 39696,
+      "escaped_argument_bytes": 78087,
+      "field_bytes": {
+        "operation": 6,
+        "content": 39546,
+        "media_type": 12,
+        "type": 6,
+        "path": 26,
+        "name": 26
+      },
+      "content_bytes": 39342,
+      "content_sha256": "4b63effdea44c5e7d8dbd16c25979d05b19a91211fee99c64a78d41817f974df",
+      "whole_body_repeated": false,
+      "duplicate_long_paragraphs": 0,
+      "name": "university-ai-report.txt",
+      "type": "text",
+      "operation": "none",
+      "media_type": "text/plain"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "3142ebdb-c4b4-46ff-a668-0d9871d14a79",
+      "core_artifact_id": "ecd84a20ae32b1f80407710548ff5ed21a822ef45c478e55866dcd155377a449",
+      "artifact_type": "text",
+      "name": "university-ai-report.txt",
+      "logical_path": "university-ai-report.txt",
+      "operation": "none",
+      "media_type": "text/plain",
+      "size_bytes": 39342,
+      "sha256": "4b63effdea44c5e7d8dbd16c25979d05b19a91211fee99c64a78d41817f974df",
+      "producer_role": "tool",
+      "producer_agent_id": "4e3a296d-9c1e-4b94-a50e-8f113f6cdb3a",
+      "metadata": {},
+      "is_final": false,
+      "created_at": "2026-10-02T11:43:31.387267Z"
+    }
+  ],
+  "stored_content_verified": {
+    "utf8_roundtrip": true,
+    "sha256_matches_model_body": true,
+    "download_matches_storage": true,
+    "http_status": 200,
+    "bytes": 39342,
+    "numbered_sections": 40,
+    "whole_body_repeated": false,
+    "duplicate_long_paragraphs": 0
+  },
+  "legacy_merged_trace_event_count": 36,
+  "durable_event_count": 23
+}

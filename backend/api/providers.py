@@ -1,9 +1,10 @@
 """Provider connection and discovered-model endpoints."""
 
-from fastapi import APIRouter, Depends, Query, Response, status
+from fastapi import APIRouter, Depends, Query, Response, Request, status
 from sqlalchemy.orm import Session
 
 from backend.db.session import get_db
+from backend.api.auth import current_user
 from backend.schemas.provider import (
     ModelDiscoveryResponse,
     ProviderCreate,
@@ -22,8 +23,8 @@ router = APIRouter(prefix="/providers", tags=["providers"])
 
 
 @router.get("/{provider_id}/dependencies", response_model=ResourceDependencies)
-def provider_dependencies(provider_id: str, database: Session = Depends(get_db)) -> ResourceDependencies:
-    return DependencyService(database).provider(provider_id)
+def provider_dependencies(provider_id: str, request: Request, database: Session = Depends(get_db)) -> ResourceDependencies:
+    return DependencyService(database, current_user(request, database)).provider(provider_id)
 
 
 @router.get("", response_model=list[ProviderRead])

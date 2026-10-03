@@ -1,0 +1,1425 @@
+[
+  {
+    "run_id": "9586ab3a-88a7-42de-a214-9ba16cd35854",
+    "tree_id": "0fbd9ffd-88a7-4fc8-90d2-63dae8950dcf",
+    "status": "failed",
+    "final_status": null,
+    "duration_ms": 81147,
+    "events": 67,
+    "result_available": false,
+    "error": {
+      "code": "provider_unavailable",
+      "message": "Provider service is unavailable"
+    },
+    "cancellation_requested": false,
+    "artifacts": [],
+    "operations": [
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.plan"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Research Manager",
+        "operation.failed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.failed",
+        "manager.review"
+      ]
+    ],
+    "tool_events": [],
+    "terminal_events": [
+      "execution.queued",
+      "execution.started",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.failed"
+    ]
+  },
+  {
+    "run_id": "5bc5b2cd-723c-4f52-b458-6ea83a96d712",
+    "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+    "status": "failed",
+    "final_status": null,
+    "duration_ms": 160228,
+    "events": 148,
+    "result_available": false,
+    "error": {
+      "code": "execution_error",
+      "message": "AgentTree execution failed"
+    },
+    "cancellation_requested": false,
+    "artifacts": [],
+    "operations": [
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.plan"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.failed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "tool.call"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.final_review"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.failed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.revision"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.failed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.revision"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.final_review"
+      ]
+    ],
+    "tool_events": [],
+    "terminal_events": [
+      "execution.queued",
+      "execution.started",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.failed"
+    ]
+  },
+  {
+    "run_id": "cbcf6cf6-8327-4266-af41-a220eaf4b6ef",
+    "tree_id": "0fbd9ffd-88a7-4fc8-90d2-63dae8950dcf",
+    "status": "completed",
+    "final_status": "completed",
+    "duration_ms": 6546,
+    "events": 15,
+    "result_available": true,
+    "error": null,
+    "cancellation_requested": false,
+    "artifacts": [],
+    "operations": [
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.plan"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.direct_response"
+      ]
+    ],
+    "tool_events": [],
+    "terminal_events": [
+      "execution.queued",
+      "execution.started",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "output.final.available",
+      "execution.completed"
+    ]
+  },
+  {
+    "run_id": "39950a51-42d7-4a2f-8a81-74c115f68c5d",
+    "tree_id": "b7e13e21-4bf0-4f39-914e-ffef811dbdf1",
+    "status": "failed",
+    "final_status": null,
+    "duration_ms": 28364,
+    "events": 124,
+    "result_available": false,
+    "error": {
+      "code": "execution_error",
+      "message": "AgentTree execution failed"
+    },
+    "cancellation_requested": false,
+    "artifacts": [],
+    "operations": [
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.plan"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.failed",
+        "tool.call"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.failed",
+        "tool.call"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.failed",
+        "tool.call"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.revision"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.failed",
+        "tool.call"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.revision"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.failed",
+        "tool.call"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.revision"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.failed",
+        "tool.call"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.revision"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.final_review"
+      ]
+    ],
+    "tool_events": [],
+    "terminal_events": [
+      "execution.queued",
+      "execution.started",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.failed"
+    ]
+  },
+  {
+    "run_id": "eec7386f-2a15-4fe2-b713-54857b75f51b",
+    "tree_id": "b7e13e21-4bf0-4f39-914e-ffef811dbdf1",
+    "status": "completed",
+    "final_status": "completed",
+    "duration_ms": 20424,
+    "events": 65,
+    "result_available": true,
+    "error": null,
+    "cancellation_requested": false,
+    "artifacts": [],
+    "operations": [
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.plan"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "tool.call"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "tool.call"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.final_review"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.synthesis"
+      ]
+    ],
+    "tool_events": [],
+    "terminal_events": [
+      "execution.queued",
+      "execution.started",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "output.final.available",
+      "execution.completed"
+    ]
+  },
+  {
+    "run_id": "0a46bae4-005c-4ff6-b19f-05bd73c2cd89",
+    "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+    "status": "failed",
+    "final_status": null,
+    "duration_ms": 23872,
+    "events": 61,
+    "result_available": false,
+    "error": {
+      "code": "provider_rate_limit",
+      "message": "Provider rate limit exceeded"
+    },
+    "cancellation_requested": false,
+    "artifacts": [],
+    "operations": [
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.plan"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.failed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.failed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.failed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.failed",
+        "manager.review"
+      ]
+    ],
+    "tool_events": [],
+    "terminal_events": [
+      "execution.queued",
+      "execution.started",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.failed"
+    ]
+  },
+  {
+    "run_id": "57abc6b3-628b-43b4-9c65-d1247c76ffad",
+    "tree_id": "0fbd9ffd-88a7-4fc8-90d2-63dae8950dcf",
+    "status": "cancelled",
+    "final_status": null,
+    "duration_ms": 34512,
+    "events": 52,
+    "result_available": false,
+    "error": null,
+    "cancellation_requested": true,
+    "artifacts": [],
+    "operations": [
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.plan"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ]
+    ],
+    "tool_events": [],
+    "terminal_events": [
+      "execution.queued",
+      "execution.started",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.cancellation.requested",
+      "execution.cancelled"
+    ]
+  },
+  {
+    "run_id": "1c7fabed-0dec-43bd-8fda-28724834869b",
+    "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+    "status": "completed",
+    "final_status": "partial",
+    "duration_ms": 55490,
+    "events": 113,
+    "result_available": true,
+    "error": null,
+    "cancellation_requested": false,
+    "artifacts": [],
+    "operations": [
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.plan"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.failed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.failed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "tool.call"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.revision"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.final_review"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.synthesis"
+      ]
+    ],
+    "tool_events": [],
+    "terminal_events": [
+      "execution.queued",
+      "execution.started",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "output.final.available",
+      "execution.completed"
+    ]
+  },
+  {
+    "run_id": "e5faf2b9-13c0-4910-8fc2-f2848d4b9c90",
+    "tree_id": "c5605ec6-d392-4e85-9f02-cf6ec9fa2c63",
+    "status": "completed",
+    "final_status": "completed",
+    "duration_ms": 2027,
+    "events": 23,
+    "result_available": true,
+    "error": null,
+    "cancellation_requested": false,
+    "artifacts": [
+      {
+        "artifact_id": "4834c060-41eb-4cb7-a5e3-7e43cf3910de",
+        "type": "text",
+        "name": "certification.txt",
+        "path": null,
+        "operation": "none",
+        "media_type": "text/plain",
+        "size_bytes": 24,
+        "sha256": "4c129663fd3f91a12d208a2a20cc716c5c1c149df882732bb5ac0ca834d29a4f",
+        "producer_role": "tool",
+        "producer_agent_id": "7f9c2bad-900a-4191-81e4-89d7e611abca",
+        "supersedes_artifact_id": null,
+        "is_final": false,
+        "body_available": true,
+        "created_at": "2026-10-02T00:42:11.298108Z"
+      }
+    ],
+    "operations": [
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "tool.call"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.plan"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.direct_response"
+      ]
+    ],
+    "tool_events": [
+      [
+        "artifact.staged",
+        {
+          "artifact_id": "1d490eb2b32d7ae4e84e80e00186d6ec60ec179c775bdce366198310ce47d5c8",
+          "status": "staged"
+        }
+      ],
+      [
+        "artifact.committed",
+        {
+          "artifact_id": "1d490eb2b32d7ae4e84e80e00186d6ec60ec179c775bdce366198310ce47d5c8",
+          "status": "committed",
+          "type": "text",
+          "name": "certification.txt",
+          "path": null,
+          "operation": "none",
+          "media_type": "text/plain",
+          "sha256": "4c129663fd3f91a12d208a2a20cc716c5c1c149df882732bb5ac0ca834d29a4f",
+          "size_bytes": 24,
+          "producer_role": "tool",
+          "producer_agent_id": "7f9c2bad-900a-4191-81e4-89d7e611abca",
+          "producer_operation_key": "planning/root:plan/tool:call_63778"
+        }
+      ]
+    ],
+    "terminal_events": [
+      "execution.queued",
+      "execution.started",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "output.final.available",
+      "execution.completed"
+    ]
+  },
+  {
+    "run_id": "be15f651-5995-4f57-b8da-dd96bd8b9d58",
+    "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+    "status": "completed",
+    "final_status": "partial",
+    "duration_ms": 51505,
+    "events": 101,
+    "result_available": true,
+    "error": null,
+    "cancellation_requested": false,
+    "artifacts": [],
+    "operations": [
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.plan"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.decompose"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.failed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "tool.call"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Research Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.failed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Specialist",
+        "operation.committed",
+        "specialist.revision"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Synthesis Manager",
+        "operation.committed",
+        "manager.review"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.final_review"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "provider.generate"
+      ],
+      [
+        "Analysis Lead",
+        "operation.committed",
+        "root.synthesis"
+      ]
+    ],
+    "tool_events": [],
+    "terminal_events": [
+      "execution.queued",
+      "execution.started",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "execution.phase.started",
+      "execution.checkpoint.saved",
+      "output.final.available",
+      "execution.completed"
+    ]
+  }
+]

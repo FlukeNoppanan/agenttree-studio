@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { AuthProvider } from "@/auth"
 import { Sidebar } from "@/components/sidebar"
+import { AppTopbar } from "@/components/app-topbar"
 import i18n from "@/i18n"
 import { api, type AccountInfo, type DashboardSummary, type MyDashboard, type StudioUser } from "@/lib/api"
 import { LoginPage } from "@/pages/auth-pages"
@@ -24,7 +25,7 @@ const global: DashboardSummary = { metrics: {
 
 function mount(page: "dashboard" | "account" | "users", user: StudioUser) {
   vi.spyOn(api, "me").mockResolvedValue(user)
-  return render(<AuthProvider><MemoryRouter initialEntries={[`/${page}`]}><Sidebar /><Routes>
+  return render(<AuthProvider><MemoryRouter initialEntries={[`/${page}`]}><Sidebar /><AppTopbar /><Routes>
     <Route path="dashboard" element={<DashboardPage />} />
     <Route path="account" element={<AccountPage />} />
     <Route path="users" element={<UsersPage />} />
@@ -72,7 +73,7 @@ describe("Primary Admin and account-aware UI", () => {
     mount("account", base)
     await screen.findByRole("heading", { name: "My Account" })
     const menus = screen.getAllByRole("button", { name: "Account menu" })
-    expect(menus).toHaveLength(2) // desktop and responsive shell
+    expect(menus).toHaveLength(1) // one global utility trigger
     fireEvent.click(menus[0])
     expect(screen.getByRole("menuitem", { name: "My Account" })).toBeInTheDocument()
     expect(screen.getByRole("menuitem", { name: "Change Password" })).toBeInTheDocument()

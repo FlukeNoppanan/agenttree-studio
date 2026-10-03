@@ -1,0 +1,5 @@
+Studio: git diff --check exit 0
+
+Core: git diff --check exit 0
+
+Additional cached-diff historical log whitespace remains disclosed in report; no staging changes made.

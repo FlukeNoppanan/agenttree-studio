@@ -19,6 +19,8 @@ services:
     build:
       context: .
       dockerfile: backend/Dockerfile
+      additional_contexts:
+        agenttree_core: ../Agenttree
     restart: unless-stopped
     depends_on:
       postgres:
@@ -30,6 +32,7 @@ services:
       AGENTTREE_STUDIO_ADMIN_PASSWORD: ${AGENTTREE_STUDIO_ADMIN_PASSWORD:-admin}
       AGENTTREE_STUDIO_SECURE_COOKIES: ${AGENTTREE_STUDIO_SECURE_COOKIES:-false}
       AGENTTREE_PUBLIC_API_CORS_ORIGINS: ${AGENTTREE_PUBLIC_API_CORS_ORIGINS:-}
+      AGENTTREE_STUDIO_PUBLIC_ORIGIN: ${AGENTTREE_STUDIO_PUBLIC_ORIGIN:-}
       AGENTTREE_STUDIO_ARTIFACT_ROOT: /var/lib/agenttree-studio/artifacts
     ports:
       - "${BACKEND_PORT:-8000}:8000"

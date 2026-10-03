@@ -14,7 +14,9 @@ from sqlalchemy.orm import Session
 
 from backend.core.capabilities import capability_label, normalize_capability, normalize_capabilities
 from backend.models.provider import ProviderConnection, ProviderModel
-from backend.models.tree import AgentConfig
+from backend.models.tree import AgentConfig, TreeVersion
+from backend.models.auth import User
+from backend.services.auth_service import AuthService
 from backend.providers.generation import create_generation_provider
 from backend.schemas.capability import (
     CapabilityCatalogItem,
@@ -33,9 +35,12 @@ class CapabilityCatalogService:
     def __init__(self, database: Session) -> None:
         self._database = database
 
-    def search(self, query: str | None = None) -> list[CapabilityCatalogItem]:
+    def search(self, query: str | None = None, user: User | None = None) -> list[CapabilityCatalogItem]:
         usage: Counter[str] = Counter()
-        for values in self._database.scalars(select(AgentConfig.capabilities_json)).all():
+        statement = select(AgentConfig.capabilities_json)
+        if user is not None:
+            statement = statement.join(TreeVersion).where(AuthService.tree_access_filter(user, TreeVersion.tree_id))
+        for values in self._database.scalars(statement).all():
             for capability in set(normalize_capabilities(values or [])):
                 usage[capability] += 1
 

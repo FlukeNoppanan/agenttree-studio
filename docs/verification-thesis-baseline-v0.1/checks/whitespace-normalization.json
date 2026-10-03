@@ -1,0 +1,16 @@
+[
+  "docs/verification-final-integration-polish/checks/frontend-tests.log",
+  "docs/verification-final-ux-consolidation/checks/docker-acceptance.log",
+  "docs/verification-final-ux-consolidation/checks/frontend-tests.log",
+  "docs/verification-integration/v2-stream.txt",
+  "docs/verification-playground-runtime-closure/checks/artifact-frontend-tests.log",
+  "docs/verification-playground-runtime-closure/checks/artifact-frontend.log",
+  "docs/verification-playground-runtime-closure/checks/diff-check.txt",
+  "docs/verification-playground/checks/disposable-cleanup.log",
+  "docs/verification-playground/checks/frontend-final.log",
+  "docs/verification-playground/checks/isolated-frontend-docker.log",
+  "docs/verification-playground/checks/original-frontend-docker.log",
+  "docs/verification-thesis-baseline-v0.1/checks/docker-build.log",
+  "docs/verification-thesis-baseline-v0.1/checks/frontend-tests.log",
+  "docs/verification-visual-builder/frontend-tests.log"
+]

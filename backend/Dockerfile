@@ -19,6 +19,11 @@ RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
 WORKDIR /app
 COPY requirements-base.txt requirements-docker.txt ./
 RUN pip install -r requirements-docker.txt
+# Install the separate sibling framework package for local runtime certification.
+# No Core implementation is copied into Studio source or vendored into its repo.
+COPY --from=agenttree_core /pyproject.toml /README.md /tmp/agenttree-core/
+COPY --from=agenttree_core /src /tmp/agenttree-core/src
+RUN pip install --no-deps /tmp/agenttree-core && rm -rf /tmp/agenttree-core
 COPY alembic.ini ./
 COPY alembic ./alembic
 COPY backend ./backend

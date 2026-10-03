@@ -1,0 +1,25 @@
+{
+  "studio_backend": {
+    "passed": 303,
+    "warnings": 1,
+    "duration_seconds": 40.99
+  },
+  "frontend": {
+    "passed": 255,
+    "files": 38,
+    "duration_seconds": 15.9
+  },
+  "core": {
+    "passed": 729,
+    "skipped": 5,
+    "duration_seconds": 32.57
+  },
+  "typescript": "passed",
+  "production_build": "passed",
+  "current_diff_check_studio": "passed",
+  "current_diff_check_core": "passed",
+  "cached_diff_check_studio": "pre-existing whitespace in six historical evidence files; preserved",
+  "migration_head": "0013_run_cancellation_status",
+  "new_dependencies": 0,
+  "new_migrations": 0
+}

@@ -1,0 +1,13 @@
+{
+  "api_key_hash_only": true,
+  "api_key_revoked": true,
+  "webhook_hash_only": true,
+  "webhook_disabled": true,
+  "last_received_persisted": true,
+  "completed_runs_with_trace": 3,
+  "existing_database_counts_preserved": {
+    "users": 2,
+    "trees": 4,
+    "providers": 3
+  }
+}

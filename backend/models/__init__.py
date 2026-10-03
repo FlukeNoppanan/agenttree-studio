@@ -8,6 +8,7 @@ from backend.models.tool import ToolAssignment, ToolConnection
 from backend.models.tree import AgentConfig, OutputConfig, Tree, TreeVersion, TriggerConfig
 from backend.models.template import TreeTemplate
 from backend.models.auth import ApiToken, SecurityEvent, User, UserPermission, UserSession, UserTreeAccess
+from backend.models.webhook import WebhookIntegration
 
 __all__ = [
     "Secret", "ProviderConnection", "ProviderModel", "Tree", "TreeVersion",
@@ -17,4 +18,5 @@ __all__ = [
     "Run", "RunArtifact", "RunIdempotency", "TraceEvent",
     "ResultDestination", "ResultDelivery",
     "User", "UserPermission", "UserTreeAccess", "UserSession", "ApiToken", "SecurityEvent",
+    "WebhookIntegration",
 ]

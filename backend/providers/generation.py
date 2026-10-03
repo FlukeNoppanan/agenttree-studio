@@ -32,7 +32,9 @@ def create_generation_provider(
             base_url=connection.base_url,
         )
     if connection.provider_type == "gemini":
-        return GeminiProvider(config, api_key=credential)
+        # Planning and review can take longer than a connection smoke test.
+        # The Run's existing deadline/cancellation still bounds execution.
+        return GeminiProvider(config, api_key=credential, timeout=60)
     if connection.provider_type == "groq":
         return GroqProvider(config, api_key=credential or "")
     if connection.provider_type == "openrouter":

@@ -5,8 +5,9 @@ from sqlalchemy.orm import Session
 
 from backend.api.auth import current_user
 from backend.db.session import get_db
-from backend.schemas.template import TemplateInstantiateRequest, TemplateRead, TemplateUpdate
-from backend.schemas.tree import TreeDetailRead
+from backend.schemas.template import TemplateDraftRead, TemplateInstantiateRequest, TemplateRead, TemplateUpdate
+from backend.schemas.tree import TreeDetailRead, TreeValidationRead
+from backend.services.errors import ServiceError
 from backend.services.template_service import TemplateService
 
 router = APIRouter(prefix="/templates", tags=["templates"])
@@ -22,6 +23,23 @@ def get_template(template_id: str, request: Request, database: Session = Depends
     return TemplateService(database).get(template_id, current_user(request, database))
 
 
+@router.get("/{template_id}/draft", response_model=TemplateDraftRead)
+def get_template_draft(template_id: str, request: Request, database: Session = Depends(get_db)):
+    return TemplateService(database).prepare_draft(template_id, current_user(request, database))
+
+
+@router.post("/{template_id}/validate-draft", response_model=TreeValidationRead)
+def validate_template_draft(
+    template_id: str, payload: TemplateInstantiateRequest, request: Request,
+    database: Session = Depends(get_db),
+):
+    if payload.configuration is None:
+        raise ServiceError("Template configuration is required")
+    return TemplateService(database).preview_configuration(
+        template_id, current_user(request, database), payload.configuration, payload.agent_ids,
+    )
+
+
 @router.post("/{template_id}/instantiate", response_model=TreeDetailRead, status_code=status.HTTP_201_CREATED)
 def instantiate_template(
     template_id: str, payload: TemplateInstantiateRequest, request: Request,
@@ -29,6 +47,7 @@ def instantiate_template(
 ):
     return TemplateService(database).instantiate(
         template_id, current_user(request, database), name=payload.name,
+        configuration=payload.configuration, agent_ids=payload.agent_ids,
     )
 
 

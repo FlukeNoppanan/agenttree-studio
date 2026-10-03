@@ -263,8 +263,8 @@ def test_custom_unknown_tools_are_not_guessed_into_templates_and_reported(databa
 
 
 def test_template_setup_api_permissions_keep_tool_creation_separate():
-    assert required_access("/api/trees/tree-1/template-setup", "GET") == ("manage_trees_agents", None)
-    assert required_access("/api/trees/tree-1/template-setup/apply-default", "POST") == ("manage_trees_agents", None)
+    assert required_access("/api/trees/tree-1/template-setup", "GET") == ("manage_trees_agents", "tree-1")
+    assert required_access("/api/trees/tree-1/template-setup/apply-default", "POST") == ("manage_trees_agents", "tree-1")
     assert required_access("/api/tool-catalog/artifact-output/resolve-requirement", "POST") == ("manage_tools_mcp", None)
     assert required_access("/api/tool-catalog/resolve-required", "POST") == ("manage_tools_mcp", None)
 

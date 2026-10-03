@@ -1,0 +1,4 @@
+NAME                          IMAGE                                                                     COMMAND                  SERVICE    CREATED        STATUS                  PORTS
+agenttree-studio-backend-1    sha256:41ebb86460997977690e82415645ce98c99cf595ce2c5e18c687274033e63071   "studio-entrypoint"      backend    12 hours ago   Up 12 hours (healthy)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+agenttree-studio-frontend-1   sha256:a4f118453c6a9c8fd31f5b4ee07233029964d968313b0c6dc438a8592f595e3d   "docker-entrypoint.s…"   frontend   11 hours ago   Up 11 hours (healthy)   0.0.0.0:5173->5173/tcp, [::]:5173->5173/tcp
+agenttree-studio-postgres-1   postgres:16-alpine                                                        "docker-entrypoint.s…"   postgres   3 days ago     Up 2 days (healthy)     5432/tcp

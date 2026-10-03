@@ -2,6 +2,11 @@
 
 Public API v2 is the asynchronous external execution contract. V1 remains supported and synchronous. V2 creates a durable Run immediately, executes through the Phase 8A Core integration in a bounded background worker, and supports polling or Server-Sent Events (SSE).
 
+Tree → Connect presents V2 as **Async API · Recommended**, with cURL, Python,
+and JavaScript examples using the configured public origin or browser proxy
+origin. Personal keys are managed in **Account → API Keys**. Separate incoming
+[Webhook Triggers](external-integrations.md) reuse the same Run infrastructure.
+
 ## Authentication and authorization
 
 Every endpoint requires `Authorization: Bearer ats_…`; API keys in query strings are not accepted. V2 retains hash-only key storage, active-owner/revocation checks, dynamic Tree grants, and throttled `last_used_at` updates. Missing and unauthorized Runs/artifacts both return a non-enumerating 404.
@@ -91,6 +96,6 @@ Phase 8D Coding Agenttree can submit work, stream safe output and Tool/collabora
 
 ## Restart and retention limitations
 
-Run rows, final results, durable Studio events, artifact metadata, idempotency mappings, and file-backed bodies survive restart. Transient deltas do not. Active Core state, checkpoints, and operation journals still use `InMemoryExecutionStore`; interrupted executions cannot safely resume and may need operator reconciliation.
+Run rows, final results, durable Studio events, artifact metadata, idempotency mappings, and file-backed bodies survive restart. Transient deltas do not. Active Core state, checkpoints, and operation journals still use `InMemoryExecutionStore`. Startup reconciliation marks interrupted active Runs failed with `RECOVERY_UNAVAILABLE`; they do not resume.
 
 **DURABLE CORE RECOVERY IN STUDIO: NOT IMPLEMENTED.** No public recovery endpoint exists. No destructive retention job runs in Phase 8B; records and bodies accumulate pending a future operator policy.

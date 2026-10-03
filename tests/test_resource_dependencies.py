@@ -1,6 +1,9 @@
 """Dependency inspection and deletion contracts through API route handlers."""
 
 import httpx
+from unittest.mock import patch
+from starlette.requests import Request
+from backend.models.auth import User
 from backend.api.providers import delete_provider, provider_dependencies
 from backend.api.secrets import delete_secret, secret_dependencies
 from backend.api.tools import delete_tool, tool_dependencies
@@ -26,7 +29,8 @@ def client_for(database_factory):
             with database_factory() as database:
                 try:
                     if method == "GET" and suffix == ["dependencies"]:
-                        return httpx.Response(200, json=inspect(resource_id, database).model_dump(mode="json"))
+                        with patch(f"backend.api.{kind}.current_user", return_value=User(is_admin=True)):
+                            return httpx.Response(200, json=inspect(resource_id, Request({"type": "http"}), database).model_dump(mode="json"))
                     if method == "DELETE" and not suffix:
                         remove(resource_id, database)
                         return httpx.Response(204)

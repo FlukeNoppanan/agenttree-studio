@@ -1,0 +1,1535 @@
+{
+  "run_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+  "state": {
+    "status": 200,
+    "data": {
+      "run_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "tree_id": "1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "tree_version_id": "6f10d6ec-38b3-421f-9e9d-436f001a1297",
+      "status": "failed",
+      "final_status": null,
+      "created_at": "2026-10-01T17:43:18.105079Z",
+      "started_at": "2026-10-01T17:43:18.104454Z",
+      "finished_at": "2026-10-01T17:43:25.049909Z",
+      "cancellation_requested": false,
+      "cancellation_requested_at": null,
+      "usage": null,
+      "metrics": {
+        "queue_duration_ms": 0.7020000000000001,
+        "execution_duration_ms": null,
+        "checkpoint_count": 0,
+        "recovery_count": 0,
+        "cancellation_count": 0,
+        "operations_total": 3,
+        "operations_reused": 0,
+        "operations_retried": 0,
+        "operations_uncertain": 0,
+        "recovery_block_count": 0
+      },
+      "error": {
+        "code": "execution_error",
+        "message": "AgentTree execution failed"
+      },
+      "artifact_count": 0,
+      "latest_event_sequence": 13,
+      "final_output": null,
+      "links": {
+        "self": "/api/v2/runs/4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+        "events": "/api/v2/runs/4bb6c81a-d0c5-4292-850f-013fc20aa72f/events",
+        "stream": "/api/v2/runs/4bb6c81a-d0c5-4292-850f-013fc20aa72f/stream",
+        "result": "/api/v2/runs/4bb6c81a-d0c5-4292-850f-013fc20aa72f/result",
+        "artifacts": "/api/v2/runs/4bb6c81a-d0c5-4292-850f-013fc20aa72f/artifacts",
+        "cancel": "/api/v2/runs/4bb6c81a-d0c5-4292-850f-013fc20aa72f/cancel"
+      }
+    }
+  },
+  "detail": {
+    "status": 200,
+    "data": {
+      "id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "tree_id": "1a6e2277-ed2e-439f-b4b6-c96a2f0f7368",
+      "tree_name": "Playground Analysis",
+      "tree_version_id": "6f10d6ec-38b3-421f-9e9d-436f001a1297",
+      "tree_version_number": 3,
+      "status": "failed",
+      "core_execution_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "final_status": null,
+      "input": {
+        "input": "This is a complex analysis task requiring delegation to the analysis Manager and its analysis Specialist. Develop an end-to-end resilience plan for a small research team with 20 laptops and two servers. Decompose the work into separate tasks: compare backup recovery risks, evaluate retention and recovery objectives, analyze a simulated regional outage, propose a verification schedule, and review the consistency of the combined recommendations. Use the available analysis capability and Specialist expertise. Return a concise, evidence-based synthesis, with assumptions and tradeoffs. Do not answer directly without delegation."
+      },
+      "metadata": {},
+      "invocation_source": "studio_live",
+      "output": null,
+      "error_code": "EXECUTION_ERROR",
+      "error_message": "AgentTree execution failed",
+      "started_at": "2026-10-01T17:43:18.104454Z",
+      "finished_at": "2026-10-01T17:43:25.049909Z",
+      "duration_ms": 6918,
+      "usage": null,
+      "metrics": {
+        "queue_duration_ms": 0.7020000000000001,
+        "execution_duration_ms": null,
+        "checkpoint_count": 0,
+        "recovery_count": 0,
+        "cancellation_count": 0,
+        "operations_total": 3,
+        "operations_reused": 0,
+        "operations_retried": 0,
+        "operations_uncertain": 0,
+        "recovery_block_count": 0
+      },
+      "created_at": "2026-10-01T17:43:18.105079Z",
+      "state": {
+        "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+        "current_phase": "failed",
+        "status": "failed",
+        "triage_result": null,
+        "orchestration_plan": null,
+        "delegation_result": null,
+        "execution_result": null,
+        "manager_review_result": null,
+        "final_result": null,
+        "failed_phase": "triage",
+        "failure_reason": "Run raised DecisionOutputError",
+        "trace": {
+          "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+          "events": [
+            {
+              "timestamp": "2026-10-01T17:43:18.301261+00:00",
+              "event_type": "execution.started",
+              "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+              "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T17:43:18.301341+00:00",
+              "event_type": "root.planning.started",
+              "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+              "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T17:43:20.839325+00:00",
+              "event_type": "root.planning.completed",
+              "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+              "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+              "message": "",
+              "metadata": {}
+            },
+            {
+              "timestamp": "2026-10-01T17:43:24.988910+00:00",
+              "event_type": "execution.failed",
+              "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+              "actor_id": null,
+              "message": "",
+              "metadata": {
+                "error_type": "DecisionOutputError"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "failure": {
+            "phase": "triage",
+            "reason": "Run raised DecisionOutputError"
+          }
+        }
+      },
+      "trace": [
+        {
+          "id": "d85ed162-3aa0-4719-8187-6c6c70c04158",
+          "run_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+          "sequence": 1,
+          "core_sequence": 1,
+          "event_type": "execution.queued",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T17:43:18.299651+00:00",
+            "event_type": "execution.queued",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T17:43:18.299651Z"
+        },
+        {
+          "id": "8cdd95f2-56d7-4ed4-8bc2-3d32c45bc26f",
+          "run_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+          "sequence": 2,
+          "core_sequence": 2,
+          "event_type": "execution.started",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T17:43:18.299972+00:00",
+            "event_type": "execution.started",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T17:43:18.299972Z"
+        },
+        {
+          "id": "31fe3f52-25d7-4fcd-a296-5ecfb40d8f44",
+          "run_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+          "sequence": 3,
+          "core_sequence": 3,
+          "event_type": "execution.phase.started",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T17:43:18.301130+00:00",
+            "event_type": "execution.phase.started",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": null,
+            "message": "",
+            "metadata": {
+              "phase": "planning"
+            }
+          },
+          "created_at": "2026-10-01T17:43:18.301130Z"
+        },
+        {
+          "id": "77841659-70ad-480d-8eea-9ca530bf4e88",
+          "run_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+          "sequence": 4,
+          "core_sequence": 4,
+          "event_type": "operation.prepared",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:18.301611+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T17:43:18.301611Z"
+        },
+        {
+          "id": "2e0078a1-fbe0-4f22-b92f-5f7f87eeca40",
+          "run_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+          "sequence": 5,
+          "core_sequence": 5,
+          "event_type": "operation.in_flight",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:18.301753+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T17:43:18.301753Z"
+        },
+        {
+          "id": "dafd827c-438c-40e7-94bf-352c33b4a235",
+          "run_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+          "sequence": 6,
+          "core_sequence": 6,
+          "event_type": "operation.prepared",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:18.302210+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T17:43:18.302210Z"
+        },
+        {
+          "id": "28b5409c-7750-4f7f-b0cf-7964b6588545",
+          "run_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+          "sequence": 7,
+          "core_sequence": 7,
+          "event_type": "operation.in_flight",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:18.302348+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T17:43:18.302348Z"
+        },
+        {
+          "id": "8a2126db-72f7-4bcc-ba1c-d96f118d4559",
+          "run_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+          "sequence": 8,
+          "core_sequence": 8,
+          "event_type": "operation.committed",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:20.838581+00:00",
+            "event_type": "operation.committed",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T17:43:20.838581Z"
+        },
+        {
+          "id": "50625d9e-1994-4981-8cf3-2c8b532c57af",
+          "run_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+          "sequence": 9,
+          "core_sequence": 9,
+          "event_type": "operation.committed",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:20.839052+00:00",
+            "event_type": "operation.committed",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T17:43:20.839052Z"
+        },
+        {
+          "id": "0da5cae6-89f6-4420-89ef-3659dfdece96",
+          "run_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+          "sequence": 10,
+          "core_sequence": 10,
+          "event_type": "operation.prepared",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:20.840183+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T17:43:20.840183Z"
+        },
+        {
+          "id": "dee4f84a-e9af-455b-8412-e8f07e34dad5",
+          "run_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+          "sequence": 11,
+          "core_sequence": 11,
+          "event_type": "operation.in_flight",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:20.840494+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T17:43:20.840494Z"
+        },
+        {
+          "id": "c04b3f02-d87b-47b1-935c-577d4ec621a1",
+          "run_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+          "sequence": 12,
+          "core_sequence": 12,
+          "event_type": "operation.committed",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:24.988331+00:00",
+            "event_type": "operation.committed",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T17:43:24.988331Z"
+        },
+        {
+          "id": "50adad1c-59fe-4b95-9b9b-62a44ec4171e",
+          "run_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+          "sequence": 13,
+          "core_sequence": 13,
+          "event_type": "execution.failed",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T17:43:24.989640+00:00",
+            "event_type": "execution.failed",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T17:43:24.989640Z"
+        }
+      ],
+      "delivery_results": [],
+      "artifacts": []
+    }
+  },
+  "events": {
+    "status": 200,
+    "data": {
+      "events": [
+        {
+          "sequence": 1,
+          "type": "execution.queued",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T17:43:18.299651+00:00",
+            "event_type": "execution.queued",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T17:43:18.299651Z"
+        },
+        {
+          "sequence": 2,
+          "type": "execution.started",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T17:43:18.299972+00:00",
+            "event_type": "execution.started",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T17:43:18.299972Z"
+        },
+        {
+          "sequence": 3,
+          "type": "execution.phase.started",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T17:43:18.301130+00:00",
+            "event_type": "execution.phase.started",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": null,
+            "message": "",
+            "metadata": {
+              "phase": "planning"
+            }
+          },
+          "created_at": "2026-10-01T17:43:18.301130Z"
+        },
+        {
+          "sequence": 4,
+          "type": "operation.prepared",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:18.301611+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T17:43:18.301611Z"
+        },
+        {
+          "sequence": 5,
+          "type": "operation.in_flight",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:18.301753+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T17:43:18.301753Z"
+        },
+        {
+          "sequence": 6,
+          "type": "operation.prepared",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:18.302210+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T17:43:18.302210Z"
+        },
+        {
+          "sequence": 7,
+          "type": "operation.in_flight",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:18.302348+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T17:43:18.302348Z"
+        },
+        {
+          "sequence": 8,
+          "type": "operation.committed",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:20.838581+00:00",
+            "event_type": "operation.committed",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T17:43:20.838581Z"
+        },
+        {
+          "sequence": 9,
+          "type": "operation.committed",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:20.839052+00:00",
+            "event_type": "operation.committed",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/root:plan",
+              "operation_type": "root.plan",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T17:43:20.839052Z"
+        },
+        {
+          "sequence": 10,
+          "type": "operation.prepared",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:20.840183+00:00",
+            "event_type": "operation.prepared",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 0,
+              "status": "prepared"
+            }
+          },
+          "created_at": "2026-10-01T17:43:20.840183Z"
+        },
+        {
+          "sequence": 11,
+          "type": "operation.in_flight",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:20.840494+00:00",
+            "event_type": "operation.in_flight",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "in_flight"
+            }
+          },
+          "created_at": "2026-10-01T17:43:20.840494Z"
+        },
+        {
+          "sequence": 12,
+          "type": "operation.committed",
+          "agent_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "agent_name": "Analysis Root",
+          "payload": {
+            "timestamp": "2026-10-01T17:43:24.988331+00:00",
+            "event_type": "operation.committed",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+            "message": "",
+            "metadata": {
+              "operation_key": "planning/provider:1",
+              "operation_type": "provider.generate",
+              "phase": "planning",
+              "attempt": 1,
+              "status": "committed"
+            }
+          },
+          "created_at": "2026-10-01T17:43:24.988331Z"
+        },
+        {
+          "sequence": 13,
+          "type": "execution.failed",
+          "agent_id": null,
+          "agent_name": null,
+          "payload": {
+            "timestamp": "2026-10-01T17:43:24.989640+00:00",
+            "event_type": "execution.failed",
+            "task_id": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+            "actor_id": null,
+            "message": "",
+            "metadata": {}
+          },
+          "created_at": "2026-10-01T17:43:24.989640Z"
+        }
+      ],
+      "next_after": 13,
+      "has_more": false
+    }
+  },
+  "observed_running": [
+    "root"
+  ],
+  "observations": [
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "queued",
+          "phase": "Queued"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "queued",
+          "phase": "Queued"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "queued",
+          "phase": "Queued"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "queued",
+          "phase": "Queued"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "queued",
+          "phase": "Queued"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "running",
+          "phase": "Running\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "interrupted": true,
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "completed",
+          "phase": "Completed\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "completed",
+          "phase": "Completed\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "edgePulse": 0
+    },
+    {
+      "run": "4bb6c81a-d0c5-4292-850f-013fc20aa72f",
+      "nodes": [
+        {
+          "id": "ec9ec83a-3a3e-4dc0-a9af-07b8642dc1b5",
+          "state": "completed",
+          "phase": "Completed\nGenerating output"
+        },
+        {
+          "id": "abb2a540-4507-478a-b455-941c421f95e4",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "b5774e6b-b50a-4ee3-a72f-1947697203fd",
+          "state": "idle",
+          "phase": "Idle"
+        },
+        {
+          "id": "09e9db0f-d17b-470d-98b6-82e4c6ca163d",
+          "state": "idle",
+          "phase": "Idle"
+        }
+      ],
+      "edgePulse": 0
+    }
+  ],
+  "active_browser_reload": true
+}

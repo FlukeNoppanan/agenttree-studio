@@ -1,0 +1,91 @@
+{
+  "e2e": {
+    "log_lines": 180,
+    "credential_leaks": 0,
+    "tracebacks": 0,
+    "http_500": 0,
+    "unhandled_errors": 0,
+    "services": [
+      {
+        "service": "postgres",
+        "health": "healthy"
+      },
+      {
+        "service": "backend",
+        "health": "healthy"
+      },
+      {
+        "service": "frontend",
+        "health": "healthy"
+      }
+    ]
+  },
+  "existing": {
+    "log_lines": 180,
+    "credential_leaks": 0,
+    "tracebacks": 0,
+    "http_500": 0,
+    "unhandled_errors": 0,
+    "services": [
+      {
+        "service": "postgres",
+        "health": "healthy"
+      },
+      {
+        "service": "backend",
+        "health": "healthy"
+      },
+      {
+        "service": "frontend",
+        "health": "healthy"
+      }
+    ]
+  },
+  "browser-setup-network.json": {
+    "responses": 70,
+    "unexpected_errors": 0
+  },
+  "browser-verification-network.json": {
+    "responses": 68,
+    "unexpected_errors": 0
+  },
+  "http://127.0.0.1:8000/api/health": {
+    "status": "ok"
+  },
+  "http://127.0.0.1:8000/api/system-health": {
+    "status": "ok"
+  },
+  "http://127.0.0.1:5173/api/health": {
+    "status": "ok"
+  },
+  "http://127.0.0.1:5173/api/system-health": {
+    "status": "ok"
+  },
+  "http://127.0.0.1:18000/api/health": {
+    "status": "ok"
+  },
+  "http://127.0.0.1:18000/api/system-health": {
+    "status": "ok"
+  },
+  "http://127.0.0.1:15173/api/health": {
+    "status": "ok"
+  },
+  "http://127.0.0.1:15173/api/system-health": {
+    "status": "ok"
+  },
+  "postgresql_migration": "0012_webhook_integrations (head)",
+  "provider_type": "gemini",
+  "model": "models/gemini-3.1-flash-lite",
+  "browser-final-network.json": {
+    "responses": 41,
+    "unexpected_errors": 0
+  },
+  "cleanup": {
+    "project": "ats-integration-e2e",
+    "containers_removed": true,
+    "network_removed": true,
+    "test_volumes_removed": true,
+    "existing_studio_healthy": true,
+    "existing_volumes_retained": true
+  }
+}

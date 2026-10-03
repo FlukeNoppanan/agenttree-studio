@@ -16,6 +16,7 @@ export interface AccountInfo {
   active_token_count: number
 }
 export interface MyDashboard {
+  onboarding?: GettingStartedState
   trees_count: number | null
   available_trees: Array<{ id: string; name: string; status: TreeStatus }>
   providers_count: number | null
@@ -24,6 +25,13 @@ export interface MyDashboard {
   runs_count: number | null
   recent_runs: DashboardSummary["recent_runs"]
   secrets_count: number | null
+}
+export interface GettingStartedState {
+  provider_ready: boolean | null
+  trees: Array<{ id: string; name: string; template: string; ready: boolean }>
+  runnable_tree_id: string | null
+  successful_run_id: string | null
+  has_successful_run: boolean | null
 }
 export type ProviderStatus = "not_configured" | "testing" | "connected" | "error"
 
@@ -292,6 +300,7 @@ export interface TreeTemplate {
   definition: TemplateDefinition; agent_count: number; manager_count: number; specialist_count: number
   created_by: string | null; created_at: string | null; updated_at: string | null
 }
+export interface TemplateDraft { configuration: TreeDraftPayload; agent_ids: Record<string, string> }
 export interface TemplateMetadataPayload { name: string; description: string; category: string }
 export interface ToolPackage {
   id: string; name: string; description: string; category: string; version: string; icon: string
@@ -389,6 +398,7 @@ export interface TraceEvent {
 }
 
 export interface Run {
+  final_status?: string | null
   id: string
   tree_id: string
   tree_name: string
@@ -405,6 +415,11 @@ export interface Run {
   finished_at: string | null
   duration_ms: number | null
   created_at: string
+}
+
+export interface WebhookIntegration {
+  id: string; tree_id: string; name: string; enabled: boolean
+  created_at: string; last_received_at: string | null
 }
 
 export type DestinationType = "store_in_studio" | "api_response" | "webhook"
@@ -488,6 +503,12 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
 }
 
 export const api = {
+  integrationConfig: () => request<{ public_origin: string | null }>("/api/auth/integration-config"),
+  listWebhooks: (treeId: string) => request<WebhookIntegration[]>(`/api/trees/${treeId}/webhooks`),
+  createWebhook: (treeId: string, name: string) => request<WebhookIntegration & { secret: string }>(`/api/trees/${treeId}/webhooks`, { method: "POST", body: JSON.stringify({ name }) }),
+  updateWebhook: (treeId: string, id: string, enabled: boolean) => request<WebhookIntegration>(`/api/trees/${treeId}/webhooks/${id}`, { method: "PATCH", body: JSON.stringify({ enabled }) }),
+  rotateWebhook: (treeId: string, id: string) => request<WebhookIntegration & { secret: string }>(`/api/trees/${treeId}/webhooks/${id}/rotate`, { method: "POST" }),
+  deleteWebhook: (treeId: string, id: string) => request<void>(`/api/trees/${treeId}/webhooks/${id}`, { method: "DELETE" }),
   login: (username: string, password: string) => request<StudioUser>("/api/auth/login", { method: "POST", body: JSON.stringify({ username, password }) }),
   me: () => request<StudioUser>("/api/auth/me"),
   account: () => request<AccountInfo>("/api/auth/account"),
@@ -545,6 +566,10 @@ export const api = {
 
   listTrees: () => request<TreeListItem[]>("/api/trees"),
   getTree: (id: string) => request<TreeDetail>(`/api/trees/${id}`),
+  previewTreeDraft: (payload: TreeDraftPayload, treeId?: string) =>
+    request<TreeValidation>(`/api/trees/validate-draft${treeId ? `?tree_id=${encodeURIComponent(treeId)}` : ""}`, {
+      method: "POST", body: JSON.stringify(payload),
+    }),
   createTree: (payload: TreeDraftPayload) =>
     request<TreeDetail>("/api/trees", { method: "POST", body: JSON.stringify(payload) }),
   saveTreeDraft: (id: string, payload: TreeDraftPayload) =>
@@ -562,7 +587,9 @@ export const api = {
   getTemplate: (id: string) => request<TreeTemplate>(`/api/templates/${id}`),
   updateTemplate: (id: string, payload: Partial<TemplateMetadataPayload>) => request<TreeTemplate>(`/api/templates/${id}`, { method: "PUT", body: JSON.stringify(payload) }),
   deleteTemplate: (id: string) => request<void>(`/api/templates/${id}`, { method: "DELETE" }),
-  instantiateTemplate: (id: string, name?: string) => request<TreeDetail>(`/api/templates/${id}/instantiate`, { method: "POST", body: JSON.stringify(name ? { name } : {}) }),
+  getTemplateDraft: (id: string) => request<TemplateDraft>(`/api/templates/${id}/draft`),
+  previewTemplateDraft: (id: string, draft: TemplateDraft) => request<TreeValidation>(`/api/templates/${id}/validate-draft`, { method: "POST", body: JSON.stringify(draft) }),
+  instantiateTemplate: (id: string, name?: string, draft?: TemplateDraft) => request<TreeDetail>(`/api/templates/${id}/instantiate`, { method: "POST", body: JSON.stringify({ ...(name ? { name } : {}), ...draft }) }),
   saveTreeAsTemplate: (id: string, payload: TemplateMetadataPayload) => request<TreeTemplate>(`/api/trees/${id}/save-as-template`, { method: "POST", body: JSON.stringify(payload) }),
   getTemplateSetup: (id: string) => request<TemplateSetupRead>(`/api/trees/${id}/template-setup`),
   createTemplateAgent: (id: string, payload: { agent_type: "manager" | "specialist"; parent_agent_id: string; name: string }) => request<TemplateSetupRead>(`/api/trees/${id}/template-setup/agents`, { method: "POST", body: JSON.stringify(payload) }),
@@ -626,6 +653,7 @@ export const api = {
     if (filters.treeId) query.set("tree_id", filters.treeId)
     return request<Run[]>(`/api/runs${query.size ? `?${query}` : ""}`)
   },
+  getTreeVersion: (treeId: string, versionId: string) => request<TreeVersion>(`/api/trees/${treeId}/version?version_id=${encodeURIComponent(versionId)}`),
   listTreeRuns: (treeId: string) => request<Run[]>(`/api/trees/${treeId}/runs`),
   getTreeLive: (treeId: string) => request<TreeLive>(`/api/trees/${treeId}/live`),
   getRun: (runId: string) => request<RunDetail>(`/api/runs/${runId}`),

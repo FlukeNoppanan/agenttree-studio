@@ -1,0 +1,9 @@
+{
+  "browser_workflow": "real Studio Run, SSE timeline, persisted result, Trace and artifact preview succeeded in current authenticated session",
+  "journal_count": 72,
+  "trace_count": 111,
+  "run_id": "b1e350c2-cd70-4a1a-9ba7-66999f42be64",
+  "independent_http_probe": "Not authenticated: internal frontend hostname rejected with 403; backend rejected stale configured bootstrap credentials with 401. Stopped without changing credentials or extracting browser cookies.",
+  "har": "Not available in browser tooling",
+  "console_warnings_errors": []
+}

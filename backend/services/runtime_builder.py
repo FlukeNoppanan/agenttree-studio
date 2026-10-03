@@ -33,6 +33,7 @@ from backend.repositories.sqlalchemy import SQLAlchemyTreeRepository
 from backend.providers.generation import create_generation_provider
 from backend.services.errors import ResourceNotFoundError, RunRequestError
 from backend.services.secret_service import SecretService
+from backend.services.tree_contracts import invalid_manager_peers
 from backend.tools.factory import BuiltTools, ToolAdapterFactory
 
 
@@ -188,11 +189,8 @@ class RuntimeBuilder:
                 item.get("selected") is True for item in (tool.discovered_tools_json or [])
             ):
                 issue("TOOL_BINDING_ERROR", "Assigned MCP connection has no selected Tools", agent.id)
-        for manager in managers:
-            peers = (manager.settings_json or {}).get("allowed_manager_peer_ids", [])
-            if (not isinstance(peers, list) or any(not isinstance(peer, str) for peer in peers)
-                    or manager.id in peers or any(peer not in manager_ids for peer in peers)):
-                issue("TREE_INVALID", "Manager collaboration peers must reference other Managers", manager.id)
+        for manager_id in invalid_manager_peers(agents):
+            issue("TREE_INVALID", "Manager collaboration peers must reference other Managers in this Tree version", manager_id)
         return RuntimeValidationResult(valid=not errors, errors=tuple(errors))
 
     def _validate_provider(self, agent: AgentConfig, issue) -> None:
@@ -216,6 +214,8 @@ class RuntimeBuilder:
             ProviderModel.provider_connection_id == connection.id,
             ProviderModel.model_id == agent.model_id,
             ProviderModel.is_available.is_(True),
+            ProviderModel.generation_candidate.is_(True),
+            ProviderModel.qualification_status == "qualified",
         ))
         if model is None:
             issue("MODEL_NOT_AVAILABLE", "Agent model is not available", agent.id)

@@ -1,0 +1,3 @@
+f01856b (HEAD -> main) release: freeze AgentTree Core thesis baseline v0.1
+1f9649e (origin/main, origin/HEAD) release: publish current AgentTree Core runtime for Studio integration
+cdf1045 Add AgentTree framework and Thai documentation

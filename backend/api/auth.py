@@ -20,6 +20,13 @@ from backend.services.tree_service import TreeService
 router = APIRouter(tags=["authentication"])
 
 
+@router.get("/auth/integration-config")
+def integration_config() -> dict:
+    from backend.core.config import settings
+    # Browser origin is the fallback, never an internal proxy target or forwarded Host.
+    return {"public_origin": settings.public_origin}
+
+
 def current_user(request: Request, database: Session) -> User:
     user_id = getattr(request.state, "user_id", None)
     user = database.get(User, user_id) if user_id else None

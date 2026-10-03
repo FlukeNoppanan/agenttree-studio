@@ -1,0 +1,57 @@
+{
+  "original": {
+    "services": {
+      "backend": "healthy",
+      "frontend": "healthy",
+      "postgres": "healthy"
+    },
+    "migration": "0012_webhook_integrations (head)",
+    "logs": {
+      "access_logging": "not emitted by current backend configuration",
+      "tracebacks": 0,
+      "http_500": 0,
+      "tested_credential_leaks": 0,
+      "inspected_lines": 1425
+    },
+    "health_urls": [
+      "http://127.0.0.1:8000/api/system-health",
+      "http://127.0.0.1:5173/api/system-health"
+    ]
+  },
+  "disposable": {
+    "services": {
+      "backend": "healthy",
+      "frontend": "healthy",
+      "postgres": "healthy"
+    },
+    "migration": "0012_webhook_integrations (head)",
+    "logs": {
+      "access_logging": "not emitted by current backend configuration",
+      "tracebacks": 0,
+      "http_500": 0,
+      "tested_credential_leaks": 0,
+      "inspected_lines": 92
+    },
+    "health_urls": [
+      "http://127.0.0.1:18000/api/system-health",
+      "http://127.0.0.1:15173/api/system-health"
+    ]
+  },
+  "persisted_run": {
+    "status": "completed",
+    "source": "studio_live",
+    "result_success": true,
+    "trace_events": 24,
+    "api_key_count": 0,
+    "tree_ready": "ready",
+    "version_ready": "ready",
+    "usage_present": true,
+    "run_id": "8b4c1c74-49eb-464e-8547-f2f4b45104da"
+  },
+  "browser": {
+    "network_responses": 503,
+    "unexpected_http_errors": 0,
+    "console": [],
+    "expected_401": "GET /api/auth/me while signed out"
+  }
+}

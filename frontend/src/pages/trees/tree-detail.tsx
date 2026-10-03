@@ -1,11 +1,12 @@
 import { useAuth } from "@/auth"
 import { Activity, ArrowLeft, Boxes, Eye, Pencil, Play, Save, Settings, Wrench } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 
 import { Notice } from "@/components/notice"
 import { RunStatusBadge } from "@/components/run-status-badge"
+import { DeleteTreeDialog } from "@/components/tree/delete-tree-dialog"
 import { TestRunDialog } from "@/components/test-run-dialog"
 import { ConnectTab } from "@/components/tree/connect-tab"
 import { AgentHierarchy } from "@/components/tree/agent-hierarchy"
@@ -35,7 +36,12 @@ export function TreeDetailPage() {
   const [providers, setProviders] = useState<ProviderConnection[]>([])
   const [models, setModels] = useState<ProviderModel[]>([])
   const [testOpen, setTestOpen] = useState(false)
-  const [tab, setTab] = useState<(typeof tabs)[number]>("Overview")
+  const [deleteOpen, setDeleteOpen] = useState(false)
+  const [params, setParams] = useSearchParams()
+  const requestedTab = params.get("tab")
+  const visibleTabs = tabs.filter(item => item !== "Runs" || can("view_executions"))
+  const tab = visibleTabs.find(item => item.toLowerCase() === requestedTab) ?? "Overview"
+  const setTab = (item: (typeof tabs)[number]) => setParams({ tab: item.toLowerCase() })
   const [loading, setLoading] = useState(true)
   const [notice, setNotice] = useState<{ tone: "success" | "error"; message: string } | null>(null)
   const [templateDialogOpen, setTemplateDialogOpen] = useState(false)
@@ -44,7 +50,10 @@ export function TreeDetailPage() {
 
   useEffect(() => {
     if (!treeId) return
-    Promise.all([api.getTree(treeId), api.listTools(), api.listTreeRuns(treeId), api.listProviders()])
+    Promise.all([api.getTree(treeId),
+      can("manage_tools_mcp") ? api.listTools() : Promise.resolve([]),
+      can("view_executions") ? api.listTreeRuns(treeId) : Promise.resolve([]),
+      can("manage_providers_models") ? api.listProviders() : Promise.resolve([])])
       .then(async ([item, toolItems, runItems, providerItems]) => {
         const modelItems = (await Promise.all(providerItems.map((provider) => api.listModels(provider.id, true)))).flat()
         setTree(item); setTools(toolItems); setRuns(runItems); setProviders(providerItems); setModels(modelItems)
@@ -56,7 +65,7 @@ export function TreeDetailPage() {
   const assignments = useMemo(() => new Map(tree?.version.tool_assignments.map((item) => [`${item.agent_config_id}:${item.tool_connection_id}`, item]) ?? []), [tree])
 
   async function remove() {
-    if (!tree || !window.confirm(`Delete “${tree.name}” and all versions?`)) return
+    if (!tree) return
     try { await api.deleteTree(tree.id); navigate("/trees") }
     catch (error) { setNotice({ tone: "error", message: error instanceof Error ? error.message : "Unable to delete Tree" }) }
   }
@@ -74,21 +83,22 @@ export function TreeDetailPage() {
   }
 
   if (loading) return <div className="space-y-4"><Skeleton className="h-10 w-72" /><Skeleton className="h-96 w-full" /></div>
-  if (!tree) return <div className="space-y-4">{notice ? <Notice {...notice} onDismiss={() => setNotice(null)} /> : null}<Button variant="outline" onClick={() => navigate("/trees")}><ArrowLeft className="size-4" />Back to Trees</Button></div>
+  if (!tree) return <div className="space-y-4">{notice ? <Notice {...notice} onDismiss={() => setNotice(null)} /> : null}<Button variant="outline" onClick={() => navigate("/trees")}><ArrowLeft className="size-4" />{t("uiCopy.backToTrees")}</Button></div>
 
   return (
     <div className="space-y-7">
-      <div className="flex min-w-0 flex-col gap-5 border-b border-border pb-5 xl:flex-row xl:items-end xl:justify-between"><div className="min-w-0"><button className="mb-3 flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-primary" onClick={() => navigate("/trees")}><ArrowLeft className="size-3.5" />{t("trees.back")}</button><div className="flex flex-wrap items-center gap-3"><h1 className="break-words text-3xl font-semibold tracking-[-0.03em]">{tree.name}</h1><Badge variant={tree.status === "ready" || tree.status === "published" ? "success" : "secondary"}>{t(`status.${tree.status}`)}</Badge></div><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{tree.description || t("trees.noDescription")}</p><p className="mt-3 text-xs text-muted-foreground">{tree.version.agents.length} {t("trees.agents")} · {new Date(tree.updated_at).toLocaleString(i18n.language)}</p></div><div className="flex flex-wrap gap-2">{can("manage_trees_agents") ? <Button variant="outline" onClick={() => { setTemplateFields({ name: tree.name, description: tree.description, category: "general" }); setTemplateDialogOpen(true) }}><Save className="size-4" />{t("templatesV3.saveAsTemplate")}</Button> : null}{tree.status === "draft" || tree.status === "ready" ? <Button variant="outline" onClick={() => navigate(`/trees/${tree.id}/edit`)}><Pencil className="size-4" />{t("treeV3.editTree")}</Button> : null}<Button variant="outline" onClick={() => navigate(`/trees/${tree.id}/live`)}><Activity className="size-4" />{t("live.title")}</Button><Button onClick={() => setTestOpen(true)}><Play className="size-4" />{t("common.testRun")}</Button></div></div>
+      <div className="flex min-w-0 flex-col gap-5 border-b border-border pb-5 xl:flex-row xl:items-end xl:justify-between"><div className="min-w-0"><button className="mb-3 flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-primary" onClick={() => navigate("/trees")}><ArrowLeft className="size-3.5" />{t("trees.back")}</button><div className="flex flex-wrap items-center gap-3"><h1 className="break-words text-3xl font-semibold tracking-[-0.03em]">{tree.name}</h1><Badge variant={tree.status === "ready" || tree.status === "published" ? "success" : "secondary"}>{t(`status.${tree.status}`)}</Badge></div><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{tree.description || t("trees.noDescription")}</p><p className="mt-3 text-xs text-muted-foreground">{tree.version.agents.length} {t("trees.agents")} · {new Date(tree.updated_at).toLocaleString(i18n.language)}</p></div><div className="flex flex-wrap gap-2">{can("manage_trees_agents") ? <Button variant="outline" onClick={() => { setTemplateFields({ name: tree.name, description: tree.description, category: "general" }); setTemplateDialogOpen(true) }}><Save className="size-4" />{t("templatesV3.saveAsTemplate")}</Button> : null}{can("manage_trees_agents") && (tree.status === "draft" || tree.status === "ready") ? <Button variant="outline" onClick={() => navigate(`/trees/${tree.id}/build`)}>Visual Builder</Button> : null}{tree.status === "draft" || tree.status === "ready" ? <Button variant="outline" onClick={() => navigate(`/trees/${tree.id}/edit`)}><Pencil className="size-4" />{t("treeV3.editTree")}</Button> : null}{can("view_executions") ? <Button onClick={() => navigate(`/trees/${tree.id}/playground`)}>Playground</Button> : null}{can("view_executions") ? <Button variant="outline" onClick={() => navigate(`/trees/${tree.id}/live`)}><Activity className="size-4" />{t("live.title")}</Button> : null}<Button variant="outline" onClick={() => setTestOpen(true)}><Play className="size-4" />{t("common.testRun")}</Button></div></div>
       {notice ? <Notice {...notice} onDismiss={() => setNotice(null)} /> : null}
-      <div className="studio-tabs">{tabs.map((item) => <button key={item} aria-pressed={tab === item} onClick={() => setTab(item)} className={cn("whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium transition-colors", tab === item ? "text-primary" : "text-muted-foreground hover:bg-muted/60 hover:text-foreground")}>{item === "Overview" ? t("trees.overview") : item === "Agents" ? t("trees.agents") : item === "Connect" ? t("trees.connect") : item === "Versions" ? t("trees.versions") : item === "Settings" ? t("trees.settings") : item === "Tools" ? t("nav.tools") : t("nav.runs")}</button>)}</div>
+      <div className="studio-tabs">{visibleTabs.map((item) => <button key={item} aria-pressed={tab === item} onClick={() => setTab(item)} className={cn("whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium transition-colors", tab === item ? "text-primary" : "text-muted-foreground hover:bg-muted/60 hover:text-foreground")}>{item === "Overview" ? t("trees.overview") : item === "Agents" ? t("trees.agents") : item === "Connect" ? t("trees.connect") : item === "Versions" ? t("trees.versions") : item === "Settings" ? t("trees.settings") : item === "Tools" ? t("nav.tools") : t("nav.runs")}</button>)}</div>
 
       {tab === "Overview" ? <div className="space-y-5"><AgentHierarchy canEdit={can("manage_trees_agents")} tree={tree} providers={providers} models={models} tools={tools} /><Overview tree={tree} /></div> : null}
       {tab === "Agents" ? <AgentHierarchy canEdit={can("manage_trees_agents")} tree={tree} providers={providers} models={models} tools={tools} /> : null}
       {tab === "Tools" ? <section className="min-w-0"><div className="py-4"><CardTitle className="flex items-center gap-2"><Wrench className="size-5" />{t("designV3.toolAssignments")}</CardTitle><CardDescription>{t("designV3.toolsHelp")}</CardDescription></div><div>{tree.version.tool_assignments.length === 0 ? <p className="text-sm text-muted-foreground">{t("designV3.noTools")}</p> : <div className="space-y-2">{tree.version.agents.flatMap((agent) => tools.filter((tool) => assignments.has(`${agent.id}:${tool.id}`)).map((tool) => <div key={`${agent.id}:${tool.id}`} className="flex items-center justify-between gap-3 rounded-lg border border-border p-3 text-sm"><div><span className="font-medium">{tool.name}</span><span className="ml-2 text-xs text-muted-foreground">{tool.tool_type === "mcp" ? "MCP" : "HTTP API"}</span></div><div className="flex items-center gap-3"><ToolStatusBadge status={tool.status} /><span className="text-muted-foreground">{agent.name}</span></div></div>))}</div>}</div></section> : null}
       {tab === "Connect" ? <ConnectTab tree={tree} /> : null}
-      {tab === "Runs" ? <RunsTab runs={runs} onView={(run) => navigate(`/runs/${run.id}`)} /> : null}
+      {tab === "Runs" ? <RunsTab runs={runs} onView={(run) => navigate(`/executions/${run.id}`)} /> : null}
       {tab === "Versions" ? <section className="min-w-0"><div className="py-4"><CardTitle className="flex items-center gap-2"><Boxes className="size-5" />{t("trees.versions")}</CardTitle><CardDescription>{t("designV3.versionsHelp")}</CardDescription></div><div><div className="flex items-center justify-between rounded-lg border border-border p-4"><div><p className="font-medium">{t("designV3.version")} {tree.version.version_number}</p><p className="mt-1 text-xs text-muted-foreground">{t("treeV3.created")} {new Date(tree.version.created_at).toLocaleString(i18n.language)}</p></div><Badge variant="secondary">{t(`status.${tree.version.status}`)}</Badge></div></div></section> : null}
-      {tab === "Settings" ? <section className="min-w-0"><div className="py-4"><CardTitle className="flex items-center gap-2"><Settings className="size-5" />{t("trees.settings")}</CardTitle><CardDescription>{t("designV3.settingsHelp")}</CardDescription></div><div><Button variant="outline" className="border-red-500/30 text-red-600 hover:bg-red-500/10" onClick={() => void remove()}>{t("designV3.deleteTree")}</Button></div></section> : null}
+      {tab === "Settings" ? <section className="min-w-0"><div className="py-4"><CardTitle className="flex items-center gap-2"><Settings className="size-5" />{t("trees.settings")}</CardTitle><CardDescription>{t("designV3.settingsHelp")}</CardDescription></div><div><Button variant="outline" className="border-destructive/30 text-destructive hover:bg-danger-subtle" onClick={() => { setNotice(null); setDeleteOpen(true) }}>{t("designV3.deleteTree")}</Button></div></section> : null}
+      <DeleteTreeDialog error={notice?.tone === "error" ? notice.message : undefined} name={tree.name} open={deleteOpen} onOpenChange={setDeleteOpen} onConfirm={remove} />
       <TestRunDialog tree={tree} open={testOpen} onOpenChange={setTestOpen} onFinished={(run) => setRuns((current) => [run, ...current.filter((item) => item.id !== run.id)])} />
       <Dialog open={templateDialogOpen} onOpenChange={setTemplateDialogOpen}><DialogContent><DialogHeader><DialogTitle>{t("templatesV3.saveAsTemplate")}</DialogTitle><DialogDescription>{t("templatesV3.saveHelp")}</DialogDescription></DialogHeader><div className="space-y-4"><div className="space-y-2"><Label htmlFor="saved-template-name">{t("templatesV3.name")}</Label><Input id="saved-template-name" value={templateFields.name} onChange={event => setTemplateFields(value => ({ ...value, name: event.target.value }))} /></div><div className="space-y-2"><Label htmlFor="saved-template-category">{t("templatesV3.category")}</Label><Input id="saved-template-category" value={templateFields.category} onChange={event => setTemplateFields(value => ({ ...value, category: event.target.value }))} /></div><div className="space-y-2"><Label htmlFor="saved-template-description">{t("templatesV3.descriptionField")}</Label><Textarea id="saved-template-description" value={templateFields.description} onChange={event => setTemplateFields(value => ({ ...value, description: event.target.value }))} /></div></div><DialogFooter><Button variant="outline" onClick={() => setTemplateDialogOpen(false)}>{t("common.cancel")}</Button><Button disabled={templateSaving || !templateFields.name.trim() || !templateFields.category.trim()} onClick={() => void saveAsTemplate()}>{templateSaving ? t("templatesV3.saving") : t("templatesV3.saveTemplate")}</Button></DialogFooter></DialogContent></Dialog>
     </div>

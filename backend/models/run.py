@@ -22,7 +22,7 @@ class Run(Base):
     tree_version_id: Mapped[str] = mapped_column(
         ForeignKey("tree_versions.id", ondelete="CASCADE"), nullable=False, index=True,
     )
-    status: Mapped[str] = mapped_column(String(20), nullable=False, default="pending", index=True)
+    status: Mapped[str] = mapped_column(String(32), nullable=False, default="pending", index=True)
     core_execution_id: Mapped[str | None] = mapped_column(String(36), nullable=True, unique=True)
     final_status: Mapped[str | None] = mapped_column(String(40), nullable=True)
     input_json: Mapped[dict] = mapped_column(JSON, nullable=False)

@@ -332,7 +332,10 @@ def test_run_api_functions_create_list_detail_and_trace(database, monkeypatch) -
         database,
     )
 
-    assert [item.id for item in api_list_runs(None, None, database)] == [created.id]
+    from starlette.requests import Request
+    from backend.models.auth import User
+    monkeypatch.setattr("backend.api.runs.current_user", lambda *_: User(is_admin=True))
+    assert [item.id for item in api_list_runs(Request({"type": "http"}), None, None, database)] == [created.id]
     assert [item.id for item in api_list_tree_runs(tree.id, None, database)] == [created.id]
     assert api_get_run(created.id, database).id == created.id
     assert api_get_run_trace(created.id, database)[0].event_type == "execution.queued"

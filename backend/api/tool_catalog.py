@@ -13,6 +13,7 @@ from backend.schemas.template import (
     ToolPackageSetupRequest,
 )
 from backend.api.auth import current_user
+from backend.services.auth_service import AuthService
 from backend.schemas.tool import ToolTestResponse
 from backend.services.tool_catalog_service import ToolCatalogService
 from backend.services.template_setup_service import TemplateSetupService
@@ -51,6 +52,7 @@ def resolve_template_requirement(
     request: Request,
     database: Session = Depends(get_db),
 ) -> TemplateSetupRead:
+    AuthService(database).require_tree_permission(current_user(request, database), payload.tree_id, "manage_trees_agents")
     setup = TemplateSetupService(database).get(payload.tree_id, current_user(request, database))
     requirement = next((item for item in setup.definition.tool_requirements if item.id == payload.requirement_id), None)
     if requirement is None or requirement.catalog_key != package_id:
@@ -72,6 +74,7 @@ def resolve_required_template_tools(
     request: Request,
     database: Session = Depends(get_db),
 ) -> TemplateSetupRead:
+    AuthService(database).require_tree_permission(current_user(request, database), payload.tree_id, "manage_trees_agents")
     return TemplateSetupService(database).resolve_all_required(
         payload.tree_id, current_user(request, database),
     )

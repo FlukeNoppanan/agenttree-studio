@@ -1,0 +1,274 @@
+[
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/events?after=0&limit=500",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/result",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/events?after=0&limit=500",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/result",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/299f2793-9e69-4a9f-943e-7d32cca831c0/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/events?after=0&limit=500",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/result",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/events?after=0&limit=500",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/artifacts",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/studio/runs/5c3fa329-95b7-4e9d-97c7-4e918c1baf8e/result",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/tools",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/tools",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0/runs",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers/829a2753-2240-4401-8d91-a4ea0a8562d7/models?include_unusable=true",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0/runs",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/integration-config",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0/destinations",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/integration-config",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/providers/829a2753-2240-4401-8d91-a4ea0a8562d7/models?include_unusable=true",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/secrets",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0/webhooks",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/secrets",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0/destinations",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0/webhooks",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/trees/5b3b7eb5-c2a0-41b2-84bf-787d3a9713b0/webhooks/wh_1b45ec9b9b7f3d7119509e0701bb9601",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/me",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/account",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/account",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/tokens",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/tokens",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:15173/api/auth/tokens/f5472ce4-d538-4873-94fe-12fb3743f922",
+    "status": 204
+  }
+]

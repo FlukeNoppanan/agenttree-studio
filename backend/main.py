@@ -27,6 +27,7 @@ from backend.api.auth import router as auth_router
 from backend.api.public_v1 import router as public_v1_router
 from backend.api.public_v2 import router as public_v2_router
 from backend.api.studio_runs import router as studio_runs_router
+from backend.api.webhooks import router as webhooks_router
 from backend.core.config import settings
 from backend.db.session import SessionLocal, initialize_database
 from backend.core.authz import AuthMiddleware
@@ -57,7 +58,7 @@ def startup_step(name: str):
 
 def public_error(request: Request, status: int, code: str, message: str) -> JSONResponse:
     return JSONResponse(status_code=status, content={"error": {
-        "code": code, "message": message, "request_id": request.state.request_id,
+        "code": code, "message": message, "request_id": getattr(request.state, "request_id", "req_" + __import__("uuid").uuid4().hex),
     }})
 
 
@@ -178,6 +179,7 @@ app.include_router(auth_router, prefix="/api")
 app.include_router(public_v1_router)
 app.include_router(public_v2_router)
 app.include_router(studio_runs_router, prefix="/api")
+app.include_router(webhooks_router, prefix="/api")
 app.include_router(health_router, prefix="/api")
 app.include_router(dashboard_router, prefix="/api")
 app.include_router(secrets_router, prefix="/api")

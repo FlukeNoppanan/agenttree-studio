@@ -396,3 +396,79 @@ def test_delete_tree_cascades_versions_and_agents(database) -> None:
     assert database.scalar(select(func.count()).select_from(AgentConfig)) == 0
     with pytest.raises(ResourceNotFoundError):
         service.get(tree.id)
+
+
+def test_builder_preview_reuses_readiness_without_persisting(database):
+    service = TreeService(database)
+    payload = valid_payload(connected_provider(database))
+    counts = {model: database.scalar(select(func.count()).select_from(model)) for model in (Tree, TreeVersion, AgentConfig)}
+    assert service.preview_draft(payload).valid
+    assert not database.new
+    assert counts == {model: database.scalar(select(func.count()).select_from(model)) for model in counts}
+    payload.agents[2].model_id = None
+    result = service.preview_draft(payload)
+    assert not result.valid
+    assert any(issue.agent_id == payload.agents[2].id for issue in result.errors)
+
+
+def test_builder_preview_does_not_change_ready_version(database):
+    service = TreeService(database)
+    payload = valid_payload(connected_provider(database))
+    tree = service.create(payload)
+    service.validate(tree.id, mark_ready=True)
+    payload.agents[1].parent_agent_id = None
+    assert not service.preview_draft(payload, tree.id).valid
+    persisted = service.get(tree.id)
+    assert persisted.current_version_id == tree.current_version_id
+    assert persisted.status == 'ready'
+    assert persisted.version.agents[1].parent_agent_id is not None
+
+
+def test_builder_preview_empty_and_duplicate_roots(database):
+    service = TreeService(database)
+    empty = TreeDraftPayload(name='Blank', agents=[])
+    assert any(i.code == 'root_count' for i in service.preview_draft(empty).errors)
+    payload = valid_payload(connected_provider(database))
+    copy = payload.agents[0].model_copy(update={'id': str(uuid4())})
+    payload.agents.append(copy)
+    assert any(i.code == 'root_count' for i in service.preview_draft(payload).errors)
+
+
+def test_builder_preview_reports_tool_loop_and_mcp_readiness(database):
+    service = TreeService(database)
+    payload = valid_payload(connected_provider(database))
+    payload.agents[2].settings = {'autonomous_tool_use': True}
+    assert any(i.code == 'tool_assignment_required' for i in service.preview_draft(payload).errors)
+    tool = ToolConnection(name='MCP', tool_type='mcp', status='connected', enabled=True,
+                          transport_type='streamable_http', discovered_tools_json=[])
+    database.add(tool)
+    database.commit()
+    payload.tool_assignments = [ToolAssignmentDraft(agent_config_id=payload.agents[2].id, tool_connection_id=tool.id)]
+    assert any(i.code == 'mcp_tool_not_selected' for i in service.preview_draft(payload).errors)
+    tool.discovered_tools_json = [{'name': 'query', 'selected': True}]
+    database.commit()
+    assert service.preview_draft(payload).valid
+
+
+def test_historical_version_selector_retains_pinned_agent_ids(database):
+    service = TreeService(database)
+    payload = valid_payload(connected_provider(database))
+    tree = service.create(payload)
+    assert service.validate(tree.id, mark_ready=True).valid
+    old_id = tree.version.id
+    old_agents = {agent.id for agent in tree.version.agents}
+    updated = service.replace_ready_configuration(tree.id, payload)
+    assert updated.version.id != old_id
+    assert {agent.id for agent in service.get_version(tree.id, old_id).agents} == old_agents
+    assert service.get_version(tree.id).id == updated.version.id
+
+
+def test_version_selector_rejects_version_from_another_tree(database):
+    service = TreeService(database)
+    payload = valid_payload(connected_provider(database))
+    tree_a = service.create(payload)
+    tree_b = service.create(valid_payload(database.get(ProviderConnection, payload.agents[0].provider_connection_id)))
+    with pytest.raises(ResourceNotFoundError):
+        service.get_version(tree_a.id, tree_b.version.id)
+    with pytest.raises(ResourceNotFoundError):
+        service.get_version(tree_a.id, 'missing-version')

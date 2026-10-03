@@ -1,0 +1,12 @@
+{
+  "run_id": "8b4c1c74-49eb-464e-8547-f2f4b45104da",
+  "status": "completed",
+  "result_trace_reload": "passed",
+  "explicit_selection": "passed",
+  "network_responses": 81,
+  "http_statuses": [
+    200,
+    202
+  ],
+  "console": []
+}

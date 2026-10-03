@@ -1,0 +1,31 @@
+{
+  "run_id": "30c5fc01-cbc3-41e9-a988-e7af53ad6ac4",
+  "status": "completed",
+  "final_status": "completed",
+  "duration_ms": 70199,
+  "result_present": true,
+  "artifacts": [
+    {
+      "id": "deb486ae-c7a1-4604-b851-a6b05b994171",
+      "bytes": 15102,
+      "sha256_verified": true,
+      "utf8_verified": true
+    },
+    {
+      "id": "622fcd77-31c4-4ddb-bff7-4f9c240cf51f",
+      "bytes": 17203,
+      "sha256_verified": true,
+      "utf8_verified": true
+    }
+  ],
+  "old_partial_preserved": true,
+  "disposable_user_and_tree_absent": true,
+  "counts": {
+    "users": 3,
+    "trees": 2,
+    "runs": 10
+  },
+  "built_in_artifact_policy_deployed": true,
+  "artifact_transport_default": 6016384,
+  "container_private_file_absent": true
+}
