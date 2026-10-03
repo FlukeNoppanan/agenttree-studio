@@ -1,0 +1,255 @@
+[
+  {
+    "run_id": "6ba94fea-cb15-4df3-8f10-b556af294eb2",
+    "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+    "status": "completed",
+    "final_status": "completed",
+    "duration_ms": 2196,
+    "result_available": true,
+    "trace_count": 25,
+    "durable_event_count": 16,
+    "event_types": [
+      "execution.checkpoint.saved",
+      "execution.completed",
+      "execution.phase.started",
+      "execution.queued",
+      "execution.started",
+      "operation.committed",
+      "operation.in_flight",
+      "operation.prepared",
+      "output.final.available",
+      "root.direct_response",
+      "root.planning.completed",
+      "root.planning.started",
+      "root.synthesis.completed",
+      "structured_decision.decision_attempt"
+    ],
+    "observed_agents": [
+      "Analysis Lead"
+    ],
+    "artifacts": []
+  },
+  {
+    "run_id": "91b2d6e2-7900-44f4-ae1e-c447703fc803",
+    "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+    "status": "completed",
+    "final_status": "completed",
+    "duration_ms": 1460,
+    "result_available": true,
+    "trace_count": 25,
+    "durable_event_count": 16,
+    "event_types": [
+      "execution.checkpoint.saved",
+      "execution.completed",
+      "execution.phase.started",
+      "execution.queued",
+      "execution.started",
+      "operation.committed",
+      "operation.in_flight",
+      "operation.prepared",
+      "output.final.available",
+      "root.direct_response",
+      "root.planning.completed",
+      "root.planning.started",
+      "root.synthesis.completed",
+      "structured_decision.decision_attempt"
+    ],
+    "observed_agents": [
+      "Analysis Lead"
+    ],
+    "artifacts": []
+  },
+  {
+    "run_id": "483ed36d-cd0a-47c1-995d-1fc85e7f6877",
+    "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+    "status": "completed",
+    "final_status": "completed",
+    "duration_ms": 1434,
+    "result_available": true,
+    "trace_count": 25,
+    "durable_event_count": 16,
+    "event_types": [
+      "execution.checkpoint.saved",
+      "execution.completed",
+      "execution.phase.started",
+      "execution.queued",
+      "execution.started",
+      "operation.committed",
+      "operation.in_flight",
+      "operation.prepared",
+      "output.final.available",
+      "root.direct_response",
+      "root.planning.completed",
+      "root.planning.started",
+      "root.synthesis.completed",
+      "structured_decision.decision_attempt"
+    ],
+    "observed_agents": [
+      "Analysis Lead"
+    ],
+    "artifacts": []
+  },
+  {
+    "run_id": "a47f0489-8dae-4176-af1f-91974d880c2d",
+    "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+    "status": "completed",
+    "final_status": "completed",
+    "duration_ms": 1434,
+    "result_available": true,
+    "trace_count": 25,
+    "durable_event_count": 16,
+    "event_types": [
+      "execution.checkpoint.saved",
+      "execution.completed",
+      "execution.phase.started",
+      "execution.queued",
+      "execution.started",
+      "operation.committed",
+      "operation.in_flight",
+      "operation.prepared",
+      "output.final.available",
+      "root.direct_response",
+      "root.planning.completed",
+      "root.planning.started",
+      "root.synthesis.completed",
+      "structured_decision.decision_attempt"
+    ],
+    "observed_agents": [
+      "Analysis Lead"
+    ],
+    "artifacts": []
+  },
+  {
+    "run_id": "44319933-54ac-44ef-a897-bb5bd8d0b3a1",
+    "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+    "status": "completed",
+    "final_status": "completed",
+    "duration_ms": 1619,
+    "result_available": true,
+    "trace_count": 25,
+    "durable_event_count": 16,
+    "event_types": [
+      "execution.checkpoint.saved",
+      "execution.completed",
+      "execution.phase.started",
+      "execution.queued",
+      "execution.started",
+      "operation.committed",
+      "operation.in_flight",
+      "operation.prepared",
+      "output.final.available",
+      "root.direct_response",
+      "root.planning.completed",
+      "root.planning.started",
+      "root.synthesis.completed",
+      "structured_decision.decision_attempt"
+    ],
+    "observed_agents": [
+      "Analysis Lead"
+    ],
+    "artifacts": []
+  },
+  {
+    "run_id": "c909d069-00ea-486f-b83d-8b58c0ac2a3a",
+    "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+    "status": "completed",
+    "final_status": "completed",
+    "duration_ms": 1330,
+    "result_available": true,
+    "trace_count": 25,
+    "durable_event_count": 16,
+    "event_types": [
+      "execution.checkpoint.saved",
+      "execution.completed",
+      "execution.phase.started",
+      "execution.queued",
+      "execution.started",
+      "operation.committed",
+      "operation.in_flight",
+      "operation.prepared",
+      "output.final.available",
+      "root.direct_response",
+      "root.planning.completed",
+      "root.planning.started",
+      "root.synthesis.completed",
+      "structured_decision.decision_attempt"
+    ],
+    "observed_agents": [
+      "Analysis Lead"
+    ],
+    "artifacts": []
+  },
+  {
+    "run_id": "68554672-e27b-4ff2-96f5-b7e195d77429",
+    "tree_id": "4aa0304a-ba85-4867-a419-e3823b340c1b",
+    "status": "completed",
+    "final_status": "completed",
+    "duration_ms": 29344,
+    "result_available": true,
+    "trace_count": 180,
+    "durable_event_count": 120,
+    "event_types": [
+      "artifact.committed",
+      "artifact.staged",
+      "execution.checkpoint.saved",
+      "execution.completed",
+      "execution.phase.started",
+      "execution.queued",
+      "execution.started",
+      "operation.committed",
+      "operation.in_flight",
+      "operation.prepared",
+      "orchestration.execution_completed",
+      "orchestration.execution_started",
+      "orchestration.final_result_created",
+      "orchestration.final_review_passed",
+      "orchestration.final_review_started",
+      "orchestration.manager_delegation_completed",
+      "orchestration.manager_delegation_started",
+      "orchestration.manager_discovery_completed",
+      "orchestration.manager_review_completed",
+      "orchestration.manager_review_passed",
+      "orchestration.manager_review_started",
+      "orchestration.planning_completed",
+      "orchestration.specialist_discovery_completed",
+      "orchestration.specialist_execution_completed",
+      "orchestration.specialist_execution_started",
+      "orchestration.started",
+      "orchestration.subtask_created",
+      "orchestration.triage_completed",
+      "output.final.available",
+      "root.planning.completed",
+      "root.planning.started",
+      "root.synthesis.completed",
+      "root.synthesis.started",
+      "specialist.tool.authorized",
+      "specialist.tool.completed",
+      "specialist.tool.requested",
+      "specialist.tool.started",
+      "structured_decision.decision_attempt"
+    ],
+    "observed_agents": [
+      "Analysis Lead",
+      "Analysis Specialist",
+      "Research Manager",
+      "Research Specialist",
+      "Synthesis Manager"
+    ],
+    "artifacts": [
+      {
+        "id": "886b1ca0334930c3dfc4bd686e543b1ee0149b0a6db1fda7c15c144fe1f52132",
+        "name": "university-ai-review.txt",
+        "type": "text",
+        "bytes": 1707,
+        "is_final": true
+      },
+      {
+        "id": "24f9470cc81e95dbbc96685c53eba7758b5ab6249afb9d9b3eb1ce83636d41d0",
+        "name": "university-ai-review.txt",
+        "type": "text",
+        "bytes": 2449,
+        "is_final": true
+      }
+    ]
+  }
+]

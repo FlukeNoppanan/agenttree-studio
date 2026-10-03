@@ -27,6 +27,7 @@ export function RunArtifacts({ runId, artifacts }: { runId: string; artifacts: L
   }
   return <section className="min-w-0 border-t border-border pt-4 lg:border-l lg:border-t-0 lg:pl-5 lg:pt-0" aria-label={t("liveV2.artifacts")}>
     <h2 className="text-xl font-semibold">{t("liveV2.artifacts")}</h2>
+    <p className="mt-1 text-sm text-muted-foreground">{t("baseline.resultHelp")}</p>
     {error ? <p role="alert" className="mt-2 text-sm text-destructive">{error}</p> : null}
     {sorted.length ? <div className="mt-3 divide-y divide-border">{sorted.map(item => <article key={item.artifact_id} className="min-w-0 py-3">
       <div className="flex flex-wrap items-center gap-2"><strong className="break-all text-sm">{item.name}</strong><span className="text-xs text-primary">{item.is_final ? t("liveV2.finalArtifact") : superseded.has(item.artifact_id) ? t("liveV2.supersededArtifact") : t("liveV2.intermediateArtifact")}</span></div>

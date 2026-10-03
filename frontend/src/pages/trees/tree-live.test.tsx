@@ -78,7 +78,7 @@ describe("Execution Inspector", () => {
     const detail = { ...run("run-a", "completed"), output: { type: "text", delivery_type: "show_in_web", value: "Implemented", success: true, core_status: "completed" }, trace: [
       event(1, "orchestration.started"),
       { ...event(2, "orchestration.manager_review_started"), agent_id: "manager", agent_name: "Development Manager" },
-      event(3, "studio.tool_decision", { tool_name: "filesystem.read_file", arguments: { path: "/workspace/main.py" }, provider: "Gemini", model: "gemini-test", secret: "raw-secret-value" }),
+      event(3, "studio.tool_decision", { tool_name: "filesystem.read_file", arguments: { path: "/workspace/main.py" }, provider: "Gemini", model: "gemini-test", secret: "[REDACTED]" }),
       event(4, "studio.tool_observation", { tool_name: "filesystem.read_file", output: { content: "file contents" } }),
       event(5, "orchestration.manager_review_revision_requested", { requested_revision_number: 1, feedback: "Tests failed" }),
       { ...event(6, "orchestration.final_result_created"), agent_id: "root", agent_name: "Root Agent" },
@@ -86,19 +86,19 @@ describe("Execution Inspector", () => {
     render(<ExecutionInspector run={detail} tree={tree} />)
     expect(screen.getByText("Task run-a")).toBeInTheDocument()
     expect(screen.getAllByText("Root Agent").length).toBeGreaterThan(0)
-    expect(screen.getByText("Development Manager")).toBeInTheDocument()
+    expect(screen.getAllByText("Development Manager")[0]).toBeInTheDocument()
     expect(screen.getAllByText("Backend Specialist").length).toBeGreaterThan(0)
     expect(screen.getAllByText("Tool Call").length).toBeGreaterThan(0)
     expect(screen.getByText("Provider: Gemini")).toBeInTheDocument()
     expect(screen.getByText("Model: gemini-test")).toBeInTheDocument()
     expect(screen.getByText("Provider: Real provider")).toBeInTheDocument()
     expect(screen.getByText("Model: model-1")).toBeInTheDocument()
-    expect(screen.getByText("Manager Review")).toBeInTheDocument()
-    expect(screen.getByText("Manager requested revision")).toBeInTheDocument()
+    expect(screen.getAllByText("Manager Review")[0]).toBeInTheDocument()
+    expect(screen.getByText(i18n.t("baseline.trace.actions.managerRevise.title"))).toBeInTheDocument()
     expect(screen.getByText("Final Result")).toBeInTheDocument()
     expect(screen.queryByText("raw-secret-value")).not.toBeInTheDocument()
     fireEvent.click(screen.getByText("View Tool Result"))
-    expect(screen.getByText(/file contents/)).toBeInTheDocument()
+    expect(screen.getAllByText(/file contents/)[0]).toBeInTheDocument()
   })
 
   it("shows a useful failure without an invented result", () => {

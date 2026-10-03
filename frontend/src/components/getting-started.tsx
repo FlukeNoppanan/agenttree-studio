@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 
 type Action = "configure" | "run" | "connect"
-export function GettingStarted({ expanded = false }: { expanded?: boolean }) {
+export function GettingStarted({ expanded = false, summaryOnly = false }: { expanded?: boolean; summaryOnly?: boolean }) {
  const { user, can } = useAuth(); const { t } = useTranslation()
  const [data, setData] = useState<MyDashboard | null>(null)
  const [error, setError] = useState(false); const [loading, setLoading] = useState(true)
@@ -39,7 +39,7 @@ export function GettingStarted({ expanded = false }: { expanded?: boolean }) {
  const currentStep = completed.findIndex(value => !value)
  const count = completed.filter(Boolean).length
  const progress = <><p className="text-sm text-muted-foreground">{t("revision.progress", { count, total: 6 })}</p><div role="progressbar" aria-label={t("revision.progressLabel")} aria-valuemin={0} aria-valuemax={6} aria-valuenow={count} className="mt-2 h-1.5 overflow-hidden rounded-full bg-secondary"><div className="h-full rounded-full bg-primary" style={{ width: `${count / 6 * 100}%` }} /></div></>
- if (!expanded) return <Card aria-label={t("onboarding.title")} className="min-w-0 border-l-4 border-l-primary"><CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"><div className="min-w-0"><h2 className="text-sm font-semibold">{t("onboarding.title")}</h2>{progress}</div><Button asChild variant="outline"><Link to="/getting-started">{t("revision.continue")}</Link></Button></CardContent></Card>
+ if (!expanded) return <Card aria-label={t("onboarding.title")} className="onboarding-summary min-w-0 border-l-4 border-l-primary"><CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"><div className="min-w-0"><h2 className="text-sm font-semibold">{t("onboarding.title")}</h2>{progress}</div>{!summaryOnly && <Button asChild variant="outline"><Link to="/getting-started">{t("revision.continue")}</Link></Button>}</CardContent></Card>
  function href(action: Action, id: string) { return action === "configure" ? `/trees/${id}/setup` : action === "run" ? `/trees/${id}/playground` : `/trees/${id}?tab=connect` }
  function actionControl(action: Action) {
   const eligible = action === "configure" ? trees : readyTrees

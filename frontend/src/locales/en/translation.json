@@ -682,7 +682,8 @@
     "status": "Status",
     "lastChecked": "Last checked",
     "technicalDetails": "Technical Details",
-    "close": "Close"
+    "close": "Close",
+    "search": "Search"
   },
   "status": {
     "draft": "Draft",
@@ -1998,5 +1999,387 @@
     "deleteSecret": "Delete Secret",
     "secretNamePlaceholder": "Provider access key",
     "selectUser": "Select a username to review permissions and Tree access."
+  },
+  "baseline": {
+    "filters": "Execution filters",
+    "searchHint": "Search by Run ID or Tree name",
+    "allTrees": "All accessible Trees",
+    "from": "From (local time)",
+    "to": "Until (local time)",
+    "localTime": "Date ranges use your device’s local timezone.",
+    "filtersActive": "Filters active",
+    "noMatches": "No matching Executions",
+    "noMatchesHelp": "Adjust the criteria or clear filters to see all accessible work.",
+    "resultHelp": "Final Result is the primary answer. Artifacts preserve additional outputs separately.",
+    "keyDirection": "Provider Secrets authenticate AgentTree to an AI Provider. This API Key authenticates your application to AgentTree.",
+    "keyNext": "Store the key securely, then select a Ready Tree and open Connect for API examples.",
+    "keySecurity": "Use keys on your server, never in shipped browser code or Git. Use HTTPS outside trusted local development.",
+    "requestHelp": "API Key identifies the caller; Tree ID selects the workflow; input is task text. Serialize structured source data to JSON text.",
+    "responseHelp": "V1 returns the answer in output.content after execution. V2 returns run_id first; then read status and final_output from result.",
+    "integrationModes": "Direct API submits application tasks. Incoming Webhook optionally accepts pushed events. Result Destination sends completed outputs outward.",
+    "trace": {
+      "title": "Execution Trace",
+      "help": "Follow the recorded work, reviews and outcomes in order. This is workflow evidence, not hidden AI reasoning.",
+      "count": "{{count}} recorded events",
+      "technical": "Technical details · all {{count}} events",
+      "eventDetails": "Event details",
+      "stages": {
+        "execution": "Execution",
+        "planning": "Root · Planning",
+        "delegation": "Manager · Delegation",
+        "work": "Specialist · Work",
+        "managerReview": "Manager Review",
+        "rootReview": "Root Final Review",
+        "synthesis": "Root · Final Result",
+        "resource": "Tools / Artifacts",
+        "collaboration": "Manager Collaboration",
+        "recovery": "Recovery / Retry"
+      },
+      "fields": {
+        "task": "Subtask",
+        "manager": "Manager",
+        "specialist": "Specialist",
+        "tool": "Tool",
+        "review": "Review",
+        "revision": "Revision",
+        "outcome": "Outcome",
+        "feedback": "Feedback",
+        "capability": "Capability",
+        "provider": "Provider",
+        "model": "Model",
+        "duration": "Duration (ms)",
+        "objective": "Objective"
+      },
+      "actions": {
+        "queued": {
+          "title": "Execution queued",
+          "help": "Waiting for the runtime to accept the task."
+        },
+        "started": {
+          "title": "Execution started",
+          "help": "The runtime has started processing this task."
+        },
+        "completed": {
+          "title": "Execution completed",
+          "help": "Processing finished. Inspect Final Result and any preserved Artifacts."
+        },
+        "failed": {
+          "title": "Execution failed",
+          "help": "Processing stopped with a failure. Technical details retain the reported error."
+        },
+        "cancelled": {
+          "title": "Execution cancelled",
+          "help": "The runtime confirmed cancellation."
+        },
+        "cancelRequested": {
+          "title": "Cancellation requested",
+          "help": "A stop was requested; cancellation is not yet confirmed."
+        },
+        "rootPlanning": {
+          "title": "Root starts planning",
+          "help": "Root considers how to handle the overall task."
+        },
+        "rootPlanned": {
+          "title": "Root planning finished",
+          "help": "The initial planning decision is recorded."
+        },
+        "direct": {
+          "title": "Root handles the task directly",
+          "help": "This branch uses a direct Root response rather than delegated work."
+        },
+        "synthesis": {
+          "title": "Root prepares the final answer",
+          "help": "Root synthesizes the reviewed work into the user-facing answer."
+        },
+        "synthesized": {
+          "title": "Root finishes the final answer",
+          "help": "The final synthesis is complete."
+        },
+        "synthesisFailed": {
+          "title": "Root could not finish synthesis",
+          "help": "The final answer could not be generated. Inspect the recorded failure."
+        },
+        "received": {
+          "title": "Task enters orchestration",
+          "help": "The workflow is preparing to route the requested work."
+        },
+        "routed": {
+          "title": "Required capabilities identified",
+          "help": "These recorded capabilities guide selection of suitable Managers."
+        },
+        "managers": {
+          "title": "Managers selected",
+          "help": "These Managers were selected for the task. Selection is based on capabilities, not display names."
+        },
+        "noManager": {
+          "title": "No suitable Manager found",
+          "help": "No Manager matched the required capabilities."
+        },
+        "planned": {
+          "title": "Routing plan recorded",
+          "help": "The planning stage produced its recorded outcome."
+        },
+        "decomposing": {
+          "title": "Manager breaks down the work",
+          "help": "Manager prepares smaller tasks for Specialists with suitable capabilities."
+        },
+        "subtask": {
+          "title": "Manager creates a subtask",
+          "help": "The recorded task and capabilities define this piece of work."
+        },
+        "specialistSelected": {
+          "title": "Specialist selection recorded",
+          "help": "The Manager selected a Specialist for this subtask."
+        },
+        "noSpecialist": {
+          "title": "No suitable Specialist found",
+          "help": "No Specialist matched this subtask."
+        },
+        "delegated": {
+          "title": "Manager finishes delegation",
+          "help": "The Manager-level delegation outcome is recorded."
+        },
+        "workStarted": {
+          "title": "Delegated work begins",
+          "help": "The runtime begins the selected assignments."
+        },
+        "specialistStarted": {
+          "title": "Specialist starts work",
+          "help": "The Specialist works on the assigned subtask using its configured Model and resources."
+        },
+        "specialistCompleted": {
+          "title": "Specialist returns its work",
+          "help": "The assigned work has finished; Manager review evaluates whether it meets the objective."
+        },
+        "specialistFailed": {
+          "title": "Specialist work failed",
+          "help": "This assignment could not complete. Inspect its recorded error."
+        },
+        "skipped": {
+          "title": "Assignment skipped",
+          "help": "This assignment was not executed; inspect the recorded reason."
+        },
+        "workCompleted": {
+          "title": "Delegated execution stage finished",
+          "help": "The stage is finished; this does not imply final approval."
+        },
+        "managerReview": {
+          "title": "Manager reviews Specialist output",
+          "help": "Manager checks whether this subtask satisfies the delegated objective."
+        },
+        "managerPass": {
+          "title": "Manager approves this subtask",
+          "help": "The reviewed work passed this Manager review. Root still owns the final review."
+        },
+        "managerFail": {
+          "title": "Manager rejects this subtask",
+          "help": "This Manager review failed. The result is not approved."
+        },
+        "managerReturned": {
+          "title": "Manager review stage finished",
+          "help": "The Manager returns the recorded review outcome for its work."
+        },
+        "managerRevise": {
+          "title": "Manager requests Specialist revision",
+          "help": "Manager asks for changes to this subtask before accepting it."
+        },
+        "revision": {
+          "title": "Specialist revision begins",
+          "help": "A real revision execution has started for the affected work."
+        },
+        "revised": {
+          "title": "Revision execution finished",
+          "help": "Revised work is available for another Manager review."
+        },
+        "managerLimit": {
+          "title": "Manager revision limit reached",
+          "help": "No additional Specialist revision is allowed by the configured bound."
+        },
+        "rootReview": {
+          "title": "Root performs Final Review",
+          "help": "Root checks the combined Manager results against the overall task before final synthesis."
+        },
+        "rootPass": {
+          "title": "Root accepts the combined work",
+          "help": "Root Final Review passed. Final synthesis can proceed."
+        },
+        "rootFail": {
+          "title": "Root rejects the combined work",
+          "help": "Root Final Review failed; the combined work is not approved."
+        },
+        "rootRevise": {
+          "title": "Root requests Manager reconsideration",
+          "help": "Feedback goes back to Manager review. Specialists run again only if a Manager requests revision."
+        },
+        "reconsider": {
+          "title": "Managers reconsider reviewed work",
+          "help": "Managers review existing work with Root feedback; this alone does not mean Specialists reran."
+        },
+        "reconsidered": {
+          "title": "Manager reconsideration finished",
+          "help": "The updated review outcome can be evaluated by Root again."
+        },
+        "rootLimit": {
+          "title": "Root revision limit reached",
+          "help": "The configured final revision budget is exhausted."
+        },
+        "finalized": {
+          "title": "Final review outcome recorded",
+          "help": "The review result is finalized. Root synthesis, when present, follows as a separate step."
+        },
+        "artifactStaged": {
+          "title": "Artifact prepared",
+          "help": "An output has been staged; it is not yet a committed Artifact."
+        },
+        "artifactCommitted": {
+          "title": "Artifact preserved",
+          "help": "An additional output is committed separately from the primary Final Result."
+        },
+        "output": {
+          "title": "Final Result available",
+          "help": "The persisted final output is ready to inspect."
+        },
+        "toolRequested": {
+          "title": "Tool access recorded",
+          "help": "An Agent requested or was authorized to use a Tool; inspect details for the exact stage."
+        },
+        "toolStarted": {
+          "title": "Agent starts a Tool call",
+          "help": "The configured Tool is being invoked for this Agent."
+        },
+        "toolCompleted": {
+          "title": "Tool call completed",
+          "help": "The Tool returned its recorded observation to the Agent."
+        },
+        "toolFailed": {
+          "title": "Tool call failed or was denied",
+          "help": "This resource action did not succeed. Inspect the safe recorded error."
+        },
+        "collaboration": {
+          "title": "Manager collaboration activity",
+          "help": "A real peer interaction was recorded. Technical details identify the participants and thread."
+        },
+        "retry": {
+          "title": "Recovery or retry activity",
+          "help": "A recovery action is recorded. It does not by itself imply success."
+        },
+        "recovered": {
+          "title": "Structured decision repaired",
+          "help": "The recorded repair succeeded; this does not change the Execution outcome by itself."
+        },
+        "other": {
+          "title": "Additional runtime activity",
+          "help": "This event has no dedicated explanation yet. Its complete record is available below."
+        }
+      }
+    },
+    "apiWorkbench": {
+      "prerequisites": "Before you run",
+      "curlHelp": "Bash, curl and Python 3. Set AGENTTREE_API_KEY securely in your environment; replace TREE_ID with the selected Tree ID.",
+      "pythonHelp": "Python 3 with requests (pip install requests). Read the API Key from the environment; never commit it to source.",
+      "nodeHelp": "Server-side Node.js 20+. Save as example.mjs. Uses native fetch; do not run this code in a browser or expose the API Key in a frontend bundle.",
+      "responses": "Response shapes — illustrative, not a live Execution",
+      "accepted": "V2: accepted (HTTP 202)",
+      "result": "V2: terminal result (HTTP 200)",
+      "sync": "V1: synchronous response (HTTP 200)",
+      "errors": "HTTP success means the request was accepted, not necessarily that the Tree succeeded. Inspect status, final_status and error. A result requested before completion returns 409; invalid/revoked keys return 401 and permission failures return 403. Inaccessible Trees/Runs are hidden with 404. Never put credentials in input or metadata.",
+      "lifecycle": "V2 lifecycle: submit → poll status or subscribe to SSE → fetch result. Events provide durable history; artifacts and cancellation use the returned links."
+    }
+  },
+  "productGuide": {
+    "title": "Getting Started",
+    "intro": "Build, test, understand and integrate your Tree.",
+    "contents": "In this guide",
+    "quick": "Quick Start · your real setup progress",
+    "quickHelp": "Open guided actions with explicit Tree selection.",
+    "flow": "Secret → Provider → Tree → Playground → Execution → Connect",
+    "directionTitle": "Two credential directions",
+    "providerDirection": "AgentTree → Provider Secret → AI Provider",
+    "appDirection": "Your application → AgentTree API Key → AgentTree",
+    "reviewFlow": "Specialist → Manager Review → Root Final Review → Root synthesis → Final Result",
+    "outputFlow": "Execution → Final Result + Artifacts",
+    "examples": "Response shape examples (illustrative values)",
+    "sections": {
+      "overview": {
+        "title": "Understand AgentTree",
+        "paragraphs": [
+          "A Tree is a reusable team of AI Agents with one Root, Managers and their Specialists. Your application sends a task to the Tree; AgentTree coordinates the internal work.",
+          "Root owns the overall task, decides whether to answer directly or delegate, performs final review of delegated work and synthesizes the answer. Managers divide and review their part. Specialists do focused work.",
+          "Start small: one Root, one Manager and one Specialist are enough to learn the delegated workflow. Some tasks legitimately take Root’s direct response path."
+        ]
+      },
+      "credentials": {
+        "title": "Prepare Secret, then Provider",
+        "paragraphs": [
+          "For a Provider that needs a credential, open Secrets → Add Secret. Give it a recognizable name, choose the supported type and save the credential. Stored values are encrypted and shown masked.",
+          "Open Providers → connect a Provider. Select the saved Secret, configure the service and test it. Local Ollama or a credential-free compatible service may not need a Secret; use the selected Provider’s actual fields.",
+          "Discover and verify Models. Connection success alone does not qualify every Model. Choose a Model that Studio has verified as usable; unavailable or temporarily failed Models need diagnosis or later retry."
+        ]
+      },
+      "build": {
+        "title": "Create and configure a Tree",
+        "paragraphs": [
+          "Choose Create Tree → Visual Builder for direct Canvas construction, or Guided Wizard for step-by-step setup. Both create the same Tree. Templates → Use Template opens the existing Visual Builder draft; cancellation before Save creates no Tree.",
+          "Keep exactly one Root. Connect Root → Manager and Manager → Specialist. Click an Agent to inspect it, then Edit to configure its instructions, capabilities, Provider and Model. Save persists a new configuration version.",
+          "Capability describes suitable work, such as research or evidence-review. Routing matches capabilities, not Agent names. Use clear, specific labels and give Managers and Specialists responsibilities that align."
+        ]
+      },
+      "resources": {
+        "title": "Tools, MCP and readiness",
+        "paragraphs": [
+          "Tools let an Agent access services, data or produce supported outputs. Basic text-only Trees do not require a Tool. Add one only when the task needs an external action. Some Templates declare required Tool slots.",
+          "MCP connects compatible external Tool servers through supported stdio or Streamable HTTP transports. Configure/test/discover the actual resource in Tools, then bind it to an Agent. MCP is a Tool integration, not communication with another AgentTree system.",
+          "The Builder displays shared resources once while keeping independent Agent bindings. Readiness comes from backend validation: resolve missing Models, invalid hierarchy, unavailable resources or required setup before testing."
+        ]
+      },
+      "test": {
+        "title": "Test in Playground",
+        "paragraphs": [
+          "Select a Ready Tree explicitly, open Playground, enter realistic test input and choose Run Tree. Each submission creates an independent real Execution with a new Run ID; previous messages are not conversation memory.",
+          "Watch real Agent activity, then inspect Result, Execution Trace and Artifacts. Cancel requests a cooperative stop; wait for confirmed Cancelled. Run Again submits a new Execution. Return to Builder to fix configuration and save before the next test.",
+          "Executions keeps historical work. Search by Run ID or Tree name, combine status/Tree/local date-time filters, and open the same persisted Execution. Browser reload restores saved results/events; interrupted active work does not resume after a backend process restart."
+        ]
+      },
+      "review": {
+        "title": "Manager Review → Root Final Review",
+        "paragraphs": [
+          "Manager checks each Specialist result against its subtask objective. PASS accepts that work. REVISE requests Specialist changes and another review within the configured Manager revision limit. FAIL rejects it.",
+          "After Manager results return, Root reviews the combined work against the overall task. Root PASS allows final synthesis. Root REVISE returns feedback to Managers to review previous work again; Specialists rerun only when Manager review requests a revision.",
+          "Root and Manager revision budgets are separately bounded. A failed review or exhausted budget can prevent success. Human-readable Trace presents only recorded activity; technical details retain all events and safe payloads. Trace is runtime evidence, not hidden AI reasoning."
+        ]
+      },
+      "outputs": {
+        "title": "Final Result and Artifacts",
+        "paragraphs": [
+          "Final Result is the primary answer to the task. It may be text, JSON or structured output according to the saved Tree settings. Inspect its actual status: a partial result is not complete approval.",
+          "Artifacts are additional outputs preserved separately: for example text, a generated file or a patch produced through supported runtime/Tools. Open Preview for supported text or download available bytes. Artifacts are not Agents, Executions or Trace.",
+          "A file intent is not an applied change. AgentTree does not automatically edit your workspace. Review the content and decide how your own application should use it."
+        ]
+      },
+      "api": {
+        "title": "Call a Tree from your application",
+        "paragraphs": [
+          "Playground tests a Tree inside Studio. Public API uses the same Tree/runtime from your application; Playground is not required for external use. Create a personal key in Account → API Keys, store it server-side, then choose a Ready Tree and open Connect.",
+          "API Key authenticates who calls; Tree ID selects which workflow; input is the work to do. Current account permissions and Tree grants apply on every request. An API Key does not bind to one arbitrary Tree or provide Provider credentials.",
+          "Public input is nonempty text, at most 65,536 characters. Serialize structured source data into text. V1 metadata accepts client_request_id only; V2 accepts bounded metadata and optional timeout_seconds. Do not send Agent configuration, endpoints or Provider credentials."
+        ]
+      },
+      "versions": {
+        "title": "V1 / V2 and starter code",
+        "paragraphs": [
+          "V1 is synchronous: POST /api/v1/trees/{TREE_ID}/invoke waits, then returns run_id, status and output.content. Use it for simple request-response work. Runtime failure can return HTTP 200 with status failed; check the body as well as HTTP status.",
+          "V2 is recommended for longer tasks: POST /api/v2/runs returns HTTP 202 and run_id. Poll /api/v2/runs/{RUN_ID}; when terminal, GET /result for final_output, final_status and Artifact refs. Before terminal, result returns 409. Status, events, SSE, cancel and artifacts use the same Run ID.",
+          "The examples below use a placeholder TREE_ID. Choose your Tree explicitly and use Connect for code with its actual ID and deployment-aware Base URL. Python needs requests; JavaScript runs server-side in Node.js with native fetch, not in browser code. Set AGENTTREE_API_KEY securely in the environment."
+        ]
+      },
+      "integrations": {
+        "title": "Direct API, Webhook and Result Destination",
+        "paragraphs": [
+          "Direct API is the normal path when your application submits work and retrieves the result. Incoming Webhook is optional: an external event source pushes text input to a configured authenticated ingress, which starts a real Execution.",
+          "Result Destination goes in the opposite direction: AgentTree sends completed output to a configured external URL. It is separate from incoming Webhook authentication and from API response retrieval. Configure these in the selected Tree’s existing Connect page.",
+          "First build and test a small workflow, inspect its reviews and outputs, then connect it to your application. Generic integration capabilities are available; the Wazuh, Network and Software Development case studies are planned, not completed."
+        ]
+      }
+    }
   }
 }

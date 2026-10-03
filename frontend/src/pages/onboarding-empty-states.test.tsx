@@ -14,7 +14,7 @@ beforeEach(async () => {
  vi.restoreAllMocks(); await i18n.changeLanguage("en")
  vi.spyOn(api, "listProviders").mockResolvedValue([]); vi.spyOn(api, "listSecrets").mockResolvedValue([])
  vi.spyOn(api, "listTrees").mockResolvedValue([]); vi.spyOn(api, "listTools").mockResolvedValue([])
- vi.spyOn(api, "listToolCatalog").mockResolvedValue([]); vi.spyOn(api, "listRuns").mockResolvedValue([])
+ vi.spyOn(api, "listToolCatalog").mockResolvedValue([]); vi.spyOn(api, "listRunPage").mockResolvedValue({items:[], total:0, page:1, page_size:25})
 })
 it("explains Providers and opens the existing connection dialog", async () => {
  mount(<ProvidersPage />); await screen.findByText("No AI Providers connected yet")
@@ -38,6 +38,6 @@ it("explains optional Tools and returns to the existing Catalog", async () => {
 })
 it("explains Runs and links to existing Trees", async () => {
  mount(<RunListPage />); await screen.findByText("No Runs yet")
- fireEvent.click(screen.getByRole("button", { name: "View Trees" }))
+ fireEvent.click(screen.getByRole("link", { name: "View Trees" }))
  expect(screen.getByTestId("location")).toHaveTextContent("/trees")
 })

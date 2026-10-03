@@ -657,3 +657,35 @@ def test_resource_dependencies_hide_ungranted_tree_configuration_but_preserve_de
     assert result['dependencies']==[] and not result['can_delete']
     assert len(admin.get(path).json()['dependencies'])==2
     assert member.delete(path.removesuffix('/dependencies')).status_code==409
+
+
+def test_execution_page_http_contract_grants_and_date_validation(clients):
+    from datetime import timezone, timedelta
+    from backend.models.tree import TreeVersion
+    from backend.models.run import Run
+    admin, user, factory = clients
+    with factory() as db:
+        allowed = Tree(name="Allowed")
+        denied = Tree(name="Hidden")
+        db.add_all([allowed,denied]); db.flush()
+        first = TreeVersion(tree_id=allowed.id, version_number=1, status="draft")
+        second = TreeVersion(tree_id=denied.id, version_number=1, status="draft")
+        db.add_all([first,second]);db.flush()
+        allowed.current_version_id=first.id;denied.current_version_id=second.id
+        stamp=datetime.now(timezone.utc)
+        for index in range(3):
+            db.add(Run(tree_id=allowed.id,tree_version_id=first.id,status="completed",input_json={},metadata_json={},invocation_source="api",started_at=stamp-timedelta(days=index)))
+        db.add(Run(tree_id=denied.id,tree_version_id=second.id,status="failed",input_json={},metadata_json={},invocation_source="api",started_at=stamp))
+        db.commit();allowed_id=allowed.id;denied_id=denied.id
+    make_user(admin,name="page-reader",permissions=["use_trees","view_executions"],tree_ids=[allowed_id])
+    assert user.post("/api/auth/login",json={"username":"page-reader","password":USER_PASSWORD}).status_code==200
+    assert user.post("/api/auth/change-password",json={"current_password":USER_PASSWORD,"new_password":"page-reader-strong-password-2026"}).status_code==200
+    page=user.get("/api/runs",params={"page":1,"page_size":2})
+    assert page.status_code==200 and page.json()["total"]==3 and len(page.json()["items"])==2
+    assert all(item["tree_id"]==allowed_id for item in page.json()["items"])
+    assert user.get("/api/runs",params={"page":1,"tree_id":denied_id}).status_code==403
+    assert user.get("/api/runs",params={"page":1,"search":"Hidden"}).json()["total"]==0
+    assert isinstance(user.get("/api/runs").json(),list)
+    for params in ({"page":0},{"page":1,"page_size":101},{"page":1,"after":"2026-10-04T00:00:00"},
+                   {"page":1,"after":"2026-10-04T00:00:00Z","before":"2026-10-01T00:00:00Z"}):
+        assert user.get("/api/runs",params=params).status_code==422

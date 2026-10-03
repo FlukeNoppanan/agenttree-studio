@@ -387,6 +387,7 @@ export interface LiveArtifact {
 export interface LiveEventPage { events: LiveEvent[]; next_after: number; has_more: boolean }
 
 export interface TraceEvent {
+  core_sequence?: number | null
   id: string
   run_id: string
   sequence: number
@@ -653,6 +654,7 @@ export const api = {
     if (filters.treeId) query.set("tree_id", filters.treeId)
     return request<Run[]>(`/api/runs${query.size ? `?${query}` : ""}`)
   },
+  listRunPage: (query: URLSearchParams) => request<{ items: Run[]; total: number; page: number; page_size: number }>(`/api/runs?${query}`),
   getTreeVersion: (treeId: string, versionId: string) => request<TreeVersion>(`/api/trees/${treeId}/version?version_id=${encodeURIComponent(versionId)}`),
   listTreeRuns: (treeId: string) => request<Run[]>(`/api/trees/${treeId}/runs`),
   getTreeLive: (treeId: string) => request<TreeLive>(`/api/trees/${treeId}/live`),

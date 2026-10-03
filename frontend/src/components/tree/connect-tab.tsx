@@ -104,7 +104,7 @@ export function ConnectTab({ tree }: { tree: TreeDetail }) {
 
   return <div className="space-y-5">
     {notice ? <Notice {...notice} onDismiss={() => setNotice(null)} /> : null}
-    <div className="space-y-3"><h2 className="text-xl font-semibold">{t("revision.integration.intro")}</h2><p className="text-sm text-muted-foreground">{t("revision.integration.personal")}</p><Link className="text-sm font-medium text-primary underline" to="/account?section=api-keys">{t("revision.integration.keys")}</Link><p className="break-all text-sm">Tree ID: <code>{tree.id}</code></p></div>
+    <div className="space-y-3"><h2 className="text-xl font-semibold">{t("revision.integration.intro")}</h2><p className="text-sm text-muted-foreground">{t("revision.integration.personal")}</p><p className="text-sm text-muted-foreground">{t("baseline.keyDirection")}</p><p className="text-sm text-muted-foreground">{t("baseline.integrationModes")}</p><Link className="text-sm font-medium text-primary underline" to="/account?section=api-keys">{t("revision.integration.keys")}</Link><p className="break-all text-sm">Tree ID: <code>{tree.id}</code></p></div>
     {!ready && <p role="status" className="text-sm text-muted-foreground">{t("uiCopy.treeReadyBeforeConnect")}</p>}
     {origin ? <><ApiExamples origin={origin} treeId={tree.id} asyncApi /><ApiExamples origin={origin} treeId={tree.id} asyncApi={false} /><WebhookIngressPanel origin={origin} treeId={tree.id} ready={ready} /></> : <p role="status">{t("uiCopy.loadingApiConfiguration")}</p>}
     {tree.version.trigger?.trigger_type === "webhook" && <p className="text-sm text-muted-foreground">{t("uiCopy.legacyWebhookHelp")}</p>}

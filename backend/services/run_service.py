@@ -14,15 +14,15 @@ from agenttree.orchestration import FinalResult
 from agenttree.providers import (ProviderAuthenticationError, ProviderRateLimitError,
     ProviderTimeoutError, ProviderModelNotFoundError, ProviderUnavailableError,
     ProviderInvalidRequestError)
-from sqlalchemy import func, select
-from sqlalchemy.orm import Session
+from sqlalchemy import func, or_, select
+from sqlalchemy.orm import Session, selectinload
 
 from backend.models.run import Run, RunArtifact, TraceEvent
 from backend.core.sanitization import sanitize_value
 from backend.models.tree import Tree, TreeVersion
 from backend.repositories.protocols import RunRepository
 from backend.repositories.sqlalchemy import SQLAlchemyRunRepository
-from backend.schemas.run import InvocationRequest, LiveExecutionRead, RunArtifactRead, RunDetailRead, RunRead, TestRunRequest, TraceEventRead, TreeLiveRead
+from backend.schemas.run import InvocationRequest, LiveExecutionRead, RunArtifactRead, RunDetailRead, RunPageRead, RunRead, TestRunRequest, TraceEventRead, TreeLiveRead
 from backend.services.destination_service import ResultDeliveryService
 from backend.services.execution_backend import RunExecutionBackend, SynchronousExecutionBackend
 from backend.services.core_runtime import StudioAgentTreeRuntime, get_studio_runtime
@@ -541,6 +541,34 @@ class RunService:
             if self._database.get(Tree, tree_id) is None:
                 raise ResourceNotFoundError("Tree not found")
         return [self._read(item) for item in self._runs.list(status=status, tree_id=tree_id)]
+
+    def page(self, *, allowed_tree_ids: set[str], page: int, page_size: int,
+             status: str | None = None, tree_id: str | None = None,
+             search: str = "", after: datetime | None = None,
+             before: datetime | None = None) -> RunPageRead:
+        """Apply current access and filters before counting/paging; no trace loads."""
+        statement = select(Run).join(Tree).where(Run.tree_id.in_(allowed_tree_ids))
+        if status:
+            statement = statement.where(Run.status == status)
+        if tree_id:
+            statement = statement.where(Run.tree_id == tree_id)
+        if search.strip():
+            term = search.strip().lower()
+            statement = statement.where(or_(
+                func.lower(Run.id).contains(term, autoescape=True),
+                func.lower(Tree.name).contains(term, autoescape=True),
+            ))
+        if after:
+            statement = statement.where(Run.started_at >= after)
+        if before:
+            statement = statement.where(Run.started_at <= before)
+        total = self._database.scalar(select(func.count()).select_from(statement.subquery())) or 0
+        rows = self._database.scalars(statement.options(
+            selectinload(Run.tree), selectinload(Run.tree_version),
+        ).order_by(Run.created_at.desc(), Run.id.desc()).offset(
+            (page - 1) * page_size).limit(page_size)).all()
+        return RunPageRead(items=[self._read(row) for row in rows], total=total,
+                           page=page, page_size=page_size)
 
     def get(self, run_id: str) -> RunDetailRead:
         return self._read(self._get_model(run_id), detail=True)

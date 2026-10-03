@@ -456,3 +456,30 @@ def test_runtime_api_uses_same_execution_pipeline(database, monkeypatch) -> None
     assert result.invocation_source == "api"
     assert result.metadata == {"caller": "api-test"}
     assert result.input == {"message": "Investigate"}
+
+
+def test_filtered_run_pages_count_only_authorized_trees(database):
+    from datetime import timedelta
+    first, _, _ = runtime_tree(database)
+    other, _, _ = runtime_tree(database)
+    first_model = database.get(Tree, first.id)
+    first_model.name = "Coverage 100%_Tree"
+    now = datetime.now(timezone.utc)
+    for index in range(6):
+        database.add(Run(id=f"allowed-{index}", tree_id=first.id,
+            tree_version_id=first.version.id, status="completed" if index % 2 else "failed",
+            input_json={"objective":"test"}, metadata_json={}, invocation_source="studio_test",
+            started_at=now-timedelta(days=index), created_at=now-timedelta(days=index)))
+    database.add(Run(id="forbidden",tree_id=other.id,tree_version_id=other.version.id,
+        status="completed",input_json={},metadata_json={},invocation_source="api",started_at=now,created_at=now))
+    database.commit()
+    service = RunService(database)
+    page = service.page(allowed_tree_ids={first.id},page=2,page_size=2)
+    assert page.total == 6 and [item.id for item in page.items] == ["allowed-2","allowed-3"]
+    assert service.page(allowed_tree_ids=set(),page=1,page_size=2).total == 0
+    assert service.page(allowed_tree_ids={first.id},page=1,page_size=2,tree_id=other.id).total == 0
+    assert service.page(allowed_tree_ids={first.id},page=1,page_size=10,status="completed").total == 3
+    assert service.page(allowed_tree_ids={first.id},page=1,page_size=10,search="100%_").total == 6
+    assert service.page(allowed_tree_ids={first.id},page=1,page_size=10,search="allowed-4").total == 1
+    assert service.page(allowed_tree_ids={first.id},page=1,page_size=10,after=now-timedelta(days=2),before=now).total == 3
+    assert service.page(allowed_tree_ids={first.id},page=4,page_size=2).items == []

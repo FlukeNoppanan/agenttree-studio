@@ -682,7 +682,8 @@
     "status": "สถานะ",
     "lastChecked": "ตรวจสอบล่าสุด",
     "technicalDetails": "รายละเอียดทางเทคนิค",
-    "close": "ปิด"
+    "close": "ปิด",
+    "search": "ค้นหา"
   },
   "status": {
     "draft": "ฉบับร่าง",
@@ -1998,5 +1999,387 @@
     "deleteSecret": "ลบ Secret",
     "secretNamePlaceholder": "ชื่อสำหรับอ้างอิง เช่น Provider หลัก",
     "selectUser": "เลือกชื่อ User เพื่อดูสิทธิ์และ Tree ที่เข้าถึงได้"
+  },
+  "baseline": {
+    "filters": "ตัวกรอง Executions",
+    "searchHint": "ค้นหาด้วย Run ID หรือชื่อ Tree",
+    "allTrees": "ทุก Tree ที่เข้าถึงได้",
+    "from": "เริ่มตั้งแต่ (เวลาท้องถิ่น)",
+    "to": "ถึง (เวลาท้องถิ่น)",
+    "localTime": "ช่วงเวลานี้ใช้เขตเวลาของอุปกรณ์คุณ",
+    "filtersActive": "กำลังใช้ตัวกรอง",
+    "noMatches": "ไม่พบ Execution ที่ตรงกับตัวกรอง",
+    "noMatchesHelp": "ลองเปลี่ยนเงื่อนไข หรือล้างตัวกรองเพื่อดูงานทั้งหมด",
+    "resultHelp": "Final Result คือคำตอบหลักของงาน ส่วน Artifacts คือผลลัพธ์เพิ่มเติมที่เก็บแยกไว้",
+    "keyDirection": "Provider Secret ใช้ให้ AgentTree ติดต่อ AI Provider ส่วน API Key ใช้ให้แอปของคุณเรียก AgentTree",
+    "keyNext": "เก็บ API Key อย่างปลอดภัย จากนั้นเลือก Ready Tree และเปิด Connect เพื่อคัดลอกตัวอย่าง API",
+    "keySecurity": "ใช้ API Key ฝั่งเซิร์ฟเวอร์ อย่าใส่ในโค้ดที่ส่งไปยัง browser หรือ commit ลง Git ใช้ HTTPS เมื่อใช้งานนอกเครื่องในสภาพแวดล้อมจริง",
+    "requestHelp": "API Key ระบุผู้เรียก · Tree ID ระบุ workflow · input คือข้อความงาน หากข้อมูลต้นทางเป็น JSON ให้ serialize เป็นข้อความก่อนส่ง",
+    "responseHelp": "V1 ส่งคำตอบใน output.content เมื่อทำงานเสร็จ ส่วน V2 ส่ง run_id ก่อน แล้วอ่าน status และ final_output จาก result ภายหลัง",
+    "integrationModes": "Direct API ใช้ส่งงานจากแอป · Incoming Webhook ใช้รับ event จากระบบภายนอก (ไม่บังคับ) · Result Destination ใช้ส่งผลลัพธ์ที่เสร็จแล้วออกไป",
+    "trace": {
+      "title": "Execution Trace",
+      "help": "อ่านสิ่งที่เกิดขึ้นจริงตามลำดับ งานที่ส่งต่อ การตรวจ และผลลัพธ์ ข้อมูลนี้เป็นหลักฐาน workflow ไม่ใช่ความคิดภายในของ AI",
+      "count": "{{count}} events ที่บันทึกไว้",
+      "technical": "รายละเอียดทางเทคนิค · {{count}} events ทั้งหมด",
+      "eventDetails": "ดูรายละเอียด event",
+      "stages": {
+        "execution": "Execution",
+        "planning": "Root · Planning",
+        "delegation": "Manager · Delegation",
+        "work": "Specialist · Work",
+        "managerReview": "Manager Review",
+        "rootReview": "Root Final Review",
+        "synthesis": "Root · Final Result",
+        "resource": "Tools / Artifacts",
+        "collaboration": "Manager Collaboration",
+        "recovery": "Recovery / Retry"
+      },
+      "fields": {
+        "task": "งานย่อย",
+        "manager": "Manager",
+        "specialist": "Specialist",
+        "tool": "Tool",
+        "review": "รอบตรวจ",
+        "revision": "Revision",
+        "outcome": "สถานะ",
+        "feedback": "ข้อเสนอแนะ",
+        "capability": "Capability",
+        "provider": "Provider",
+        "model": "Model",
+        "duration": "เวลา (ms)",
+        "objective": "งานที่ต้องทำ"
+      },
+      "actions": {
+        "queued": {
+          "title": "Execution รอเริ่มงาน",
+          "help": "บันทึกงานแล้ว กำลังรอให้ runtime เริ่มประมวลผล"
+        },
+        "started": {
+          "title": "Execution เริ่มทำงาน",
+          "help": "runtime เริ่มประมวลผลงานนี้แล้ว"
+        },
+        "completed": {
+          "title": "Execution สำเร็จ",
+          "help": "งานเสร็จแล้ว ดูคำตอบหลักได้ที่ Final Result และดูไฟล์ที่สร้างไว้ใน Artifacts"
+        },
+        "failed": {
+          "title": "Execution ไม่สำเร็จ",
+          "help": "งานหยุดเนื่องจากข้อผิดพลาด เปิดรายละเอียดทางเทคนิคเพื่อตรวจสอบสาเหตุที่บันทึกไว้"
+        },
+        "cancelled": {
+          "title": "Execution ถูกยกเลิก",
+          "help": "runtime ยืนยันว่าหยุดงานแล้ว"
+        },
+        "cancelRequested": {
+          "title": "ขอยกเลิก Execution",
+          "help": "ส่งคำขอให้หยุดแล้ว แต่ runtime ยังไม่ได้ยืนยันการยกเลิก"
+        },
+        "rootPlanning": {
+          "title": "Root เริ่มวางแผน",
+          "help": "Root พิจารณาว่าควรจัดการงานโดยรวมอย่างไร"
+        },
+        "rootPlanned": {
+          "title": "Root วางแผนเสร็จแล้ว",
+          "help": "บันทึกผลการตัดสินใจในการวางแผนขั้นต้นแล้ว"
+        },
+        "direct": {
+          "title": "Root ตอบงานนี้โดยตรง",
+          "help": "งานนี้ใช้คำตอบจาก Root โดยไม่ได้ส่งต่อให้ Manager"
+        },
+        "synthesis": {
+          "title": "Root เริ่มเรียบเรียงคำตอบสุดท้าย",
+          "help": "Root นำงานที่ผ่านการตรวจแล้วมารวบรวมเป็นคำตอบสำหรับผู้ใช้"
+        },
+        "synthesized": {
+          "title": "Root เรียบเรียงคำตอบเสร็จแล้ว",
+          "help": "รวบรวมและเรียบเรียงคำตอบสุดท้ายแล้ว"
+        },
+        "synthesisFailed": {
+          "title": "Root สร้างคำตอบสุดท้ายไม่สำเร็จ",
+          "help": "ตรวจสอบข้อผิดพลาดที่บันทึกไว้ในรายละเอียดทางเทคนิค"
+        },
+        "received": {
+          "title": "เริ่มจัดสรรงานใน Tree",
+          "help": "กำลังเตรียมเลือก Agent ที่เหมาะกับงานนี้"
+        },
+        "routed": {
+          "title": "ระบุ Capability ที่งานต้องการ",
+          "help": "ใช้ Capability ที่บันทึกไว้นี้ในการเลือก Manager ที่เหมาะสม"
+        },
+        "managers": {
+          "title": "เลือก Manager แล้ว",
+          "help": "Manager ที่แสดงได้รับเลือกตาม Capability ไม่ใช่ตามชื่อที่ตั้งไว้"
+        },
+        "noManager": {
+          "title": "ไม่พบ Manager ที่เหมาะสม",
+          "help": "ไม่มี Manager ที่มี Capability ตรงกับงานที่ต้องการ"
+        },
+        "planned": {
+          "title": "บันทึกแผนการส่งงานแล้ว",
+          "help": "ดูผลของขั้นตอนวางแผนได้จากสถานะที่บันทึกไว้"
+        },
+        "decomposing": {
+          "title": "Manager เริ่มแบ่งงาน",
+          "help": "Manager เตรียมงานย่อยสำหรับ Specialist ที่มี Capability เหมาะสม"
+        },
+        "subtask": {
+          "title": "Manager สร้างงานย่อย",
+          "help": "งานย่อยนี้ระบุ Capability ที่ต้องใช้เพื่อเลือก Specialist"
+        },
+        "specialistSelected": {
+          "title": "เลือก Specialist สำหรับงานย่อย",
+          "help": "Manager เลือก Specialist ให้รับผิดชอบงานย่อยนี้แล้ว"
+        },
+        "noSpecialist": {
+          "title": "ไม่พบ Specialist ที่เหมาะสม",
+          "help": "ไม่มี Specialist ที่ตรงกับงานย่อยนี้"
+        },
+        "delegated": {
+          "title": "Manager จัดสรรงานเสร็จแล้ว",
+          "help": "บันทึกผลการส่งงานจาก Manager ให้ Specialist แล้ว"
+        },
+        "workStarted": {
+          "title": "เริ่มทำงานที่ได้รับมอบหมาย",
+          "help": "runtime เริ่มประมวลผลงานที่เลือกไว้"
+        },
+        "specialistStarted": {
+          "title": "Specialist เริ่มทำงาน",
+          "help": "Specialist ทำงานย่อยที่ได้รับมอบหมายด้วย Model และทรัพยากรที่ตั้งค่าไว้"
+        },
+        "specialistCompleted": {
+          "title": "Specialist ส่งผลงานกลับ",
+          "help": "งานย่อยเสร็จแล้ว Manager จะตรวจว่าผลงานตอบโจทย์ที่ได้รับหรือไม่"
+        },
+        "specialistFailed": {
+          "title": "Specialist ทำงานไม่สำเร็จ",
+          "help": "งานย่อยนี้ไม่สำเร็จ ตรวจสอบข้อผิดพลาดในรายละเอียด"
+        },
+        "skipped": {
+          "title": "ข้ามงานย่อยนี้",
+          "help": "ไม่ได้ประมวลผลงานย่อยนี้ ดูเหตุผลที่บันทึกไว้ในรายละเอียด"
+        },
+        "workCompleted": {
+          "title": "ขั้นตอนทำงานย่อยเสร็จแล้ว",
+          "help": "ขั้นตอนนี้เสร็จแล้ว แต่ยังไม่ใช่การอนุมัติผลลัพธ์สุดท้าย"
+        },
+        "managerReview": {
+          "title": "Manager ตรวจผลงานของ Specialist",
+          "help": "Manager ตรวจว่างานย่อยครบตามเป้าหมายที่ได้รับมอบหมายหรือไม่"
+        },
+        "managerPass": {
+          "title": "งานย่อยผ่าน Manager Review",
+          "help": "Manager ยอมรับผลงานส่วนนี้แล้ว แต่ Root ยังต้องตรวจผลลัพธ์รวมอีกครั้ง"
+        },
+        "managerFail": {
+          "title": "งานย่อยไม่ผ่าน Manager Review",
+          "help": "Manager ไม่ยอมรับผลงานส่วนนี้"
+        },
+        "managerReturned": {
+          "title": "Manager ตรวจงานส่วนนี้เสร็จแล้ว",
+          "help": "ส่งผลการตรวจงานของ Manager พร้อมสถานะที่บันทึกไว้"
+        },
+        "managerRevise": {
+          "title": "Manager ขอให้ Specialist แก้ไขงาน",
+          "help": "งานย่อยยังไม่ผ่าน Manager จึงส่งกลับไปแก้ไข"
+        },
+        "revision": {
+          "title": "เริ่ม Revision ของ Specialist",
+          "help": "เริ่มประมวลผลงานที่ต้องแก้ไขจริงแล้ว"
+        },
+        "revised": {
+          "title": "Revision ทำงานเสร็จแล้ว",
+          "help": "ผลงานที่แก้ไขพร้อมให้ Manager ตรวจอีกครั้ง"
+        },
+        "managerLimit": {
+          "title": "ครบจำนวน Revision ของ Manager",
+          "help": "ไม่สามารถส่งงานให้ Specialist แก้เพิ่มได้ เพราะครบจำนวนที่ตั้งไว้แล้ว"
+        },
+        "rootReview": {
+          "title": "Root ตรวจผลลัพธ์ครั้งสุดท้าย",
+          "help": "Root ตรวจงานรวมจาก Manager ว่าตอบโจทย์ทั้งหมดหรือไม่ ก่อนเรียบเรียงคำตอบสุดท้าย"
+        },
+        "rootPass": {
+          "title": "งานรวมผ่าน Root Final Review",
+          "help": "Root ยอมรับงานรวมแล้ว จึงดำเนินการเรียบเรียงคำตอบสุดท้ายได้"
+        },
+        "rootFail": {
+          "title": "งานรวมไม่ผ่าน Root Final Review",
+          "help": "Root ไม่ยอมรับผลลัพธ์รวมนี้"
+        },
+        "rootRevise": {
+          "title": "Root ส่งงานกลับให้ Manager พิจารณาใหม่",
+          "help": "ส่งข้อเสนอแนะกลับให้ Manager ตรวจใหม่ Specialist จะทำงานซ้ำเมื่อ Manager ขอ Revision เท่านั้น"
+        },
+        "reconsider": {
+          "title": "Manager เริ่มพิจารณางานใหม่",
+          "help": "Manager ตรวจงานเดิมตามข้อเสนอแนะจาก Root ขั้นตอนนี้ยังไม่ได้หมายความว่า Specialist ทำงานซ้ำ"
+        },
+        "reconsidered": {
+          "title": "Manager พิจารณางานใหม่เสร็จแล้ว",
+          "help": "Root สามารถตรวจผลการพิจารณาใหม่นี้อีกครั้ง"
+        },
+        "rootLimit": {
+          "title": "ครบจำนวน Revision ของ Root",
+          "help": "ครบจำนวนรอบแก้ไขขั้นสุดท้ายที่ตั้งไว้แล้ว"
+        },
+        "finalized": {
+          "title": "บันทึกผลการตรวจขั้นสุดท้าย",
+          "help": "บันทึกผลการตรวจแล้ว หากมี Root synthesis จะปรากฏเป็นอีกขั้นตอนหนึ่งถัดไป"
+        },
+        "artifactStaged": {
+          "title": "เตรียม Artifact",
+          "help": "เตรียมผลลัพธ์แยกไว้แล้ว แต่ยังไม่ได้ยืนยันการบันทึก Artifact"
+        },
+        "artifactCommitted": {
+          "title": "บันทึก Artifact แล้ว",
+          "help": "เก็บผลลัพธ์เพิ่มเติมแยกจากคำตอบหลักใน Final Result"
+        },
+        "output": {
+          "title": "Final Result พร้อมเปิดดู",
+          "help": "คำตอบสุดท้ายที่บันทึกไว้พร้อมให้ตรวจสอบแล้ว"
+        },
+        "toolRequested": {
+          "title": "บันทึกการขอใช้ Tool",
+          "help": "Agent ขอใช้ Tool หรือได้รับอนุญาตแล้ว ดูขั้นตอนที่แน่นอนในรายละเอียด"
+        },
+        "toolStarted": {
+          "title": "Agent เริ่มเรียก Tool",
+          "help": "กำลังใช้ Tool ที่ผูกไว้กับ Agent นี้"
+        },
+        "toolCompleted": {
+          "title": "Tool ทำงานเสร็จแล้ว",
+          "help": "ส่งผลที่ได้จาก Tool กลับให้ Agent แล้ว"
+        },
+        "toolFailed": {
+          "title": "Tool ไม่สำเร็จหรือถูกปฏิเสธ",
+          "help": "การใช้ทรัพยากรครั้งนี้ไม่สำเร็จ ตรวจสอบข้อผิดพลาดที่บันทึกไว้"
+        },
+        "collaboration": {
+          "title": "บันทึกการทำงานร่วมกันของ Manager",
+          "help": "มีการติดต่อระหว่าง Manager จริง ดูผู้เข้าร่วมและ thread ได้ในรายละเอียด"
+        },
+        "retry": {
+          "title": "บันทึกการกู้คืนหรือ Retry",
+          "help": "มีขั้นตอนแก้ปัญหาหรือลองใหม่ แต่ยังไม่ได้หมายความว่าสำเร็จ"
+        },
+        "recovered": {
+          "title": "แก้ไข Structured decision สำเร็จ",
+          "help": "แก้ไขผลการตัดสินใจได้แล้ว แต่สถานะ Execution ยังขึ้นอยู่กับงานทั้งหมด"
+        },
+        "other": {
+          "title": "กิจกรรมเพิ่มเติมของ runtime",
+          "help": "event นี้ยังไม่มีคำอธิบายเฉพาะ เปิดดูข้อมูลทั้งหมดได้ในรายละเอียด"
+        }
+      }
+    },
+    "apiWorkbench": {
+      "prerequisites": "เตรียมก่อนใช้งาน",
+      "curlHelp": "ใช้ Bash, curl และ Python 3 ตั้ง AGENTTREE_API_KEY ใน environment อย่างปลอดภัย แล้วแทน TREE_ID ด้วย ID ของ Tree ที่เลือก",
+      "pythonHelp": "ใช้ Python 3 และ requests (ติดตั้งด้วย pip install requests) อ่าน API Key จาก environment และไม่บันทึกลง source code",
+      "nodeHelp": "ใช้ Node.js 20 ขึ้นไปฝั่ง server บันทึกเป็น example.mjs และใช้ fetch ที่มีอยู่แล้ว ห้ามนำ API Key ไปใช้ใน browser หรือ frontend bundle",
+      "responses": "รูปแบบ response — ตัวอย่างประกอบ ไม่ใช่ผลจาก Execution จริง",
+      "accepted": "V2: รับคำขอแล้ว (HTTP 202)",
+      "result": "V2: ผลเมื่อ Run จบ (HTTP 200)",
+      "sync": "V1: response หลัง Run จบ (HTTP 200)",
+      "errors": "HTTP สำเร็จหมายถึงระบบรับคำขอได้ แต่ Tree อาจทำงานไม่สำเร็จ ต้องตรวจ status, final_status และ error ด้วย การขอ result ก่อน Run จบจะได้ 409 ส่วน API Key ที่ใช้ไม่ได้หรือถูกเพิกถอนจะได้ 401 และสิทธิ์ที่ไม่พอจะได้ 403 ส่วน Tree/Run ที่เข้าถึงไม่ได้จะแสดงเป็น 404 อย่าใส่ข้อมูลลับใน input หรือ metadata",
+      "lifecycle": "ลำดับ V2: ส่งคำขอ → ตรวจ status หรือรับ SSE → ดึง result โดย events เก็บประวัติที่เปิดดูย้อนหลังได้ ส่วน Artifacts และการยกเลิกใช้ links ที่ระบบส่งกลับมา"
+    }
+  },
+  "productGuide": {
+    "title": "Getting Started",
+    "intro": "คู่มือการสร้าง ทดสอบ ตรวจสอบ และเรียกใช้ Tree จากแอปของคุณ",
+    "contents": "เนื้อหาในคู่มือ",
+    "quick": "เส้นทางเริ่มต้นและความคืบหน้าจริง",
+    "quickHelp": "เปิดคำแนะนำพร้อมปุ่มเลือก Tree ของคุณ",
+    "flow": "Secret → Provider → Tree → Playground → Execution → Connect",
+    "directionTitle": "Credential สองทิศทาง",
+    "providerDirection": "AgentTree → Provider Secret → AI Provider",
+    "appDirection": "Your application → AgentTree API Key → AgentTree",
+    "reviewFlow": "Specialist → Manager Review → Root Final Review → Root synthesis → Final Result",
+    "outputFlow": "Execution → Final Result + Artifacts",
+    "examples": "ตัวอย่าง response shape (ข้อมูลประกอบการอธิบาย)",
+    "sections": {
+      "overview": {
+        "title": "ทำความเข้าใจ AgentTree",
+        "paragraphs": [
+          "Tree คือทีม AI Agent ที่นำกลับมาใช้ได้ มี Root หนึ่งตัว พร้อม Manager และ Specialist ภายใต้แต่ละ Manager แอปของคุณส่งงานให้ Tree แล้ว AgentTree จัดสรรงานภายในให้",
+          "Root รับผิดชอบงานโดยรวม เลือกตอบเองหรือส่งต่อ ตรวจงานรวมครั้งสุดท้าย และเรียบเรียงคำตอบ Manager แบ่งและตรวจงานในส่วนของตน ส่วน Specialist ทำงานเฉพาะด้าน",
+          "เริ่มด้วย Root, Manager และ Specialist อย่างละหนึ่งตัวก็เพียงพอสำหรับเรียนรู้การส่งงาน บางงานอาจใช้คำตอบจาก Root โดยตรงตามการตัดสินใจจริงของระบบ"
+        ]
+      },
+      "credentials": {
+        "title": "เตรียม Secret แล้วเชื่อมต่อ Provider",
+        "paragraphs": [
+          "ถ้า Provider ต้องใช้ credential ให้เปิด Secrets → เพิ่ม Secret ตั้งชื่อให้จำได้ เลือกประเภทที่รองรับ แล้วบันทึก credential ค่าที่เก็บไว้ถูกเข้ารหัสและแสดงแบบปิดบัง",
+          "เปิด Providers แล้วเพิ่มการเชื่อมต่อ เลือก Secret ที่บันทึกไว้ ตั้งค่าบริการ และทดสอบ Ollama ในเครื่องหรือบริการที่ไม่ต้องยืนยันตัวตนอาจไม่ต้องใช้ Secret ให้ยึดตามช่องตั้งค่าของ Provider ที่เลือก",
+          "ค้นหาและตรวจสอบ Model การเชื่อมต่อสำเร็จไม่ได้แปลว่าทุก Model ใช้งานได้ เลือก Model ที่ Studio ตรวจสอบแล้วว่าใช้งานได้ หาก Model ไม่พร้อมหรือทดสอบล้มเหลวชั่วคราว ให้ตรวจสาเหตุหรือลองใหม่ภายหลัง"
+        ]
+      },
+      "build": {
+        "title": "สร้างและตั้งค่า Tree",
+        "paragraphs": [
+          "เลือก Create Tree → Visual Builder เมื่อต้องการวางและเชื่อม Node บน Canvas หรือ Guided Wizard เมื่อต้องการตั้งค่าทีละขั้น ทั้งสองวิธีสร้าง Tree แบบเดียวกัน Templates → Use Template จะเปิด draft ใน Visual Builder หากยกเลิกก่อน Save จะยังไม่มี Tree ถูกสร้าง",
+          "Tree มี Root ได้หนึ่งตัว เชื่อม Root → Manager และ Manager → Specialist คลิก Agent เพื่อดูรายละเอียด แล้วเลือก Edit เพื่อตั้งค่าคำสั่ง Capability, Provider และ Model การ Save จะบันทึก configuration version ใหม่",
+          "Capability ระบุว่า Agent เหมาะกับงานประเภทใด เช่น research หรือ evidence-review การส่งงานจับคู่จาก Capability ไม่ใช่ชื่อ Agent ใช้คำที่ชัดเจน และกำหนดหน้าที่ของ Manager กับ Specialist ให้สอดคล้องกัน"
+        ]
+      },
+      "resources": {
+        "title": "Tools, MCP และความพร้อมของ Tree",
+        "paragraphs": [
+          "Tool ช่วยให้ Agent ใช้บริการ ข้อมูล หรือสร้างผลลัพธ์ที่รองรับ Tree ที่ทำงานด้วยข้อความอย่างเดียวไม่จำเป็นต้องมี Tool เพิ่มเมื่อโจทย์ต้องใช้การทำงานภายนอก บาง Template มีช่อง Tool ที่ต้องตั้งค่าให้ครบ",
+          "MCP เชื่อมต่อ Tool server ที่รองรับผ่าน stdio หรือ Streamable HTTP ตั้งค่า ทดสอบ และค้นหา Tool ในหน้า Tools ก่อนผูกกับ Agent โดย MCP เป็นการเชื่อม Tool ไม่ใช่การสื่อสารกับระบบ AgentTree อีกชุดหนึ่ง",
+          "Builder แสดงทรัพยากรที่ใช้ร่วมกันเพียง Node เดียว แต่ยังเก็บการผูกของแต่ละ Agent แยกกัน ความพร้อมใช้ผล validation จาก backend แก้ Model ที่ขาด โครงสร้างที่ผิด ทรัพยากรที่ไม่พร้อม และรายการตั้งค่าที่จำเป็นก่อนทดสอบ"
+        ]
+      },
+      "test": {
+        "title": "ทดสอบใน Playground",
+        "paragraphs": [
+          "เลือก Ready Tree ที่ต้องการ เปิด Playground ใส่ข้อมูลทดสอบจริง แล้วเลือกเริ่ม Run แต่ละครั้งสร้าง Execution จริงพร้อม Run ID ใหม่ ข้อความก่อนหน้าไม่ได้ถูกใช้เป็นความจำของบทสนทนา",
+          "ดูการทำงานจริงของ Agent แล้วตรวจ Result, Execution Trace และ Artifacts การ Cancel เป็นคำขอหยุดงาน ต้องรอสถานะ Cancelled ยืนยัน Run Again สร้าง Execution ใหม่ หากต้องแก้ configuration ให้กลับ Builder และ Save ก่อนทดสอบอีกครั้ง",
+          "Executions เก็บประวัติงาน ค้นหาด้วย Run ID หรือชื่อ Tree และใช้สถานะ Tree กับช่วงเวลาท้องถิ่นร่วมกันได้ จากนั้นเปิด Execution ที่บันทึกไว้ การ reload browser เปิดผลลัพธ์และ event เดิมได้ แต่งานที่ค้างอยู่จะไม่ทำต่อเมื่อ backend process restart"
+        ]
+      },
+      "review": {
+        "title": "Manager Review → Root Final Review",
+        "paragraphs": [
+          "Manager ตรวจผลงานของ Specialist เทียบกับเป้าหมายงานย่อย PASS คือยอมรับงาน REVISE คือขอให้ Specialist แก้และตรวจอีกครั้งภายในจำนวนรอบที่ตั้งไว้ ส่วน FAIL คือไม่ยอมรับงาน",
+          "เมื่อได้รับผลงานจาก Manager แล้ว Root จะตรวจงานรวมเทียบกับโจทย์ทั้งหมด Root PASS จึงนำไปเรียบเรียงคำตอบได้ Root REVISE ส่งข้อเสนอแนะกลับให้ Manager ตรวจงานเดิมอีกครั้ง Specialist จะทำงานซ้ำเมื่อ Manager ขอ Revision เท่านั้น",
+          "จำนวน Revision ของ Root และ Manager มีขอบเขตแยกกัน การตรวจไม่ผ่านหรือครบจำนวนรอบอาจทำให้งานไม่สำเร็จ Human-readable Trace แสดงเฉพาะกิจกรรมที่เกิดขึ้นจริง ส่วนรายละเอียดทางเทคนิคยังเก็บทุก event และ payload ที่ปลอดภัย Trace เป็นหลักฐานการทำงาน ไม่ใช่ความคิดภายในของ AI"
+        ]
+      },
+      "outputs": {
+        "title": "Final Result และ Artifacts",
+        "paragraphs": [
+          "Final Result คือคำตอบหลักของงาน อาจเป็นข้อความ JSON หรือ structured output ตามการตั้งค่า Tree ตรวจสถานะจริงด้วย เพราะ partial result ไม่ได้หมายความว่างานผ่านครบทั้งหมด",
+          "Artifacts คือผลลัพธ์เพิ่มเติมที่เก็บแยก เช่น ข้อความ ไฟล์ที่สร้าง หรือ patch จาก runtime และ Tool ที่รองรับ เปิด Preview สำหรับข้อความที่รองรับ หรือดาวน์โหลดข้อมูลที่มีอยู่ Artifact ไม่ใช่ Agent, Execution หรือ Trace",
+          "file intent ไม่ได้แปลว่าแก้ไฟล์แล้ว AgentTree ไม่แก้ workspace ให้อัตโนมัติ ตรวจเนื้อหาก่อน แล้วให้แอปของคุณตัดสินใจว่าจะนำไปใช้อย่างไร"
+        ]
+      },
+      "api": {
+        "title": "เรียก Tree จากแอปของคุณ",
+        "paragraphs": [
+          "Playground ใช้ทดสอบ Tree ใน Studio ส่วน Public API ให้แอปของคุณเรียก Tree และ runtime เดียวกันได้ ไม่จำเป็นต้องผ่าน Playground ก่อน สร้าง personal key ที่ Account → API Keys เก็บไว้ฝั่งเซิร์ฟเวอร์ แล้วเลือก Ready Tree และเปิด Connect",
+          "API Key ระบุว่าใครเรียก Tree ID เลือก workflow และ input ระบุงานที่จะทำ ระบบตรวจ permission และ Tree grant ปัจจุบันทุก request โดย API Key ไม่ได้เลือก Tree ให้อัตโนมัติ และไม่ใช่ credential ของ Provider",
+          "input ของ Public API เป็นข้อความที่ไม่ว่าง ยาวได้ไม่เกิน 65,536 ตัวอักษร หากต้นทางเป็นข้อมูลแบบ object ให้ serialize เป็นข้อความ metadata ของ V1 รับเฉพาะ client_request_id ส่วน V2 รับ metadata ที่มีขอบเขตและ timeout_seconds ได้ อย่าส่ง configuration ของ Agent, endpoint หรือ credential ของ Provider"
+        ]
+      },
+      "versions": {
+        "title": "V1 / V2 และโค้ดเริ่มต้น",
+        "paragraphs": [
+          "V1 เป็น synchronous: POST /api/v1/trees/{TREE_ID}/invoke รอจนเสร็จ แล้วส่ง run_id, status และ output.content กลับ เหมาะกับงาน request-response แบบง่าย หาก runtime ไม่สำเร็จ อาจได้ HTTP 200 พร้อม status failed จึงต้องตรวจทั้ง HTTP และ body",
+          "แนะนำ V2 สำหรับงานที่ใช้เวลา: POST /api/v2/runs ส่ง HTTP 202 พร้อม run_id กลับก่อน อ่านสถานะที่ /api/v2/runs/{RUN_ID} เมื่อจบแล้วจึง GET /result เพื่อรับ final_output, final_status และ Artifact refs หากยังไม่จบ result จะส่ง 409 ทุกเส้นทางใช้ Run ID เดียวกัน ทั้ง status, events, SSE, cancel และ artifacts",
+          "ตัวอย่างด้านล่างใช้ TREE_ID เป็น placeholder เลือก Tree ของคุณเองแล้วเปิด Connect เพื่อรับโค้ดที่มี ID จริงและ Base URL ของระบบ Python ใช้ requests ส่วน JavaScript ใช้ Node.js ฝั่งเซิร์ฟเวอร์ที่มี native fetch ไม่ใช่โค้ดใน browser ตั้ง AGENTTREE_API_KEY ใน environment อย่างปลอดภัย"
+        ]
+      },
+      "integrations": {
+        "title": "Direct API, Webhook และ Result Destination",
+        "paragraphs": [
+          "Direct API เป็นทางหลักเมื่อแอปส่งงานและรับผลลัพธ์เอง Incoming Webhook เป็นทางเลือกเมื่อระบบภายนอก push event ที่แปลงเป็นข้อความเข้า ingress ที่ตั้งค่าและยืนยันตัวตนไว้ เพื่อเริ่ม Execution จริง",
+          "Result Destination ทำงานอีกทิศทางหนึ่ง คือ AgentTree ส่งผลลัพธ์ที่เสร็จแล้วไปยัง URL ภายนอก แยกจากการยืนยันตัวตนของ Incoming Webhook และการอ่าน API response ตั้งค่าได้ใน Connect ของ Tree ที่เลือก",
+          "เริ่มจากสร้างและทดสอบ workflow เล็ก ๆ ตรวจ review กับผลลัพธ์ก่อน แล้วค่อยเชื่อมกับแอป มีความสามารถ integration ทั่วไปพร้อมใช้ แต่ case study ด้าน Wazuh, Network และ Software Development ยังเป็นงานที่วางแผนไว้"
+        ]
+      }
+    }
   }
 }

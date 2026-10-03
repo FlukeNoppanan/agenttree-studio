@@ -85,6 +85,13 @@ class RunDetailRead(RunRead):
     artifacts: list["RunArtifactRead"] = Field(default_factory=list)
 
 
+class RunPageRead(BaseModel):
+    items: list[RunRead]
+    total: int
+    page: int
+    page_size: int
+
+
 class RunArtifactRead(BaseModel):
     id: str
     core_artifact_id: str

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { useEffect, useState, type FormEvent } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -7,7 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input"
 import { api, type ApiToken } from "@/lib/api"
 
-export function ApiKeysPanel({ enabled }: { enabled: boolean }) {
+export function ApiKeysPanel({ enabled, canManageTrees = false }: { enabled: boolean; canManageTrees?: boolean }) {
   const { t, i18n } = useTranslation()
   const [keys, setKeys] = useState<ApiToken[]>([])
   const [loading, setLoading] = useState(enabled)
@@ -70,6 +71,7 @@ export function ApiKeysPanel({ enabled }: { enabled: boolean }) {
   }
 
   return <section><div className="py-4"><CardTitle>{t("apiKeys.title")}</CardTitle><p className="text-sm text-muted-foreground">{t("apiKeys.description")}</p></div><div className="space-y-5">
+    <p className="text-sm text-muted-foreground">{t("baseline.keyDirection")}</p>
     {!enabled ? <p className="text-sm text-muted-foreground">{t("apiKeys.unavailable")}</p> : <>
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
       <Button onClick={() => { setError(""); setDialogOpen(true) }}>{t("apiKeys.create")}</Button>
@@ -77,7 +79,7 @@ export function ApiKeysPanel({ enabled }: { enabled: boolean }) {
     </>}
     <Dialog open={dialogOpen} onOpenChange={open => { if (!open) closeDialog() }}><DialogContent><DialogHeader><DialogTitle>{raw ? t("apiKeys.createdTitle") : t("apiKeys.create")}</DialogTitle><DialogDescription>{raw ? t("apiKeys.once") : t("apiKeys.inheritsPermissions")}</DialogDescription></DialogHeader>
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
-      {raw ? <div className="space-y-4"><div className="rounded-lg border border-warning/30 bg-warning-subtle p-3"><code className="block break-all text-sm">{revealed ? raw : "••••••••••••••••"}</code></div><div className="flex flex-wrap gap-2"><Button variant="outline" onClick={() => void copy()}>{t("apiKeys.copy")}</Button><Button variant="outline" aria-pressed={!revealed} onClick={() => setRevealed(value => !value)}>{t(revealed ? "apiKeys.hide" : "apiKeys.show")}</Button></div>{copied && <p role="status" className="text-sm text-success">{t("keyUx.copied")}</p>}<DialogFooter><Button onClick={closeDialog}>{t("apiKeys.done")}</Button></DialogFooter></div> : <form onSubmit={event => void create(event)} className="space-y-4"><label className="block space-y-2 text-sm font-medium">{t("apiKeys.name")}<Input autoFocus maxLength={160} required value={name} placeholder={t("apiKeys.nameExample")} onChange={event => setName(event.target.value)} /></label><DialogFooter><Button type="button" variant="outline" onClick={closeDialog}>{t("common.cancel")}</Button><Button type="submit" disabled={!name.trim() || creating}>{creating ? t("apiKeys.creating") : t("apiKeys.create")}</Button></DialogFooter></form>}
+      {raw ? <div className="space-y-4"><div className="rounded-lg border border-warning/30 bg-warning-subtle p-3"><code className="block break-all text-sm">{revealed ? raw : "••••••••••••••••"}</code></div><div className="flex flex-wrap gap-2"><Button variant="outline" onClick={() => void copy()}>{t("apiKeys.copy")}</Button><Button variant="outline" aria-pressed={!revealed} onClick={() => setRevealed(value => !value)}>{t(revealed ? "apiKeys.hide" : "apiKeys.show")}</Button></div>{copied && <p role="status" className="text-sm text-success">{t("keyUx.copied")}</p>}<div className="guide-callout"><p>{t("baseline.keyNext")}</p><p>{t("baseline.keySecurity")}</p><div className="mt-3 flex flex-wrap gap-3">{canManageTrees && <Link className="text-sm text-primary underline" to="/trees" onClick={closeDialog}>Trees → Connect</Link>}<Link className="text-sm text-primary underline" to="/getting-started#guide-api" onClick={closeDialog}>Getting Started</Link></div></div><DialogFooter><Button onClick={closeDialog}>{t("apiKeys.done")}</Button></DialogFooter></div> : <form onSubmit={event => void create(event)} className="space-y-4"><label className="block space-y-2 text-sm font-medium">{t("apiKeys.name")}<Input autoFocus maxLength={160} required value={name} placeholder={t("apiKeys.nameExample")} onChange={event => setName(event.target.value)} /></label><DialogFooter><Button type="button" variant="outline" onClick={closeDialog}>{t("common.cancel")}</Button><Button type="submit" disabled={!name.trim() || creating}>{creating ? t("apiKeys.creating") : t("apiKeys.create")}</Button></DialogFooter></form>}
     </DialogContent></Dialog>
   </div></section>
 }

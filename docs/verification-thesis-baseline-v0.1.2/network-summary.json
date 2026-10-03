@@ -1,0 +1,19 @@
+{
+  "observed_requests": 451,
+  "statuses": {
+    "200": 443,
+    "502": 1,
+    "204": 2,
+    "404": 3,
+    "201": 1,
+    "202": 1
+  },
+  "non2xx": {
+    "POST /api/providers/c8b1373b-a73e-49ad-a8c7-8650c2aa2b47/discover-catalog 502": 1,
+    "GET /api/trees/4aa0304a-ba85-4867-a419-e3823b340c1b 404": 2,
+    "DELETE /api/auth/tokens/43e9995e-b37d-40e5-99a0-f1788e23eedf 404": 1
+  },
+  "backend_traceback_markers": 0,
+  "frontend_uncaught_markers": 0,
+  "observer_removed": true
+}

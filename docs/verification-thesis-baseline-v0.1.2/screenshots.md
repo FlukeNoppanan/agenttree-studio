@@ -1,0 +1,70 @@
+# Real Chromium evidence — v0.1.2
+
+Actual authenticated localhost screenshots. No mock screenshots or image editing. Keys were hidden in the UI before capture; Secrets remain masked. Before images record the original v0.1.1 state. Images mentioning General Analysis precede the user's intentional deletion. Images mentioning “Disposable thesis v0.1.2 final check” precede test cleanup. They document observed state, not currently retained records.
+
+Primary evidence: final Dashboard Light, Dashboard Dark/Thai, filtered Executions, no-match and page-2 states, human/technical reviews, artifact preview, masked API-key creation, guide and Connect, narrow layouts and current creation-flow regression.
+
+- [before/dashboard-dark.jpg](before/dashboard-dark.jpg)
+- [before/dashboard-light.jpg](before/dashboard-light.jpg)
+- [before/executions-dark.jpg](before/executions-dark.jpg)
+- [before/executions-light.jpg](before/executions-light.jpg)
+- [before/guide-light.jpg](before/guide-light.jpg)
+- [before/trace-light.jpg](before/trace-light.jpg)
+
+## After
+
+- [after/dashboard-cleanup-light.jpg](after/dashboard-cleanup-light.jpg) — final preserved resources after confirmed user deletions and disposable cleanup.
+
+- [after/advanced-editor-preserved.jpg](after/advanced-editor-preserved.jpg)
+- [after/api-key-created-masked.jpg](after/api-key-created-masked.jpg)
+- [after/api-keys-cleanup-dark.jpg](after/api-keys-cleanup-dark.jpg)
+- [after/api-keys-guide.jpg](after/api-keys-guide.jpg)
+- [after/api-keys-narrow-light.jpg](after/api-keys-narrow-light.jpg)
+- [after/api-response-guide-light.jpg](after/api-response-guide-light.jpg)
+- [after/artifact-preview-light.jpg](after/artifact-preview-light.jpg)
+- [after/builder-dark-regression.jpg](after/builder-dark-regression.jpg)
+- [after/connect-light.jpg](after/connect-light.jpg)
+- [after/connect-narrow-dark.jpg](after/connect-narrow-dark.jpg)
+- [after/connect-narrow-light.jpg](after/connect-narrow-light.jpg)
+- [after/connect-thai-dark.jpg](after/connect-thai-dark.jpg)
+- [after/create-tree-menu.jpg](after/create-tree-menu.jpg)
+- [after/credential-direction-light.jpg](after/credential-direction-light.jpg)
+- [after/credential-direction-narrow-dark.jpg](after/credential-direction-narrow-dark.jpg)
+- [after/dashboard-1366.jpg](after/dashboard-1366.jpg)
+- [after/dashboard-dark.jpg](after/dashboard-dark.jpg)
+- [after/dashboard-final-light.jpg](after/dashboard-final-light.jpg)
+- [after/dashboard-light.jpg](after/dashboard-light.jpg)
+- [after/dashboard-narrow.jpg](after/dashboard-narrow.jpg)
+- [after/dashboard-thai-dark.jpg](after/dashboard-thai-dark.jpg)
+- [after/disposable-api-key-form.jpg](after/disposable-api-key-form.jpg)
+- [after/execution-narrow-light.jpg](after/execution-narrow-light.jpg)
+- [after/executions-filtered-light.jpg](after/executions-filtered-light.jpg)
+- [after/executions-light.jpg](after/executions-light.jpg)
+- [after/executions-narrow-light.jpg](after/executions-narrow-light.jpg)
+- [after/executions-no-results.jpg](after/executions-no-results.jpg)
+- [after/executions-page-2.jpg](after/executions-page-2.jpg)
+- [after/explicit-tree-picker.jpg](after/explicit-tree-picker.jpg)
+- [after/final-result-light.jpg](after/final-result-light.jpg)
+- [after/final-root-review-thai-dark.jpg](after/final-root-review-thai-dark.jpg)
+- [after/getting-started-light.jpg](after/getting-started-light.jpg)
+- [after/getting-started-narrow-dark.jpg](after/getting-started-narrow-dark.jpg)
+- [after/getting-started-narrow-light.jpg](after/getting-started-narrow-light.jpg)
+- [after/getting-started-thai-dark.jpg](after/getting-started-thai-dark.jpg)
+- [after/handled-tool-failure-light.jpg](after/handled-tool-failure-light.jpg)
+- [after/human-trace-dark.jpg](after/human-trace-dark.jpg)
+- [after/human-trace-light.jpg](after/human-trace-light.jpg)
+- [after/manager-review-light.jpg](after/manager-review-light.jpg)
+- [after/playground-readiness-preserved.jpg](after/playground-readiness-preserved.jpg)
+- [after/provider-secret-reference.jpg](after/provider-secret-reference.jpg)
+- [after/real-gemini-live.jpg](after/real-gemini-live.jpg)
+- [after/review-guide-thai-dark.jpg](after/review-guide-thai-dark.jpg)
+- [after/root-final-review-light.jpg](after/root-final-review-light.jpg)
+- [after/root-final-review-thai-dark.jpg](after/root-final-review-thai-dark.jpg)
+- [after/secrets-masked-dark.jpg](after/secrets-masked-dark.jpg)
+- [after/technical-trace-light.jpg](after/technical-trace-light.jpg)
+- [after/template-builder-preserved.jpg](after/template-builder-preserved.jpg)
+- [after/trace-1366-dark.jpg](after/trace-1366-dark.jpg)
+- [after/trace-narrow-light.jpg](after/trace-narrow-light.jpg)
+- [after/wizard-preserved.jpg](after/wizard-preserved.jpg)
+
+`dashboard-light.jpg` was captured immediately after viewport change and is clipped. Prefer `dashboard-final-light.jpg`. `trace-1366-dark.jpg` is transitional header evidence; settled Dark Trace is in human-trace-dark/final-root-review-thai-dark. See visual-review.md for the set assessment.

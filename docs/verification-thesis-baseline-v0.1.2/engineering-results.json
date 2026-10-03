@@ -1,0 +1,26 @@
+{
+  "backend": {
+    "passed": 311,
+    "warnings": 1,
+    "seconds": 36.09
+  },
+  "frontend": {
+    "passed": 331,
+    "files": 50,
+    "seconds": 11.15
+  },
+  "typescript": "passed",
+  "production_build": "passed",
+  "build_warning": "Existing minified chunk > 500 kB; main 739.28 kB / 219.21 kB gzip",
+  "diff_check": "passed",
+  "docker": {
+    "postgres": "healthy",
+    "backend": "healthy",
+    "frontend": "healthy",
+    "no_cache_build": true,
+    "original_volumes_preserved": true
+  },
+  "migration_current": "0013_run_cancellation_status",
+  "migration_head": "0013_run_cancellation_status",
+  "core_changes": []
+}

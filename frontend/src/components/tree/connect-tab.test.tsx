@@ -35,9 +35,9 @@ describe("Tree Connect", () => {
     expect(screen.getByRole("link", { name: "Manage API Keys" })).toHaveAttribute("href", "/account?section=api-keys")
     const asyncTabs = screen.getByRole("tablist", { name: "Async API examples" })
     const panels = screen.getAllByRole("tabpanel")
-    expect(panels[0]).toHaveTextContent("https://studio.example.com/api/v2/runs")
+    expect(panels[0]).toHaveTextContent("$AGENTTREE_BASE_URL/api/v2/runs")
     expect(panels[0]).toHaveTextContent('"tree_id": "tree-123"')
-    expect(panels[1]).toHaveTextContent("https://studio.example.com/api/v1/trees/tree-123/invoke")
+    expect(panels[1]).toHaveTextContent("$AGENTTREE_BASE_URL/api/v1/trees/tree-123/invoke")
     for (const language of ["Python", "JavaScript", "cURL"]) {
       fireEvent.click(within(asyncTabs).getByRole("tab", { name: language }))
       expect(screen.getAllByRole("tabpanel")[0]).toHaveTextContent("AGENTTREE_API_KEY")
