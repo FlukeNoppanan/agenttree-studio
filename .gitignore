@@ -30,3 +30,6 @@ data/artifacts/
 .vscode/
 .idea/
 .DS_Store
+
+# Post-commit publication proof cannot be included in the commit it identifies.
+docs/verification-post-freeze-ui-polish/publication-receipt.json

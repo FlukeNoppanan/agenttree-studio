@@ -1,0 +1,21 @@
+{
+  "observations": 146,
+  "status_counts": {
+    "200": 146
+  },
+  "non_2xx": [],
+  "mutations": [
+    {
+      "time": "16:58:01",
+      "method": "POST",
+      "path": "/api/trees/4aa0304a-ba85-4867-a419-e3823b340c1b/validate",
+      "status": 200
+    },
+    {
+      "time": "16:58:01",
+      "method": "POST",
+      "path": "/api/trees/4aa0304a-ba85-4867-a419-e3823b340c1b/validate",
+      "status": 200
+    }
+  ]
+}

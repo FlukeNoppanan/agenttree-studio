@@ -1,0 +1,22 @@
+[
+  {
+    "page": "Users",
+    "pageWidth": 745,
+    "width": 760
+  },
+  {
+    "page": "Secrets",
+    "pageWidth": 760,
+    "width": 760
+  },
+  {
+    "page": "Settings",
+    "pageWidth": 760,
+    "width": 760
+  },
+  {
+    "page": "Dashboard",
+    "pageWidth": 745,
+    "width": 760
+  }
+]

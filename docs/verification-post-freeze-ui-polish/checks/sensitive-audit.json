@@ -1,0 +1,125 @@
+[
+  {
+    "repository": "/home/fluke/Agenttree-Studio",
+    "files": 1028,
+    "image_count": 411,
+    "findings": [
+      {
+        "file": ".env.railway.example",
+        "kind": "sensitive-filename"
+      },
+      {
+        "file": "frontend/src/locales/en/translation.json",
+        "line": 523,
+        "kind": "credential-field"
+      },
+      {
+        "file": "frontend/src/locales/en/translation.json",
+        "line": 595,
+        "kind": "credential-field"
+      },
+      {
+        "file": "frontend/src/locales/th/translation.json",
+        "line": 523,
+        "kind": "credential-field"
+      },
+      {
+        "file": "frontend/src/locales/th/translation.json",
+        "line": 595,
+        "kind": "credential-field"
+      },
+      {
+        "file": "tests/test_auth.py",
+        "line": 318,
+        "kind": "credential-field"
+      },
+      {
+        "file": "tests/test_auth.py",
+        "line": 431,
+        "kind": "credential-field"
+      },
+      {
+        "file": "tests/test_capabilities.py",
+        "line": 162,
+        "kind": "provider-token"
+      },
+      {
+        "file": "tests/test_provider_management.py",
+        "line": 421,
+        "kind": "provider-token"
+      },
+      {
+        "file": "tests/test_public_api.py",
+        "line": 32,
+        "kind": "credential-field"
+      },
+      {
+        "file": "tests/test_public_api.py",
+        "line": 55,
+        "kind": "credential-field"
+      },
+      {
+        "file": "tests/test_public_api.py",
+        "line": 57,
+        "kind": "credential-field"
+      },
+      {
+        "file": "tests/test_runs.py",
+        "line": 267,
+        "kind": "credential-field"
+      },
+      {
+        "file": "tests/test_template_setup.py",
+        "line": 300,
+        "kind": "credential-field"
+      },
+      {
+        "file": "tests/test_templates.py",
+        "line": 65,
+        "kind": "credential-field"
+      },
+      {
+        "file": "tests/test_tool_aware_specialist.py",
+        "line": 121,
+        "kind": "credential-field"
+      },
+      {
+        "file": "tests/test_tool_aware_specialist.py",
+        "line": 130,
+        "kind": "credential-field"
+      }
+    ]
+  },
+  {
+    "repository": "/home/fluke/Agenttree",
+    "files": 174,
+    "image_count": 0,
+    "findings": [
+      {
+        "file": "evaluation/results.json",
+        "line": 733,
+        "kind": "provider-token"
+      },
+      {
+        "file": "tests/test_execution_runtime.py",
+        "line": 93,
+        "kind": "credential-field"
+      },
+      {
+        "file": "tests/test_provider_adapters.py",
+        "line": 219,
+        "kind": "credential-field"
+      },
+      {
+        "file": "tests/test_tool_runtime.py",
+        "line": 181,
+        "kind": "credential-field"
+      },
+      {
+        "file": "tests/test_tool_runtime.py",
+        "line": 191,
+        "kind": "credential-field"
+      }
+    ]
+  }
+]

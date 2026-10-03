@@ -1,0 +1,7 @@
+{
+  "provider": "MockProvider",
+  "network_calls": false,
+  "status": "completed",
+  "success": true,
+  "trace_events": 21
+}
