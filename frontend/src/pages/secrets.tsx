@@ -1,4 +1,4 @@
-import { KeyRound, Plus, Trash2 } from "lucide-react"
+import { KeyRound, LockKeyhole, Plus, Trash2 } from "lucide-react"
 import { type FormEvent, useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -21,12 +21,12 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { api, type Secret } from "@/lib/api"
 
-function formatDate(value: string) {
-  return new Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" }).format(new Date(value))
+function formatDate(value: string, language: string) {
+  return new Intl.DateTimeFormat(language, { dateStyle: "medium", timeStyle: "short" }).format(new Date(value))
 }
 
 export function SecretsPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const [secrets, setSecrets] = useState<Secret[]>([])
   const [loading, setLoading] = useState(true)
   const [dialogOpen, setDialogOpen] = useState(false)
@@ -42,11 +42,11 @@ export function SecretsPage() {
     try {
       setSecrets(await api.listSecrets())
     } catch (error) {
-      setNotice({ tone: "error", message: error instanceof Error ? error.message : "Unable to load secrets" })
+      setNotice({ tone: "error", message: error instanceof Error ? error.message : t("adminPolish.secretsLoadError") })
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [t])
 
   useEffect(() => { void loadSecrets() }, [loadSecrets])
 
@@ -70,26 +70,28 @@ export function SecretsPage() {
       await loadSecrets()
       setDialogOpen(false)
       resetForm()
-      setNotice({ tone: "success", message: "Secret saved securely." })
+      setNotice({ tone: "success", message: t("adminPolish.secretSaved") })
     } catch (error) {
-      setNotice({ tone: "error", message: error instanceof Error ? error.message : "Unable to save secret" })
+      setNotice({ tone: "error", message: error instanceof Error ? error.message : t("adminPolish.secretSaveError") })
     } finally {
       setSaving(false)
     }
   }
 
   return (
-    <div className="space-y-8">
+    <div className="operational-page space-y-5">
       <PageHeader
         title={t("secrets.title")}
         description={t("secrets.description")}
         action={<Button onClick={() => setDialogOpen(true)}><Plus className="size-4" />{t("secrets.add")}</Button>}
       />
 
+      <div className="flex items-start gap-2 border-l-2 border-border-strong pl-3 text-sm text-muted-foreground"><LockKeyhole className="mt-0.5 size-4 shrink-0" /><p>{t("adminPolish.secretSafety")}</p></div>
+
       {notice ? <Notice {...notice} onDismiss={() => setNotice(null)} /> : null}
 
       {loading ? (
-        <div className="space-y-3 rounded-xl border border-border bg-card p-5">
+        <div className="space-y-3 rounded-md border border-border bg-card p-4">
           {[0, 1, 2].map((item) => <Skeleton key={item} className="h-12 w-full" />)}
         </div>
       ) : secrets.length === 0 ? (
@@ -100,7 +102,7 @@ export function SecretsPage() {
         />
       ) : (
         <div className="overflow-hidden border-y border-border bg-card">
-          <Table>
+          <Table aria-label={t("secrets.title")}>
             <TableHeader><TableRow>
               <TableHead>{t("uiCopy.name")}</TableHead><TableHead>{t("uiCopy.type")}</TableHead><TableHead>{t("uiCopy.maskedValue")}</TableHead>
               <TableHead>{t("uiCopy.created")}</TableHead><TableHead className="text-right">{t("uiCopy.actions")}</TableHead>
@@ -108,12 +110,12 @@ export function SecretsPage() {
             <TableBody>
               {secrets.map((secret) => (
                 <TableRow key={secret.id}>
-                  <TableCell className="font-medium">{secret.name}</TableCell>
+                  <TableCell className="font-medium"><span className="flex items-center gap-2"><KeyRound className="size-3.5 shrink-0 text-muted-foreground" />{secret.name}</span></TableCell>
                   <TableCell className="text-muted-foreground">{secret.secret_type}</TableCell>
                   <TableCell><code className="rounded bg-muted px-2 py-1 text-xs">{secret.masked_value}</code></TableCell>
-                  <TableCell className="whitespace-nowrap text-muted-foreground">{formatDate(secret.created_at)}</TableCell>
+                  <TableCell className="whitespace-nowrap text-muted-foreground">{formatDate(secret.created_at, i18n.language)}</TableCell>
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="icon" onClick={() => setDeletingSecret(secret)} title="Delete secret">
+                    <Button variant="ghost" size="icon" onClick={() => setDeletingSecret(secret)} title={t("adminPolish.deleteSecret")} className="text-destructive hover:text-destructive">
                       <Trash2 className="size-4" /><span className="sr-only">{t("uiCopy.delete")}</span>
                     </Button>
                   </TableCell>
@@ -132,13 +134,13 @@ export function SecretsPage() {
           </DialogHeader>
           <form onSubmit={submit}>
             <div className="space-y-4">
-              <div className="space-y-2"><Label htmlFor="secret-name">{t("uiCopy.name")}</Label><Input id="secret-name" value={name} onChange={(e) => setName(e.target.value)} placeholder="OpenAI Main Key" required autoFocus /></div>
+              <div className="space-y-2"><Label htmlFor="secret-name">{t("uiCopy.name")}</Label><Input id="secret-name" value={name} onChange={(e) => setName(e.target.value)} placeholder={t("adminPolish.secretNamePlaceholder")} required autoFocus /></div>
               <div className="space-y-2"><Label htmlFor="secret-type">{t("uiCopy.type")}</Label><Input id="secret-type" value={secretType} onChange={(e) => setSecretType(e.target.value)} required /></div>
               <div className="space-y-2"><Label htmlFor="secret-value">{t("uiCopy.value")}</Label><Input id="secret-value" type="password" value={value} onChange={(e) => setValue(e.target.value)} autoComplete="new-password" required /><p className="text-xs text-muted-foreground">{t("uiCopy.thisPlaintextIsClearedFromTheFormImmediatelyAfterSaving")}</p></div>
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => changeDialog(false)}>{t("uiCopy.cancel")}</Button>
-              <Button type="submit" disabled={saving}>{saving ? t("uiCopy.saving") : "Save secret"}</Button>
+              <Button type="submit" disabled={saving}>{saving ? t("uiCopy.saving") : t("adminPolish.saveSecret")}</Button>
             </DialogFooter>
           </form>
         </DialogContent>

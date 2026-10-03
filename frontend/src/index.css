@@ -276,3 +276,15 @@
 .app-topbar { display:flex; min-width:0; height:var(--app-topbar-height); align-items:center; justify-content:space-between; gap:12px; padding:0 24px; border-bottom:1px solid var(--border); background:var(--card); }
 @media(min-width:1024px) { .app-content { padding-left:var(--sidebar-width); } }
 @media(max-width:639px) { .app-topbar { padding:0 12px; gap:6px; } .app-topbar>div:first-child { max-width:80px; font-size:12px; } }
+
+/* Scoped operational density: retain the shared palette and unrelated workspaces. */
+@layer components {
+  .operational-page .dashboard-panel { border-radius: var(--radius-panel); padding: 0 1rem 1rem; box-shadow: none; }
+  .dashboard-workspace .metric-strip { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; border-radius: var(--radius-panel); padding: 1rem; box-shadow: none; }
+  .dashboard-workspace .metric-strip > div { min-width: 0; padding-left: .65rem; border-left-width: 1px; }
+  .operational-page th { height: 2.25rem; padding-inline: .75rem; }
+  .operational-page td { padding: .65rem .75rem; }
+  .settings-workspace { max-width: 64rem; }
+  @media (min-width: 768px) { .dashboard-workspace .metric-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (min-width: 1536px) { .dashboard-workspace .metric-strip { grid-template-columns: repeat(7, minmax(0, 1fr)); } }
+}

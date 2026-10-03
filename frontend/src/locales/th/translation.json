@@ -636,10 +636,10 @@
     "confirmDelete": "ลบผู้ใช้นี้หรือไม่? ไม่สามารถย้อนกลับได้",
     "permission": {
       "manage_trees_agents": "Trees และ Agents",
-      "manage_secrets": "ซีเคร็ต",
+      "manage_secrets": "Secrets",
       "manage_providers_models": "Providers และ Models",
-      "manage_tools_mcp": "เครื่องมือและ MCP",
-      "view_executions": "การทำงานและ Live View",
+      "manage_tools_mcp": "Tools และ MCP",
+      "view_executions": "Executions / Live View",
       "use_trees": "ใช้งาน Tree"
     }
   },
@@ -775,7 +775,7 @@
     }
   },
   "settings": {
-    "title": "การตั้งค่า",
+    "title": "Settings",
     "description": "เลือกค่าของ Studio บนอุปกรณ์นี้และตรวจสอบสถานะทางเทคนิค",
     "language": "ภาษา",
     "languageHelp": "หน้าจอจะเปลี่ยนทันทีและจดจำตัวเลือกนี้บนอุปกรณ์",
@@ -1725,7 +1725,8 @@
     "providerCreatedNotice": "เพิ่ม Provider แล้ว กำลังเชื่อมต่อ…",
     "providerSecretsError": "โหลด Providers แล้ว แต่โหลด Secrets ไม่ได้: {{message}}",
     "rootReviewEnabled": "เปิดใช้การตรวจสอบโดย Root",
-    "managerReviewEnabled": "เปิดใช้การตรวจสอบโดย Manager"
+    "managerReviewEnabled": "เปิดใช้การตรวจสอบโดย Manager",
+    "status": "สถานะ"
   },
   "builder": {
     "loading": "กำลังเปิด Builder…",
@@ -1987,5 +1988,15 @@
     "templateDraft": "โครงสร้างจาก Template",
     "saveTemplateHelp": "ตั้งค่า Agent และ Resource แล้วกดบันทึกเพื่อสร้าง Tree",
     "unsavedDraft": "Draft ยังไม่ได้บันทึก"
+  },
+  "adminPolish": {
+    "secretSafety": "ค่า Secret จะถูกปิดบังและเข้ารหัสเมื่อจัดเก็บ การเชื่อมต่อต่าง ๆ อ้างอิง Secret ผ่าน ID",
+    "secretSaved": "บันทึก Secret แล้ว",
+    "secretsLoadError": "โหลด Secrets ไม่สำเร็จ",
+    "secretSaveError": "บันทึก Secret ไม่สำเร็จ",
+    "saveSecret": "บันทึก Secret",
+    "deleteSecret": "ลบ Secret",
+    "secretNamePlaceholder": "ชื่อสำหรับอ้างอิง เช่น Provider หลัก",
+    "selectUser": "เลือกชื่อ User เพื่อดูสิทธิ์และ Tree ที่เข้าถึงได้"
   }
 }

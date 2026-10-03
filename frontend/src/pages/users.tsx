@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next"
 import { api, type Permission, type StudioUser, type TreeAccessMode, type TreeListItem } from "@/lib/api"
 import { Button } from "@/components/ui/button"
 import { PageHeader } from "@/components/page-header"
+import { Badge } from "@/components/ui/badge"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 
@@ -73,17 +75,24 @@ export function UsersPage() {
     const ids = visibleTrees.map(tree => tree.id)
     setTreeIds(current => ids.every(id => current.includes(id)) ? current.filter(id => !ids.includes(id)) : [...new Set([...current, ...ids])])
   }
-  return <div className="space-y-6">
+  return <div className="operational-page space-y-5">
     <PageHeader title={t("auth.users")} description={t("usersV2.description")} action={<Button onClick={() => choose(null)}>{t("auth.createUser")}</Button>} />
     {error && <p role="alert" className="text-destructive">{error}</p>}
-    <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)]">
-      <section className="min-w-0"><div className="py-4"><CardTitle>{t("auth.users")}</CardTitle></div><div className="space-y-2">
-        {loading && <p role="status" className="text-sm text-muted-foreground">{t("common.loading")}</p>}
-        {!loading && !users.length && <p className="text-sm text-muted-foreground">{t("usersV3.empty")}</p>}
-        {users.map(user => <button key={user.id} type="button" onClick={() => choose(user)} aria-pressed={selected?.id === user.id} className={`flex w-full items-center justify-between gap-3 border-b py-3 px-2 text-left transition-colors hover:border-primary/30 hover:bg-secondary/35 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary ${selected?.id === user.id ? "border-primary/40 bg-secondary/50" : "border-border"}`}><span className="flex min-w-0 items-center gap-3"><span className="grid size-9 shrink-0 place-items-center rounded-full bg-secondary font-semibold text-primary">{user.username.slice(0, 1).toUpperCase()}</span><span className="min-w-0"><span className="block truncate font-medium">{user.username}</span><span className="block text-xs text-muted-foreground">{role(user)}{user.is_primary_admin ? ` · ${t("accountUx.fullAccess")}` : ` · ${t("usersV3.permissionCount", { count: user.permissions.filter(permission => permission !== "use_trees").length })}`}</span><span className="block text-xs text-muted-foreground">{t("auth.treeAccess")}: {accessLabel(user)}</span></span></span><span className="shrink-0 text-xs text-muted-foreground">{t(user.is_active ? "auth.active" : "auth.inactive")}</span></button>)}
-      </div></section>
-      <section className="min-w-0"><div className="py-4"><CardTitle>{t(selected ? "auth.editUser" : "auth.createUser")}</CardTitle></div><div>
-        <form onSubmit={save} className="space-y-5">
+    <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1.6fr)_minmax(320px,1fr)]">
+      <section className="min-w-0" aria-label={t("auth.users")}>
+        {loading && <p role="status" className="py-4 text-sm text-muted-foreground">{t("common.loading")}</p>}
+        {!loading && !users.length && <p className="py-4 text-sm text-muted-foreground">{t("usersV3.empty")}</p>}
+        {users.length > 0 && <div className="border-y border-border bg-card"><Table aria-label={t("auth.users")}><TableHeader><TableRow><TableHead>{t("auth.username")}</TableHead><TableHead>{t("auth.treeAccess")}</TableHead><TableHead>{t("uiCopy.status")}</TableHead></TableRow></TableHeader><TableBody>
+          {users.map(user => <TableRow key={user.id} className={selected?.id === user.id ? "bg-secondary/60" : ""}>
+            <TableCell><button type="button" onClick={() => choose(user)} aria-pressed={selected?.id === user.id} className="block w-full text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"><span className="block font-medium">{user.username}</span><span className="mt-1 block text-xs text-muted-foreground">{role(user)}{user.is_primary_admin ? ` · ${t("accountUx.fullAccess")}` : ` · ${t("usersV3.permissionCount", { count: user.permissions.filter(permission => permission !== "use_trees").length })}`}</span></button></TableCell>
+            <TableCell><span className="text-xs text-muted-foreground">{t("auth.treeAccess")}: {accessLabel(user)}</span></TableCell>
+            <TableCell><Badge variant={user.is_active ? "success" : "secondary"}>{t(user.is_active ? "auth.active" : "auth.inactive")}</Badge></TableCell>
+          </TableRow>)}
+        </TableBody></Table></div>}
+        <p className="mt-3 text-xs text-muted-foreground">{t("adminPolish.selectUser")}</p>
+      </section>
+      <section className="min-w-0 border-t border-border lg:border-t-0 lg:border-l lg:pl-5"><div className="py-3"><CardTitle>{t(selected ? "auth.editUser" : "auth.createUser")}</CardTitle></div><div>
+        <form onSubmit={save} className="space-y-4">
           <label className="block text-sm">{t("auth.username")}<Input required disabled={!!selected} value={username} onChange={event => setUsername(event.target.value)} /></label>
           <label className="block text-sm">{selected ? t("auth.resetPassword") : t("auth.password")}<Input type="password" minLength={12} required={!selected} value={password} onChange={event => setPassword(event.target.value)} /></label>
           <label className="block text-sm">{t("auth.confirmPassword")}<Input type="password" minLength={12} required={!selected || !!password} value={confirmation} onChange={event => setConfirmation(event.target.value)} /></label>
@@ -95,7 +104,7 @@ export function UsersPage() {
               {treeAccessMode === "all" ? <p className="text-sm text-muted-foreground">{t("auth.allTreesHelp")}</p> : <div className="space-y-3"><p className="text-sm font-medium">{t("auth.availableTrees")}</p><Input aria-label={t("auth.searchTrees")} placeholder={t("auth.searchTrees")} value={treeSearch} onChange={event => setTreeSearch(event.target.value)} /><label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={visibleTrees.length > 0 && visibleTrees.every(tree => treeIds.includes(tree.id))} onChange={selectAllVisible} />{t("auth.selectAllVisible")}</label><div className="max-h-64 space-y-2 overflow-y-auto">{visibleTrees.map(tree => <label key={tree.id} className="flex items-center gap-2 text-sm"><input type="checkbox" checked={treeIds.includes(tree.id)} onChange={() => toggle(treeIds, tree.id, setTreeIds)} />{tree.name}</label>)}{!visibleTrees.length && <p className="text-sm text-muted-foreground">{t("auth.noTreesAvailable")}</p>}</div><p className="text-sm text-muted-foreground">{t("auth.selectedCount", { count: treeIds.length })}</p></div>}
             </>}
           </fieldset>
-          <div className="flex gap-2"><Button disabled={busy}>{t("common.save")}</Button>{selected && !selected.is_primary_admin && <Button type="button" variant="outline" disabled={busy} onClick={() => void remove()}>{t("common.delete")}</Button>}</div>
+          <div className="flex gap-2"><Button disabled={busy}>{t("common.save")}</Button>{selected && !selected.is_primary_admin && <Button type="button" variant="outline" className="text-destructive hover:text-destructive" disabled={busy} onClick={() => void remove()}>{t("common.delete")}</Button>}</div>
         </form>
       </div></section>
     </div>

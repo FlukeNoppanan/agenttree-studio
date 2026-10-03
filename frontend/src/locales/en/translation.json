@@ -1725,7 +1725,8 @@
     "providerCreatedNotice": "Provider created. Connecting now…",
     "providerSecretsError": "Providers loaded, but saved Secrets could not be loaded: {{message}}",
     "rootReviewEnabled": "Root Review enabled",
-    "managerReviewEnabled": "Manager Review enabled"
+    "managerReviewEnabled": "Manager Review enabled",
+    "status": "Status"
   },
   "builder": {
     "loading": "Loading Builder…",
@@ -1987,5 +1988,15 @@
     "templateDraft": "Template draft",
     "saveTemplateHelp": "Configure the Agents and resources, then Save to create your Tree.",
     "unsavedDraft": "Unsaved draft"
+  },
+  "adminPolish": {
+    "secretSafety": "Values stay masked. Secrets are encrypted at rest; reusable connections refer to them by ID.",
+    "secretSaved": "Secret saved securely.",
+    "secretsLoadError": "Unable to load Secrets.",
+    "secretSaveError": "Unable to save the Secret.",
+    "saveSecret": "Save Secret",
+    "deleteSecret": "Delete Secret",
+    "secretNamePlaceholder": "Provider access key",
+    "selectUser": "Select a username to review permissions and Tree access."
   }
 }
