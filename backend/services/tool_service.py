@@ -21,7 +21,7 @@ from backend.models.auth import User
 from backend.services.auth_service import AuthService
 from backend.models.secret import Secret
 from backend.models.tool import ToolAssignment, ToolConnection
-from backend.models.tree import AgentConfig, TreeVersion
+from backend.models.tree import AgentConfig, TreeVersion, Tree
 from backend.schemas.tool import (
     DiscoveredToolRead,
     MCPDiscoveryResponse,
@@ -113,8 +113,7 @@ class ToolService:
         except Exception as error:
             raise ServiceError("Tool configuration is invalid") from error
 
-    @staticmethod
-    def _read(tool: ToolConnection) -> ToolConnectionRead:
+    def _read(self, tool: ToolConnection) -> ToolConnectionRead:
         return ToolConnectionRead(
             id=tool.id,
             name=tool.name,
@@ -126,7 +125,7 @@ class ToolService:
             status=tool.status,
             configuration=sanitize_value(tool.config_json or {}),
             discovered_tools=[DiscoveredToolRead.model_validate(item) for item in (tool.discovered_tools_json or [])],
-            assigned_agents_count=len(tool.assignments),
+            assigned_agents_count=len(self.assignments(tool.id).assignments),
             last_checked_at=tool.last_checked_at,
             last_error=tool.last_error,
             created_at=tool.created_at,
@@ -205,9 +204,14 @@ class ToolService:
         return self.get(tool.id)
 
     def delete(self, tool_id: str) -> None:
+        self._database.scalar(select(ToolConnection).where(
+            ToolConnection.id == tool_id).with_for_update())
         tool = self._get(tool_id)
         if not DependencyService(self._database).tool(tool_id).can_delete:
             raise ResourceConflictError("Tool is assigned to an Agent; remove assignments before deleting")
+        from backend.services.resource_identity import remember_tool
+        remember_tool(self._database, tool_id)
+        self._database.flush()
         self._database.delete(tool)
         try:
             self._database.commit()
@@ -366,10 +370,11 @@ class ToolService:
         if user is not None and not AuthService.has_permission(user, "manage_trees_agents"):
             raise HTTPException(403, "Access denied")
         self._get(tool_id)
-        rows = self._database.scalars(select(ToolAssignment).options(
+        rows = self._database.scalars(select(ToolAssignment).join(TreeVersion).join(Tree, TreeVersion.tree_id == Tree.id).options(
             selectinload(ToolAssignment.agent_config),
             selectinload(ToolAssignment.tree_version).selectinload(TreeVersion.tree),
-        ).where(ToolAssignment.tool_connection_id == tool_id)).all()
+        ).where(ToolAssignment.tool_connection_id == tool_id,
+                Tree.current_version_id == TreeVersion.id)).all()
         return ToolAssignmentsResponse(assignments=[ToolAssignmentRead(
             agent_id=item.agent_config.id,
             agent_name=item.agent_config.name,
@@ -390,23 +395,27 @@ class ToolService:
         ):
             raise ResourceConflictError("Select at least one discovered MCP Tool before assigning Agents")
         agent_ids = list(dict.fromkeys(payload.agent_ids))
-        agents = list(self._database.scalars(select(AgentConfig).where(AgentConfig.id.in_(agent_ids))).all()) if agent_ids else []
+        agents = list(self._database.scalars(select(AgentConfig).join(TreeVersion).join(
+            Tree, TreeVersion.tree_id == Tree.id).where(AgentConfig.id.in_(agent_ids),
+                Tree.current_version_id == TreeVersion.id)).all()) if agent_ids else []
         if len(agents) != len(agent_ids):
-            raise ServiceError("Assignment references a missing Agent")
+            raise ServiceError("Assignment references a missing or historical Agent")
         if user is not None:
             for agent in agents:
                 AuthService(self._database).require_tree_access(user, agent.tree_version.tree_id)
-        removal = delete(ToolAssignment).where(ToolAssignment.tool_connection_id == tool.id)
+        versions = select(Tree.current_version_id)
         if user is not None:
             # Updating visible assignments must not remove bindings in other Trees.
-            versions = select(TreeVersion.id).where(AuthService.tree_access_filter(user, TreeVersion.tree_id))
-            removal = removal.where(ToolAssignment.tree_version_id.in_(versions))
+            versions = versions.where(AuthService.tree_access_filter(user, Tree.id))
+        removal = delete(ToolAssignment).where(ToolAssignment.tool_connection_id == tool.id,
+            ToolAssignment.tree_version_id.in_(versions))
         self._database.execute(removal)
         for agent in agents:
             self._database.add(ToolAssignment(
                 tree_version_id=agent.tree_version_id,
                 agent_config_id=agent.id,
                 tool_connection_id=tool.id,
+                tool_identity_json={"id": tool.id, "name": tool.name, "resource_type": tool.tool_type},
             ))
         self._database.commit()
         return self.assignments(tool.id, user)

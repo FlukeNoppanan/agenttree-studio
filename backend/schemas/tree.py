@@ -95,8 +95,20 @@ class TreeUpdate(BaseModel):
 
 
 class AgentRead(AgentDraft):
+    provider_reference: "ResourceReference | None" = None
     created_at: datetime
     updated_at: datetime
+
+
+class ResourceReference(BaseModel):
+    id: str
+    name: str
+    resource_type: str
+    deleted: bool = False
+
+
+class ToolAssignmentRead(ToolAssignmentDraft):
+    tool_reference: ResourceReference | None = None
 
 
 class TreeVersionRead(BaseModel):
@@ -105,7 +117,7 @@ class TreeVersionRead(BaseModel):
     version_number: int
     status: str
     agents: list[AgentRead]
-    tool_assignments: list[ToolAssignmentDraft]
+    tool_assignments: list[ToolAssignmentRead]
     trigger: TriggerDraft | None
     output: OutputDraft | None
     created_at: datetime

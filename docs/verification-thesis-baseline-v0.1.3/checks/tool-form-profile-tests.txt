@@ -1,0 +1,12 @@
+
+> agenttree-studio-frontend@0.1.0 test
+> vitest run src/components/tools/tool-form.test.tsx
+
+
+ RUN  v5.0.1 /home/fluke/Agenttree-Studio/frontend
+
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  10:08:24
+   Duration  1.05s (environment 36%, tests 32%, transform 16%, import 9%, setup 7%)

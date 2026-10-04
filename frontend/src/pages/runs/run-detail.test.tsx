@@ -29,6 +29,19 @@ describe("Live Run console", () => {
     vi.spyOn(api, "getTree").mockResolvedValue(null as never)
     vi.mocked(openRunStream).mockReturnValue(vi.fn())
   })
+
+  it("reads the pinned historical bindings and shows deleted identity without sensitive fields", async () => {
+    vi.mocked(api.getLiveRun).mockResolvedValue({ ...running, status: "completed", final_status: "completed", finished_at: stamp })
+    const version = { id: "version-1", version_number: 1, agents: [{ id: "root", agent_type: "root", name: "Historical Root",
+      provider_connection_id: null, model_id: "original-model", capabilities: [], provider_reference: { id: "old-provider", name: "Original Provider", resource_type: "gemini", deleted: true, secret_value: "must-never-render" } }], tool_assignments: [] }
+    vi.mocked(api.getTree).mockResolvedValue({ id: "tree-1", name: "History Tree", current_version_id: "version-2", version: { ...version, id: "version-2" } } as never)
+    vi.spyOn(api, "getTreeVersion").mockResolvedValue(version as never)
+    mount()
+    expect(await screen.findByText(/Original Provider/)).toBeInTheDocument()
+    expect(api.getTreeVersion).toHaveBeenCalledWith("tree-1", "version-1")
+    expect(screen.getByText(/Resource deleted — history retained/)).toBeInTheDocument()
+    expect(screen.queryByText("must-never-render")).not.toBeInTheDocument()
+  })
   it("shows specialist text while still running and refreshes artifacts from a durable event", async () => {
     vi.mocked(api.getLiveArtifacts).mockResolvedValueOnce({ artifacts: [] }).mockResolvedValueOnce({ artifacts: [artifact] })
     mount()

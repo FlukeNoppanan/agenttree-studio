@@ -189,3 +189,29 @@ def test_template_identity_mapping_rejects_invalid_inputs_without_writes(databas
     with pytest.raises(ServiceError):
         service.instantiate('builtin-general-analysis', owner, configuration=draft.configuration, agent_ids=ids)
     assert database.scalar(select(func.count()).select_from(Tree)) == 0
+
+
+@pytest.mark.parametrize('template_id', [item['id'] for item in __import__('backend.templates.builtin',fromlist=['BUILTIN_TEMPLATES']).BUILTIN_TEMPLATES])
+def test_every_builtin_is_portable_and_prepares_the_existing_tree_model(database,template_id):
+    from backend.tools.catalog import TOOL_PACKAGES
+    owner=user(database)
+    service=TemplateService(database)
+    template=service.get(template_id,owner)
+    definition=TemplateDefinition.model_validate_json(template.definition.model_dump_json())
+    assert definition==template.definition
+    assert definition.metadata['difficulty'] in {'beginner','intermediate','advanced'}
+    assert len({a.key for a in definition.agents})==len(definition.agents)
+    assert len([a for a in definition.agents if a.agent_type=='root'])==1
+    assert all(a.capabilities for a in definition.agents if template_id!='builtin-blank')
+    assert all(r.catalog_key in {p['id'] for p in TOOL_PACKAGES} for r in definition.tool_requirements)
+    assert all(a.system_instruction for a in definition.agents)
+    draft=service.prepare_draft(template_id,owner)
+    assert all(a.provider_connection_id is None and a.model_id is None for a in draft.configuration.agents)
+    assert draft.configuration.tool_assignments==[]
+    tree=service.instantiate(template_id,owner,configuration=draft.configuration,agent_ids=draft.agent_ids)
+    assert len(tree.version.agents)==template.agent_count
+    assert tree.template==template_id
+    assert {a.id for a in tree.version.agents}==set(draft.agent_ids.values())
+    result=TreeService(database).validate(tree.id)
+    assert not result.valid  # Provider/Model binding is explicit for every starter.
+    assert not any(i.code in {'root_count','manager_parent','specialist_parent','core_compatibility'} for i in result.errors)

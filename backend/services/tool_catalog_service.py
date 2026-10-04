@@ -38,6 +38,8 @@ class ToolCatalogService:
             raise ResourceNotFoundError("Tool package not found")
         if item["status"] == ToolPackageStatus.COMING_SOON:
             raise ServiceError("This Tool package is coming soon")
+        if item["status"] == ToolPackageStatus.CATALOG_ADDABLE:
+            raise ServiceError("Configure this installed MCP server through the existing custom Tool workflow; no software is installed by the Catalog")
         return item
 
     def _generated(self, package_id: str, payload: ToolPackageSetupRequest) -> ToolCreate:

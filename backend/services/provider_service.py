@@ -179,9 +179,16 @@ class ProviderService:
         return self.get(connection.id)
 
     def delete(self, provider_id: str) -> None:
+        # Lock before inspecting. Concurrent FK-backed binding writes must finish
+        # before this current-version check; deletion cannot race their commit.
+        self._database.scalar(select(ProviderConnection).where(
+            ProviderConnection.id == provider_id).with_for_update())
         connection = self.get_model(provider_id)
         if not DependencyService(self._database).provider(provider_id).can_delete:
             raise ResourceConflictError("Provider is still in use; inspect its dependencies before deleting")
+        from backend.services.resource_identity import remember_provider
+        remember_provider(self._database, provider_id)
+        self._database.flush()
         self._database.delete(connection)
         try:
             self._database.commit()

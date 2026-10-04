@@ -24,6 +24,8 @@ from backend.schemas.tree import (
     AgentRead,
     OutputDraft,
     ToolAssignmentDraft,
+    ToolAssignmentRead,
+    ResourceReference,
     TreeDetailRead,
     TreeDraftPayload,
     TreeListRead,
@@ -42,6 +44,7 @@ from backend.services.errors import (
 from backend.schemas.template import upgrade_template_definition
 from backend.services.template_requirements import resolve_requirements
 from backend.services.tree_contracts import invalid_manager_peers
+from backend.services.resource_identity import identity
 
 
 class TreeService:
@@ -159,6 +162,7 @@ class TreeService:
                 name=draft.name,
                 description=draft.description,
                 provider_connection_id=draft.provider_connection_id,
+                provider_identity_json=identity(self._database.get(ProviderConnection, draft.provider_connection_id)) if draft.provider_connection_id else None,
                 model_id=draft.model_id,
                 system_instruction=draft.system_instruction,
                 capabilities_json=draft.capabilities,
@@ -188,6 +192,7 @@ class TreeService:
             version.tool_assignments.append(ToolAssignment(
                 agent_config=models[assignment.agent_config_id],
                 tool_connection_id=assignment.tool_connection_id,
+                tool_identity_json=identity(self._database.get(ToolConnection, assignment.tool_connection_id)),
             ))
 
     def create(
@@ -281,6 +286,8 @@ class TreeService:
             description=agent.description,
             parent_agent_id=agent.parent_agent_id,
             provider_connection_id=agent.provider_connection_id,
+            provider_reference=ResourceReference(**agent.provider_identity_json,
+                deleted=agent.provider_connection_id is None) if agent.provider_identity_json else None,
             model_id=agent.model_id,
             system_instruction=agent.system_instruction,
             capabilities=agent.capabilities_json or [],
@@ -305,9 +312,11 @@ class TreeService:
             status=version.status,
             agents=[self._agent_read(agent) for agent in agents],
             tool_assignments=[
-                ToolAssignmentDraft(
+                ToolAssignmentRead(
                     agent_config_id=assignment.agent_config_id,
-                    tool_connection_id=assignment.tool_connection_id,
+                    tool_connection_id=assignment.tool_connection_id or (assignment.tool_identity_json or {}).get("id", ""),
+                    tool_reference=ResourceReference(**assignment.tool_identity_json,
+                        deleted=assignment.tool_connection_id is None) if assignment.tool_identity_json else None,
                 )
                 for assignment in version.tool_assignments
             ],

@@ -53,10 +53,10 @@ class CatalogTestFactory(ToolAdapterFactory):
 def test_catalog_manifests_only_mark_real_generators_ready():
     packages = ToolCatalogService(None).list()
     by_id = {item.id: item for item in packages}
-    assert by_id["web-api-request"].status is ToolPackageStatus.READY
-    assert by_id["generic-mcp-http"].status is ToolPackageStatus.READY
-    assert by_id["github-account-api"].status is ToolPackageStatus.EXPERIMENTAL
-    assert by_id["filesystem-workspace"].status is ToolPackageStatus.COMING_SOON
+    assert by_id["web-api-request"].status is ToolPackageStatus.SETUP_REQUIRED
+    assert by_id["generic-mcp-http"].status is ToolPackageStatus.SETUP_REQUIRED
+    assert by_id["github-account-api"].status is ToolPackageStatus.SETUP_REQUIRED
+    assert by_id["filesystem-workspace"].status is ToolPackageStatus.CATALOG_ADDABLE
     assert by_id["database-access"].status is ToolPackageStatus.COMING_SOON
     assert by_id["monitoring-observability"].status is ToolPackageStatus.COMING_SOON
     assert all("command" not in [field.key for field in item.config_fields] for item in packages)
@@ -110,7 +110,7 @@ def test_catalog_requires_studio_secret_and_rejects_extra_shell_or_credentials(d
     with pytest.raises(ValidationError):
         ToolPackageSetupRequest.model_validate({"configuration": {"headers": {"Authorization": "Bearer raw"}}})
     with pytest.raises(ServiceError, match="coming soon"):
-        service.test("filesystem-workspace", ToolPackageSetupRequest())
+        service.test("database-access", ToolPackageSetupRequest())
 
 
 def test_streamable_http_package_uses_existing_mcp_factory(database):
@@ -122,3 +122,49 @@ def test_streamable_http_package_uses_existing_mcp_factory(database):
     assert created.tool.tool_type.value == "mcp"
     assert created.tool.transport_type.value == "streamable_http"
     assert created.tool.status.value == "connected"
+
+
+def test_curated_mcp_guides_are_registration_not_software_installation(database):
+    service=ToolCatalogService(database)
+    for key in ['filesystem-workspace','mcp-fetch','mcp-memory']:
+        package=service.get(key)
+        assert package.status is ToolPackageStatus.CATALOG_ADDABLE
+        assert package.tool_type=='mcp' and package.transport_type=='stdio'
+        assert package.source_url.startswith('https://github.com/modelcontextprotocol/servers/')
+        assert package.access_scope and package.setup_instructions
+        with pytest.raises(ServiceError,match='no software is installed'):
+            service.create(key,ToolPackageSetupRequest())
+
+
+def test_all_catalog_manifests_round_trip_and_do_not_embed_credentials():
+    from backend.schemas.template import ToolPackageRead
+    for package in ToolCatalogService(None).list():
+        assert ToolPackageRead.model_validate_json(package.model_dump_json())==package
+        assert package.status in set(ToolPackageStatus)
+        assert not any(word in package.model_dump_json() for word in ['encrypted_value','Bearer sk-','api_key=secret'])
+
+
+def test_registered_mcp_profile_matches_template_requirement_without_name_guessing(database):
+    from backend.models.tool import ToolConnection, ToolAssignment
+    from backend.models.auth import User
+    from backend.services.template_service import TemplateService
+    from backend.services.template_requirements import resolve_requirements
+    from backend.models.tree import TreeVersion
+    from backend.schemas.tree import ToolAssignmentDraft
+    user=User(username='catalog-admin',username_key='catalog-admin',is_admin=True,is_active=True,password_hash='not-used')
+    database.add(user); database.commit()
+    templates=TemplateService(database)
+    prepared=templates.prepare_draft('builtin-document-analysis',user)
+    definition=templates.get('builtin-document-analysis',user).definition
+    requirement=next(r for r in definition.tool_requirements if r.catalog_key=='filesystem-workspace')
+    mcp=ToolConnection(name='A custom resource label',tool_type='mcp',transport_type='stdio',enabled=True,status='connected',
+        config_json={'catalog_package_id':'filesystem-workspace'},discovered_tools_json=[{'name':'read_text_file','selected':True}])
+    database.add(mcp);database.commit()
+    prepared.configuration.tool_assignments=[ToolAssignmentDraft(agent_config_id=prepared.agent_ids[requirement.agent_ref],tool_connection_id=mcp.id)]
+    tree=templates.instantiate('builtin-document-analysis',user,configuration=prepared.configuration,agent_ids=prepared.agent_ids)
+    version=database.get(TreeVersion,tree.current_version_id)
+    states=resolve_requirements(database,version,definition,prepared.agent_ids)
+    assert next(s for s in states if s.catalog_key=='filesystem-workspace').state.value=='ready'
+    mcp.config_json={};database.commit()
+    states=resolve_requirements(database,version,definition,prepared.agent_ids)
+    assert next(s for s in states if s.catalog_key=='filesystem-workspace').state.value!='ready'

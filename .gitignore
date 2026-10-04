@@ -34,3 +34,4 @@ data/artifacts/
 # Post-commit publication proof cannot be included in the commit it identifies.
 docs/verification-post-freeze-ui-polish/publication-receipt.json
 docs/verification-thesis-baseline-v0.1.2/publication-receipt.json
+docs/verification-thesis-baseline-v0.1.3/publication-receipt.json

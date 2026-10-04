@@ -237,7 +237,10 @@
       "analysis": "การวิเคราะห์",
       "documents": "เอกสาร",
       "operations": "ปฏิบัติการ",
-      "engineering": "วิศวกรรม"
+      "engineering": "วิศวกรรม",
+      "education": "การเรียนรู้แนวคิด",
+      "content": "เนื้อหา",
+      "research": "ค้นคว้า"
     },
     "roles": {
       "root": "Root",
@@ -269,8 +272,8 @@
         "description": "เริ่มต้นจาก Root Agent สำหรับสร้างทีมตามต้องการ",
         "agents": {
           "root": {
-            "name": "Root Agent",
-            "description": "รับงานและตรวจทานผลลัพธ์สุดท้าย"
+            "description": "รับงานและตรวจทานผลลัพธ์สุดท้าย",
+            "name": "Root Agent"
           }
         }
       },
@@ -279,24 +282,24 @@
         "description": "แยกงานค้นคว้าและสังเคราะห์ข้อมูลก่อนให้ Root ตรวจทานคำตอบ",
         "agents": {
           "root": {
-            "name": "หัวหน้าการวิเคราะห์",
-            "description": "กำหนดกรอบคำขอและตรวจทานบทวิเคราะห์สุดท้าย"
+            "description": "กำหนดกรอบคำขอและตรวจทานบทวิเคราะห์สุดท้าย",
+            "name": "Analysis Lead"
           },
           "research": {
-            "name": "ผู้จัดการงานค้นคว้า",
-            "description": "รวบรวมหลักฐานและระบุคำถามที่ยังขาดคำตอบ"
+            "description": "รวบรวมหลักฐานและระบุคำถามที่ยังขาดคำตอบ",
+            "name": "Research Manager"
           },
           "researcher": {
-            "name": "ผู้เชี่ยวชาญการค้นคว้า",
-            "description": "ค้นหาข้อเท็จจริงและบันทึกแหล่งที่มา"
+            "description": "ค้นหาข้อเท็จจริงและบันทึกแหล่งที่มา",
+            "name": "Research Specialist"
           },
           "synthesis": {
-            "name": "ผู้จัดการสังเคราะห์ข้อมูล",
-            "description": "รวบรวมข้อค้นพบเป็นคำตอบที่ชัดเจน"
+            "description": "รวบรวมข้อค้นพบเป็นคำตอบที่ชัดเจน",
+            "name": "Synthesis Manager"
           },
           "analyst": {
-            "name": "ผู้เชี่ยวชาญการวิเคราะห์",
-            "description": "เปรียบเทียบหลักฐานและสรุปผลที่มีแหล่งรองรับ"
+            "description": "เปรียบเทียบหลักฐานและสรุปผลที่มีแหล่งรองรับ",
+            "name": "Analysis Specialist"
           }
         }
       },
@@ -305,20 +308,20 @@
         "description": "ดึงข้อมูล ตรวจสอบกับต้นฉบับ และจัดทำสรุปที่กระชับ",
         "agents": {
           "root": {
-            "name": "หัวหน้าตรวจเอกสาร",
-            "description": "กำหนดเป้าหมายการตรวจและอนุมัติสรุปสุดท้าย"
+            "description": "กำหนดเป้าหมายการตรวจและอนุมัติสรุปสุดท้าย",
+            "name": "Document Lead"
           },
           "review": {
-            "name": "ผู้จัดการตรวจทาน",
-            "description": "ประสานการดึงข้อมูลและตรวจสอบกับต้นฉบับ"
+            "description": "ประสานการดึงข้อมูลและตรวจสอบกับต้นฉบับ",
+            "name": "Review Manager"
           },
           "extract": {
-            "name": "ผู้เชี่ยวชาญดึงข้อมูล",
-            "description": "ดึงข้อกล่าวอ้าง วันที่ บุคคล และข้อความสำคัญ"
+            "description": "ดึงข้อกล่าวอ้าง วันที่ บุคคล และข้อความสำคัญ",
+            "name": "Extraction Specialist"
           },
           "verify": {
-            "name": "ผู้เชี่ยวชาญตรวจแหล่งข้อมูล",
-            "description": "ตรวจผลการวิเคราะห์กับเนื้อหาที่ได้รับ"
+            "description": "ตรวจผลการวิเคราะห์กับเนื้อหาที่ได้รับ",
+            "name": "Source Check Specialist"
           }
         }
       },
@@ -327,24 +330,24 @@
         "description": "คัดแยกปัญหา ตรวจสอบสาเหตุที่เป็นไปได้ และวางขั้นตอนถัดไปอย่างปลอดภัย",
         "agents": {
           "root": {
-            "name": "หัวหน้าเหตุการณ์",
-            "description": "กำหนดกรอบเหตุการณ์และตรวจทานคำแนะนำ"
+            "description": "กำหนดกรอบเหตุการณ์และตรวจทานคำแนะนำ",
+            "name": "Incident Lead"
           },
           "diagnosis": {
-            "name": "ผู้จัดการวินิจฉัยปัญหา",
-            "description": "จัดระบบอาการ หลักฐาน และสาเหตุที่เป็นไปได้"
+            "description": "จัดระบบอาการ หลักฐาน และสาเหตุที่เป็นไปได้",
+            "name": "Diagnostics Manager"
           },
           "symptoms": {
-            "name": "นักวิเคราะห์อาการ",
-            "description": "สรุปอาการที่พบและหลักฐานที่ยังขาด"
+            "description": "สรุปอาการที่พบและหลักฐานที่ยังขาด",
+            "name": "Symptom Analyst"
           },
           "resolution": {
-            "name": "ผู้จัดการแนวทางแก้ไข",
-            "description": "ตรวจผลกระทบและลำดับของขั้นตอนกู้คืน"
+            "description": "ตรวจผลกระทบและลำดับของขั้นตอนกู้คืน",
+            "name": "Resolution Manager"
           },
           "runbook": {
-            "name": "ผู้เชี่ยวชาญ Runbook",
-            "description": "ร่างขั้นตอนแก้ไขที่ย้อนกลับและตรวจสอบได้"
+            "description": "ร่างขั้นตอนแก้ไขที่ย้อนกลับและตรวจสอบได้",
+            "name": "Runbook Specialist"
           }
         }
       },
@@ -353,20 +356,273 @@
         "description": "ตรวจการตอบกลับของ API และสรุปข้อมูลพร้อมขั้นตอนตรวจสอบ",
         "agents": {
           "root": {
-            "name": "หัวหน้าข้อมูล",
-            "description": "ทำความเข้าใจคำถามและตรวจทานผลลัพธ์"
+            "description": "ทำความเข้าใจคำถามและตรวจทานผลลัพธ์",
+            "name": "Data Lead"
           },
           "api": {
-            "name": "ผู้จัดการ API",
-            "description": "ประสานการตรวจ Endpoint และตรวจสอบข้อมูล"
+            "description": "ประสานการตรวจ Endpoint และตรวจสอบข้อมูล",
+            "name": "API Manager"
           },
           "endpoint": {
-            "name": "ผู้เชี่ยวชาญ Endpoint",
-            "description": "ตรวจพฤติกรรม Endpoint และโครงสร้างการตอบกลับ"
+            "description": "ตรวจพฤติกรรม Endpoint และโครงสร้างการตอบกลับ",
+            "name": "Endpoint Specialist"
           },
           "analyst": {
-            "name": "นักวิเคราะห์ข้อมูล",
-            "description": "สรุปรูปแบบของข้อมูลและระบุข้อจำกัด"
+            "description": "สรุปรูปแบบของข้อมูลและระบุข้อจำกัด",
+            "name": "Data Analyst"
+          }
+        }
+      },
+      "builtin-quick-summary": {
+        "description": "สรุปข้อความที่ให้มาเป็นประเด็นสำคัญ พร้อมตรวจสอบความครบถ้วน",
+        "outcome": "ได้สรุปสั้นและข้อควรระวัง",
+        "input_hint": "วางข้อความและระบุความยาวที่ต้องการ",
+        "agents": {
+          "root": {
+            "name": "Quick Summary Lead",
+            "description": "ประสานงานทั้ง Tree และตรวจผลลัพธ์สุดท้าย"
+          },
+          "summary": {
+            "name": "Summary Manager",
+            "description": "สรุปข้อมูลที่ได้รับโดยคงประเด็นสำคัญ"
+          },
+          "summarizer": {
+            "name": "Summary Specialist",
+            "description": "ย่อเนื้อหาโดยไม่เพิ่มข้อเท็จจริงที่ไม่มีในข้อมูล"
+          }
+        }
+      },
+      "builtin-concept-explainer": {
+        "description": "อธิบายแนวคิดทางเทคนิคให้เหมาะกับผู้อ่าน พร้อมตัวอย่างและข้อจำกัด",
+        "outcome": "ได้คำอธิบาย ตัวอย่าง และข้อจำกัด",
+        "input_hint": "ระบุแนวคิดและพื้นฐานของผู้อ่าน",
+        "agents": {
+          "root": {
+            "name": "Concept Explainer Lead",
+            "description": "ประสานงานทั้ง Tree และตรวจผลลัพธ์สุดท้าย"
+          },
+          "explanation": {
+            "name": "Explanation Manager",
+            "description": "ตรวจคำอธิบายและตัวอย่างให้เหมาะกับผู้อ่าน"
+          },
+          "explainer": {
+            "name": "Explanation Specialist",
+            "description": "อธิบายแนวคิดจากข้อมูลที่ให้ พร้อมตัวอย่างและข้อจำกัด"
+          }
+        }
+      },
+      "builtin-compare-options": {
+        "description": "เปรียบเทียบตัวเลือกที่ให้มาตามเกณฑ์ โดยไม่แต่งข้อมูลที่ขาด",
+        "outcome": "ได้ตารางเปรียบเทียบและคำแนะนำตามเงื่อนไข",
+        "input_hint": "ระบุตัวเลือก เกณฑ์ และข้อจำกัด",
+        "agents": {
+          "root": {
+            "name": "Compare Options Lead",
+            "description": "ประสานงานทั้ง Tree และตรวจผลลัพธ์สุดท้าย"
+          },
+          "comparison": {
+            "name": "Comparison Manager",
+            "description": "วิเคราะห์ข้อดี ข้อจำกัด และข้อมูลที่ยังขาด"
+          },
+          "comparator": {
+            "name": "Comparison Specialist",
+            "description": "เปรียบเทียบทางเลือกตามเกณฑ์ พร้อมระบุข้อดีและข้อจำกัด"
+          }
+        }
+      },
+      "builtin-structured-brief": {
+        "description": "จัดข้อมูลจากบันทึกให้เป็นข้อเท็จจริง งานที่ต้องทำ และประเด็นค้าง",
+        "outcome": "ได้สรุปแบบมีโครงสร้าง",
+        "input_hint": "วางบันทึกและระบุหัวข้อที่ต้องการดึงข้อมูล",
+        "agents": {
+          "root": {
+            "name": "Structured Brief Lead",
+            "description": "ประสานงานทั้ง Tree และตรวจผลลัพธ์สุดท้าย"
+          },
+          "brief": {
+            "name": "Brief Manager",
+            "description": "ตรวจความครบถ้วนของข้อมูลสรุป"
+          },
+          "extractor": {
+            "name": "Brief Specialist",
+            "description": "จัดข้อมูลที่ได้รับเป็นหัวข้อ พร้อมระบุสิ่งที่ยังไม่ทราบ"
+          }
+        }
+      },
+      "builtin-content-draft": {
+        "description": "ร่างเนื้อหาและตรวจทานให้ตรงกับกลุ่มผู้อ่านและโจทย์",
+        "outcome": "ได้ฉบับร่างที่ตรวจทานแล้วและรายการตรวจสอบ",
+        "input_hint": "ระบุวัตถุประสงค์ ผู้อ่าน ข้อเท็จจริง และน้ำเสียง",
+        "agents": {
+          "root": {
+            "name": "Content Draft & Review Lead",
+            "description": "ประสานงานทั้ง Tree และตรวจผลลัพธ์สุดท้าย"
+          },
+          "editorial": {
+            "name": "Editorial Manager",
+            "description": "วางแผน ตรวจเนื้อหา และขอแก้ไขให้ตรงเป้าหมาย"
+          },
+          "writer": {
+            "name": "Draft Specialist",
+            "description": "ร่างเนื้อหาตามข้อมูล กลุ่มผู้อ่าน และรูปแบบที่กำหนด"
+          },
+          "editor": {
+            "name": "Editorial Specialist",
+            "description": "ตรวจความชัดเจน ความสอดคล้อง และข้อกล่าวอ้างในเนื้อหา"
+          }
+        }
+      },
+      "builtin-incident-text-triage": {
+        "description": "จัดหลักฐานจากข้อความหรือ log ที่ให้มา โดยไม่อ้างว่าเชื่อมต่อระบบจริง",
+        "outcome": "ได้ข้อเท็จจริง สมมติฐาน และขั้นตอนตรวจสอบที่ปลอดภัย",
+        "input_hint": "วางข้อมูลเหตุการณ์หรือ log หลังนำข้อมูลลับออก",
+        "agents": {
+          "root": {
+            "name": "Incident Text Triage Lead",
+            "description": "ประสานงานทั้ง Tree และตรวจผลลัพธ์สุดท้าย"
+          },
+          "triage": {
+            "name": "Triage Manager",
+            "description": "ตรวจการวิเคราะห์เหตุการณ์จากข้อความที่ได้รับ"
+          },
+          "evidence": {
+            "name": "Evidence Specialist",
+            "description": "แยกหลักฐานจากข้อความเหตุการณ์ที่ได้รับ"
+          },
+          "hypotheses": {
+            "name": "Hypothesis Specialist",
+            "description": "เสนอสมมติฐานและขั้นตอนตรวจสอบโดยไม่อ้างว่าได้แก้ระบบแล้ว"
+          }
+        }
+      },
+      "builtin-technical-qa": {
+        "description": "ตรวจคำตอบทางเทคนิคกับข้อกำหนดและข้อจำกัดที่ให้มา",
+        "outcome": "ได้คำตอบที่ตรวจทานแล้ว สมมติฐาน และวิธีตรวจสอบ",
+        "input_hint": "ระบุคำถาม บริบท และเกณฑ์ยอมรับ",
+        "agents": {
+          "root": {
+            "name": "Technical Q&A Review Lead",
+            "description": "ประสานงานทั้ง Tree และตรวจผลลัพธ์สุดท้าย"
+          },
+          "quality": {
+            "name": "Technical Review Manager",
+            "description": "ตรวจคำตอบเทียบกับข้อกำหนด"
+          },
+          "answer": {
+            "name": "Answer Specialist",
+            "description": "เสนอคำตอบทางเทคนิคพร้อมสมมติฐาน"
+          },
+          "check": {
+            "name": "Verification Specialist",
+            "description": "ตรวจกรณีขอบเขต ข้อจำกัด และวิธีตรวจสอบคำตอบ"
+          }
+        }
+      },
+      "builtin-design-review": {
+        "description": "ตรวจการออกแบบซอฟต์แวร์ด้านความทนทานและการดูแลรักษา",
+        "outcome": "ได้ข้อเสนอแนะตามลำดับความสำคัญและวิธีตรวจสอบ",
+        "input_hint": "วางรายละเอียดการออกแบบหรือส่วนของโค้ดและข้อจำกัด",
+        "agents": {
+          "root": {
+            "name": "Software Design Review Lead",
+            "description": "ประสานงานทั้ง Tree และตรวจผลลัพธ์สุดท้าย"
+          },
+          "reliability": {
+            "name": "Reliability Manager",
+            "description": "ตรวจความทนทานและการกู้คืนของระบบ"
+          },
+          "failure": {
+            "name": "Failure Analysis Specialist",
+            "description": "วิเคราะห์จุดเสี่ยงจากการออกแบบที่ให้โดยไม่อ้างว่าได้ทดสอบจริง"
+          },
+          "maintenance": {
+            "name": "Maintainability Manager",
+            "description": "ตรวจความง่ายในการดูแลและเปลี่ยนแปลงระบบ"
+          },
+          "boundaries": {
+            "name": "Interface Review Specialist",
+            "description": "ตรวจ interface การพึ่งพากัน และผลกระทบจากการแก้ไข"
+          }
+        }
+      },
+      "builtin-decision-board": {
+        "description": "พิจารณาทางเลือกจากประโยชน์ ความเสี่ยง และข้อจำกัด",
+        "outcome": "ได้บันทึกการตัดสินใจ เหตุผล และเงื่อนไขที่ควรทบทวน",
+        "input_hint": "ระบุการตัดสินใจ ตัวเลือก เป้าหมาย และข้อจำกัด",
+        "agents": {
+          "root": {
+            "name": "Decision Board Lead",
+            "description": "ประสานงานทั้ง Tree และตรวจผลลัพธ์สุดท้าย"
+          },
+          "benefits": {
+            "name": "Benefits Manager",
+            "description": "ตรวจประโยชน์และความสอดคล้องกับเป้าหมาย"
+          },
+          "value": {
+            "name": "Value Specialist",
+            "description": "ประเมินทางเลือกจากหลักฐานและเกณฑ์ที่ให้"
+          },
+          "risks": {
+            "name": "Risk Manager",
+            "description": "ตรวจความเสี่ยงและความไม่แน่นอน"
+          },
+          "risk": {
+            "name": "Risk Specialist",
+            "description": "ระบุเงื่อนไขที่อาจล้มเหลวและข้อมูลที่ต้องหาเพิ่ม"
+          }
+        }
+      },
+      "builtin-operations-plan": {
+        "description": "วางแผนการเปลี่ยนแปลงพร้อมขั้นตอนตรวจสอบและย้อนกลับ โดยไม่ลงมือทำ",
+        "outcome": "ได้แผนที่ตรวจทานแล้ว พร้อมเงื่อนไขย้อนกลับ",
+        "input_hint": "อธิบายสิ่งที่จะเปลี่ยน ข้อจำกัดของระบบ และเงื่อนไขย้อนกลับ",
+        "agents": {
+          "root": {
+            "name": "Operations Change Plan Lead",
+            "description": "ประสานงานทั้ง Tree และตรวจผลลัพธ์สุดท้าย"
+          },
+          "planning": {
+            "name": "Change Planning Manager",
+            "description": "วางแผนการเปลี่ยนแปลงโดยไม่ดำเนินการจริง"
+          },
+          "steps": {
+            "name": "Planning Specialist",
+            "description": "จัดลำดับขั้นตอน เงื่อนไข และผู้รับผิดชอบ"
+          },
+          "safety": {
+            "name": "Change Safety Manager",
+            "description": "ตรวจความปลอดภัยและวิธีย้อนกลับ"
+          },
+          "rollback": {
+            "name": "Rollback Specialist",
+            "description": "ระบุความเสี่ยง จุดตรวจสอบ และเงื่อนไขการย้อนกลับ"
+          }
+        }
+      },
+      "builtin-research-report": {
+        "description": "สังเคราะห์แหล่งข้อมูลที่ให้มา แล้วเก็บรายงานที่ตรวจทานเป็น Artifact",
+        "outcome": "ได้บทสรุปพร้อมแหล่งข้อมูลและ Artifact ของรายงาน",
+        "input_hint": "วางข้อความจากแหล่งข้อมูล ชื่ออ้างอิง และคำถามที่ต้องการศึกษา",
+        "agents": {
+          "root": {
+            "name": "Research Report Artifact Lead",
+            "description": "ประสานงานทั้ง Tree และตรวจผลลัพธ์สุดท้าย"
+          },
+          "evidence": {
+            "name": "Evidence Manager",
+            "description": "ตรวจหลักฐานและความขัดแย้งของแหล่งข้อมูล"
+          },
+          "sources": {
+            "name": "Source Specialist",
+            "description": "เปรียบเทียบแหล่งข้อมูลที่ให้และคงข้อมูลอ้างอิง"
+          },
+          "report": {
+            "name": "Report Manager",
+            "description": "ตรวจรายงานให้สอดคล้องกับหลักฐาน"
+          },
+          "reporter": {
+            "name": "Report Specialist",
+            "description": "จัดทำรายงานพร้อมข้อจำกัดและบันทึกเป็น Artifact เมื่อกำหนด Tool แล้ว"
           }
         }
       }
@@ -475,7 +731,7 @@
         "description": "บันทึกไฟล์ผลลัพธ์ของ Run ด้วย Tool ที่มีอยู่"
       },
       "web-api-request": {
-        "name": "คำขอ Web/API",
+        "name": "Web/API Request",
         "description": "เชื่อมต่อ HTTP endpoint ที่มีเอกสารกำกับ"
       },
       "generic-mcp-http": {
@@ -487,8 +743,8 @@
         "description": "อ่านข้อมูลบัญชี GitHub ที่ยืนยันตัวตนแล้ว"
       },
       "filesystem-workspace": {
-        "name": "Filesystem / Workspace",
-        "description": "ยังไม่มีตัวเชื่อมต่อ Workspace ที่ปลอดภัย"
+        "name": "Filesystem MCP",
+        "description": "อ่านไฟล์ที่ให้มาได้เมื่อเชื่อมต่อ MCP server และกำหนดโฟลเดอร์ที่อนุญาตไว้แล้ว โดยไม่จำเป็นสำหรับการวิเคราะห์ข้อความที่ใส่โดยตรง"
       },
       "database-access": {
         "name": "ฐานข้อมูล",
@@ -1074,9 +1330,9 @@
     "checking": "กำลังตรวจสอบการอ้างอิง…",
     "usedBy": "กำลังถูกใช้งานโดย",
     "blockedHelp": "Secret นี้ถูกใช้โดยทรัพยากร {{count}} รายการ โปรดลบหรือเปลี่ยนการอ้างอิงก่อน",
-    "providerBlockedHelp": "Provider นี้ถูกใช้โดย Agent {{count}} รายการ โปรดเปลี่ยน Provider และ Model ของ Agent ก่อนลบ",
-    "toolBlockedHelp": "Tool นี้ถูกมอบหมายให้ Specialist Agent {{count}} รายการ โปรดยกเลิกการมอบหมายก่อนลบ",
-    "safeHelp": "ไม่พบการอ้างอิงที่ใช้งานอยู่ การลบนี้ไม่สามารถย้อนกลับได้",
+    "providerBlockedHelp": "Provider นี้ยังถูกใช้โดย Agent {{count}} รายการใน Tree version ปัจจุบัน โปรดเปลี่ยน binding ก่อนลบ",
+    "toolBlockedHelp": "Tool นี้ยังถูกใช้โดย Agent {{count}} รายการใน Tree version ปัจจุบัน โปรดยกเลิก binding ก่อนลบ",
+    "safeHelp": "ไม่มี binding ที่ใช้งานอยู่ใน Tree version ปัจจุบัน ลบได้โดยไม่ลบประวัติ Execution หรือ version เก่า การลบ resource ย้อนกลับไม่ได้",
     "tree": "Tree",
     "agent": "Agent",
     "specialist": "Specialist",
@@ -1209,7 +1465,9 @@
     "status": {
       "ready": "พร้อมใช้งาน",
       "experimental": "ทดลองใช้",
-      "coming_soon": "เร็ว ๆ นี้"
+      "coming_soon": "เร็ว ๆ นี้",
+      "setup_required": "ต้องตั้งค่าก่อน",
+      "catalog_addable": "เพิ่มจาก Catalog ได้"
     },
     "comingSoon": "เร็ว ๆ นี้",
     "configure": "ตั้งค่า",
@@ -1241,11 +1499,14 @@
       "httpRequest": "คำขอ HTTP",
       "discoverMcp": "ค้นหา MCP tools",
       "executeMcp": "เรียกใช้ MCP tools ที่เลือก",
-      "githubAccount": "อ่านข้อมูลบัญชีที่ยืนยันตัวตนแล้ว"
+      "githubAccount": "อ่านข้อมูลบัญชีที่ยืนยันตัวตนแล้ว",
+      "createArtifact": "สร้าง Artifact",
+      "updateArtifact": "อัปเดต Artifact",
+      "deleteArtifact": "ลบ Artifact"
     },
     "packages": {
       "web-api-request": {
-        "name": "คำขอ Web/API",
+        "name": "Web/API Request",
         "description": "เรียกใช้ HTTP API ผ่าน HTTP Tool adapter ที่มีอยู่ของ Studio",
         "instructions": [
           "ระบุ Endpoint แบบ HTTP หรือ HTTPS",
@@ -1269,11 +1530,16 @@
         ]
       },
       "filesystem-workspace": {
-        "name": "Filesystem / Workspace",
-        "description": "ยังไม่มี package ในระบบที่ปลอดภัยสำหรับเข้าถึงไฟล์ Workspace",
-        "instructions": [
-          "ฟีเจอร์นี้อยู่ในแผนและยังตั้งค่าไม่ได้"
-        ]
+        "name": "Filesystem MCP",
+        "description": "เชื่อมต่อ server มาตรฐาน โดยระบุ directory ที่อนุญาตให้ชัดเจน",
+        "instructions": {
+          "0": "กำหนด directory ที่อนุญาตก่อนใช้งาน อย่าให้เข้าถึง home directory หรือพื้นที่เก็บ credential ของ backend",
+          "1": "ใช้ executable ที่ติดตั้งไว้และเข้าถึงได้จาก backend container แล้ว Test → Discover → เลือก Tool ไม่มีการติดตั้ง package ผ่าน Studio"
+        },
+        "scope": {
+          "0": "อ่านและเขียนไฟล์ใน directory ที่กำหนด",
+          "1": "อาจแก้ไขหรือย้ายไฟล์ เลือกเฉพาะ Tool สำหรับอ่านเมื่อเหมาะสม"
+        }
       },
       "database-access": {
         "name": "ฐานข้อมูล",
@@ -1287,6 +1553,37 @@
         "description": "กำลังวางแผน package สำหรับบริการ Monitoring โดยยังไม่มี integration ให้ใช้",
         "instructions": [
           "ฟีเจอร์นี้อยู่ในแผนและยังตั้งค่าไม่ได้"
+        ]
+      },
+      "mcp-fetch": {
+        "name": "Fetch MCP",
+        "description": "ดึงเนื้อหาจากเว็บผ่าน Fetch server ที่ตั้งค่าไว้",
+        "instructions": {
+          "0": "เตรียม Fetch server แยกจาก Studio การเข้าถึงเครือข่ายขึ้นกับ server และเครื่อง backend",
+          "1": "ใช้ executable ที่ติดตั้งไว้และเข้าถึงได้จาก backend container แล้ว Test → Discover → เลือก Tool ไม่มีการติดตั้ง package ผ่าน Studio"
+        },
+        "scope": {
+          "0": "เรียก URL ตามที่ Agent ขอ",
+          "1": "เนื้อหาที่ดึงมาเป็นข้อมูลที่ยังไม่เชื่อถือ ห้ามใส่ credential ใน URL"
+        }
+      },
+      "mcp-memory": {
+        "name": "Knowledge Graph MCP",
+        "description": "เชื่อมต่อ Memory server เพื่อใช้ knowledge graph ที่ตั้งค่าแยกไว้",
+        "instructions": {
+          "0": "ใช้พื้นที่ข้อมูลเฉพาะของ server ตรวจรายการ Tool สำหรับอ่าน เขียน และลบก่อนผูกกับ Agent",
+          "1": "ใช้ executable ที่ติดตั้งไว้และเข้าถึงได้จาก backend container แล้ว Test → Discover → เลือก Tool ไม่มีการติดตั้ง package ผ่าน Studio"
+        },
+        "scope": {
+          "0": "อ่าน สร้าง แก้ไข และลบข้อมูลใน knowledge graph",
+          "1": "ข้อมูลอยู่ใน MCP server ภายนอก ไม่ใช่ conversation memory ของ AgentTree"
+        }
+      },
+      "artifact-output": {
+        "name": "Artifact Output",
+        "description": "สร้างและอัปเดต Artifact ของ Run ผ่าน Artifact Tool ที่มีอยู่ของ AgentTree",
+        "instructions": [
+          "ไม่ต้องตั้งค่าการเชื่อมต่อหรือ Secret โดย Artifact แต่ละรายการจะผูกกับ Run ที่สร้างรายการนั้น"
         ]
       }
     },
@@ -2381,5 +2678,50 @@
         ]
       }
     }
+  },
+  "ecosystem": {
+    "templateFilters": "ค้นหาและกรอง Template",
+    "searchTemplates": "ค้นหา Template หรือ Capability",
+    "difficultyLabel": "ระดับความซับซ้อน",
+    "difficulty": {
+      "all": "ทุกระดับ",
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "allCategories": "ทุกหมวดหมู่",
+    "clearFilters": "ล้างตัวกรอง",
+    "noMatches": "ไม่พบ Template ที่ตรงกับตัวกรอง ลองเปลี่ยนคำค้นหรือล้างตัวกรอง",
+    "beforeStart": "ก่อนเริ่มใช้งาน",
+    "providerSetup": "เลือก AI Provider และ Model ที่ผ่านการตรวจสอบให้ Agent ทุกตัว แล้วตั้งค่า Tool ที่จำเป็น",
+    "scopeNote": "Template นี้ไม่ผูก credential หรือทรัพยากรให้อัตโนมัติ งานจากข้อความใช้ข้อมูลที่คุณให้มา การเรียก API หรือสร้าง Artifact ต้องตั้งค่า Tool จริงก่อน",
+    "outcome": "ผลลัพธ์ที่คาดหวัง",
+    "input_hint": "ข้อมูลสำหรับทดสอบ",
+    "mcpNotice": "การเพิ่ม MCP คือการตั้งค่าการเชื่อมต่อ ไม่ใช่ติดตั้งซอฟต์แวร์ เครื่องที่ใช้งาน backend ต้องมี server หรือ executable ที่ต้องการใช้งานก่อน",
+    "source": "เอกสารจากผู้พัฒนา",
+    "permissions": "การเข้าถึง",
+    "registerMcp": "ตั้งค่า MCP",
+    "registrationHelp": "ตรวจเอกสารและสิทธิ์ก่อนตั้งค่า แล้วใช้ Connection → Test → Discover เพื่อเลือก Tool ไม่มีการติดตั้ง package อัตโนมัติ",
+    "deletedResource": "ลบ resource นี้แล้ว — ประวัติยังคงเดิม ต้องเลือกใหม่ก่อนนำกลับมาใช้งาน",
+    "savedBindings": "Binding ของ Execution นี้"
+  },
+  "dashboardV013": {
+    "subtitle": "ดูความพร้อมของ Tree ติดตาม Execution และเลือกสิ่งที่จะทำต่อ",
+    "workspaceState": "ภาพรวม Workspace",
+    "readyHeadline": "มี Tree พร้อมใช้งาน {{count}} รายการ",
+    "setupHeadline": "เริ่มเตรียม Tree แรกของคุณ",
+    "nextStep": "เลือก Tree เพื่อทดสอบใน Playground หรือแก้การตั้งค่าที่ยังไม่พร้อม",
+    "readyTrees": "Tree ที่พร้อมใช้งาน",
+    "activeExecutions": "Execution ที่กำลังทำงาน",
+    "chooseTree": "เลือก Tree",
+    "architectureLabel": "ตัวอย่างโครงสร้าง AgentTree ไม่ใช่การทำงานสด",
+    "architectureNote": "ตัวอย่างโครงสร้าง · ไม่ใช่ Live Execution",
+    "executionSummary": "วันนี้ {{today}} · สำเร็จ {{completed}} · ไม่สำเร็จ {{failed}}",
+    "completedAndFailed": "คำนวณจาก Execution ที่ Completed หรือ Failed",
+    "allTrees": "ดู Trees ทั้งหมด",
+    "build": "แก้ Tree",
+    "attentionCount": "{{count}} รายการที่ควรตรวจสอบ",
+    "lastChecked": "สถานะจากการตรวจครั้งล่าสุด ไม่ใช่ระบบติดตาม uptime",
+    "connectedTools": "Tools: เชื่อมต่อแล้ว / ทั้งหมด"
   }
 }

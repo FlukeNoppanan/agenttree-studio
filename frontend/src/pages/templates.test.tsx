@@ -37,6 +37,33 @@ describe("reusable Template catalog", () => {
     mocks.listTemplates.mockResolvedValue([template])
   })
 
+  it("combines difficulty, category and capability search without creating Trees", async () => {
+    mocks.listTemplates.mockResolvedValue([
+      { ...template, definition: { ...template.definition, metadata: { difficulty: "beginner" } } },
+      { ...template, id: "advanced-review", name: "Advanced Review", category: "engineering", definition: { ...template.definition, metadata: { difficulty: "advanced" } } },
+    ])
+    renderPage()
+    await screen.findByRole("article", { name: "General Analysis" })
+    fireEvent.change(screen.getByRole("combobox", { name: "Difficulty" }), { target: { value: "advanced" } })
+    expect(screen.queryByRole("article", { name: "General Analysis" })).not.toBeInTheDocument()
+    expect(screen.getByRole("article", { name: "Advanced Review" })).toBeInTheDocument()
+    fireEvent.change(screen.getByRole("combobox", { name: "Category" }), { target: { value: "analysis" } })
+    expect(screen.queryAllByRole("article")).toHaveLength(0)
+    fireEvent.click(screen.getByRole("button", { name: "Clear filters" }))
+    expect(screen.getAllByRole("article")).toHaveLength(2)
+    fireEvent.change(screen.getByRole("textbox", { name: "Search Templates or capabilities" }), { target: { value: "fact finding" } })
+    expect(screen.getAllByRole("article")).toHaveLength(2)
+    expect(mocks.instantiateTemplate).not.toHaveBeenCalled()
+  })
+
+  it("keeps preview cancellation free of new Tree records", async () => {
+    renderPage()
+    fireEvent.click(await screen.findByRole("button", { name: "Preview" }))
+    expect(screen.getByText(/verified Model/i)).toBeInTheDocument()
+    fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" })
+    expect(mocks.instantiateTemplate).not.toHaveBeenCalled()
+  })
+
   it("previews the hierarchy, capabilities, tools, input, and output without creating a Tree", async () => {
     renderPage()
     fireEvent.click(await screen.findByRole("button", { name: "Preview" }))

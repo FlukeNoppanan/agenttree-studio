@@ -39,7 +39,7 @@ describe("dependency-aware deletion dialog", () => {
 
   it("confirms an unreferenced resource and deletes only after a fresh check", async () => {
     const calls = show()
-    expect(await screen.findByText("No active dependencies were found. This deletion cannot be undone.")).toBeInTheDocument()
+    expect(await screen.findByText(/No live binding prevents deletion.*Historical versions and Executions remain/)).toBeInTheDocument()
     fireEvent.click(screen.getByRole("button", { name: "Delete" }))
     await waitFor(() => expect(calls.remove).toHaveBeenCalledWith("provider-1"))
     expect(calls.inspect).toHaveBeenCalledTimes(2)
@@ -78,7 +78,7 @@ describe("dependency-aware deletion dialog", () => {
     const inspect = vi.fn().mockResolvedValueOnce(inspection()).mockResolvedValueOnce(inspection()).mockResolvedValueOnce(inspection([dependency()]))
     const remove = vi.fn().mockRejectedValue(new ApiError("conflict", 409))
     show(base, inspect, remove)
-    expect(await screen.findByText("No active dependencies were found. This deletion cannot be undone.")).toBeInTheDocument()
+    expect(await screen.findByText(/No live binding prevents deletion.*Historical versions and Executions remain/)).toBeInTheDocument()
     fireEvent.click(screen.getByRole("button", { name: "Delete" }))
     expect(await screen.findByText("Specialist: Network Specialist")).toBeInTheDocument()
     expect(screen.getByRole("alert")).toHaveTextContent("Dependencies changed")
@@ -89,6 +89,6 @@ describe("dependency-aware deletion dialog", () => {
     await i18n.changeLanguage("th")
     show(base, vi.fn().mockResolvedValue(inspection([dependency()])))
     expect(await screen.findByText("ลบ Provider ไม่ได้")).toBeInTheDocument()
-    expect(screen.getByText(/โปรดเปลี่ยน Provider และ Model ของ Agent ก่อนลบ/)).toBeInTheDocument()
+    expect(screen.getByText(/โปรดเปลี่ยน binding ก่อนลบ/)).toBeInTheDocument()
   })
 })

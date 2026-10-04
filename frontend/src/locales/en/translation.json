@@ -237,7 +237,10 @@
       "analysis": "Analysis",
       "documents": "Documents",
       "operations": "Operations",
-      "engineering": "Engineering"
+      "engineering": "Engineering",
+      "education": "Education",
+      "content": "Content",
+      "research": "Research"
     },
     "roles": {
       "root": "Root",
@@ -369,6 +372,259 @@
             "description": "Summarizes patterns and notes limitations."
           }
         }
+      },
+      "builtin-quick-summary": {
+        "description": "Turn supplied text into a short, checked summary.",
+        "outcome": "Return a brief summary and important caveats.",
+        "input_hint": "Paste the text and specify the desired length.",
+        "agents": {
+          "root": {
+            "name": "Quick Summary Lead",
+            "description": "Coordinates the request and performs final review."
+          },
+          "summary": {
+            "name": "Summary Manager",
+            "description": "Plans, delegates and reviews summarization work."
+          },
+          "summarizer": {
+            "name": "Summary Specialist",
+            "description": "Summarize only the supplied text. Keep key facts, caveats and decisions; do not add outside facts."
+          }
+        }
+      },
+      "builtin-concept-explainer": {
+        "description": "Explain a technical concept with examples and clear limits.",
+        "outcome": "Return a clear explanation, example and limitations.",
+        "input_hint": "Name a concept and the audience’s experience.",
+        "agents": {
+          "root": {
+            "name": "Concept Explainer Lead",
+            "description": "Coordinates the request and performs final review."
+          },
+          "explanation": {
+            "name": "Explanation Manager",
+            "description": "Plans, delegates and reviews explanation work."
+          },
+          "explainer": {
+            "name": "Explanation Specialist",
+            "description": "Explain the requested concept for the stated audience. Use one concrete example, define prerequisites and mark uncertain claims."
+          }
+        }
+      },
+      "builtin-compare-options": {
+        "description": "Compare supplied options against explicit criteria.",
+        "outcome": "Return a comparison table and conditional recommendation.",
+        "input_hint": "Provide options, criteria and known constraints.",
+        "agents": {
+          "root": {
+            "name": "Compare Options Lead",
+            "description": "Coordinates the request and performs final review."
+          },
+          "comparison": {
+            "name": "Comparison Manager",
+            "description": "Plans, delegates and reviews comparison work."
+          },
+          "comparator": {
+            "name": "Comparison Specialist",
+            "description": "Compare the supplied alternatives using the user’s criteria. Identify missing information and trade-offs without inventing prices or specifications."
+          }
+        }
+      },
+      "builtin-structured-brief": {
+        "description": "Extract a consistent brief from supplied notes.",
+        "outcome": "Return a structured brief with facts, actions and open questions.",
+        "input_hint": "Paste meeting or project notes; specify the fields needed.",
+        "agents": {
+          "root": {
+            "name": "Structured Brief Lead",
+            "description": "Coordinates the request and performs final review."
+          },
+          "brief": {
+            "name": "Brief Manager",
+            "description": "Plans, delegates and reviews information extraction work."
+          },
+          "extractor": {
+            "name": "Brief Specialist",
+            "description": "Extract facts, decisions, owners, deadlines and open questions from the supplied notes. Mark unknown fields explicitly."
+          }
+        }
+      },
+      "builtin-content-draft": {
+        "description": "Draft content and review it against an audience and brief.",
+        "outcome": "Return the final draft with a short editorial checklist.",
+        "input_hint": "Provide the purpose, audience, facts and preferred tone.",
+        "agents": {
+          "root": {
+            "name": "Content Draft & Review Lead",
+            "description": "Coordinates the request and performs final review."
+          },
+          "editorial": {
+            "name": "Editorial Manager",
+            "description": "Plans, delegates and reviews content review work."
+          },
+          "writer": {
+            "name": "Draft Specialist",
+            "description": "Write a draft for the stated audience, purpose and tone using the supplied facts."
+          },
+          "editor": {
+            "name": "Editorial Specialist",
+            "description": "Review the brief and supplied draft material for clarity, unsupported claims and tone; provide concrete corrections."
+          }
+        }
+      },
+      "builtin-incident-text-triage": {
+        "description": "Organize supplied incident evidence without live monitoring claims.",
+        "outcome": "Return observed facts, hypotheses, missing evidence and safe next checks.",
+        "input_hint": "Paste incident notes or logs. Remove sensitive data first.",
+        "agents": {
+          "root": {
+            "name": "Incident Text Triage Lead",
+            "description": "Coordinates the request and performs final review."
+          },
+          "triage": {
+            "name": "Triage Manager",
+            "description": "Plans, delegates and reviews incident analysis work."
+          },
+          "evidence": {
+            "name": "Evidence Specialist",
+            "description": "Extract timestamps, affected services, observed impact and signals from supplied incident text."
+          },
+          "hypotheses": {
+            "name": "Hypothesis Specialist",
+            "description": "Rank possible explanations against supplied evidence. Suggest safe verification steps; do not claim live service access or applied remediation."
+          }
+        }
+      },
+      "builtin-technical-qa": {
+        "description": "Check a technical answer against supplied requirements.",
+        "outcome": "Return a reviewed answer, assumptions and verification steps.",
+        "input_hint": "Provide the question, context and acceptance criteria.",
+        "agents": {
+          "root": {
+            "name": "Technical Q&A Review Lead",
+            "description": "Coordinates the request and performs final review."
+          },
+          "quality": {
+            "name": "Technical Review Manager",
+            "description": "Plans, delegates and reviews technical validation work."
+          },
+          "answer": {
+            "name": "Answer Specialist",
+            "description": "Propose an answer to the technical question using supplied context. State assumptions."
+          },
+          "check": {
+            "name": "Verification Specialist",
+            "description": "Check the proposed approach against supplied requirements, edge cases and constraints. Distinguish verified facts from suggested tests."
+          }
+        }
+      },
+      "builtin-design-review": {
+        "description": "Review a supplied design from reliability and maintainability perspectives.",
+        "outcome": "Synthesize a prioritized design review with trade-offs and verification recommendations.",
+        "input_hint": "Paste a design or code excerpt and constraints.",
+        "agents": {
+          "root": {
+            "name": "Software Design Review Lead",
+            "description": "Coordinates the request and performs final review."
+          },
+          "reliability": {
+            "name": "Reliability Manager",
+            "description": "Plans, delegates and reviews reliability review work."
+          },
+          "failure": {
+            "name": "Failure Analysis Specialist",
+            "description": "Review the supplied design for failure paths, data consistency and recovery; do not claim to have run code."
+          },
+          "maintenance": {
+            "name": "Maintainability Manager",
+            "description": "Plans, delegates and reviews maintainability review work."
+          },
+          "boundaries": {
+            "name": "Interface Review Specialist",
+            "description": "Review interfaces, coupling and change impact. Propose bounded improvements with migration and testing considerations."
+          }
+        }
+      },
+      "builtin-decision-board": {
+        "description": "Review a decision through benefits, risks and practical constraints.",
+        "outcome": "Return a decision memo with alternatives, rationale, risks and conditions for revisiting it.",
+        "input_hint": "Provide a decision, options, goals and constraints.",
+        "agents": {
+          "root": {
+            "name": "Decision Board Lead",
+            "description": "Coordinates the request and performs final review."
+          },
+          "benefits": {
+            "name": "Benefits Manager",
+            "description": "Plans, delegates and reviews benefit analysis work."
+          },
+          "value": {
+            "name": "Value Specialist",
+            "description": "Assess the supplied options against explicit goals, benefits and evidence."
+          },
+          "risks": {
+            "name": "Risk Manager",
+            "description": "Plans, delegates and reviews risk analysis work."
+          },
+          "risk": {
+            "name": "Risk Specialist",
+            "description": "Identify uncertainties, failure modes, reversibility and evidence needed to choose responsibly."
+          }
+        }
+      },
+      "builtin-operations-plan": {
+        "description": "Plan a proposed change with verification and rollback, without executing it.",
+        "outcome": "Return a reviewed plan with prerequisites, checks, rollback and unresolved questions.",
+        "input_hint": "Describe the proposed change, environment constraints and rollback requirements.",
+        "agents": {
+          "root": {
+            "name": "Operations Change Plan Lead",
+            "description": "Coordinates the request and performs final review."
+          },
+          "planning": {
+            "name": "Change Planning Manager",
+            "description": "Plans, delegates and reviews change planning work."
+          },
+          "steps": {
+            "name": "Planning Specialist",
+            "description": "Draft ordered change steps, prerequisites and ownership from supplied context. Never imply the steps have been executed."
+          },
+          "safety": {
+            "name": "Change Safety Manager",
+            "description": "Plans, delegates and reviews change safety work."
+          },
+          "rollback": {
+            "name": "Rollback Specialist",
+            "description": "Review risks, validation gates and rollback conditions for the proposed change. Identify missing evidence."
+          }
+        }
+      },
+      "builtin-research-report": {
+        "description": "Synthesize supplied sources and preserve a reviewed report as an Artifact.",
+        "outcome": "Return a reviewed synthesis and a persisted report Artifact.",
+        "input_hint": "Paste source excerpts, citation labels and a research question.",
+        "agents": {
+          "root": {
+            "name": "Research Report Artifact Lead",
+            "description": "Coordinates the request and performs final review."
+          },
+          "evidence": {
+            "name": "Evidence Manager",
+            "description": "Plans, delegates and reviews evidence analysis work."
+          },
+          "sources": {
+            "name": "Source Specialist",
+            "description": "Compare supplied sources, record citations present in the input and identify contradictions. Do not claim web research without a configured Tool."
+          },
+          "report": {
+            "name": "Report Manager",
+            "description": "Plans, delegates and reviews report writing work."
+          },
+          "reporter": {
+            "name": "Report Specialist",
+            "description": "Prepare an evidence-based report with sources, uncertainty and conclusions."
+          }
+        }
       }
     },
     "sourceTemplateLabel": "Source Template",
@@ -487,8 +743,8 @@
         "description": "Read the authenticated GitHub account."
       },
       "filesystem-workspace": {
-        "name": "Filesystem / Workspace",
-        "description": "A safe workspace connector is not available yet."
+        "name": "Filesystem MCP",
+        "description": "Optional access to supplied files through a separately configured MCP server and explicitly allowed directories."
       },
       "database-access": {
         "name": "Database",
@@ -1074,9 +1330,9 @@
     "checking": "Checking dependencies…",
     "usedBy": "Used by",
     "blockedHelp": "This Secret is used by {{count}} resource(s). Remove or replace these references before deleting it.",
-    "providerBlockedHelp": "This Provider is used by {{count}} Agent(s). Remove or replace their Provider and model before deleting it.",
-    "toolBlockedHelp": "This Tool is assigned to {{count}} Specialist Agent(s). Remove the assignments before deleting it.",
-    "safeHelp": "No active dependencies were found. This deletion cannot be undone.",
+    "providerBlockedHelp": "This Provider is used by {{count}} Agents in current Tree versions. Change those bindings before deleting.",
+    "toolBlockedHelp": "This Tool is used by {{count}} Agents in current Tree versions. Remove those bindings before deleting.",
+    "safeHelp": "No live binding prevents deletion. Historical versions and Executions remain; deleting the resource cannot be undone.",
     "tree": "Tree",
     "agent": "Agent",
     "specialist": "Specialist",
@@ -1209,7 +1465,9 @@
     "status": {
       "ready": "Ready",
       "experimental": "Experimental",
-      "coming_soon": "Coming Soon"
+      "coming_soon": "Coming Soon",
+      "setup_required": "Setup required",
+      "catalog_addable": "Catalog addable"
     },
     "comingSoon": "Coming Soon",
     "configure": "Configure",
@@ -1241,7 +1499,10 @@
       "httpRequest": "HTTP request",
       "discoverMcp": "Discover MCP tools",
       "executeMcp": "Execute selected MCP tools",
-      "githubAccount": "Read authenticated account"
+      "githubAccount": "Read authenticated account",
+      "createArtifact": "Create Artifact",
+      "updateArtifact": "Update Artifact",
+      "deleteArtifact": "Delete Artifact"
     },
     "packages": {
       "web-api-request": {
@@ -1269,11 +1530,16 @@
         ]
       },
       "filesystem-workspace": {
-        "name": "Filesystem / Workspace",
-        "description": "Workspace file access is not available through a safe built-in package yet.",
-        "instructions": [
-          "This package is planned and cannot be configured yet."
-        ]
+        "name": "Filesystem MCP",
+        "description": "Connect the reference Filesystem server with explicit allowed directories.",
+        "instructions": {
+          "0": "Review allowed directories before launching the server. Do not grant the backend host home directory or credential directories.",
+          "1": "Configure an already-installed executable accessible to the backend container. Test, discover and explicitly select permitted Tools. No package installation is performed by Studio."
+        },
+        "scope": {
+          "0": "Read and write files inside configured allowed directories",
+          "1": "May modify or move files; select read-only Tools when appropriate"
+        }
       },
       "database-access": {
         "name": "Database",
@@ -1287,6 +1553,37 @@
         "description": "Monitoring service packages are planned; no executable integration is included yet.",
         "instructions": [
           "This package is planned and cannot be configured yet."
+        ]
+      },
+      "mcp-fetch": {
+        "name": "Fetch MCP",
+        "description": "Retrieve web content through the reference Fetch server.",
+        "instructions": {
+          "0": "Install and manage the reference Fetch server separately. Network access follows the server and backend host configuration.",
+          "1": "Configure an already-installed executable accessible to the backend container. Test, discover and explicitly select permitted Tools. No package installation is performed by Studio."
+        },
+        "scope": {
+          "0": "Network requests to URLs requested by the Agent",
+          "1": "Retrieved content is untrusted; do not send credentials in URLs"
+        }
+      },
+      "mcp-memory": {
+        "name": "Knowledge Graph MCP",
+        "description": "Connect the reference Memory server for an explicitly configured knowledge graph.",
+        "instructions": {
+          "0": "Choose a dedicated external data location. Review which read/write/delete Tools are exposed before assigning them.",
+          "1": "Configure an already-installed executable accessible to the backend container. Test, discover and explicitly select permitted Tools. No package installation is performed by Studio."
+        },
+        "scope": {
+          "0": "Read/create/update/delete knowledge graph records",
+          "1": "Persistent data belongs to the external MCP server; not AgentTree conversation memory"
+        }
+      },
+      "artifact-output": {
+        "name": "Artifact Output",
+        "description": "Create and update Run artifacts using AgentTree's existing Artifact Tool.",
+        "instructions": [
+          "No connection or Secret is required. Each Artifact belongs to its Run."
         ]
       }
     },
@@ -2381,5 +2678,50 @@
         ]
       }
     }
+  },
+  "ecosystem": {
+    "templateFilters": "Template filters",
+    "searchTemplates": "Search Templates or capabilities",
+    "difficultyLabel": "Difficulty",
+    "difficulty": {
+      "all": "All levels",
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "allCategories": "All categories",
+    "clearFilters": "Clear filters",
+    "noMatches": "No matching Templates. Change your search or clear the filters.",
+    "beforeStart": "Before you start",
+    "providerSetup": "Choose a connected AI Provider and verified Model for every Agent, then resolve required Tools.",
+    "scopeNote": "Templates never bind credentials automatically. Text workflows use supplied input; API access and Artifacts need configured Tools.",
+    "outcome": "Expected output",
+    "input_hint": "Test input",
+    "mcpNotice": "Adding MCP configures a connection, not software installation. The backend host must already have the intended server or executable.",
+    "source": "Official setup documentation",
+    "permissions": "Access scope",
+    "registerMcp": "Configure MCP",
+    "registrationHelp": "Review the source and access scope, then configure → test → discover and select Tools. No package is installed automatically.",
+    "deletedResource": "Resource deleted — history retained. Rebind before reuse.",
+    "savedBindings": "Bindings saved for this Execution"
+  },
+  "dashboardV013": {
+    "subtitle": "Check readiness, follow Executions and choose your next step.",
+    "workspaceState": "Workspace overview",
+    "readyHeadline": "{{count}} Trees ready to work",
+    "setupHeadline": "Prepare your first working Tree",
+    "nextStep": "Choose a Tree to test in Playground, or finish a configuration that needs setup.",
+    "readyTrees": "Ready Trees",
+    "activeExecutions": "Active Executions",
+    "chooseTree": "Choose a Tree",
+    "architectureLabel": "AgentTree architecture reference, not live execution",
+    "architectureNote": "Architecture reference · not live execution",
+    "executionSummary": "{{today}} today · {{completed}} completed · {{failed}} failed",
+    "completedAndFailed": "Based on completed and failed Executions",
+    "allTrees": "All Trees",
+    "build": "Build",
+    "attentionCount": "{{count}} items to review",
+    "lastChecked": "Last checked state, not continuous uptime monitoring",
+    "connectedTools": "Tools: connected / total"
   }
 }

@@ -37,7 +37,7 @@ function statesFromTool(tool: ToolConnection | null) {
   return { http, mcp }
 }
 
-export function ToolForm({ open, onOpenChange, tool, secrets, specialists, onComplete }: { open: boolean; onOpenChange: (open: boolean) => void; tool: ToolConnection | null; secrets: Secret[]; specialists: EligibleSpecialist[]; onComplete: () => void }) {
+export function ToolForm({ open, onOpenChange, tool, secrets, specialists, onComplete, initialType = "http_api", catalogPackageId }: { open: boolean; onOpenChange: (open: boolean) => void; tool: ToolConnection | null; secrets: Secret[]; specialists: EligibleSpecialist[]; onComplete: () => void; initialType?: ToolConnection["tool_type"]; catalogPackageId?: string }) {
   const { t } = useTranslation()
 
   const [step, setStep] = useState(0)
@@ -59,9 +59,9 @@ export function ToolForm({ open, onOpenChange, tool, secrets, specialists, onCom
   useEffect(() => {
     if (!open) return
     const values = statesFromTool(tool)
-    setStep(0); setSaved(tool); setName(tool?.name ?? ""); setDescription(tool?.description ?? ""); setType(tool?.tool_type ?? "http_api"); setEnabled(tool?.enabled ?? true); setSecretId(tool?.secret_id ?? ""); setHttp(values.http); setMcp(values.mcp); setDiscovered(tool?.discovered_tools ?? []); setSelectedTools(tool?.discovered_tools.filter((item) => item.selected).map((item) => item.name) ?? []); setSelectedAgents([]); setError(null)
+    setStep(0); setSaved(tool); setName(tool?.name ?? ""); setDescription(tool?.description ?? ""); setType(tool?.tool_type ?? initialType); setEnabled(tool?.enabled ?? true); setSecretId(tool?.secret_id ?? ""); setHttp(values.http); setMcp(values.mcp); setDiscovered(tool?.discovered_tools ?? []); setSelectedTools(tool?.discovered_tools.filter((item) => item.selected).map((item) => item.name) ?? []); setSelectedAgents([]); setError(null)
     if (tool) api.getToolAssignments(tool.id).then((result) => setSelectedAgents(result.assignments.map((item) => item.agent_id))).catch(() => undefined)
-  }, [open, tool])
+  }, [open, tool, initialType])
 
   function configuration(): Record<string, unknown> {
     if (type === "http_api") return { method: http.method, url: http.url, headers: jsonValue(http.headers, "Headers", "object"), query: jsonValue(http.query, "Query", "object"), input_schema: jsonValue(http.inputSchema, "Input schema", "object"), output_handling: http.outputHandling, timeout: Number(http.timeout), test_arguments: jsonValue(http.testArguments, "Test arguments", "object") }
@@ -72,6 +72,8 @@ export function ToolForm({ open, onOpenChange, tool, secrets, specialists, onCom
   async function persist() {
     if (!name.trim()) throw new Error("Tool name is required")
     const payload: ToolPayload = { name: name.trim(), description: description.trim(), tool_type: type, enabled, secret_id: type === "artifact" ? null : secretId || null, transport_type: type === "mcp" ? mcp.transport : null, configuration: configuration() }
+    const packageId = type === (tool?.tool_type ?? initialType) ? (catalogPackageId ?? saved?.configuration.catalog_package_id) : undefined
+    if (type !== "artifact" && typeof packageId === "string") payload.configuration.catalog_package_id = packageId
     const result = saved ? await api.updateTool(saved.id, { ...payload, selected_tools: type === "mcp" ? selectedTools : undefined }) : await api.createTool(payload)
     setSaved(result); setDiscovered(result.discovered_tools)
     return result

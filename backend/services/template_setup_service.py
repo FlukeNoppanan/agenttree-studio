@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from backend.models.auth import User
 from backend.models.provider import ProviderConnection, ProviderModel
 from backend.models.template import TreeTemplate
+from backend.services.resource_identity import identity
 from backend.models.tool import ToolAssignment, ToolConnection
 from backend.models.tree import AgentConfig, TreeVersion
 from backend.schemas.template import (
@@ -162,6 +163,7 @@ class TemplateSetupService:
             raise ResourceNotFoundError("Agent not found in this Tree")
         self._validate_binding(payload.provider_connection_id, payload.model_id)
         agent.provider_connection_id = payload.provider_connection_id
+        agent.provider_identity_json = identity(self._database.get(ProviderConnection, payload.provider_connection_id)) if payload.provider_connection_id else None
         agent.model_id = payload.model_id
         self._database.commit()
         return self.get(tree_id, user)
@@ -174,6 +176,7 @@ class TemplateSetupService:
         self._validate_binding(payload.provider_connection_id, payload.model_id)
         for agent in tree.current_version.agents:
             agent.provider_connection_id = payload.provider_connection_id
+            agent.provider_identity_json = identity(self._database.get(ProviderConnection, payload.provider_connection_id)) if payload.provider_connection_id else None
             agent.model_id = payload.model_id
         self._database.commit()
         return self.get(tree_id, user)
@@ -209,6 +212,7 @@ class TemplateSetupService:
         agent.capabilities_json = payload.capabilities
         agent.system_instruction = payload.system_instruction
         agent.provider_connection_id = payload.provider_connection_id
+        agent.provider_identity_json = identity(self._database.get(ProviderConnection, payload.provider_connection_id)) if payload.provider_connection_id else None
         agent.model_id = payload.model_id
         self._database.commit()
         return self.get(tree_id, user)
@@ -240,6 +244,7 @@ class TemplateSetupService:
                 version.tool_assignments.append(ToolAssignment(
                     tree_version_id=version.id, agent_config_id=agent_id,
                     tool_connection_id=tool_id,
+                    tool_identity_json=identity(self._database.get(ToolConnection, tool_id)),
                 ))
         self._database.commit()
         return self.get(tree_id, user)
@@ -363,6 +368,7 @@ class TemplateSetupService:
             version.tool_assignments.append(ToolAssignment(
                 tree_version_id=version.id, agent_config_id=agent_id,
                 tool_connection_id=tool_id,
+                tool_identity_json=identity(tool),
             ))
 
     def resolve_requirement(
@@ -438,7 +444,7 @@ class TemplateSetupService:
             package = _PACKAGE_BY_ID.get(status.catalog_key)
             if status.requirement != "required" or status.state != TemplateRequirementState.AVAILABLE_TO_ADD:
                 continue
-            if package is None or package["status"].value != "ready":
+            if package is None or package["status"].value in {"coming_soon", "catalog_addable"}:
                 continue
             target = status.agent_id
             if not target:

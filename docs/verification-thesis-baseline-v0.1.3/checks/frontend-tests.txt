@@ -1,0 +1,16 @@
+
+> agenttree-studio-frontend@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.1 /home/fluke/Agenttree-Studio/frontend
+
+
+ Test Files  51 passed (51)
+      Tests  340 passed (340)
+   Start at  16:38:10
+   Duration  19.41s (tests 42%, environment 37%, transform 8%, import 6%, setup 6%)
+
+Environment  jsdom was created 51 times · 97.39s total, 37% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments

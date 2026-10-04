@@ -50,9 +50,10 @@ class ToolAssignment(Base):
     agent_config_id: Mapped[str] = mapped_column(
         ForeignKey("agent_configs.id", ondelete="CASCADE"), nullable=False, index=True,
     )
-    tool_connection_id: Mapped[str] = mapped_column(
-        ForeignKey("tool_connections.id", ondelete="RESTRICT"), nullable=False,
+    tool_connection_id: Mapped[str | None] = mapped_column(
+        ForeignKey("tool_connections.id", ondelete="SET NULL"), nullable=True,
     )
+    tool_identity_json: Mapped[dict | None] = mapped_column(JSON, nullable=True)
 
     tree_version = relationship("TreeVersion", back_populates="tool_assignments")
     agent_config = relationship("AgentConfig", back_populates="tool_assignments")

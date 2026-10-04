@@ -74,7 +74,8 @@ class DependencyService:
                 select(AgentConfig, TreeVersion, Tree)
                 .join(TreeVersion, AgentConfig.tree_version_id == TreeVersion.id)
                 .join(Tree, TreeVersion.tree_id == Tree.id)
-                .where(AgentConfig.provider_connection_id == provider_id)
+                .where(AgentConfig.provider_connection_id == provider_id,
+                       Tree.current_version_id == TreeVersion.id)
                 .order_by(Tree.name, TreeVersion.version_number, AgentConfig.name)
             )
         ]
@@ -96,7 +97,8 @@ class DependencyService:
                 .join(AgentConfig, ToolAssignment.agent_config_id == AgentConfig.id)
                 .join(TreeVersion, ToolAssignment.tree_version_id == TreeVersion.id)
                 .join(Tree, TreeVersion.tree_id == Tree.id)
-                .where(ToolAssignment.tool_connection_id == tool_id)
+                .where(ToolAssignment.tool_connection_id == tool_id,
+                       Tree.current_version_id == TreeVersion.id)
                 .order_by(Tree.name, TreeVersion.version_number, AgentConfig.name)
             )
         ]

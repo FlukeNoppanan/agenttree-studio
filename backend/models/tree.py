@@ -93,8 +93,10 @@ class AgentConfig(TimestampMixin, Base):
         ForeignKey("agent_configs.id", ondelete="CASCADE"), nullable=True,
     )
     provider_connection_id: Mapped[str | None] = mapped_column(
-        ForeignKey("provider_connections.id", ondelete="RESTRICT"), nullable=True,
+        ForeignKey("provider_connections.id", ondelete="SET NULL"), nullable=True,
     )
+    # Identity only; never include configuration, credentials or encrypted values.
+    provider_identity_json: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     model_id: Mapped[str | None] = mapped_column(String(300), nullable=True)
     system_instruction: Mapped[str | None] = mapped_column(Text, nullable=True)
     capabilities_json: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=list)

@@ -126,4 +126,15 @@ describe("Primary Admin and account-aware UI", () => {
     expect(screen.getByText("4")).toBeInTheDocument()
     expect(screen.getByRole("button", { name: "Create User" })).toBeInTheDocument()
   })
+
+  it("keeps zero data honest and distinguishes the architecture reference from live activity", async () => {
+    vi.spyOn(api, "getDashboardSummary").mockResolvedValue({ ...global, metrics: { ...global.metrics,
+      trees: { total: 0, ready: 0, draft: 0 }, runs: { total: 0, today: 0, running: 0, completed: 0, failed: 0, success_rate: null },
+      providers: { total: 0, connected: 0, usable_models: 0 } } })
+    mount("dashboard", primary)
+    expect(await screen.findByText("No Runs yet")).toBeInTheDocument()
+    expect(screen.queryByText(/Success Rate:/)).not.toBeInTheDocument()
+    expect(screen.getByText(/Architecture reference/i)).toBeInTheDocument()
+    expect(screen.getByText(/Last checked state, not continuous uptime monitoring/)).toBeInTheDocument()
+  })
 })

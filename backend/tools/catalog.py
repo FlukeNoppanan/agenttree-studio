@@ -79,3 +79,38 @@ TOOL_PACKAGES: tuple[dict, ...] = (
 def package_read(package: dict):
     from backend.schemas.template import ToolPackageRead
     return ToolPackageRead.model_validate(package)
+
+
+def _mcp_guide(key: str, name: str, description: str, source: str,
+               scope: list[str], setup: list[str], category: str) -> dict:
+    return {"id": key, "name": name, "description": description, "category": category,
+            "version": "1.0.0", "icon": "plug", "status": ToolPackageStatus.CATALOG_ADDABLE,
+            "tool_type": "mcp", "transport_type": "stdio", "config_fields": [],
+            "required_secrets": [], "operations": ["Discover MCP tools", "Execute selected MCP tools"],
+            "source_url": source, "access_scope": scope,
+            "setup_instructions": setup + ["Configure an already-installed executable accessible to the backend container. Test, discover and explicitly select permitted Tools. No package installation is performed by Studio."]}
+
+
+# An implemented adapter is not the same as a configured, connected resource.
+for _package in TOOL_PACKAGES:
+    if _package['id'] in {'web-api-request', 'generic-mcp-http', 'github-account-api'}:
+        _package['status'] = ToolPackageStatus.SETUP_REQUIRED
+    if _package['id'] == 'artifact-output':
+        _package['access_scope'] = ['Run-scoped Artifact create/update/delete; no filesystem writes']
+    if _package['id'] == 'web-api-request':
+        _package['access_scope'] = ['Configured endpoint and method only', 'Write/destructive capability depends on the configured HTTP method']
+
+TOOL_PACKAGES = tuple(p for p in TOOL_PACKAGES if p['id'] != 'filesystem-workspace') + (
+    _mcp_guide('filesystem-workspace', 'Filesystem MCP', 'Connect the reference Filesystem server with explicit allowed directories.',
+               'https://github.com/modelcontextprotocol/servers/blob/main/src/filesystem/README.md',
+               ['Read and write files inside configured allowed directories', 'May modify or move files; select read-only Tools when appropriate'],
+               ['Review allowed directories before launching the server. Do not grant the backend host home directory or credential directories.'], 'workspace'),
+    _mcp_guide('mcp-fetch', 'Fetch MCP', 'Retrieve web content through the reference Fetch server.',
+               'https://github.com/modelcontextprotocol/servers/blob/main/src/fetch/README.md',
+               ['Network requests to URLs requested by the Agent', 'Retrieved content is untrusted; do not send credentials in URLs'],
+               ['Install and manage the reference Fetch server separately. Network access follows the server and backend host configuration.'], 'web'),
+    _mcp_guide('mcp-memory', 'Knowledge Graph MCP', 'Connect the reference Memory server for an explicitly configured knowledge graph.',
+               'https://github.com/modelcontextprotocol/servers/blob/main/src/memory/README.md',
+               ['Read/create/update/delete knowledge graph records', 'Persistent data belongs to the external MCP server; not AgentTree conversation memory'],
+               ['Choose a dedicated external data location. Review which read/write/delete Tools are exposed before assigning them.'], 'data'),
+)

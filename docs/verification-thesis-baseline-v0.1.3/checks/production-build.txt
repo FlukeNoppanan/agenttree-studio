@@ -1,0 +1,84 @@
+
+> agenttree-studio-frontend@0.1.0 build
+> tsc -b && vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 2034 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                       0.63 kB │ gzip:   0.37 kB
+dist/assets/tree-playground-PcsDhc1M.css              2.84 kB │ gzip:   0.89 kB
+dist/assets/canvas-utf7DbsQ.css                      28.40 kB │ gzip:   5.11 kB
+dist/assets/index-M58nm0ix.css                       77.97 kB │ gzip:  14.15 kB
+dist/assets/check-CimGwDQC.js                         0.13 kB │ gzip:   0.14 kB
+dist/assets/loader-circle-b71Oulme.js                 0.15 kB │ gzip:   0.16 kB
+dist/assets/plus-C4Ed1zfp.js                          0.15 kB │ gzip:   0.15 kB
+dist/assets/arrow-right-ClCCVcsy.js                   0.17 kB │ gzip:   0.16 kB
+dist/assets/arrow-up-right-8to4rKoI.js                0.17 kB │ gzip:   0.16 kB
+dist/assets/skeleton-6-sHdrOn.js                      0.17 kB │ gzip:   0.16 kB
+dist/assets/search-DdDUrViJ.js                        0.18 kB │ gzip:   0.17 kB
+dist/assets/play-BwPoc1b1.js                          0.19 kB │ gzip:   0.18 kB
+dist/assets/activity-BEYiFw_T.js                      0.24 kB │ gzip:   0.20 kB
+dist/assets/database-Bpz4cNk3.js                      0.24 kB │ gzip:   0.20 kB
+dist/assets/eye-B72wvT3Y.js                           0.26 kB │ gzip:   0.20 kB
+dist/assets/plug-BIS1lvqT.js                          0.26 kB │ gzip:   0.19 kB
+dist/assets/pencil-rttINFBO.js                        0.28 kB │ gzip:   0.23 kB
+dist/assets/provider-models-Y9WHzuk1.js               0.30 kB │ gzip:   0.19 kB
+dist/assets/refresh-cw-C4LWZMcF.js                    0.32 kB │ gzip:   0.23 kB
+dist/assets/save-CTLL1wIF.js                          0.33 kB │ gzip:   0.23 kB
+dist/assets/trash-2-YPPOpEyQ.js                       0.33 kB │ gzip:   0.22 kB
+dist/assets/clock-3-DplAKBTZ.js                       0.33 kB │ gzip:   0.22 kB
+dist/assets/circle-check-D9zbHryB.js                  0.38 kB │ gzip:   0.24 kB
+dist/assets/panels-top-left-kQnaE5YG.js               0.46 kB │ gzip:   0.28 kB
+dist/assets/page-header-DOr2vvrd.js                   0.56 kB │ gzip:   0.34 kB
+dist/assets/textarea-CI59ivh5.js                      0.57 kB │ gzip:   0.36 kB
+dist/assets/input-C9giTK-6.js                         0.58 kB │ gzip:   0.36 kB
+dist/assets/empty-state-1iTbJK_p.js                   0.61 kB │ gzip:   0.34 kB
+dist/assets/onboarding-CpxIjoxD.js                    0.64 kB │ gzip:   0.36 kB
+dist/assets/card-C59tTNOS.js                          0.69 kB │ gzip:   0.31 kB
+dist/assets/badge-B8zKmdjI.js                         0.70 kB │ gzip:   0.39 kB
+dist/assets/notice-D2hfsvkU.js                        0.81 kB │ gzip:   0.46 kB
+dist/assets/tool-status-badge-BNVMOiHu.js             0.82 kB │ gzip:   0.49 kB
+dist/assets/table-BPi2aDI4.js                         0.83 kB │ gzip:   0.36 kB
+dist/assets/delete-tree-dialog-baQqGInw.js            0.91 kB │ gzip:   0.51 kB
+dist/assets/create-tree-Bws9esdk.js                   2.22 kB │ gzip:   0.81 kB
+dist/assets/create-tree-menu-Bf9DcAo5.js              2.25 kB │ gzip:   1.18 kB
+dist/assets/run-status-badge-Cdm9BcPc.js              2.35 kB │ gzip:   1.10 kB
+dist/assets/learning-CW3laR7I.js                      3.04 kB │ gzip:   1.26 kB
+dist/assets/resource-dependency-dialog-BcBUroPd.js    3.91 kB │ gzip:   1.40 kB
+dist/assets/auth-pages-HmP2s5p7.js                    4.48 kB │ gzip:   1.47 kB
+dist/assets/getting-started-DrqltyR6.js               4.68 kB │ gzip:   1.74 kB
+dist/assets/tree-list-CcEc69Nv.js                     4.95 kB │ gzip:   1.93 kB
+dist/assets/secrets-2cgy8OrQ.js                       5.03 kB │ gzip:   1.92 kB
+dist/assets/types-DWsAHSF3.js                         5.17 kB │ gzip:   1.52 kB
+dist/assets/settings-97nup126.js                      5.21 kB │ gzip:   1.94 kB
+dist/assets/test-run-dialog-Dm4WKPSh.js               5.38 kB │ gzip:   2.25 kB
+dist/assets/security-events-CX7PAD8f.js               6.10 kB │ gzip:   1.98 kB
+dist/assets/agent-form-PgKHjMms.js                    6.33 kB │ gzip:   2.03 kB
+dist/assets/capability-selector-aNkyEWYo.js           6.55 kB │ gzip:   2.15 kB
+dist/assets/run-list-CKn0yhG5.js                      6.61 kB │ gzip:   2.63 kB
+dist/assets/tree-live-B82_lAm2.js                     8.13 kB │ gzip:   2.86 kB
+dist/assets/getting-started-CsnGwkjY.js               8.13 kB │ gzip:   2.56 kB
+dist/assets/api-examples-BefNYCWr.js                  8.18 kB │ gzip:   3.13 kB
+dist/assets/users-2i8lV1T2.js                         8.24 kB │ gzip:   2.59 kB
+dist/assets/run-live-CHyFYeVK.js                      9.14 kB │ gzip:   3.75 kB
+dist/assets/account-page-DtunbrxV.js                 10.26 kB │ gzip:   3.28 kB
+dist/assets/templates-B-jlDb-5.js                    11.81 kB │ gzip:   3.29 kB
+dist/assets/tree-playground-DHyzZAKV.js              15.81 kB │ gzip:   5.36 kB
+dist/assets/providers-DDOXMHcp.js                    15.84 kB │ gzip:   5.21 kB
+dist/assets/dashboard-CYIce1e7.js                    16.06 kB │ gzip:   4.21 kB
+dist/assets/tree-wizard-A3wYMeqE.js                  25.62 kB │ gzip:   7.30 kB
+dist/assets/template-setup-BD9EYuTW.js               29.24 kB │ gzip:   7.38 kB
+dist/assets/tree-detail-ftXSjt9P.js                  29.93 kB │ gzip:   8.66 kB
+dist/assets/tree-builder-CeTHpg4K.js                 31.33 kB │ gzip:   8.98 kB
+dist/assets/run-detail-DH-cMtwH.js                   31.80 kB │ gzip:   8.69 kB
+dist/assets/tools-DP0qIsMB.js                        43.28 kB │ gzip:  11.54 kB
+dist/assets/canvas-BbDaE-GJ.js                      196.96 kB │ gzip:  64.45 kB
+dist/assets/index-BKXRhm4w.js                       773.22 kB │ gzip: 227.15 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 3.26s

@@ -1,0 +1,4 @@
+{"disposable_tool_id": "b0e51909-bb10-4378-af5e-6d63fdb28be4", "transport": "stdio"}
+{"read_only_tool": "read_text_file", "own_disposable_file": true, "safe_content_returned": true}
+{"status": "connected", "discovered_count": 14, "selected_count": 0, "invocations": 1, "original_config_unchanged": true}
+{"disposable_mcp_cleanup": true}

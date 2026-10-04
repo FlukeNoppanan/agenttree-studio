@@ -1,0 +1,12 @@
+{
+  "backend_tests": 345,
+  "frontend_tests": 340,
+  "frontend_test_files": 51,
+  "typescript": "passed: tsc -b",
+  "production_build": "passed; largest entry 773.22 kB / 227.15 kB gzip; existing chunk warning",
+  "git_diff_check_exit": 0,
+  "core_status": "clean",
+  "migration_head": "0014_resource_history",
+  "browser_acceptance": "real authenticated Chromium; lifecycle, Template import/configure/save/reload/run/trace, catalog, Dashboard, themes/locales/responsive",
+  "publication": "see ignored post-commit publication-receipt.json"
+}

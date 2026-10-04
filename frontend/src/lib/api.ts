@@ -162,6 +162,7 @@ export interface AgentDraft {
   settings: Record<string, unknown> | null
   created_at?: string
   updated_at?: string
+  provider_reference?: { id: string; name: string; resource_type: string; deleted: boolean } | null
 }
 
 export interface TriggerDraft {
@@ -178,6 +179,7 @@ export interface OutputDraft {
 export interface ToolAssignment {
   agent_config_id: string
   tool_connection_id: string
+  tool_reference?: { id: string; name: string; resource_type: string; deleted: boolean } | null
 }
 
 export interface TreeDraftPayload {
@@ -304,9 +306,10 @@ export interface TemplateDraft { configuration: TreeDraftPayload; agent_ids: Rec
 export interface TemplateMetadataPayload { name: string; description: string; category: string }
 export interface ToolPackage {
   id: string; name: string; description: string; category: string; version: string; icon: string
-  status: "ready" | "experimental" | "coming_soon"; tool_type: ToolPayload["tool_type"] | null
+  status: "ready" | "setup_required" | "catalog_addable" | "experimental" | "coming_soon"; tool_type: ToolPayload["tool_type"] | null
   transport_type: ToolPayload["transport_type"]; config_fields: Array<{ key: string; kind: string; required: boolean; options: string[] }>
   required_secrets: string[]; operations: string[]; setup_instructions: string[]
+  source_url?: string | null; access_scope?: string[]
 }
 export interface ToolPackageSetup {
   name?: string; description?: string; secret_id?: string | null; url?: string

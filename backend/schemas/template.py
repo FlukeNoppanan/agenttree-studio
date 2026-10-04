@@ -220,6 +220,8 @@ class TemplateRead(BaseModel):
 
 class ToolPackageStatus(str, Enum):
     READY = "ready"
+    SETUP_REQUIRED = "setup_required"
+    CATALOG_ADDABLE = "catalog_addable"
     EXPERIMENTAL = "experimental"
     COMING_SOON = "coming_soon"
 
@@ -247,6 +249,8 @@ class ToolPackageRead(BaseModel):
     required_secrets: list[str]
     operations: list[str]
     setup_instructions: list[str]
+    source_url: str | None = None
+    access_scope: list[str] = Field(default_factory=list)
 
 
 class ToolPackageSetupRequest(BaseModel):

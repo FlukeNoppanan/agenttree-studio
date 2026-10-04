@@ -1,8 +1,9 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react"
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { MemoryRouter } from "react-router-dom"
 
 import { ToolsPage } from "@/pages/tools"
+import i18n from "@/i18n"
 import type { DiscoveredTool, ToolConnection } from "@/lib/api"
 
 const mocks = vi.hoisted(() => ({
@@ -43,6 +44,50 @@ async function renderPage(tool = connection()) {
 
 describe("ToolsPage MCP UX", () => {
   beforeEach(() => vi.clearAllMocks())
+
+  it("localizes Artifact guidance and operations while retaining product names on live language switching", async () => {
+    mocks.listTools.mockResolvedValue([])
+    mocks.listSecrets.mockResolvedValue([])
+    mocks.listTrees.mockResolvedValue([])
+    mocks.listToolCatalog.mockResolvedValue([{ id: "artifact-output", name: "Artifact Output", description: "English fallback",
+      category: "workspace", version: "1.0", icon: "file-output", status: "ready", tool_type: "artifact", transport_type: null,
+      config_fields: [], required_secrets: [], operations: ["Create artifact", "Update artifact", "Delete artifact"],
+      setup_instructions: ["English instruction fallback"],
+    }])
+    render(<MemoryRouter><ToolsPage /></MemoryRouter>)
+    expect(await screen.findByText("Create Artifact")).toBeInTheDocument()
+    try {
+      await act(async () => { await i18n.changeLanguage("th") })
+      expect(screen.getByRole("article", { name: "Artifact Output" })).toBeInTheDocument()
+      for (const label of ["สร้าง Artifact", "อัปเดต Artifact", "ลบ Artifact"]) expect(screen.getByText(label)).toBeInTheDocument()
+      expect(screen.queryByText("English fallback")).not.toBeInTheDocument()
+      fireEvent.click(screen.getByRole("button", { name: "ตั้งค่า" }))
+      expect(screen.getByText(/ไม่ต้องตั้งค่าการเชื่อมต่อหรือ Secret/)).toBeInTheDocument()
+      await act(async () => { await i18n.changeLanguage("en") })
+      expect(screen.getByText(/Each Artifact belongs to its Run/)).toBeInTheDocument()
+      expect(screen.queryByText(/ไม่ต้องตั้งค่าการเชื่อมต่อหรือ Secret/)).not.toBeInTheDocument()
+    } finally {
+      await act(async () => { await i18n.changeLanguage("en") })
+    }
+  })
+
+  it("presents MCP registration with source and scope without pretending to install", async () => {
+    mocks.listTools.mockResolvedValue([])
+    mocks.listSecrets.mockResolvedValue([])
+    mocks.listTrees.mockResolvedValue([])
+    mocks.listToolCatalog.mockResolvedValue([{ id: "filesystem-workspace", name: "Filesystem MCP", description: "Register an installed server",
+      category: "workspace", version: "1.0", icon: "folder", status: "catalog_addable", tool_type: "mcp", transport_type: "stdio",
+      config_fields: [], required_secrets: [], operations: ["Read files"], setup_instructions: ["Install separately and allow a disposable directory only"],
+      source_url: "https://github.com/modelcontextprotocol/servers/blob/main/src/filesystem/README.md", access_scope: ["May read and write within allowed directories"],
+    }])
+    render(<MemoryRouter><ToolsPage /></MemoryRouter>)
+    fireEvent.click(await screen.findByRole("button", { name: "Configure" }))
+    expect(screen.getByText("Read and write files inside configured allowed directories")).toBeInTheDocument()
+    expect(screen.getByRole("link")).toHaveAttribute("href", expect.stringContaining("modelcontextprotocol"))
+    expect(screen.getByRole("button", { name: "Configure MCP" })).toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: "Test Connection" })).not.toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: "Add Tool" })).not.toBeInTheDocument()
+  })
 
   it("shows per-card testing state and a clear MCP success", async () => {
     let resolveTest!: (value: unknown) => void

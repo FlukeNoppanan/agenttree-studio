@@ -1,0 +1,20 @@
+[
+  {
+    "service": "backend",
+    "state": "running",
+    "health": "healthy",
+    "image": "agenttree-studio-backend"
+  },
+  {
+    "service": "frontend",
+    "state": "running",
+    "health": "healthy",
+    "image": "agenttree-studio-frontend"
+  },
+  {
+    "service": "postgres",
+    "state": "running",
+    "health": "healthy",
+    "image": "postgres:16-alpine"
+  }
+]

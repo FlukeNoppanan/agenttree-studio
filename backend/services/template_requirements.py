@@ -89,7 +89,7 @@ def resolve_requirements(
             state, action, tool_id = TemplateRequirementState.AVAILABLE_TO_ADD, "assign", available_tool.id
         elif candidates:
             state, action, tool_id = TemplateRequirementState.NEEDS_CONFIGURATION, "configure", candidates[0].id
-        elif any(field["required"] for field in package["config_fields"]):
+        elif package["status"].value == "catalog_addable" or any(field["required"] for field in package["config_fields"]):
             state, action, tool_id = TemplateRequirementState.NEEDS_CONFIGURATION, "configure", None
         else:
             state, action, tool_id = TemplateRequirementState.AVAILABLE_TO_ADD, "add", None

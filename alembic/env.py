@@ -31,11 +31,19 @@ def run_migrations_online() -> None:
     )
     with connectable.connect() as connection:
         if connection.dialect.name == "sqlite":
-            connection.exec_driver_sql("PRAGMA foreign_keys=ON")
+            # Alembic batch recreation drops and replaces referenced tables.
+            # SQLite would cascade-delete their children with enforcement on.
+            # This migration-only connection checks integrity before restoring it.
+            connection.exec_driver_sql("PRAGMA foreign_keys=OFF")
             connection.commit()
         context.configure(connection=connection, target_metadata=target_metadata, compare_type=True)
         with context.begin_transaction():
             context.run_migrations()
+        if connection.dialect.name == "sqlite":
+            if connection.exec_driver_sql("PRAGMA foreign_key_check").fetchone():
+                raise RuntimeError("Migration left invalid foreign-key references")
+            connection.commit()
+            connection.exec_driver_sql("PRAGMA foreign_keys=ON")
 
 
 if context.is_offline_mode():

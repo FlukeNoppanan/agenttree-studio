@@ -82,7 +82,7 @@ BUILTIN_TEMPLATES: tuple[dict, ...] = (
                    ["fact checking", "citation review"], "Check each finding against the supplied text. Preserve citations or locations when present and explicitly mark unsupported claims."),
         ], [
             {"id": "document-brief", "catalog_key": "artifact-output", "requirement": "required", "agent_ref": "verify", "reason": "Keep the checked brief with the run's artifacts."},
-            {"id": "document-workspace", "catalog_key": "filesystem-workspace", "requirement": "recommended", "agent_ref": "extract", "reason": "A future workspace connector could read managed source documents."},
+            {"id": "document-workspace", "catalog_key": "filesystem-workspace", "requirement": "recommended", "agent_ref": "extract", "reason": "Optional file access through an explicitly configured Filesystem MCP server and allowed directories."},
         ]),
     },
     {
@@ -126,4 +126,84 @@ BUILTIN_TEMPLATES: tuple[dict, ...] = (
             {"id": "database-source", "catalog_key": "database-access", "requirement": "recommended", "agent_ref": "endpoint", "reason": "Database-specific connectors are not available in this version."},
         ]),
     },
+)
+
+
+def _starter(key: str, name: str, description: str, category: str, difficulty: str,
+             workstreams: list[tuple[str, str, str, list[tuple[str, str, str]]]],
+             *, outcome: str, input_hint: str, artifact: bool = False) -> dict:
+    """Reuse the portable hierarchy; each workstream has a distinct responsibility."""
+    agents = [_agent('root', 'root', f'{name} Lead', 'Coordinates the request and performs final review.', None,
+                     ['planning', 'synthesis'],
+                     f'Coordinate the supplied task across the configured Managers. {outcome} '
+                     'Separate evidence from assumptions. Do not claim external access or executed changes without a configured Tool.')]
+    for manager_key, manager_name, capability, specialists in workstreams:
+        agents.append(_agent(manager_key, 'manager', manager_name,
+                             f'Plans, delegates and reviews {capability} work.', 'root', [capability],
+                             f'Delegate focused {capability} tasks to your Specialists. Review their output for accuracy, scope and missing evidence; request bounded revisions when needed.'))
+        for specialist_key, specialist_name, instruction in specialists:
+            agents.append(_agent(specialist_key, 'specialist', specialist_name, instruction,
+                                 manager_key, [capability], instruction))
+    requirements = []
+    if artifact:
+        target = workstreams[-1][-1][-1][0]
+        requirements.append({'id': 'report-artifact', 'catalog_key': 'artifact-output',
+                             'requirement': 'required', 'agent_ref': target,
+                             'reason': 'Create a reusable text report with the existing Artifact Tool.'})
+        agents[-1]['system_instruction'] += ' Use the assigned Artifact Tool to create a concise text report; never claim a file exists unless the Tool succeeded.'
+    definition = _definition(agents, requirements)
+    definition.metadata = {'difficulty': difficulty, 'outcome': outcome, 'input_hint': input_hint,
+                           'scope': 'supplied-input',
+                           'setup': 'Choose a connected AI Provider and a verified Model for every Agent. ' +
+                           ('Assign Artifact Output to the report Specialist.' if artifact else 'No Tool is required for the supplied-text workflow.')}
+    return {'id': f'builtin-{key}', 'name': name, 'description': description,
+            'category': category, 'definition': definition}
+
+
+# Difficulty describes setup and team complexity, not runtime quality or a score.
+for _item in BUILTIN_TEMPLATES:
+    _item['definition'].metadata.update({
+        'difficulty': 'beginner' if _item['id'] == 'builtin-blank' else 'intermediate',
+        'setup': 'Choose a connected AI Provider and verified Model for every Agent. Resolve required Tool slots before testing.',
+        'scope': 'configured-resources' if _item['id'] == 'builtin-api-data-analysis' else 'supplied-input',
+    })
+
+BUILTIN_TEMPLATES += (
+    _starter('quick-summary', 'Quick Summary', 'Turn supplied text into a short, checked summary.', 'general', 'beginner',
+             [('summary', 'Summary Manager', 'summarization', [('summarizer', 'Summary Specialist', 'Summarize only the supplied text. Keep key facts, caveats and decisions; do not add outside facts.')])],
+             outcome='Return a brief summary and important caveats.', input_hint='Paste the text and specify the desired length.'),
+    _starter('concept-explainer', 'Concept Explainer', 'Explain a technical concept with examples and clear limits.', 'education', 'beginner',
+             [('explanation', 'Explanation Manager', 'explanation', [('explainer', 'Explanation Specialist', 'Explain the requested concept for the stated audience. Use one concrete example, define prerequisites and mark uncertain claims.')])],
+             outcome='Return a clear explanation, example and limitations.', input_hint='Name a concept and the audience’s experience.'),
+    _starter('compare-options', 'Compare Options', 'Compare supplied options against explicit criteria.', 'analysis', 'beginner',
+             [('comparison', 'Comparison Manager', 'comparison', [('comparator', 'Comparison Specialist', 'Compare the supplied alternatives using the user’s criteria. Identify missing information and trade-offs without inventing prices or specifications.')])],
+             outcome='Return a comparison table and conditional recommendation.', input_hint='Provide options, criteria and known constraints.'),
+    _starter('structured-brief', 'Structured Brief', 'Extract a consistent brief from supplied notes.', 'documents', 'beginner',
+             [('brief', 'Brief Manager', 'information extraction', [('extractor', 'Brief Specialist', 'Extract facts, decisions, owners, deadlines and open questions from the supplied notes. Mark unknown fields explicitly.')])],
+             outcome='Return a structured brief with facts, actions and open questions.', input_hint='Paste meeting or project notes; specify the fields needed.'),
+    _starter('content-draft', 'Content Draft & Review', 'Draft content and review it against an audience and brief.', 'content', 'intermediate',
+             [('editorial', 'Editorial Manager', 'content review', [('writer', 'Draft Specialist', 'Write a draft for the stated audience, purpose and tone using the supplied facts.'), ('editor', 'Editorial Specialist', 'Review the brief and supplied draft material for clarity, unsupported claims and tone; provide concrete corrections.')])],
+             outcome='Return the final draft with a short editorial checklist.', input_hint='Provide the purpose, audience, facts and preferred tone.'),
+    _starter('incident-text-triage', 'Incident Text Triage', 'Organize supplied incident evidence without live monitoring claims.', 'operations', 'intermediate',
+             [('triage', 'Triage Manager', 'incident analysis', [('evidence', 'Evidence Specialist', 'Extract timestamps, affected services, observed impact and signals from supplied incident text.'), ('hypotheses', 'Hypothesis Specialist', 'Rank possible explanations against supplied evidence. Suggest safe verification steps; do not claim live service access or applied remediation.')])],
+             outcome='Return observed facts, hypotheses, missing evidence and safe next checks.', input_hint='Paste incident notes or logs. Remove sensitive data first.'),
+    _starter('technical-qa', 'Technical Q&A Review', 'Check a technical answer against supplied requirements.', 'engineering', 'intermediate',
+             [('quality', 'Technical Review Manager', 'technical validation', [('answer', 'Answer Specialist', 'Propose an answer to the technical question using supplied context. State assumptions.'), ('check', 'Verification Specialist', 'Check the proposed approach against supplied requirements, edge cases and constraints. Distinguish verified facts from suggested tests.')])],
+             outcome='Return a reviewed answer, assumptions and verification steps.', input_hint='Provide the question, context and acceptance criteria.'),
+    _starter('design-review', 'Software Design Review', 'Review a supplied design from reliability and maintainability perspectives.', 'engineering', 'advanced',
+             [('reliability', 'Reliability Manager', 'reliability review', [('failure', 'Failure Analysis Specialist', 'Review the supplied design for failure paths, data consistency and recovery; do not claim to have run code.')]),
+              ('maintenance', 'Maintainability Manager', 'maintainability review', [('boundaries', 'Interface Review Specialist', 'Review interfaces, coupling and change impact. Propose bounded improvements with migration and testing considerations.')])],
+             outcome='Synthesize a prioritized design review with trade-offs and verification recommendations.', input_hint='Paste a design or code excerpt and constraints.'),
+    _starter('decision-board', 'Decision Board', 'Review a decision through benefits, risks and practical constraints.', 'analysis', 'advanced',
+             [('benefits', 'Benefits Manager', 'benefit analysis', [('value', 'Value Specialist', 'Assess the supplied options against explicit goals, benefits and evidence.')]),
+              ('risks', 'Risk Manager', 'risk analysis', [('risk', 'Risk Specialist', 'Identify uncertainties, failure modes, reversibility and evidence needed to choose responsibly.')])],
+             outcome='Return a decision memo with alternatives, rationale, risks and conditions for revisiting it.', input_hint='Provide a decision, options, goals and constraints.'),
+    _starter('operations-plan', 'Operations Change Plan', 'Plan a proposed change with verification and rollback, without executing it.', 'operations', 'advanced',
+             [('planning', 'Change Planning Manager', 'change planning', [('steps', 'Planning Specialist', 'Draft ordered change steps, prerequisites and ownership from supplied context. Never imply the steps have been executed.')]),
+              ('safety', 'Change Safety Manager', 'change safety', [('rollback', 'Rollback Specialist', 'Review risks, validation gates and rollback conditions for the proposed change. Identify missing evidence.')])],
+             outcome='Return a reviewed plan with prerequisites, checks, rollback and unresolved questions.', input_hint='Describe the proposed change, environment constraints and rollback requirements.'),
+    _starter('research-report', 'Research Report Artifact', 'Synthesize supplied sources and preserve a reviewed report as an Artifact.', 'research', 'advanced',
+             [('evidence', 'Evidence Manager', 'evidence analysis', [('sources', 'Source Specialist', 'Compare supplied sources, record citations present in the input and identify contradictions. Do not claim web research without a configured Tool.')]),
+              ('report', 'Report Manager', 'report writing', [('reporter', 'Report Specialist', 'Prepare an evidence-based report with sources, uncertainty and conclusions.')])],
+             outcome='Return a reviewed synthesis and a persisted report Artifact.', input_hint='Paste source excerpts, citation labels and a research question.', artifact=True),
 )

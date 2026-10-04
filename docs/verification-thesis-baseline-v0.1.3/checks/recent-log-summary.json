@@ -1,0 +1,14 @@
+{
+  "lines_inspected": 410,
+  "traceback_lines": 0,
+  "error_lines": 0,
+  "runtime_warning_lines": 0,
+  "http_access_log_rows": 0,
+  "browser_console_warn_error": [],
+  "network_evidence": "Real authenticated HTTP responses and SSE replay: real-http-closure.txt. No browser HAR or request-panel export is available; service logs contain no access-request rows.",
+  "expected_responses": {
+    "409": "current Provider/Secret deletion blocked",
+    "403": "restricted resource/Tree access denied",
+    "401": "earlier helper incorrectly used bearer for cookie-only Studio API; corrected to normal login"
+  }
+}
