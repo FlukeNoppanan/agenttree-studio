@@ -1,5 +1,7 @@
 """Core-backed runtime construction, execution, persistence, and safety."""
 
+from qualification_fixture import QUALIFIED_METADATA
+
 import json
 from datetime import datetime, timezone
 from uuid import uuid4
@@ -74,7 +76,7 @@ def runtime_tree(database, *, output_type: str = "text",
         provider_connection_id=provider.id,
         model_id="runtime-model",
         is_available=True,
-        qualification_status="qualified",
+        qualification_status="qualified", metadata_json=QUALIFIED_METADATA,
     ))
     database.commit()
     root_id, manager_id, specialist_id = (str(uuid4()) for _ in range(3))
@@ -454,7 +456,7 @@ def test_runtime_api_uses_same_execution_pipeline(database, monkeypatch) -> None
     )
 
     assert result.invocation_source == "api"
-    assert result.metadata == {"caller": "api-test"}
+    assert result.metadata == {"caller": "api-test", "execution_mode": "fast"}
     assert result.input == {"message": "Investigate"}
 
 

@@ -1,0 +1,18 @@
+ M src/agenttree/__init__.py
+ M src/agenttree/core/execution_runtime.py
+ M src/agenttree/core/root.py
+ M src/agenttree/core/structured_output.py
+ M src/agenttree/exceptions.py
+ M src/agenttree/models/__init__.py
+ M src/agenttree/models/task.py
+ M src/agenttree/orchestration/backends/context.py
+ M src/agenttree/providers/_adapter.py
+ M src/agenttree/providers/exceptions.py
+ M src/agenttree/providers/models.py
+ M src/agenttree/providers/ollama.py
+ M tests/test_release.py
+ M tests/test_structured_decision_repair.py
+?? src/agenttree/core/decision_contracts.py
+?? tests/test_protocol_execution_modes.py
+?? tests/test_provider_neutral_decisions.py
+?? tests/test_qualification_error_scope.py

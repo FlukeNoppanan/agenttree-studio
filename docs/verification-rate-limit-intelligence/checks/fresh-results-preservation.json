@@ -1,0 +1,92 @@
+[
+  {
+    "provider": "27ea2781-fdb9-457f-b61c-10c2d6b428fe",
+    "model": "qwen-3.8-27b",
+    "status_preserved": true,
+    "evidence_preserved": true
+  },
+  {
+    "provider": "fb65f8f6-2b3d-4445-9d34-1cf5e00a49a2",
+    "model": "allam-2-7b",
+    "status_preserved": true,
+    "evidence_preserved": true
+  },
+  {
+    "provider": "fb65f8f6-2b3d-4445-9d34-1cf5e00a49a2",
+    "model": "meta-llama/llama-prompt-guard-2-22m",
+    "status_preserved": true,
+    "evidence_preserved": true
+  },
+  {
+    "provider": "fb65f8f6-2b3d-4445-9d34-1cf5e00a49a2",
+    "model": "qwen/qwen3.8-27b",
+    "status_preserved": true,
+    "evidence_preserved": true
+  },
+  {
+    "provider": "fb65f8f6-2b3d-4445-9d34-1cf5e00a49a2",
+    "model": "meta-llama/llama-prompt-guard-2-86m",
+    "status_preserved": true,
+    "evidence_preserved": true
+  },
+  {
+    "provider": "7816c7e4-9e94-4349-bc94-647811938df3",
+    "model": "models/gemini-flash-lite-latest",
+    "status_preserved": true,
+    "evidence_preserved": true
+  },
+  {
+    "provider": "fb65f8f6-2b3d-4445-9d34-1cf5e00a49a2",
+    "model": "openai/gpt-oss-120b",
+    "status_preserved": true,
+    "evidence_preserved": true
+  },
+  {
+    "provider": "7816c7e4-9e94-4349-bc94-647811938df3",
+    "model": "models/gemini-3.1-flash-lite-preview",
+    "status_preserved": true,
+    "evidence_preserved": true
+  },
+  {
+    "provider": "fb65f8f6-2b3d-4445-9d34-1cf5e00a49a2",
+    "model": "openai/gpt-oss-20b",
+    "status_preserved": true,
+    "evidence_preserved": true
+  },
+  {
+    "provider": "79d3f0d4-51f5-4f5c-a465-6f387fe080c4",
+    "model": "qwen3:4b",
+    "status_preserved": true,
+    "evidence_preserved": true
+  },
+  {
+    "provider": "27ea2781-fdb9-457f-b61c-10c2d6b428fe",
+    "model": "gpt-oss-120b",
+    "status_preserved": true,
+    "evidence_preserved": true
+  },
+  {
+    "provider": "79d3f0d4-51f5-4f5c-a465-6f387fe080c4",
+    "model": "phi4-mini:latest",
+    "status_preserved": true,
+    "evidence_preserved": true
+  },
+  {
+    "provider": "7816c7e4-9e94-4349-bc94-647811938df3",
+    "model": "models/gemini-3.1-flash-lite",
+    "status_preserved": true,
+    "evidence_preserved": true
+  },
+  {
+    "provider": "7816c7e4-9e94-4349-bc94-647811938df3",
+    "model": "models/gemini-3.5-flash-lite",
+    "status_preserved": true,
+    "evidence_preserved": true
+  },
+  {
+    "provider": "7816c7e4-9e94-4349-bc94-647811938df3",
+    "model": "models/gemini-3-flash-preview",
+    "status_preserved": true,
+    "evidence_preserved": true
+  }
+]

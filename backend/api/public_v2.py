@@ -91,6 +91,7 @@ def run_read(database: Session, run: Run) -> RunState:
     return RunState(
         run_id=run.id, tree_id=run.tree_id, tree_version_id=run.tree_version_id,
         status=api_status(run.status), final_status=run.final_status,
+        execution_mode=(run.metadata_json or {}).get("execution_mode", "fast"),
         created_at=RunService._utc(run.created_at),
         started_at=RunService._utc(run.started_at) if run.status != "pending" else None,
         finished_at=RunService._utc(run.finished_at),
@@ -155,12 +156,14 @@ def submit_run(payload: RunSubmitRequest, request: Request,
                                          "Idempotency-Key was used with a different request.")
                 existing = database.get(Run, mapping.run_id)
                 if existing is not None:
-                    return RunAccepted(run_id=existing.id, tree_id=existing.tree_id,
+                    return RunAccepted(execution_mode=(existing.metadata_json or {}).get("execution_mode", "fast"),
+                        run_id=existing.id, tree_id=existing.tree_id,
                         tree_version_id=existing.tree_version_id, status=api_status(existing.status),
                         created_at=existing.created_at, links=links(existing.id))
         run = RunService(database).prepare(
             tree.id, InvocationRequest(input={"input": payload.input},
-                                       metadata=payload.metadata.model_dump()),
+                                       metadata=payload.metadata.model_dump(),
+                                       execution_mode=payload.execution_mode),
             invocation_source="public_api_v2", submitted_by_user_id=user.id,
             submitted_by_token_id=token_id,
         )
@@ -181,7 +184,7 @@ def submit_run(payload: RunSubmitRequest, request: Request,
             database.delete(run)
             database.commit()
             raise PublicAPIError(503, "runtime_capacity", "Run capacity is temporarily exhausted.") from None
-    return RunAccepted(run_id=run.id, tree_id=run.tree_id,
+    return RunAccepted(execution_mode=payload.execution_mode, run_id=run.id, tree_id=run.tree_id,
                        tree_version_id=run.tree_version_id, status="queued",
                        created_at=run.created_at, links=links(run.id))
 
@@ -202,7 +205,8 @@ def get_result(run_id: str, request: Request, database: Session = Depends(get_db
     artifacts = list(database.scalars(select(RunArtifact).where(
         RunArtifact.run_id == run.id,
     ).order_by(RunArtifact.created_at, RunArtifact.id)))
-    return RunResult(run_id=run.id, status=api_status(run.status),
+    return RunResult(execution_mode=(run.metadata_json or {}).get("execution_mode", "fast"),
+                     run_id=run.id, status=api_status(run.status),
                      final_output=(run.output_json or {}).get("value"),
                      final_status=run.final_status, usage=run.usage_json,
                      metrics=run.metrics_json,

@@ -66,7 +66,26 @@ class ProviderService:
         return secret_id, base_url
 
     @staticmethod
+    def model_status(model: ProviderModel) -> str:
+        metadata = json.loads(model.metadata_json) if model.metadata_json else {}
+        if model.qualification_status == "qualified":
+            evidence = metadata.get("agenttree_qualification", {})
+            required = {"structured_output", "root_planning", "triage", "decomposition", "manager_review", "final_review"}
+            checks = evidence.get("checks", {}) if isinstance(evidence, dict) else {}
+            if not (isinstance(evidence, dict) and evidence.get("version") == 1
+                    and evidence.get("generation") == "passed"
+                    and isinstance(checks, dict) and set(checks) == required
+                    and all(isinstance(item, dict) and item.get("status") == "passed" for item in checks.values())):
+                # Old OK-only or incomplete evidence cannot claim decision readiness.
+                return "limited"
+        return model.qualification_status
+
+    @staticmethod
     def serialize(connection: ProviderConnection) -> ProviderRead:
+        available = [m for m in connection.models if m.is_available]
+        candidates = [m for m in available if m.generation_candidate]
+        attempts = [(json.loads(m.metadata_json or "{}").get("qualification_attempt", {})) for m in candidates]
+        pause = next((a.get("reason_code") for a in reversed(attempts) if a.get("status") == "pending" and a.get("scope") != "model"), None)
         return ProviderRead(
             id=connection.id,
             name=connection.name,
@@ -79,7 +98,7 @@ class ProviderService:
             models_count=sum(
                 1 for model in connection.models
                 if model.is_available and model.generation_candidate
-                and model.qualification_status == "qualified"
+                and ProviderService.model_status(model) == "qualified"
             ),
             discovered_models_count=sum(1 for model in connection.models if model.is_available),
             unavailable_models_count=sum(
@@ -90,6 +109,12 @@ class ProviderService:
                 1 for model in connection.models
                 if model.qualification_status == "transient_error"
             ),
+            limited_models_count=sum(ProviderService.model_status(m) == "limited" for m in available),
+            pending_models_count=sum(m.qualification_status in {"unknown", "transient_error", "verifying"} for m in candidates),
+            checked_models_count=sum(m.qualification_status in {"qualified", "limited", "unavailable"} for m in candidates),
+            candidate_models_count=len(candidates),
+            pending_rechecks_count=sum(a.get("status") == "pending" and m.qualification_status in {"qualified", "limited"} for m, a in zip(candidates, attempts)),
+            qualification_pause_code=pause,
             created_at=connection.created_at,
             updated_at=connection.updated_at,
         )
@@ -105,7 +130,7 @@ class ProviderService:
             metadata=metadata,
             is_available=model.is_available,
             generation_candidate=model.generation_candidate,
-            qualification_status=model.qualification_status,
+            qualification_status=ProviderService.model_status(model),
             qualification_checked_at=model.qualification_checked_at,
             qualification_error_code=model.qualification_error_code,
             qualification_message=model.qualification_message,
@@ -206,6 +231,6 @@ class ProviderService:
             if include_unusable or (
                 model.is_available
                 and model.generation_candidate
-                and model.qualification_status == "qualified"
+                and ProviderService.model_status(model) in {"qualified", "limited"}
             )
         ]

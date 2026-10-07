@@ -1,3 +1,4 @@
+import { ModelCatalog } from "@/components/model-compatibility"
 import type { TFunction } from "i18next"
 import {
   ChevronDown,
@@ -42,7 +43,7 @@ import {
   type ProviderType,
   type Secret,
 } from "@/lib/api"
-import { isProviderVerificationBlocked, isUsableModel } from "@/lib/provider-models"
+import { isProviderVerificationBlocked, isUsableModel, needsQualification, qualificationAttempt, qualificationCounts } from "@/lib/provider-models"
 
 const providerLabels: Record<ProviderType, string> = {
   openai: "OpenAI",
@@ -74,6 +75,7 @@ interface ProviderWorkflow {
   modelId?: string
   current?: number
   total?: number
+  reason?: string
 }
 
 function workflowLabel(workflow: ProviderWorkflow, t: TFunction): string {
@@ -82,7 +84,7 @@ function workflowLabel(workflow: ProviderWorkflow, t: TFunction): string {
   if (workflow.step === "discovering") return t("uiCopy.discoveringModels")
   if (workflow.step === "verifying") return t("uiCopy.providerVerifying", { model: workflow.modelId, current: workflow.current, total: workflow.total })
   if (workflow.step === "ready") return t("status.ready")
-  if (workflow.step === "verification_paused") return t("uiCopy.providerVerificationPaused")
+  if (workflow.step === "verification_paused") return t("qualificationFlow.paused") + (workflow.reason ? ` · ${t(`compatibility.reasons.${workflow.reason}`, {defaultValue:t("qualificationFlow.providerInterrupted")})}` : "")
   if (workflow.step === "connection_failed") return t("uiCopy.providerConnectionFailed", { message: workflow.message ?? t("uiCopy.providerConnectionTestFailed") })
   return t("uiCopy.providerDiscoveryFailed", { message: workflow.message ?? t("uiCopy.providerModelDiscoveryFailed") })
 }
@@ -230,7 +232,14 @@ export function ProvidersPage() {
     }
   }
 
-  async function runDiscoveryWorkflow(provider: ProviderConnection, testFirst: boolean) {
+  const stoppedQualification = useRef(new Set<string>())
+  async function stopQualification(id: string) {
+    stoppedQualification.current.add(id)
+    try { await api.stopProviderQualification(id) }
+    catch (error) { setNotice({ tone: "error", message: error instanceof Error ? error.message : t("qualificationFlow.stopFailed") }) }
+  }
+
+  async function runDiscoveryWorkflow(provider: ProviderConnection, testFirst: boolean, resume = false) {
     if (activeProviderWork.current.has(provider.id)) return
     activeProviderWork.current.add(provider.id)
     setBusy(`${testFirst ? "onboard" : "discover"}:${provider.id}`)
@@ -255,14 +264,18 @@ export function ProvidersPage() {
 
     setWorkflowByProvider((current) => ({ ...current, [provider.id]: { step: "discovering" } }))
     try {
-      const catalog = await api.discoverModelCatalog(provider.id)
-      replaceProvider(catalog.provider)
-      let models = catalog.models
+      stoppedQualification.current.delete(provider.id)
+      await api.startProviderQualification(provider.id)
+      const catalog = resume ? null : await api.discoverModelCatalog(provider.id)
+      if (catalog) replaceProvider(catalog.provider)
+      let models = catalog ? catalog.models : await api.listModels(provider.id, true)
       setModelsByProvider((current) => ({ ...current, [provider.id]: models }))
-      const candidates = models.filter((model) => model.is_available && model.generation_candidate)
+      const candidates = models.filter(needsQualification)
       let verificationPaused = false
+      let pauseReason: string | undefined
 
       for (const [index, model] of candidates.entries()) {
+        if (stoppedQualification.current.has(provider.id)) { verificationPaused = true; pauseReason = "verification_stopped"; break }
         setWorkflowByProvider((current) => ({
           ...current,
           [provider.id]: {
@@ -275,34 +288,30 @@ export function ProvidersPage() {
           : item)
         setModelsByProvider((current) => ({ ...current, [provider.id]: models }))
         try {
-          const result = await api.verifyProviderModel(provider.id, model.model_id)
+          await api.startProviderQualification(provider.id)
+      const result = await api.verifyProviderModel(provider.id, model.model_id)
           replaceProvider(result.provider)
           models = models.map((item) => item.model_id === result.model.model_id ? result.model : item)
           verificationPaused = isProviderVerificationBlocked(result.model)
+          pauseReason = qualificationAttempt(result.model).reason_code ?? result.model.qualification_error_code ?? undefined
         } catch {
           // A transport failure is not evidence that the model is incompatible.
           // Pause rather than sending more requests while the API is unavailable.
           verificationPaused = true
-          models = models.map((item) => item.model_id === model.model_id
-            ? {
-              ...item,
-              qualification_status: "transient_error",
-              qualification_error_code: "verification_failed",
-              qualification_message: "Verification interrupted — try again later",
-            }
-            : item)
+          models = models.map(item => item.model_id === model.model_id ? {
+            ...model,
+            qualification_status: ["qualified", "limited"].includes(model.qualification_status) ? model.qualification_status : "transient_error",
+            metadata:{...model.metadata, qualification_attempt:{status:"pending",scope:"provider",reason_code:"verification_failed"}},
+          } : item)
         }
         setModelsByProvider((current) => ({ ...current, [provider.id]: models }))
         if (verificationPaused) break
       }
 
-      setWorkflowByProvider((current) => ({ ...current, [provider.id]: { step: verificationPaused ? "verification_paused" : "ready" } }))
-      setNotice({ tone: verificationPaused ? "error" : "success", message: verificationPaused ? t("uiCopy.providerVerificationPausedHelp") : t("providers.discovered", {
-        discovered: catalog.summary.discovered_count,
-        candidates: candidates.length,
-        usable: models.filter(isUsableModel).length,
-        unavailable: models.filter((model) => model.qualification_status === "unavailable" || model.qualification_status === "transient_error").length,
-      }) })
+      const counts = qualificationCounts(models)
+      verificationPaused ||= counts.pending > 0 || counts.rechecks > 0
+      setWorkflowByProvider((current) => ({ ...current, [provider.id]: { step: verificationPaused ? "verification_paused" : "ready", reason:pauseReason } }))
+      setNotice({ tone: "success", message: t("qualificationFlow.saved", { checked:counts.checked, total:counts.total, pending:counts.pending }) })
     } catch (error) {
       const message = error instanceof Error ? error.message : "Model discovery failed"
       await refreshProvider(provider.id)
@@ -316,6 +325,23 @@ export function ProvidersPage() {
 
   async function discover(provider: ProviderConnection) {
     await runDiscoveryWorkflow(provider, false)
+  }
+
+  async function verifySingle(provider: ProviderConnection, model: ProviderModel) {
+    if (activeProviderWork.current.has(provider.id)) return
+    activeProviderWork.current.add(provider.id)
+    setBusy(`verify:${provider.id}`)
+    setModelsByProvider(current => ({ ...current, [provider.id]: (current[provider.id] ?? []).map(item => item.id === model.id ? { ...item, qualification_status: "verifying" } : item) }))
+    try {
+      await api.startProviderQualification(provider.id)
+      const result = await api.verifyProviderModel(provider.id, model.model_id)
+      replaceProvider(result.provider)
+      setModelsByProvider(current => ({ ...current, [provider.id]: (current[provider.id] ?? []).map(item => item.id === model.id ? result.model : item) }))
+    } catch (error) {
+      setNotice({ tone: "error", message: error instanceof Error ? error.message : t("compatibility.checkFailed") })
+      const models = await api.listModels(provider.id, true).catch(() => null)
+      if (models) setModelsByProvider(current => ({ ...current, [provider.id]: models }))
+    } finally { activeProviderWork.current.delete(provider.id); setBusy(null) }
   }
 
   async function viewModels(provider: ProviderConnection) {
@@ -375,7 +401,10 @@ export function ProvidersPage() {
                   </TableCell>
                   <TableCell>
                     <p>{t("providers.modelsReady", { count: provider.models_count })}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{t("providers.unavailableCount", { count: provider.unavailable_models_count })}{provider.transient_models_count ? ` · ${provider.transient_models_count} retry` : ""}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{t("qualificationFlow.counts", {limited:provider.limited_models_count ?? 0, unavailable:provider.unavailable_models_count, pending:provider.pending_models_count ?? provider.transient_models_count})}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{t("qualificationFlow.progress", {checked:provider.checked_models_count ?? 0, total:provider.candidate_models_count ?? provider.discovered_models_count})}</p>
+                    {provider.pending_rechecks_count ? <p className="text-xs text-muted-foreground">{t("qualificationFlow.rechecks",{count:provider.pending_rechecks_count})}</p> : null}
+                    {provider.qualification_pause_code && !workflowByProvider[provider.id] && <p className="mt-1 text-xs text-warning">{t("qualificationFlow.paused")} · {t(`compatibility.reasons.${provider.qualification_pause_code}`,{defaultValue:t("qualificationFlow.providerInterrupted")})}</p>}
                   </TableCell>
                   <TableCell className="hidden whitespace-nowrap text-muted-foreground xl:table-cell">{provider.last_checked_at ? new Intl.DateTimeFormat(i18n.language, { dateStyle: "medium", timeStyle: "short" }).format(new Date(provider.last_checked_at)) : t("common.never")}</TableCell>
                   <TableCell>
@@ -386,6 +415,8 @@ export function ProvidersPage() {
                       <Button variant="outline" className="h-8 px-2" title={t("providers.discover")} aria-label={t("providers.discover")} disabled={busy !== null} onClick={() => void discover(provider)}>
                         <RefreshCw className={busy === `discover:${provider.id}` ? "size-4 animate-spin" : "size-4"} /><span className="hidden xl:inline">{t("providers.discover")}</span>
                       </Button>
+                      {activeProviderWork.current.has(provider.id) && workflowByProvider[provider.id]?.step === "verifying" && <Button variant="outline" className="h-8 px-2" onClick={() => void stopQualification(provider.id)}>{t("qualificationFlow.stop")}</Button>}
+                      <Button variant="outline" className="h-8 px-2" disabled={busy !== null} onClick={() => void runDiscoveryWorkflow(provider, false, true)}>{t("qualificationFlow.continue")}</Button>
                       <Button variant="ghost" className="h-8 px-2" title={t(expandedProviders.has(provider.id) ? "providers.hideModels" : "providers.viewModels")} aria-label={t(expandedProviders.has(provider.id) ? "providers.hideModels" : "providers.viewModels")} aria-expanded={expandedProviders.has(provider.id)} aria-controls={`models-${provider.id}`} disabled={busy !== null} onClick={() => void viewModels(provider)}>
                         {expandedProviders.has(provider.id) ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}<span className="hidden xl:inline">{t(expandedProviders.has(provider.id) ? "providers.hideModels" : "providers.viewModels")}</span>
                       </Button>
@@ -398,7 +429,7 @@ export function ProvidersPage() {
                     </div>
                   </TableCell>
                 </TableRow>
-                {expandedProviders.has(provider.id) ? <TableRow id={`models-${provider.id}`} className="bg-secondary/20"><TableCell colSpan={5} className="p-4 sm:p-6"><div className="border-l-2 border-primary/40 pl-4 sm:pl-5"><h3 className="font-semibold">{t("uiCopy.usableModels")} ({modelsByProvider[provider.id]?.filter(isUsableModel).length ?? 0})</h3>{modelsByProvider[provider.id]?.some(isUsableModel) ? <div className="mt-3 divide-y divide-border">{modelsByProvider[provider.id].filter(isUsableModel).map((model) => <div key={model.id} className="flex flex-wrap items-center justify-between gap-3 py-3"><div className="min-w-0"><p className="break-words font-medium">{model.display_name || model.model_id.replace(/^models\//, "")}</p><p className="mt-1 break-all font-mono text-xs text-muted-foreground">{model.model_id}</p></div><Badge variant="success">{t("status.ready")}</Badge></div>)}</div> : <p className="mt-3 text-sm text-muted-foreground">{t("uiCopy.noVerifiedModelsHelp")}</p>}</div></TableCell></TableRow> : null}
+                {expandedProviders.has(provider.id) ? <TableRow id={`models-${provider.id}`} className="bg-secondary/20"><TableCell colSpan={5} className="p-4 sm:p-6"><div className="border-l-2 border-primary/40 pl-4 sm:pl-5"><ModelCatalog models={modelsByProvider[provider.id] ?? []} disabled={busy !== null} onVerify={model => void verifySingle(provider, model)} /></div></TableCell></TableRow> : null}
                 </Fragment>
               ))}
             </TableBody>

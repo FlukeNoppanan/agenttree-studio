@@ -1,0 +1,158 @@
+{
+  "migration": "0014_resource_history",
+  "tables": {
+    "agent_configs": {
+      "initial": 78,
+      "final": 78,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "api_tokens": {
+      "initial": 7,
+      "final": 7,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "output_configs": {
+      "initial": 17,
+      "final": 17,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "provider_connections": {
+      "initial": 4,
+      "final": 4,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "provider_models": {
+      "initial": 79,
+      "final": 79,
+      "missing_original_ids": [],
+      "changed_original_ids": [
+        "12a904dd-6865-439e-8e05-f87636a72732",
+        "27a0e46a-6f8d-4a5d-a875-dac85bb223e4",
+        "2d657c8a-cc29-4bf1-b982-e6ea8f579a90",
+        "3b8b84b5-a03c-49dc-8686-52598ec48d56",
+        "5f627e8d-fa16-49ae-bdfc-594fe6f42885",
+        "b519a650-ae5d-49f3-b0e5-f508a602de7b",
+        "b95c7729-3115-4412-95b6-93e83b9a0358",
+        "f547a5fb-156f-402c-8010-d6d1a441b2e7"
+      ]
+    },
+    "result_deliveries": {
+      "initial": 24,
+      "final": 24,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "result_destinations": {
+      "initial": 12,
+      "final": 12,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "run_artifacts": {
+      "initial": 3,
+      "final": 3,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "run_idempotency": {
+      "initial": 0,
+      "final": 0,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "runs": {
+      "initial": 24,
+      "final": 24,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "secrets": {
+      "initial": 3,
+      "final": 3,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "security_events": {
+      "initial": 387,
+      "final": 387,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "tool_assignments": {
+      "initial": 40,
+      "final": 40,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "tool_connections": {
+      "initial": 4,
+      "final": 4,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "trace_events": {
+      "initial": 1009,
+      "final": 1009,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "tree_templates": {
+      "initial": 0,
+      "final": 0,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "tree_versions": {
+      "initial": 20,
+      "final": 20,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "trees": {
+      "initial": 6,
+      "final": 6,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "trigger_configs": {
+      "initial": 17,
+      "final": 17,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "user_permissions": {
+      "initial": 0,
+      "final": 0,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "user_sessions": {
+      "initial": 16,
+      "final": 16,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "user_tree_access": {
+      "initial": 0,
+      "final": 0,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "users": {
+      "initial": 3,
+      "final": 3,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    },
+    "webhook_integrations": {
+      "initial": 0,
+      "final": 0,
+      "missing_original_ids": [],
+      "changed_original_ids": []
+    }
+  }
+}

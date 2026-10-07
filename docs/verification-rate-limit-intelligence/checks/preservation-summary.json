@@ -1,0 +1,247 @@
+{
+  "migration": "0014_resource_history",
+  "tables": {
+    "agent_configs": {
+      "initial": 88,
+      "final": 108,
+      "original_missing": [],
+      "added": 20,
+      "original_changed": []
+    },
+    "api_tokens": {
+      "initial": 7,
+      "final": 7,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": []
+    },
+    "output_configs": {
+      "initial": 19,
+      "final": 23,
+      "original_missing": [],
+      "added": 4,
+      "original_changed": []
+    },
+    "provider_connections": {
+      "initial": 4,
+      "final": 4,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": [
+        "7816c7e4-9e94-4349-bc94-647811938df3"
+      ]
+    },
+    "provider_models": {
+      "initial": 79,
+      "final": 79,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": [
+        "048ddd5c-1783-4c54-82ec-af3bdab008f1",
+        "04fb32e7-7fae-449e-8392-dc344afd6f92",
+        "05df225b-7f3c-4571-b038-d70f563fb975",
+        "094bd9a4-15bc-442e-92ea-a179d8dfa7aa",
+        "11384750-6bb4-44a5-8155-3316801ede9f",
+        "16671f4e-42f4-4b07-84fd-3031fa105c60",
+        "167ef13c-1ace-4315-a952-ad66ade64c47",
+        "17934daf-b573-4593-84cd-74311a2fbadb",
+        "1ac06e4b-5c53-4b49-9551-1105d20acfd3",
+        "1ca7da3e-35ed-469a-b8ba-349d10bf0a79",
+        "1ed1fc33-6590-4f47-a067-a646dd61af45",
+        "2419c19f-9925-4cf0-aea0-6557fa93700d",
+        "2933743f-ada0-4cb6-88fa-adfc11133667",
+        "2a01e89e-7721-4dbe-9b48-93483ea16db0",
+        "2ad49813-4645-49f0-8501-e640fa640f46",
+        "30b54a1b-e84c-4df9-a64b-361d3eabfd8f",
+        "330c82ac-58b7-4166-92d1-bd8ab426af7d",
+        "34c728f6-86ed-4e97-9856-39eed17099f2",
+        "353e2b8a-3c8b-4181-8107-2502efac24c0",
+        "37793126-1c24-4d8a-9baa-0178f775de76",
+        "397876b9-afbc-4fde-9259-fc771101483d",
+        "3b8b84b5-a03c-49dc-8686-52598ec48d56",
+        "3d5945a5-35e6-4b4f-9858-928597869c44",
+        "45320c15-a8a1-4d33-b606-afeb4e539ad4",
+        "480cac68-b7fd-4127-8a3e-a550e9b3231e",
+        "4f735c34-9d38-4563-bd2e-161db6f47add",
+        "51cf8152-f3a8-4fb6-90ac-7d15ddab85cd",
+        "59905047-0064-4c7a-ba0f-76ac447795f5",
+        "5c35b24c-66ce-4d9f-9e69-985b4e85f028",
+        "5c3caeb3-c7b0-4e00-bc02-d9aeaae0e1c3",
+        "5ecbd0a8-121a-4b8a-9f0c-7975aa8e9589",
+        "5f627e8d-fa16-49ae-bdfc-594fe6f42885",
+        "64fff820-2d44-4993-b8a4-5cb0b76115ea",
+        "68842ebb-d50d-405a-a8e2-269d2abbad3f",
+        "6d6fead9-fee2-49ed-8823-c581f575d7ca",
+        "6f0035bc-7de7-4758-a275-2513a4ed450a",
+        "72ee30be-bcfb-4532-89e3-5dcbac57ccf0",
+        "797973f0-85d7-4716-a26a-18c4d23f1ce8",
+        "7cf91beb-ac19-4637-850f-fdb293d3dfea",
+        "8482119d-d419-45fc-9e45-f2f83d23a030",
+        "89e5c135-b975-4561-9133-c87a6510056c",
+        "8f2cc9be-3186-4332-83a5-2d3833c89b5e",
+        "933affeb-b91d-4578-b9ed-8ebc5313ee8b",
+        "9959882b-b620-4927-9b1f-4fd8cdea75ff",
+        "9c9b26b2-f669-49c2-8ced-506f76370316",
+        "a5893093-b177-400a-a2d8-321ce7a0d8bd",
+        "a7bf8582-9c56-41c2-94bf-367eabd289af",
+        "a8ef5c4c-19ac-4afc-b7dc-0605a3c2a70f",
+        "acf15662-1aad-4b5f-9240-618253764cfe",
+        "b76015e7-392a-45e0-878f-3e611c9406ee",
+        "c6a933f0-3ed5-4ef0-87e8-b38f43888a47",
+        "d2647684-d5e0-4644-95a4-a8d284bd11f1",
+        "d3097ebf-efcf-4e28-9525-84dc3cffebe0",
+        "dace8ac4-f813-4d70-ab5c-5733c5dbbae9",
+        "dae49f1e-5867-4c20-a401-5d70ae664575",
+        "dd68cb69-3de1-4e5f-bcea-7317eb79a77d",
+        "eb9b7617-2770-42e6-908a-191e45652835",
+        "ed1a6a71-589f-486c-80e8-9672532406d9",
+        "ef8d7c80-b0a2-44f1-8746-acd9d5129a38",
+        "f3386851-61c9-4f54-b81a-2120ceaf4a37",
+        "f469ad24-32d3-48ca-bb3f-c7fb3a6083ff",
+        "fd47ad4f-a35f-46f2-9fc6-f678d81aa166"
+      ]
+    },
+    "result_deliveries": {
+      "initial": 24,
+      "final": 24,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": []
+    },
+    "result_destinations": {
+      "initial": 14,
+      "final": 14,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": []
+    },
+    "run_artifacts": {
+      "initial": 7,
+      "final": 18,
+      "original_missing": [],
+      "added": 11,
+      "original_changed": []
+    },
+    "run_idempotency": {
+      "initial": 0,
+      "final": 0,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": []
+    },
+    "runs": {
+      "initial": 26,
+      "final": 28,
+      "original_missing": [],
+      "added": 2,
+      "original_changed": [
+        "0af8a9d1-b919-4456-a883-8c80e421eafb"
+      ]
+    },
+    "secrets": {
+      "initial": 3,
+      "final": 3,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": []
+    },
+    "security_events": {
+      "initial": 389,
+      "final": 389,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": []
+    },
+    "tool_assignments": {
+      "initial": 42,
+      "final": 46,
+      "original_missing": [],
+      "added": 4,
+      "original_changed": []
+    },
+    "tool_connections": {
+      "initial": 4,
+      "final": 4,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": []
+    },
+    "trace_events": {
+      "initial": 1275,
+      "final": 2010,
+      "original_missing": [],
+      "added": 735,
+      "original_changed": []
+    },
+    "tree_templates": {
+      "initial": 0,
+      "final": 0,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": []
+    },
+    "tree_versions": {
+      "initial": 22,
+      "final": 26,
+      "original_missing": [],
+      "added": 4,
+      "original_changed": []
+    },
+    "trees": {
+      "initial": 7,
+      "final": 7,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": [
+        "d5867d72-fc36-4535-ac4e-a5419cbfbee9"
+      ]
+    },
+    "trigger_configs": {
+      "initial": 19,
+      "final": 23,
+      "original_missing": [],
+      "added": 4,
+      "original_changed": []
+    },
+    "user_permissions": {
+      "initial": 0,
+      "final": 0,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": []
+    },
+    "user_sessions": {
+      "initial": 17,
+      "final": 17,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": []
+    },
+    "user_tree_access": {
+      "initial": 0,
+      "final": 0,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": []
+    },
+    "users": {
+      "initial": 3,
+      "final": 3,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": []
+    },
+    "webhook_integrations": {
+      "initial": 0,
+      "final": 0,
+      "original_missing": [],
+      "added": 0,
+      "original_changed": []
+    }
+  },
+  "historical_runs_preserved": {
+    "0e728228-9535-4127-bdb3-79a28c757413": true,
+    "ecb0407a-a3b4-4999-af7c-6845241cb8fb": true
+  },
+  "source_hashes_match": true
+}

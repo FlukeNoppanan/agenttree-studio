@@ -118,13 +118,13 @@ def invoke(tree_id: str, payload: PublicInvokeRequest, request: Request, databas
     if not ready(tree):
         raise PublicAPIError(409, "tree_not_ready", "The requested Tree is not ready.")
     metadata = payload.metadata.model_dump(exclude_none=True)
-    result = RunService(database).invoke(tree_id, InvocationRequest(input={"input": payload.input}, metadata=metadata),
+    result = RunService(database).invoke(tree_id, InvocationRequest(input={"input": payload.input}, metadata=metadata, execution_mode=payload.execution_mode),
                                          invocation_source="public_api_v1")
     run = database.get(Run, result.id)
     assert run is not None
     AuthService(database).event("public_api.tree_invoked", user, user)
     database.commit()
-    return PublicInvocation(run_id=run.id, tree_id=run.tree_id, tree_version=result.tree_version_number,
+    return PublicInvocation(execution_mode=(run.metadata_json or {}).get("execution_mode", "fast"), run_id=run.id, tree_id=run.tree_id, tree_version=result.tree_version_number,
                             status=run.status, output=text_output(run.output_json), execution=execution(run),
                             error=error_for(run, request))
 
@@ -136,6 +136,6 @@ def get_run(run_id: str, request: Request, database: Session = Depends(get_db)) 
     if run is None or not AuthService(database).can_use_tree(user, run.tree_id):
         raise PublicAPIError(404, "resource_not_found", "The requested Run is not available.")
     raw_input = run.input_json.get("input", "")
-    return PublicRun(id=run.id, tree_id=run.tree_id, tree_version=run.tree_version.version_number,
+    return PublicRun(execution_mode=(run.metadata_json or {}).get("execution_mode", "fast"), id=run.id, tree_id=run.tree_id, tree_version=run.tree_version.version_number,
                      status=run.status, input=PublicText(content=raw_input if isinstance(raw_input, str) else json.dumps(raw_input)),
                      output=text_output(run.output_json), execution=execution(run), error=error_for(run, request))

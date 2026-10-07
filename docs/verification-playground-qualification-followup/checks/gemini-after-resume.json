@@ -1,0 +1,921 @@
+[
+  {
+    "type": "gemini",
+    "state": {
+      "id": "a9cee9e6-4530-4126-8907-7f45874b6ca5",
+      "name": "gemini",
+      "provider_type": "gemini",
+      "status": "connected",
+      "last_checked_at": "2026-10-04T19:03:24.937905Z",
+      "last_error": null,
+      "models_count": 4,
+      "discovered_models_count": 61,
+      "unavailable_models_count": 35,
+      "transient_models_count": 21,
+      "limited_models_count": 1,
+      "pending_models_count": 21,
+      "checked_models_count": 23,
+      "candidate_models_count": 44,
+      "pending_rechecks_count": 0,
+      "qualification_pause_code": null,
+      "created_at": "2026-10-04T18:32:44.598189Z",
+      "updated_at": "2026-10-04T19:03:24.938548Z"
+    },
+    "models": [
+      {
+        "id": "models/gemini-embedding-2",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.5-transcribe-live",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.1-flash-live-preview",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/aqa",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/lyria-3-clip-preview",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:11:55.305476+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:11:55.305390+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.305433+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/lyria-3-pro-preview",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:11:55.757381+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:11:55.757341+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.757368+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/veo-3.1-lite-generate-preview",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.8-live",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.8-live-extended-thinking",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-2.5-flash-preview-tts",
+        "status": "unavailable",
+        "code": "incompatible_response",
+        "checked": "2026-10-04 19:05:37.195907+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3-pro-image",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:05:59.646927+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:05:59.646890+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.646908+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.5-flash",
+        "status": "unavailable",
+        "code": "incompatible_response",
+        "checked": "2026-10-04 19:06:38.875047+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.5-transcribe",
+        "status": "unavailable",
+        "code": "incompatible_response",
+        "checked": "2026-10-04 19:06:45.129804+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.7-flash",
+        "status": "unavailable",
+        "code": "incompatible_response",
+        "checked": "2026-10-04 19:06:51.866073+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.8-flash",
+        "status": "unavailable",
+        "code": "incompatible_response",
+        "checked": "2026-10-04 19:06:54.590584+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/antigravity-preview-latest",
+        "status": "unavailable",
+        "code": "incompatible_response",
+        "checked": "2026-10-04 18:34:11.616331+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/nano-banana-pro-preview",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:11:56.563957+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:11:56.563926+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.563945+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-2.5-flash-native-audio-preview-09-2025",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-embedding-001",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-2.5-flash-native-audio-preview-12-2025",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-2.5-flash-image",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:05:35.986010+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:05:35.985974+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.985991+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3-pro-image-preview",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:06:00.006165+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:06:00.006132+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-05T00:00:00.006153+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.1-flash-lite-preview",
+        "status": "qualified",
+        "code": null,
+        "checked": "2026-10-04 19:06:36.606653+00:00",
+        "attempt": null,
+        "evidence": {
+          "checks": {
+            "decomposition": {
+              "status": "passed"
+            },
+            "final_review": {
+              "status": "passed"
+            },
+            "manager_review": {
+              "status": "passed"
+            },
+            "root_planning": {
+              "status": "passed"
+            },
+            "structured_output": {
+              "status": "passed"
+            },
+            "triage": {
+              "status": "passed"
+            }
+          },
+          "generation": "passed",
+          "roles": {
+            "manager": "passed",
+            "root": "passed",
+            "specialist": "passed"
+          },
+          "tool_calling": "not_tested",
+          "version": 1
+        }
+      },
+      {
+        "id": "models/gemini-3.1-flash-tts-preview",
+        "status": "unavailable",
+        "code": "incompatible_response",
+        "checked": "2026-10-04 19:06:37.154690+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.6-flash",
+        "status": "unavailable",
+        "code": "incompatible_response",
+        "checked": "2026-10-04 19:06:47.370735+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.8-flash-tts",
+        "status": "unavailable",
+        "code": "incompatible_response",
+        "checked": "2026-10-04 19:06:58.737604+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-omni-flash-preview",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:07:07.340980+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:07:07.340956+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.340969+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/gemma-4-26b-a4b-it",
+        "status": "unavailable",
+        "code": "incompatible_response",
+        "checked": "2026-10-04 19:07:25.009907+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/veo-3.1-fast-generate-preview",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemma-4-31b-it",
+        "status": "unavailable",
+        "code": "incompatible_response",
+        "checked": "2026-10-04 19:11:54.936217+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-robotics-er-2-streaming-preview",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-2.5-flash-lite",
+        "status": "unavailable",
+        "code": "model_unavailable",
+        "checked": "2026-10-04 19:05:36.632937+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-embedding-2-preview",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-2.5-flash-native-audio-latest",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-2.5-pro",
+        "status": "unavailable",
+        "code": "model_unavailable",
+        "checked": "2026-10-04 19:05:37.603964+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/deep-research-preview-04-2026",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:05:34.160285+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:05:34.160255+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.160271+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-2.5-pro-preview-tts",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:05:38.003173+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:05:38.003132+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-05T00:00:00.003157+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-2.5-computer-use-preview-10-2025",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:05:35.105522+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:05:35.105491+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.105504+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.8-flash-lite-tts",
+        "status": "unavailable",
+        "code": "incompatible_response",
+        "checked": "2026-10-04 19:06:56.841864+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.5-live-translate-preview",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/antigravity-preview-05-2026",
+        "status": "unavailable",
+        "code": "incompatible_response",
+        "checked": "2026-10-04 18:34:10.588737+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.1-flash-image-preview",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:06:00.806075+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:06:00.806042+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.806062+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/lyria-realtime-exp",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.5-flash-lite",
+        "status": "qualified",
+        "code": null,
+        "checked": "2026-10-04 19:06:44.571872+00:00",
+        "attempt": null,
+        "evidence": {
+          "checks": {
+            "decomposition": {
+              "status": "passed"
+            },
+            "final_review": {
+              "status": "passed"
+            },
+            "manager_review": {
+              "status": "passed"
+            },
+            "root_planning": {
+              "status": "passed"
+            },
+            "structured_output": {
+              "status": "passed"
+            },
+            "triage": {
+              "status": "passed"
+            }
+          },
+          "generation": "passed",
+          "roles": {
+            "manager": "passed",
+            "root": "passed",
+            "specialist": "passed"
+          },
+          "tool_calling": "not_tested",
+          "version": 1
+        }
+      },
+      {
+        "id": "models/gemini-flash-lite-latest",
+        "status": "qualified",
+        "code": null,
+        "checked": "2026-10-04 19:07:06.575785+00:00",
+        "attempt": null,
+        "evidence": {
+          "checks": {
+            "decomposition": {
+              "status": "passed"
+            },
+            "final_review": {
+              "status": "passed"
+            },
+            "manager_review": {
+              "status": "passed"
+            },
+            "root_planning": {
+              "status": "passed"
+            },
+            "structured_output": {
+              "status": "passed"
+            },
+            "triage": {
+              "status": "passed"
+            }
+          },
+          "generation": "passed",
+          "roles": {
+            "manager": "passed",
+            "root": "passed",
+            "specialist": "passed"
+          },
+          "tool_calling": "not_tested",
+          "version": 1
+        }
+      },
+      {
+        "id": "models/deep-research-max-preview-04-2026",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:03:26.038638+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:03:26.038600+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.038614+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-omni-1.1-flash",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:07:06.970482+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:07:06.970444+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.970464+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-robotics-er-2-preview",
+        "status": "limited",
+        "code": "structured_decision_not_qualified",
+        "checked": "2026-10-04 19:07:23.975766+00:00",
+        "attempt": null,
+        "evidence": {
+          "checks": {
+            "decomposition": {
+              "status": "passed"
+            },
+            "final_review": {
+              "status": "passed"
+            },
+            "manager_review": {
+              "status": "passed"
+            },
+            "root_planning": {
+              "reason_code": "delegation_not_exercised",
+              "status": "failed"
+            },
+            "structured_output": {
+              "status": "passed"
+            },
+            "triage": {
+              "status": "passed"
+            }
+          },
+          "generation": "passed",
+          "roles": {
+            "manager": "passed",
+            "root": "not_qualified",
+            "specialist": "passed"
+          },
+          "tool_calling": "not_tested",
+          "version": 1
+        }
+      },
+      {
+        "id": "models/deep-research-pro-preview-12-2025",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:05:34.686744+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:05:34.686681+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.686708+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3-flash-preview",
+        "status": "transient_error",
+        "code": "model_rate_limited",
+        "checked": "2026-10-04 19:11:23.895419+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:11:23.895389+00:00",
+          "reason_code": "model_rate_limited",
+          "retry_at": "2026-10-04T19:11:59.895403+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": {
+          "checks": {
+            "decomposition": {
+              "status": "passed"
+            },
+            "final_review": {
+              "failure_scope": "model",
+              "fatal": false,
+              "reason_code": "model_rate_limited",
+              "retry_after": 36,
+              "status": "interrupted"
+            },
+            "manager_review": {
+              "status": "passed"
+            },
+            "root_planning": {
+              "reason_code": "delegation_not_exercised",
+              "status": "failed"
+            },
+            "structured_output": {
+              "status": "passed"
+            },
+            "triage": {
+              "status": "passed"
+            }
+          },
+          "generation": "passed",
+          "roles": {
+            "manager": "passed",
+            "root": "not_qualified",
+            "specialist": "passed"
+          },
+          "tool_calling": "not_tested",
+          "version": 1
+        }
+      },
+      {
+        "id": "models/antigravity-preview-09-2026",
+        "status": "unavailable",
+        "code": "incompatible_response",
+        "checked": "2026-10-04 18:34:11.107480+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-2.5-flash",
+        "status": "unavailable",
+        "code": "model_unavailable",
+        "checked": "2026-10-04 19:05:35.580678+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.1-pro-preview",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:06:37.489086+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:06:37.489059+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.489074+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.1-pro-preview-customtools",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:06:37.841185+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:06:37.841158+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.841173+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/lyria-3.5",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:11:56.203090+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:11:56.203052+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.203071+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.1-flash-image",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:06:00.361959+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:06:00.361937+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.361949+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-3.1-flash-lite",
+        "status": "qualified",
+        "code": null,
+        "checked": "2026-10-04 19:06:17.376236+00:00",
+        "attempt": null,
+        "evidence": {
+          "checks": {
+            "decomposition": {
+              "status": "passed"
+            },
+            "final_review": {
+              "status": "passed"
+            },
+            "manager_review": {
+              "status": "passed"
+            },
+            "root_planning": {
+              "status": "passed"
+            },
+            "structured_output": {
+              "status": "passed"
+            },
+            "triage": {
+              "status": "passed"
+            }
+          },
+          "generation": "passed",
+          "roles": {
+            "manager": "passed",
+            "root": "passed",
+            "specialist": "passed"
+          },
+          "tool_calling": "not_tested",
+          "version": 1
+        }
+      },
+      {
+        "id": "models/gemini-3.1-flash-lite-image",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:06:17.759595+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:06:17.759563+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.759576+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-flash-latest",
+        "status": "unavailable",
+        "code": "incompatible_response",
+        "checked": "2026-10-04 19:07:00.974776+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/veo-3.1-generate-preview",
+        "status": "unavailable",
+        "code": "not_generation_capable",
+        "checked": "2026-10-04 19:03:24.918455+00:00",
+        "attempt": null,
+        "evidence": null
+      },
+      {
+        "id": "models/gemini-pro-latest",
+        "status": "transient_error",
+        "code": "model_quota_exhausted",
+        "checked": "2026-10-04 19:07:07.747044+00:00",
+        "attempt": {
+          "checked_at": "2026-10-04T19:07:07.747018+00:00",
+          "reason_code": "model_quota_exhausted",
+          "retry_at": "2026-10-04T23:59:59.747032+00:00",
+          "scope": "model",
+          "status": "pending"
+        },
+        "evidence": null
+      }
+    ]
+  },
+  {
+    "type": "ollama",
+    "state": {
+      "id": "79d3f0d4-51f5-4f5c-a465-6f387fe080c4",
+      "name": "test",
+      "provider_type": "ollama",
+      "status": "connected",
+      "last_checked_at": "2026-10-04T19:03:26.170845Z",
+      "last_error": null,
+      "models_count": 1,
+      "discovered_models_count": 2,
+      "unavailable_models_count": 0,
+      "transient_models_count": 0,
+      "limited_models_count": 1,
+      "pending_models_count": 0,
+      "checked_models_count": 2,
+      "candidate_models_count": 2,
+      "pending_rechecks_count": 0,
+      "qualification_pause_code": null,
+      "created_at": "2026-09-28T05:24:31.826959Z",
+      "updated_at": "2026-10-04T19:03:26.171543Z"
+    },
+    "models": [
+      {
+        "id": "qwen3:1.7b",
+        "status": "qualified",
+        "code": null,
+        "checked": "2026-10-04 19:03:36.791451+00:00",
+        "attempt": null,
+        "evidence": {
+          "checks": {
+            "decomposition": {
+              "status": "passed"
+            },
+            "final_review": {
+              "status": "passed"
+            },
+            "manager_review": {
+              "status": "passed"
+            },
+            "root_planning": {
+              "status": "passed"
+            },
+            "structured_output": {
+              "status": "passed"
+            },
+            "triage": {
+              "status": "passed"
+            }
+          },
+          "generation": "passed",
+          "roles": {
+            "manager": "passed",
+            "root": "passed",
+            "specialist": "passed"
+          },
+          "tool_calling": "not_tested",
+          "version": 1
+        }
+      },
+      {
+        "id": "gemma4:e4b",
+        "status": "limited",
+        "code": "structured_decision_not_qualified",
+        "checked": "2026-10-04 15:09:37.065400+00:00",
+        "attempt": null,
+        "evidence": {
+          "checks": {
+            "decomposition": {
+              "reason_code": "routing_not_exercised",
+              "status": "failed"
+            },
+            "final_review": {
+              "status": "passed"
+            },
+            "manager_review": {
+              "status": "passed"
+            },
+            "root_planning": {
+              "status": "passed"
+            },
+            "structured_output": {
+              "status": "passed"
+            },
+            "triage": {
+              "status": "passed"
+            }
+          },
+          "generation": "passed",
+          "roles": {
+            "manager": "not_qualified",
+            "root": "passed",
+            "specialist": "passed"
+          },
+          "tool_calling": "not_tested",
+          "version": 1
+        }
+      }
+    ]
+  }
+]

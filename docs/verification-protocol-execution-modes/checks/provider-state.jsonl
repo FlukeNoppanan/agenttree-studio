@@ -1,0 +1,20 @@
+{"id": "47279095-2a03-46ab-a13e-76807cdd95bd", "name": "cerebras", "type": "cerebras"}
+{"model_id": "gpt-oss-120b", "status": "unavailable", "candidate": true, "attempt": {}, "roles": {}}
+{"model_id": "qwen-3.8-27b", "status": "unavailable", "candidate": true, "attempt": {}, "roles": {}}
+{"id": "79d3f0d4-51f5-4f5c-a465-6f387fe080c4", "name": "test", "type": "ollama"}
+{"model_id": "phi4-mini:latest", "status": "qualified", "candidate": true, "attempt": {}, "roles": {"manager": "passed", "root": "passed", "specialist": "passed"}}
+{"model_id": "qwen3:4b", "status": "qualified", "candidate": true, "attempt": {}, "roles": {"manager": "passed", "root": "passed", "specialist": "passed"}}
+{"model_id": "qwen3:1.7b", "status": "unavailable", "candidate": true, "attempt": {}, "roles": {"manager": "passed", "root": "passed", "specialist": "passed"}}
+{"model_id": "gemma4:e4b", "status": "unavailable", "candidate": true, "attempt": {}, "roles": {"manager": "not_qualified", "root": "passed", "specialist": "passed"}}
+{"id": "fb65f8f6-2b3d-4445-9d34-1cf5e00a49a2", "name": "groq", "type": "groq"}
+{"model_id": "meta-llama/llama-prompt-guard-2-86m", "status": "limited", "candidate": true, "attempt": {}, "roles": {"manager": "not_qualified", "root": "not_qualified", "specialist": "passed"}}
+{"model_id": "whisper-large-v3-turbo", "status": "unknown", "candidate": true, "attempt": {}, "roles": {}}
+{"model_id": "whisper-large-v3", "status": "unknown", "candidate": true, "attempt": {}, "roles": {}}
+{"model_id": "openai/gpt-oss-120b", "status": "unavailable", "candidate": true, "attempt": {}, "roles": {}}
+{"model_id": "allam-2-7b", "status": "limited", "candidate": true, "attempt": {}, "roles": {"manager": "not_qualified", "root": "not_qualified", "specialist": "passed"}}
+{"model_id": "canopylabs/orpheus-arabic-saudi", "status": "unavailable", "candidate": true, "attempt": {}, "roles": {}}
+{"model_id": "canopylabs/orpheus-v1-english", "status": "unavailable", "candidate": true, "attempt": {}, "roles": {}}
+{"model_id": "meta-llama/llama-prompt-guard-2-22m", "status": "limited", "candidate": true, "attempt": {}, "roles": {"manager": "not_qualified", "root": "not_qualified", "specialist": "passed"}}
+{"model_id": "openai/gpt-oss-20b", "status": "unavailable", "candidate": true, "attempt": {}, "roles": {}}
+{"model_id": "openai/gpt-oss-safeguard-20b", "status": "unavailable", "candidate": true, "attempt": {}, "roles": {}}
+{"model_id": "qwen/qwen3.8-27b", "status": "transient_error", "candidate": true, "attempt": {"checked_at": "2026-10-05T21:40:06.033932+00:00", "reason_code": "provider_rate_limited", "scope": "provider", "status": "pending"}, "roles": {"manager": "not_qualified", "root": "not_qualified", "specialist": "passed"}}

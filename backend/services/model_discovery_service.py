@@ -1,6 +1,8 @@
 """Connection testing, durable catalog discovery, and model qualification."""
 
 import json
+import time
+from datetime import datetime, timedelta, timezone
 from collections.abc import Callable
 from typing import Protocol
 
@@ -10,7 +12,7 @@ from agenttree.providers.exceptions import (
     MalformedProviderResponseError, ProviderAuthenticationError,
     ProviderInvalidRequestError, ProviderModelNotFoundError,
     ProviderRateLimitError, ProviderRuntimeError, ProviderTimeoutError,
-    ProviderUnavailableError,
+    ProviderUnavailableError, normalize_provider_error,
 )
 from sqlalchemy import update
 from sqlalchemy.orm import Session
@@ -30,6 +32,7 @@ from backend.schemas.provider import (
 from backend.services.errors import ProviderOperationError, ResourceNotFoundError, ServiceError
 from backend.services.provider_service import ProviderService
 from backend.services.secret_service import SecretService
+from backend.services.model_qualification import qualify_decisions, EVIDENCE_KEY
 
 AdapterFactory = Callable[[str, str | None], ProviderAdapter]
 PROVIDER_LABELS = {
@@ -76,8 +79,11 @@ def _qualification_failure(error: Exception) -> tuple[str, str, str]:
     visited: set[int] = set()
     while current is not None and id(current) not in visited:
         visited.add(id(current))
+        from agenttree.core.execution_control import ExecutionCancelled
+        if isinstance(current, ExecutionCancelled):
+            return "transient_error", "verification_stopped", "Qualification stopped — progress saved"
         if isinstance(current, ProviderRateLimitError):
-            return "transient_error", "provider_rate_limited", "Provider rate limited — try verification later"
+            return "transient_error", ("model_quota_exhausted" if current.quota_exhausted else "model_rate_limited") if current.failure_scope == "model" else "provider_rate_limited", "Qualification rate limited — progress saved"
         if isinstance(current, ProviderAuthenticationError):
             return "transient_error", "provider_auth_failed", "Check the Provider connection before retrying verification"
         if isinstance(current, ProviderTimeoutError):
@@ -127,9 +133,55 @@ def _qualification_failure(error: Exception) -> tuple[str, str, str]:
     return "unavailable", "generation_failed", "Generation failed"
 
 
+ATTEMPT_KEY = "qualification_attempt"
+FRESH_SECONDS = 24 * 60 * 60
+
+
+def qualification_pending(model) -> bool:
+    metadata = model.metadata if hasattr(model, "metadata") and isinstance(model.metadata, dict) else json.loads(model.metadata_json or "{}")
+    return model.qualification_status in {"unknown", "transient_error", "verifying"} or metadata.get(ATTEMPT_KEY, {}).get("status") == "pending"
+
+
+def qualification_due(model) -> bool:
+    metadata = json.loads(model.metadata_json or "{}")
+    timestamp = metadata.get(ATTEMPT_KEY, {}).get("retry_at")
+    if timestamp:
+        try:
+            if datetime.fromisoformat(timestamp) > utc_now():
+                return False
+        except (ValueError, TypeError):
+            pass
+    checked = model.qualification_checked_at
+    if checked and checked.tzinfo is None:
+        checked = checked.replace(tzinfo=timezone.utc)
+    return qualification_pending(model) or not checked or (utc_now() - checked).total_seconds() >= FRESH_SECONDS
+
+
+def failure_policy(error):
+    status, code, _ = _qualification_failure(error)
+    current = error
+    seen = set()
+    while current is not None and id(current) not in seen:
+        seen.add(id(current))
+        if isinstance(current, ProviderRateLimitError):
+            return current.failure_scope, current.retry_after, current.quota_exhausted
+        raw_status = getattr(current, "status_code", None) or getattr(getattr(current, "response", None), "status_code", None)
+        if raw_status == 429:
+            normalized = normalize_provider_error(current)
+            return normalized.failure_scope, normalized.retry_after, normalized.quota_exhausted
+        current = current.__cause__
+    if status != "transient_error":
+        return "model", None, False
+    return "provider", None, code in {"provider_auth_failed", "generation_failed"}
+
+
 class ModelDiscoveryService:
     OLLAMA_VERIFICATION_TIMEOUT_SECONDS = 120.0
     OLLAMA_VERIFICATION_PROMPT = "Reply with exactly OK. Do not explain."
+    # Reasoning-capable models can spend a tiny completion budget before
+    # emitting the requested text. Keep this synthetic generation probe
+    # bounded, but leave enough room for a short reasoning preamble + answer.
+    GENERATION_VERIFICATION_MAX_TOKENS = 64
 
     def __init__(
         self,
@@ -137,7 +189,9 @@ class ModelDiscoveryService:
         adapter_factory: AdapterFactory | None = None,
         generation_factory: GenerationFactory | None = None,
         ollama_client_factory: OllamaClientFactory | None = None,
+        sleep: Callable[[float], None] | None = None,
     ) -> None:
+        self._sleep = sleep or time.sleep
         self._database = database
         self._adapters = adapter_factory or create_provider_adapter
         self._generation = generation_factory or create_generation_provider
@@ -221,14 +275,20 @@ class ModelDiscoveryService:
                 stored = ProviderModel(provider_connection_id=connection.id, model_id=model_id)
                 self._database.add(stored)
             stored.display_name = model.display_name
-            stored.metadata_json = json.dumps(model.metadata, sort_keys=True) if model.metadata else None
+            metadata = dict(model.metadata or {})
+            previous = json.loads(stored.metadata_json or "{}")
+            for key in (EVIDENCE_KEY, ATTEMPT_KEY):
+                if key in previous:
+                    metadata[key] = previous[key]
+            stored.metadata_json = json.dumps(metadata, sort_keys=True) if metadata else None
             stored.is_available = True
             stored.generation_candidate = model.generation_candidate
             stored.discovered_at = now
-            stored.qualification_status = "unknown"
-            stored.qualification_checked_at = None
-            stored.qualification_error_code = None
-            stored.qualification_message = None
+            if stored.qualification_status is None or (stored.qualification_status == "unavailable" and (stored.qualification_error_code == "not_discovered" or stored.qualification_error_code == "not_generation_capable" and model.generation_candidate)):
+                stored.qualification_status = "unknown"
+                stored.qualification_checked_at = None
+                stored.qualification_error_code = None
+                stored.qualification_message = None
             if not model.generation_candidate:
                 stored.qualification_status = "unavailable"
                 stored.qualification_checked_at = now
@@ -250,7 +310,21 @@ class ModelDiscoveryService:
             ),
         )
 
-    def _verify_ollama(self, connection: ProviderConnection, model_id: str) -> None:
+    def _retry(self, operation):
+        for attempt in range(2):
+            try:
+                return operation()
+            except Exception as error:
+                if getattr(error, "traffic_governed", False):
+                    raise
+                status, code, _ = _qualification_failure(error)
+                _, retry_after, fatal = failure_policy(error)
+                delay = retry_after if retry_after is not None else 1
+                if attempt or status != "transient_error" or fatal or code in {"generation_failed", "verification_stopped"} or delay > 5:
+                    raise
+                self._sleep(delay)
+
+    def _raw_verify_ollama(self, connection: ProviderConnection, model_id: str) -> None:
         base_url = (connection.base_url or "http://localhost:11434").rstrip("/")
         request_body = {
             "model": model_id,
@@ -276,6 +350,23 @@ class ModelDiscoveryService:
             # response shape as incompatible without exposing its contents.
             raise IncompatibleProviderResponse()
 
+    def _verify_ollama(self, connection: ProviderConnection, model_id: str) -> None:
+        from agenttree.providers import BaseProvider, ProviderConfig, ProviderResponse
+        from agenttree.providers.traffic import governed
+        from backend.providers.generation import traffic_scope_key
+        service = self
+        class Probe(BaseProvider):
+            def generate(self, request):
+                try:
+                    service._raw_verify_ollama(connection, model_id)
+                except httpx.HTTPError as error:
+                    raise normalize_provider_error(error) from None
+                return ProviderResponse("OK", connection.name, model_id)
+        provider = governed(Probe(ProviderConfig(connection.name, model=model_id)),
+                            key=traffic_scope_key(connection, self._credential(connection)))
+        provider.generate(ProviderRequest(prompt=self.OLLAMA_VERIFICATION_PROMPT, max_tokens=32,
+            metadata={"purpose": "studio_model_qualification"}))
+
     def _verify_generation(self, connection: ProviderConnection, model_id: str) -> None:
         if connection.provider_type == "ollama":
             self._verify_ollama(connection, model_id)
@@ -287,26 +378,80 @@ class ModelDiscoveryService:
             self._credential(connection),
             connection.name,
         )
-        response = provider.generate(ProviderRequest(
+        request = ProviderRequest(
             prompt="Reply with exactly OK",
             temperature=0,
-            max_tokens=8,
+            max_tokens=self.GENERATION_VERIFICATION_MAX_TOKENS,
             metadata={"purpose": "studio_model_qualification"},
-        ))
+        )
+        try:
+            response = provider.generate(request)
+        except MalformedProviderResponseError as error:
+            diagnostic = getattr(error, "diagnostics", {})
+            if not (diagnostic.get("response_received") is True
+                    and diagnostic.get("finish_reason") == "length"
+                    and diagnostic.get("final_content_present") is False):
+                raise
+            # One bounded continuation for proven output exhaustion, on the
+            # same adapter/model. Never turn reasoning-only text into an answer.
+            from dataclasses import replace
+            response = provider.generate(replace(request, max_tokens=2048))
         content = getattr(response, "content", None)
         if not isinstance(content, str) or not content.strip():
             raise IncompatibleProviderResponse()
 
-    def verify_model(self, provider_id: str, model_id: str) -> ProviderModelVerificationResponse:
+    def _decision_provider(self, connection: ProviderConnection, model_id: str):
+        if connection.provider_type != "ollama":
+            return self._generation(connection, runtime_model_id(connection.provider_type, model_id), self._credential(connection), connection.name)
+        from agenttree.providers import OllamaProvider, ProviderConfig
+        service = self
+        # Exercise Core's real native-format mapping over the same HTTP boundary
+        # used by the generation probe, including injected test transports.
+        class Client:
+            def generate(self, **kwargs):
+                base_url = (connection.base_url or "http://localhost:11434").rstrip("/")
+                with service._ollama_client(timeout=120.0, follow_redirects=False, trust_env=not url_targets_loopback(base_url)) as client:
+                    response = client.post(f"{base_url}/api/generate", json=kwargs)
+                response.raise_for_status()
+                return response.json()
+        from agenttree.providers.traffic import governed
+        from backend.providers.generation import traffic_scope_key
+        return governed(OllamaProvider(ProviderConfig(connection.name, model=model_id), client=Client()),
+                        key=traffic_scope_key(connection, self._credential(connection)))
+
+    def verify_model(self, provider_id: str, model_id: str, *, force: bool = True) -> ProviderModelVerificationResponse:
+        from backend.services.qualification_control import qualification_traffic
+        events = []
+        def observe(event, data):
+            events.append({"event": event, **data})
+            if len(events) > 64:
+                events.pop(0)
+        # Cancellation is handled by the existing durable attempt machinery.
+        with qualification_traffic(provider_id, observe):
+            return self._verify_model(provider_id, model_id, force=force, traffic_events=events)
+
+    def _verify_model(self, provider_id: str, model_id: str, *, force: bool = True,
+                      traffic_events=None) -> ProviderModelVerificationResponse:
         connection = self._providers.get_model(provider_id)
         model = next((item for item in connection.models if item.model_id == model_id), None)
         if model is None or not model.is_available:
             raise ResourceNotFoundError("Discovered provider model not found")
-        if not model.generation_candidate:
-            return ProviderModelVerificationResponse(
-                provider=self._providers.get(provider_id),
-                model=self._providers.serialize_model(model),
-            )
+        if not model.generation_candidate or (not force and not qualification_due(model)):
+            return ProviderModelVerificationResponse(provider=self._providers.get(provider_id), model=self._providers.serialize_model(model))
+        metadata_before = json.loads(model.metadata_json or "{}")
+        retry_at = metadata_before.get(ATTEMPT_KEY, {}).get("retry_at")
+        if retry_at:
+            try:
+                if datetime.fromisoformat(retry_at) > utc_now():
+                    return ProviderModelVerificationResponse(provider=self._providers.get(provider_id), model=self._providers.serialize_model(model))
+            except (ValueError, TypeError):
+                pass
+        previous = (model.qualification_status, model.qualification_checked_at, model.qualification_error_code, model.qualification_message)
+        resume_evidence = metadata_before.get(EVIDENCE_KEY) if (
+            previous[0] == "transient_error" or metadata_before.get(ATTEMPT_KEY, {}).get("status") == "pending"
+        ) else None
+        if not isinstance(resume_evidence, dict) or resume_evidence.get("generation") != "passed" or resume_evidence.get("version") != 1:
+            resume_evidence = None
 
         # Claim the row atomically so duplicate clicks or API retries cannot
         # generate against the same model concurrently, even across workers.
@@ -334,18 +479,81 @@ class ModelDiscoveryService:
         self._database.commit()
         self._database.refresh(model)
 
+        # Previous evidence must not appear to describe a new verification
+        # when generation/transport fails before fresh decision checks run.
+        metadata = json.loads(model.metadata_json) if model.metadata_json else {}
+        metadata.pop(EVIDENCE_KEY, None)
+        model.metadata_json = json.dumps(metadata, sort_keys=True) if metadata else None
+
         try:
-            self._verify_generation(connection, model_id)
+            from agenttree.providers.traffic import _check
+            _check()
+            if resume_evidence is None:
+                self._retry(lambda: self._verify_generation(connection, model_id))
+            delegate = self._decision_provider(connection, model_id)
+            service = self
+            class RetriedProvider:
+                traffic_managed = getattr(delegate, "traffic_managed", False)
+                config = getattr(delegate, "config", None)
+                if config is None:
+                    from agenttree.providers import ProviderConfig
+                    config = ProviderConfig("qualification")
+                capabilities = getattr(delegate, "capabilities", None)
+                def generate(self, request):
+                    return service._retry(lambda: delegate.generate(request))
+            # Probe fakes and optional adapters may not expose capabilities.
+            if RetriedProvider.capabilities is None:
+                from agenttree.providers import ProviderCapabilities
+                RetriedProvider.capabilities = ProviderCapabilities()
+            evidence = qualify_decisions(RetriedProvider(), previous=resume_evidence)
         except Exception as error:  # SDK and HTTP exception classes differ by provider
             qualification_status, error_code, message = _qualification_failure(error)
             model.qualification_status = qualification_status
             model.qualification_error_code = error_code
             model.qualification_message = message
+            scope, retry_after, fatal = failure_policy(error)
+            from agenttree.providers.traffic_failure import failure_from_exception
+            traffic_failure = failure_from_exception(error).diagnostic()
         else:
-            model.qualification_status = "qualified"
-            model.qualification_error_code = None
-            model.qualification_message = "Ready to use"
-        model.qualification_checked_at = utc_now()
+            metadata = json.loads(model.metadata_json) if model.metadata_json else {}
+            metadata[EVIDENCE_KEY] = evidence
+            model.metadata_json = json.dumps(metadata, sort_keys=True)
+            interrupted = next((item for item in evidence["checks"].values() if item["status"] == "interrupted"), None)
+            ready = len(evidence["checks"]) == 6 and all(item["status"] == "passed" for item in evidence["checks"].values())
+            model.qualification_status = "qualified" if ready else "transient_error" if interrupted else "limited"
+            model.qualification_error_code = None if ready else interrupted["reason_code"] if interrupted else "structured_decision_not_qualified"
+            model.qualification_message = "AgentTree decision checks passed" if ready else "Generation works; decision verification was interrupted" if interrupted else "Generation works; some AgentTree decision checks did not pass"
+        if model.qualification_status == "transient_error":
+            if 'evidence' in locals():
+                interrupted = next(item for item in evidence["checks"].values() if item["status"] == "interrupted")
+                scope = interrupted.get("failure_scope", "provider")
+                retry_after = interrupted.get("retry_after")
+                fatal = interrupted.get("fatal", False)
+            attempt = {"status": "pending", "reason_code": model.qualification_error_code,
+                       "scope": scope, "checked_at": utc_now().isoformat()}
+            if "traffic_failure" in locals():
+                attempt["traffic_failure"] = traffic_failure
+            if retry_after is not None:
+                attempt["retry_at"] = (utc_now() + timedelta(seconds=retry_after)).isoformat()
+            # Completed prior proof survives an interrupted recheck; it is not
+            # presented as new proof. This attempt remains independently pending.
+            if previous[0] in {"qualified", "limited"}:
+                model.qualification_status, model.qualification_checked_at, model.qualification_error_code, model.qualification_message = previous
+                metadata = metadata_before
+            else:
+                metadata = json.loads(model.metadata_json or "{}")
+                model.qualification_checked_at = utc_now()
+            metadata[ATTEMPT_KEY] = attempt
+            model.metadata_json = json.dumps(metadata, sort_keys=True)
+        else:
+            metadata = json.loads(model.metadata_json or "{}")
+            metadata.pop(ATTEMPT_KEY, None)
+            model.metadata_json = json.dumps(metadata, sort_keys=True) if metadata else None
+            model.qualification_checked_at = utc_now()
+        if traffic_events:
+            metadata = json.loads(model.metadata_json or "{}")
+            metadata["provider_traffic"] = {"events": traffic_events, "updated_at": utc_now().isoformat()}
+            model.metadata_json = json.dumps(metadata, sort_keys=True)
         self._database.commit()
 
         return ProviderModelVerificationResponse(
@@ -358,10 +566,9 @@ class ModelDiscoveryService:
         catalog = self.discover_catalog(provider_id)
         for model in catalog.models:
             if model.is_available and model.generation_candidate:
-                result = self.verify_model(provider_id, model.model_id)
-                if result.model.qualification_error_code in {
-                    "provider_rate_limited", "provider_auth_failed", "provider_unavailable",
-                }:
+                result = self.verify_model(provider_id, model.model_id, force=False)
+                attempt = (result.model.metadata or {}).get(ATTEMPT_KEY, {})
+                if attempt.get("status") == "pending" and attempt.get("scope") != "model":
                     # Further model requests cannot resolve a provider-wide
                     # failure. Keep the remaining diagnostic rows unqualified.
                     break

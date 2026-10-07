@@ -1,0 +1,303 @@
+
+> agenttree-studio-frontend@0.1.0 test
+> vitest run --reporter=dot
+
+
+ RUN  v5.0.1 /home/fluke/Agenttree-Studio/frontend
+
+stdout | src/components/model-compatibility.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/pages/trees/tree-builder.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/pages/providers.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/pages/auth-pages.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/pages/trees/tree-playground.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/pages/users.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/components/tree/phase-8c5-parity.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/pages/trees/tree-live.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/components/getting-started.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/components/tree/tree-wizard-lan.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/pages/trees/template-setup.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/pages/tools.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/pages/runs/run-detail.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/pages/administration-polish.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/pages/account-dashboard.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+···········································x··························x·········stdout | src/pages/templates.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+······x·················stdout | src/components/tree/connect-tab.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+·············stdout | src/components/tree/agent-hierarchy.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+········stdout | src/pages/security-events.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/components/resource-dependency-dialog.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+···stdout | src/components/welcome-dialog.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+·····stdout | src/pages/runs/run-list.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+·········stdout | src/components/account/api-keys-panel.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+···stdout | src/pages/getting-started-guide.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+·····stdout | src/components/app-topbar.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+············stdout | src/components/create-tree-menu.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+···········stdout | src/components/tree/delete-tree-dialog.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+··········stdout | src/pages/account-page.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+····stdout | src/components/tools/tool-form.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+x···········stdout | src/components/tree/tree-wizard-presentation.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+···········stdout | src/pages/trees/tree-list.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+·stdout | src/components/tree/builder/canvas.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+··stdout | src/components/route-error.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/pages/tool-catalog.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/pages/onboarding-empty-states.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/components/tree/tree-ready-edit.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/components/tree/provider-model-selector.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/pages/learning.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+··stderr | src/components/route-error.test.tsx > branded route error > uses en labels and recovers
+Error: private-debug-marker
+    at Broken (/home/fluke/Agenttree-Studio/frontend/src/components/route-error.test.tsx:8:34)
+    at Object.react_stack_bottom_frame (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28571:20)
+    at renderWithHooks (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:8030:22)
+    at updateFunctionComponent (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:10569:19)
+    at beginWork (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:12205:18)
+    at runWithFiberInDEV (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at performUnitOfWork (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:19176:22)
+    at workLoopSync (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:19004:41)
+    at renderRootSync (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:18985:11)
+    at performWorkOnRoot (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:18094:35) {
+  [stack]: [Getter/Setter],
+  [message]: 'private-debug-marker'
+}
+
+The above error occurred in the <Broken> component.
+
+React will try to recreate this component tree from scratch using the error boundary you provided, RenderErrorBoundary.
+
+React Router caught the following error during render Error: private-debug-marker
+    at Broken (/home/fluke/Agenttree-Studio/frontend/src/components/route-error.test.tsx:8:34)
+    at Object.react_stack_bottom_frame (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28571:20)
+    at renderWithHooks (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:8030:22)
+    at updateFunctionComponent (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:10569:19)
+    at beginWork (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:12205:18)
+    at runWithFiberInDEV (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at performUnitOfWork (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:19176:22)
+    at workLoopSync (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:19004:41)
+    at renderRootSync (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:18985:11)
+    at performWorkOnRoot (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:18094:35)
+
+·stdout | src/lib/use-playground-run.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+··stderr | src/components/route-error.test.tsx > branded route error > uses th labels and recovers
+Error: private-debug-marker
+    at Broken (/home/fluke/Agenttree-Studio/frontend/src/components/route-error.test.tsx:8:34)
+    at Object.react_stack_bottom_frame (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28571:20)
+    at renderWithHooks (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:8030:22)
+    at updateFunctionComponent (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:10569:19)
+    at beginWork (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:12205:18)
+    at runWithFiberInDEV (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at performUnitOfWork (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:19176:22)
+    at workLoopSync (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:19004:41)
+    at renderRootSync (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:18985:11)
+    at performWorkOnRoot (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:18094:35) {
+  [stack]: [Getter/Setter],
+  [message]: 'private-debug-marker'
+}
+
+The above error occurred in the <Broken> component.
+
+React will try to recreate this component tree from scratch using the error boundary you provided, RenderErrorBoundary.
+
+React Router caught the following error during render Error: private-debug-marker
+    at Broken (/home/fluke/Agenttree-Studio/frontend/src/components/route-error.test.tsx:8:34)
+    at Object.react_stack_bottom_frame (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28571:20)
+    at renderWithHooks (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:8030:22)
+    at updateFunctionComponent (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:10569:19)
+    at beginWork (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:12205:18)
+    at runWithFiberInDEV (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at performUnitOfWork (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:19176:22)
+    at workLoopSync (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:19004:41)
+    at renderRootSync (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:18985:11)
+    at performWorkOnRoot (/home/fluke/Agenttree-Studio/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:18094:35)
+
+··························stdout | src/components/ui-language.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+·······x·stdout | src/components/playground-result.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+··stdout | src/lib/run-live.test.ts
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+·stdout | src/components/tree/agent-details.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+··stdout | src/components/tools/mcp-discovery-dialog.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+·······················stdout | src/components/live/run-artifacts.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/components/run-status-badge.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+···············stdout | src/components/tree/validation-panel.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+··stdout | src/lib/trace-activity.test.ts
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/lib/playground-execution.test.ts
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+·····stdout | src/components/tree/builder/model.test.ts
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+·············································stdout | src/components/theme-toggle.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+stdout | src/components/legacy-execution-route.test.tsx
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+····stdout | src/lib/qualification-progress.test.ts
+🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙
+
+·········
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/pages/tool-catalog.test.tsx > Tool Catalog setup > requires a successful preflight test before creating the existing ToolConnection
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/pages/tool-catalog.test.tsx:33:3
+     31|   })
+     32|
+     33|   it("requires a successful preflight test before creating the existin…
+       |   ^
+     34|     mocks.testToolPackage.mockResolvedValue({ success: true, message: …
+     35|     mocks.createToolFromPackage.mockResolvedValue({ tool, message: "To…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/components/account/api-keys-panel.test.tsx > Account API Keys > creates a named key, copies it, hides/shows it, and forgets plaintext on Done
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/components/account/api-keys-panel.test.tsx:16:3
+     14|   })
+     15|
+     16|   it("creates a named key, copies it, hides/shows it, and forgets plai…
+       |   ^
+     17|     const create = vi.spyOn(api, "createToken").mockResolvedValue({ id…
+     18|     const writeText = vi.fn().mockResolvedValue(undefined)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  src/components/tree/phase-8c5-parity.test.tsx > Core parity configuration > renders a directional Manager collaboration editor
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/components/tree/phase-8c5-parity.test.tsx:52:3
+     50|   })
+     51|
+     52|   it("renders a directional Manager collaboration editor", async () =>…
+       |   ^
+     53|     vi.spyOn(api, "listProviders").mockResolvedValue([])
+     54|     vi.spyOn(api, "listTools").mockResolvedValue([])
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+ FAIL  src/components/tree/tree-wizard-lan.test.tsx > Tree draft IDs on secure and LAN HTTP contexts > renders the Wizard and creates distinct Root, Manager, and Specialist IDs without randomUUID
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/components/tree/tree-wizard-lan.test.tsx:27:3
+     25|   })
+     26|
+     27|   it("renders the Wizard and creates distinct Root, Manager, and Speci…
+       |   ^
+     28|     const browserCrypto = globalThis.crypto
+     29|     vi.stubGlobal("crypto", { getRandomValues: browserCrypto.getRandom…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯
+
+ FAIL  src/pages/trees/tree-live.test.tsx > Tree Live View > shows independent concurrent executions, filters and opens the selected Inspector
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/pages/trees/tree-live.test.tsx:27:3
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯
+
+
+ Test Files  5 failed | 48 passed (53)
+      Tests  5 failed | 356 passed (361)
+   Start at  04:52:24
+   Duration  66.75s (tests 40%, environment 37%, transform 9%, setup 7%, import 6%)
+
+Environment  jsdom was created 53 times · 333.65s total, 37% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments

@@ -1,0 +1,1 @@
+PASS: evidence links, full suite counts, real Fast/Deep, two-provider canonical types, disposable cleanup and original database preservation.

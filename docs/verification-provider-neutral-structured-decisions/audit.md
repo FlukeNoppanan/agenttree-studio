@@ -1,0 +1,15 @@
+# Initial audit — 2026-10-04
+
+Studio starts clean at `6fd567422194fee4481a7bfbd8d94dd43e373e49` (published v0.1.3); Core starts clean at `a1315a4f3d9498005522fd233c4e4cd6f849b0d7`. Historical tags will remain immutable. Local editable dependencies and Compose's sibling Core build context use the actual separate Core repository.
+
+The actual database currently contains one connected Ollama Provider, two Trees and two failed Runs. The known `b4f883b9-bcda-402d-bd51-6610798b60bd` is absent. `1d4f4199-7685-4c34-9545-9e52ae1c072d` has 23 events: gemma4 Root triage fails schema validation twice. `fa505b75-152b-4fa3-aa76-a781db1b6a7b` has 97 events: qwen3 reaches final review, fails JSON parsing twice. Existing events record only coarse classes, not raw decisions or missing field names; exact historical model output cannot be reconstructed. Both Runs and their pinned versions must be preserved.
+
+Pinned Agent bindings are correct: separate Root, Manager and Specialist IDs/names and exact Ollama Model IDs. ExecutionInspector currently derives its Provider/Model section exclusively from Specialist executions, producing repeated Specialist rows per subtask while omitting Root/Manager. This is a presentation defect, not corrupt persisted Tree configuration.
+
+Ollama 0.34.4 has qwen3:1.7b (1.4 GB) and gemma4:e4b (9.6 GB) already installed. No model pull is needed. The Core adapter uses `/api/generate` but rejects response_format, lacks advertised structured capability and does not specify thinking behavior. Studio qualification independently uses `/api/generate` with think=false and a 32-token OK probe. Thus generation qualification and runtime requests differ; OK is insufficient for orchestration.
+
+Canonical contracts: Root planning requires boolean delegate and nonempty direct_output for direct responses; triage requires objective and registered Manager capabilities; decomposition requires subtasks with objectives and Manager-owned Specialist capabilities; Manager/final reviews require pass/revise/fail and feedback. Runtime owns identities, routing and bounded revision. Root/Manager structured decisions share one validation/one-repair boundary. Specialist generation can invoke Tools but is not exempt from structured Tool contracts. No normalization may invent decisions, IDs or capabilities.
+
+Planned minimal changes: support native format at the Ollama adapter; common strategy schemas when the adapter explicitly supports them; conservative single-object normalization and safe validation reason codes; decision-scoped trace correlation; qualification using actual strategy validators, with versioned safe evidence in existing Model metadata; Limited guidance without binding replacement; pinned binding display. No migration, fallback or new execution API.
+
+Official Ollama references: [Structured Outputs](https://docs.ollama.com/capabilities/structured-outputs), [Generate API](https://docs.ollama.com/api/generate). Format supports JSON/schema; thinking is separate output and must never become a decision.

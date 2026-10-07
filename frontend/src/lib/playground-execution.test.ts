@@ -39,3 +39,11 @@ it.each(['completed', 'failed', 'cancelled'] as const)('clears stale phase detai
 it('retains active phase detail while cancellation is requested', () => {
  expect(executionProjection(agents, [event('spec', 'in_flight')], 'cancellation_requested').phases.spec).toBe('manager.review')
 })
+
+it('keeps independent Provider waits until that exact request resumes',async()=>{
+ const {waitingProviderRequests}=await import('@/lib/playground-execution')
+ const traffic=(type:string,id:string,sequence:number)=>({type,sequence,agent_id:'same-agent',agent_name:'Same Agent',payload:{metadata:{traffic_request_id:id}},created_at:'2026-10-07T00:00:00Z'}) as LiveEvent
+ const events=[traffic('provider.wait.started','a',1),traffic('provider.wait.started','b',2),traffic('provider.request.completed','a',3)]
+ expect(waitingProviderRequests(events)).toHaveLength(1)
+ expect(waitingProviderRequests([...events,traffic('provider.wait.resumed','b',4)])).toHaveLength(0)
+})

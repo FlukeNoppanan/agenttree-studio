@@ -30,8 +30,14 @@ class OpenAIAdapter(HttpDiscoveryAdapter, ProviderAdapter):
             if not isinstance(item, dict) or not isinstance(item.get("id"), str):
                 continue
             metadata: dict[str, Any] = {}
-            for key in ("created", "owned_by"):
+            for key in ("created", "owned_by", "capabilities", "input_modalities", "output_modalities", "supported_parameters"):
                 if item.get(key) is not None:
                     metadata[key] = item[key]
-            models.append(DiscoveredModel(model_id=item["id"], metadata=metadata))
+            capabilities = item.get("capabilities")
+            chat = capabilities.get("chat") if isinstance(capabilities, dict) else None
+            outputs = item.get("output_modalities")
+            candidate = chat is not False and not (
+                isinstance(outputs, list) and outputs and "text" not in outputs
+            )
+            models.append(DiscoveredModel(model_id=item["id"], metadata=metadata, generation_candidate=candidate))
         return tuple(models)

@@ -1,5 +1,7 @@
 """Stable, intentionally small external API v1 contracts."""
 
+from agenttree.models import ExecutionMode
+
 from datetime import datetime
 from typing import Literal
 
@@ -63,6 +65,7 @@ class PublicMetadata(BaseModel):
 
 
 class PublicInvokeRequest(BaseModel):
+    execution_mode: ExecutionMode = ExecutionMode.FAST
     model_config = ConfigDict(extra="forbid")
     input: str = Field(min_length=1, max_length=65536)
     metadata: PublicMetadata = Field(default_factory=PublicMetadata)
@@ -80,6 +83,7 @@ class PublicExecution(BaseModel):
 
 
 class PublicInvocation(BaseModel):
+    execution_mode: ExecutionMode = ExecutionMode.FAST
     run_id: str
     tree_id: str
     tree_version: int
@@ -90,6 +94,7 @@ class PublicInvocation(BaseModel):
 
 
 class PublicRun(BaseModel):
+    execution_mode: ExecutionMode = ExecutionMode.FAST
     id: str
     tree_id: str
     tree_version: int

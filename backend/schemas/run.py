@@ -1,5 +1,7 @@
 """Test Run, history, and persisted trace API contracts."""
 
+from agenttree.models import ExecutionMode
+
 from datetime import datetime
 from enum import Enum
 from typing import Any
@@ -35,10 +37,12 @@ class RunErrorCode(str, Enum):
 
 
 class TestRunRequest(BaseModel):
+    execution_mode: ExecutionMode = ExecutionMode.FAST
     input: dict[str, Any] = Field(default_factory=dict)
 
 
 class InvocationRequest(BaseModel):
+    execution_mode: ExecutionMode = ExecutionMode.FAST
     input: dict[str, Any] = Field(default_factory=dict)
     metadata: dict[str, Any] = Field(default_factory=dict)
 
@@ -56,6 +60,7 @@ class TraceEventRead(BaseModel):
 
 
 class RunRead(BaseModel):
+    execution_mode: ExecutionMode = ExecutionMode.FAST
     id: str
     tree_id: str
     tree_name: str

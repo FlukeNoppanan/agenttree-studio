@@ -10,6 +10,16 @@ export interface TraceActivity {
   outcome: "activity" | "success" | "warning" | "error"
 }
 const known: Record<string, [string, string]> = {
+  "provider.request.queued": ["trafficrequest_queued", "traffic"],
+  "provider.request.dispatched": ["trafficrequest_dispatched", "traffic"],
+  "provider.request.completed": ["trafficrequest_completed", "traffic"],
+  "provider.request.failed": ["trafficrequest_failed", "traffic"],
+  "provider.wait.started": ["trafficwait_started", "traffic"],
+  "provider.wait.resumed": ["trafficwait_resumed", "traffic"],
+  "provider.wait.deferred": ["trafficwait_deferred", "traffic"],
+  "provider.rate_limited": ["trafficrate_limited", "traffic"],
+  "provider.retry.scheduled": ["trafficretry_scheduled", "traffic"],
+  "provider.usage.reconciled": ["trafficusage_reconciled", "traffic"],
   "studio.tool_decision": ["toolRequested", "resource"],
   "studio.tool_observation": ["toolCompleted", "resource"],
   "execution.queued": ["queued", "execution"],
@@ -87,7 +97,12 @@ export function traceActivities(events: TraceEvent[], tree?: TreeDetail | null):
     seen.add(fingerprint)
     const meta = traceMetadata(event)
     let [key, stage] = known[event.event_type] ?? ["other", "execution"]
-    if (event.event_type.includes("tool") && /started|completed|failed|denied|requested|authorized/.test(event.event_type)) {
+    if (event.event_type.startsWith("provider.")) {
+      // Preserve specific traffic actions rather than generic recovery labels.
+    } else if (event.event_type.startsWith("structured_decision.") && /validation_failed|repair\./.test(event.event_type)) {
+      key = event.event_type.endsWith("validation_failed") ? "decisionInvalid" : event.event_type.endsWith("repair.started") ? "decisionRepair" : event.event_type.endsWith("repair.succeeded") ? "decisionRepaired" : "decisionUnrepaired"
+      stage = "recovery"
+    } else if (event.event_type.includes("tool") && /started|completed|failed|denied|requested|authorized/.test(event.event_type)) {
       key = event.event_type.endsWith("failed") || event.event_type.endsWith("denied") ? "toolFailed" : event.event_type.endsWith("completed") ? "toolCompleted" : event.event_type.endsWith("started") ? "toolStarted" : "toolRequested"
       stage = "resource"
     } else if (/collaboration|peer|message/.test(event.event_type)) {
@@ -107,14 +122,20 @@ export function traceActivities(events: TraceEvent[], tree?: TreeDetail | null):
     add("tool", meta.tool_name ?? meta.tool_id)
     add("provider", meta.provider)
     add("model", meta.model)
+    add("wait", meta.wait_seconds)
+    add("category", meta.category)
+    if (meta.rate_limit && typeof meta.rate_limit === "object") { const limit = meta.rate_limit as Record<string, unknown>; add("limitKind", limit.kind); add("limitScope", limit.scope) }
     add("duration", meta.duration_ms)
     add("review", meta.review_number)
     add("revision", meta.requested_revision_number ?? meta.revision_number)
     add("outcome", meta.status)
     add("feedback", meta.feedback)
+    add("strategy", meta.strategy)
+    add("reason", meta.reason_code ?? meta.failure_class)
+    add("field", meta.field)
     if (Array.isArray(meta.required_capabilities)) add("capability", meta.required_capabilities.filter(v => typeof v === "string").join(", "))
     if (Array.isArray(meta.selected_manager_ids)) add("manager", meta.selected_manager_ids.map(resolve).filter(Boolean).join(", "))
-    const outcome = /failed|denied|no_manager|no_specialist/.test(event.event_type) ? "error" : /revision_requested|limit_reached|cancel|retry|skipped/.test(event.event_type) ? "warning" : /passed|completed|committed|succeeded|available/.test(event.event_type) ? "success" : "activity"
+    const outcome = /failed|denied|no_manager|no_specialist/.test(event.event_type) ? "error" : /revision_requested|limit_reached|rate_limited|wait\.deferred|cancel|retry|skipped/.test(event.event_type) ? "warning" : /passed|completed|committed|succeeded|available/.test(event.event_type) ? "success" : "activity"
     output.push({ event, key, stage, role, actor: event.agent_name ?? agent?.name ?? event.agent_id, context, outcome })
   }
   return output

@@ -83,7 +83,7 @@ class WebhookService:
         metadata["webhook_integration_id"] = item.id
         item.last_received_at = now()
         run = RunService(self.db).prepare(tree.id, InvocationRequest(
-            input={"event": event}, metadata=metadata,
+            input={"event": event}, metadata=metadata, execution_mode=payload.execution_mode,
         ), invocation_source="webhook_ingress", submitted_by_user_id=owner.id)
         factory = sessionmaker(bind=self.db.get_bind(), autoflush=False, expire_on_commit=False)
         try:
@@ -92,5 +92,5 @@ class WebhookService:
             self.db.delete(run)
             self.db.commit()
             raise PublicAPIError(503, "runtime_capacity", "Run capacity is temporarily exhausted.") from None
-        return RunAccepted(run_id=run.id, tree_id=run.tree_id, tree_version_id=run.tree_version_id,
+        return RunAccepted(execution_mode=payload.execution_mode, run_id=run.id, tree_id=run.tree_id, tree_version_id=run.tree_version_id,
                            status="queued", created_at=RunService._utc(run.created_at), links=links(run.id))

@@ -2118,6 +2118,7 @@
       "tool_assignment_required": "Assign a Tool for autonomous Tool use.",
       "tool_not_ready": "Assigned Tool must be enabled and connected.",
       "mcp_tool_not_selected": "Select a discovered Tool in this MCP connection.",
+      "provider_tool_incompatible": "{{name}} uses a Tool that is not supported by the selected Provider.",
       "instruction_required": "Add instructions for this Template Agent.",
       "template_tool_requirement_unresolved": "Resolve this Template’s required Tool in Template Setup.",
       "core_compatibility": "This configuration is not compatible with AgentTree Core. Review the affected Agents and Tools.",
@@ -2126,7 +2127,8 @@
       "root_parent": "Root cannot have a parent Agent.",
       "template_agent_missing": "An Agent required by this Template is missing.",
       "template_snapshot_invalid": "This Tree has an invalid Template configuration.",
-      "tool_loop_settings": "Automatic Tool use settings are invalid. Check the limits and timeout."
+      "tool_loop_settings": "Automatic Tool use settings are invalid. Check the limits and timeout.",
+      "model_role_not_qualified": "{{name}} uses a Model without the required role evidence. Review Model compatibility in Providers."
     },
     "savedVersion": "Saved as a new Ready version. Layout starts from the hierarchy for the new Agent IDs.",
     "zoomIn": "Zoom in",
@@ -2249,10 +2251,30 @@
       "execution_started": "Run started",
       "execution_completed": "Run completed",
       "execution_failed": "Run failed",
-      "execution_cancelled": "Run cancelled"
+      "execution_cancelled": "Run cancelled",
+      "provider_request_queued": "Provider request queued",
+      "provider_request_dispatched": "Provider request started",
+      "provider_request_completed": "Provider request completed",
+      "provider_request_failed": "Provider request failed",
+      "provider_wait_started": "Waiting for Provider capacity",
+      "provider_wait_resumed": "Provider request resumed",
+      "provider_wait_deferred": "Provider wait paused; retry later",
+      "provider_rate_limited": "Provider quota reached",
+      "provider_retry_scheduled": "Provider retry scheduled",
+      "provider_usage_reconciled": "Provider usage recorded"
     },
     "fullTrace": "Full persisted Execution Trace",
-    "assignedProvider": "Assigned Provider"
+    "assignedProvider": "Assigned Provider",
+    "executionMode": "Execution mode",
+    "modes": {
+      "fast": "Fast",
+      "deep": "Deep"
+    },
+    "modeHelp": {
+      "fast": "Root decides whether to answer directly or delegate.",
+      "deep": "Uses the Manager/Specialist hierarchy, then reviews the result."
+    },
+    "trafficWaiting": "Waiting for Provider capacity. This Run is still active."
   },
   "integrationPolish": {
     "deleteTreeTitle": "Delete Tree?",
@@ -2330,7 +2352,8 @@
         "synthesis": "Root · Final Result",
         "resource": "Tools / Artifacts",
         "collaboration": "Manager Collaboration",
-        "recovery": "Recovery / Retry"
+        "recovery": "Recovery / Retry",
+        "traffic": "Provider traffic"
       },
       "fields": {
         "task": "Subtask",
@@ -2345,7 +2368,14 @@
         "provider": "Provider",
         "model": "Model",
         "duration": "Duration (ms)",
-        "objective": "Objective"
+        "objective": "Objective",
+        "strategy": "Decision stage",
+        "reason": "Reason",
+        "field": "Field",
+        "wait": "Wait (seconds)",
+        "limitKind": "Quota type",
+        "limitScope": "Quota scope",
+        "category": "Failure category"
       },
       "actions": {
         "queued": {
@@ -2567,6 +2597,62 @@
         "other": {
           "title": "Additional runtime activity",
           "help": "This event has no dedicated explanation yet. Its complete record is available below."
+        },
+        "decisionInvalid": {
+          "title": "Decision validation failed",
+          "help": "The response did not satisfy the contract. This decision permits one repair attempt."
+        },
+        "decisionRepair": {
+          "title": "Repairing this decision",
+          "help": "The Model is asked to correct the decision using the same contract and registered choices."
+        },
+        "decisionRepaired": {
+          "title": "This decision was repaired",
+          "help": "The corrected response passed validation. Execution can continue from this stage."
+        },
+        "decisionUnrepaired": {
+          "title": "This decision could not be repaired",
+          "help": "The repair still failed validation or the Provider failed. AgentTree will not invent a decision."
+        },
+        "trafficrequest_queued": {
+          "title": "Provider request queued",
+          "help": "Real Provider traffic event; Tree configuration and selected model are unchanged."
+        },
+        "trafficrequest_dispatched": {
+          "title": "Provider request started",
+          "help": "Real Provider traffic event; Tree configuration and selected model are unchanged."
+        },
+        "trafficrequest_completed": {
+          "title": "Provider request completed",
+          "help": "Real Provider traffic event; Tree configuration and selected model are unchanged."
+        },
+        "trafficrequest_failed": {
+          "title": "Provider request failed",
+          "help": "Real Provider traffic event; Tree configuration and selected model are unchanged."
+        },
+        "trafficwait_started": {
+          "title": "Waiting for Provider capacity",
+          "help": "Real Provider traffic event; Tree configuration and selected model are unchanged."
+        },
+        "trafficwait_resumed": {
+          "title": "Provider request resumed",
+          "help": "Real Provider traffic event; Tree configuration and selected model are unchanged."
+        },
+        "trafficwait_deferred": {
+          "title": "Provider wait paused; retry later",
+          "help": "Real Provider traffic event; Tree configuration and selected model are unchanged."
+        },
+        "trafficrate_limited": {
+          "title": "Provider quota reached",
+          "help": "Real Provider traffic event; Tree configuration and selected model are unchanged."
+        },
+        "trafficretry_scheduled": {
+          "title": "Provider retry scheduled",
+          "help": "Real Provider traffic event; Tree configuration and selected model are unchanged."
+        },
+        "trafficusage_reconciled": {
+          "title": "Provider usage recorded",
+          "help": "Real Provider traffic event; Tree configuration and selected model are unchanged."
         }
       }
     },
@@ -2610,7 +2696,8 @@
         "paragraphs": [
           "For a Provider that needs a credential, open Secrets → Add Secret. Give it a recognizable name, choose the supported type and save the credential. Stored values are encrypted and shown masked.",
           "Open Providers → connect a Provider. Select the saved Secret, configure the service and test it. Local Ollama or a credential-free compatible service may not need a Secret; use the selected Provider’s actual fields.",
-          "Discover and verify Models. Connection success alone does not qualify every Model. Choose a Model that Studio has verified as usable; unavailable or temporarily failed Models need diagnosis or later retry."
+          "Discover and verify Models. Connection success alone does not qualify every Model. Choose a Model that Studio has verified as usable; unavailable or temporarily failed Models need diagnosis or later retry.",
+          "Provider is the connection; Model is the specific AI model behind it. AgentTree Ready means synthetic generation and decision checks passed. Limited means generation works but orchestration compatibility is incomplete. Your selection stays unchanged; there is no automatic local-to-cloud fallback."
         ]
       },
       "build": {
@@ -2723,5 +2810,85 @@
     "attentionCount": "{{count}} items to review",
     "lastChecked": "Last checked state, not continuous uptime monitoring",
     "connectedTools": "Tools: connected / total"
+  },
+  "compatibility": {
+    "qualified": "AgentTree Ready",
+    "limited": "Limited",
+    "unknown": "Pending",
+    "verifying": "Verifying",
+    "unavailable": "Unavailable",
+    "transient_error": "Pending",
+    "verify": "Verify compatibility",
+    "catalog": "Model compatibility",
+    "catalogHelp": "Connected means the Provider is reachable. Each Model is checked separately for generation and AgentTree decisions.",
+    "readyHelp": "Passed the synthetic generation and AgentTree decision checks. Real task quality and Tool use still need testing.",
+    "limitedHelp": "Generation works, but decision checks have not all passed. Existing bindings stay unchanged.",
+    "unverifiedHelp": "This Model is not currently qualified. Verify compatibility to inspect the reason.",
+    "checked": "Last checked",
+    "evidence": "Compatibility evidence",
+    "scope": "Small synthetic probes, not a reliability guarantee. Specialist generation is tested; Tool/MCP calling and arbitrary task quality are not qualified by these checks.",
+    "checkFailed": "Compatibility check did not pass",
+    "orchestrationWarning": "This Model has not passed all checks needed for {{role}} orchestration. Review the evidence before running.",
+    "specialistWarning": "Text generation works. Structured Tool calls and task quality are not guaranteed; test this Specialist with realistic input.",
+    "noFallback": "The selected Provider and Model stay unchanged. AgentTree does not automatically switch from local Ollama to a cloud Provider.",
+    "partialRepairNotice": "An earlier decision was repaired, but another decision could not be repaired. Inspect each stage below; the Execution did not recover from that later failure.",
+    "pinnedBindings": "Saved bindings in this Execution’s pinned Tree version, one entry per Agent. These show configuration, not proof that every Agent executed.",
+    "checks": {
+      "structured_output": "Structured Output",
+      "root_planning": "Root planning",
+      "triage": "Capability routing",
+      "decomposition": "Manager decomposition",
+      "manager_review": "Manager Review",
+      "final_review": "Root Final Review"
+    },
+    "checkStatus": {
+      "passed": "Passed",
+      "failed": "Failed",
+      "interrupted": "Interrupted"
+    },
+    "reasons": {
+      "malformed_json": "Received an answer, but could not parse one supported JSON payload",
+      "object_required": "Received a payload, but a JSON object is required",
+      "missing_required_field": "JSON is readable, but a required field is missing",
+      "invalid_enum": "Unsupported decision value",
+      "unknown_capability": "Unregistered capability",
+      "schema_mismatch": "Decision schema mismatch",
+      "probe_mismatch": "Structured probe response did not match",
+      "delegation_not_exercised": "Delegation was not demonstrated",
+      "routing_not_exercised": "Routing was not demonstrated",
+      "structured_decision_not_qualified": "Some decision checks did not pass",
+      "verification_timeout": "Provider timed out; retry later",
+      "provider_rate_limited": "Provider rate limit; retry later",
+      "provider_auth_failed": "Check Provider credentials",
+      "provider_unavailable": "Provider temporarily unavailable",
+      "incompatible_response": "No compatible answer returned",
+      "generation_failed": "Generation failed",
+      "not_discovered": "Model no longer discovered",
+      "not_generation_capable": "Not a text generation Model",
+      "model_rate_limited": "Model rate limit reached; other Models can still be checked",
+      "model_quota_exhausted": "Quota for this Model is exhausted; other Models can still be checked",
+      "verification_stopped": "Qualification stopped; completed checks are saved"
+    },
+    "otherModels": "Other Models ({{count}})",
+    "observedBindings": "Observed Specialist generation",
+    "observedHelp": "Recorded Provider/Model identity per Specialist, deduplicated across subtasks. Historical Runs without this data remain unknown.",
+    "rolePassed": "The tested {{role}} contracts passed, but other orchestration checks did not. This is still a Limited Model; test real tasks before relying on it.",
+    "roleBlocked": "This Model has not passed the checks required for {{role}}. Tree readiness blocks this binding.",
+    "diagnostics": "Safe diagnostics",
+    "diagnosticSummary": "Requests: {{count}} · Mode: {{mode}} · Validation: {{validation}} · Repair: {{repair}}"
+  },
+  "qualificationFlow": {
+    "paused": "Qualification paused · progress saved",
+    "providerInterrupted": "Provider verification interrupted",
+    "continue": "Continue qualification",
+    "saved": "Progress saved: {{checked}} / {{total}} generation candidates checked · {{pending}} Pending",
+    "progress": "Checked {{checked}} / {{total}} generation candidates",
+    "counts": "Limited {{limited}} · Unavailable {{unavailable}} · Pending {{pending}}",
+    "rechecks": "{{count}} previously checked Models await recheck",
+    "pendingGroup": "Pending Models ({{count}})",
+    "pendingRecheck": "Qualification pending; completed results are preserved",
+    "retryAt": "Retry after {{time}}",
+    "stop": "Stop qualification",
+    "stopFailed": "Could not stop qualification"
   }
 }

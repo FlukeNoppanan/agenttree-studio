@@ -28,6 +28,7 @@ class ModelQualificationStatus(str, Enum):
     UNKNOWN = "unknown"
     VERIFYING = "verifying"
     QUALIFIED = "qualified"
+    LIMITED = "limited"
     UNAVAILABLE = "unavailable"
     TRANSIENT_ERROR = "transient_error"
 
@@ -71,6 +72,12 @@ class ProviderRead(BaseModel):
     discovered_models_count: int
     unavailable_models_count: int
     transient_models_count: int
+    limited_models_count: int = 0
+    pending_models_count: int = 0
+    checked_models_count: int = 0
+    candidate_models_count: int = 0
+    pending_rechecks_count: int = 0
+    qualification_pause_code: str | None = None
     created_at: datetime
     updated_at: datetime
 

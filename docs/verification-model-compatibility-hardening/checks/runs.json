@@ -1,0 +1,4866 @@
+[
+  {
+    "id": "27cef84c-0231-40fe-8600-d91b83dea79b",
+    "tree_id": "16a930e9-2314-4c78-8c4f-a8e8821124df",
+    "version_id": "b5b22790-43a4-4bbe-8e28-ee1029362a1e",
+    "status": "completed",
+    "core_status": "completed",
+    "duration_ms": 395,
+    "mode": null,
+    "result_available": true,
+    "result_hash": "59581b7eafb2499b081253d62610c438992978963b01b81abc75775ed6deee39",
+    "trace_count": 26,
+    "journal_count": 17,
+    "bindings": [
+      {
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "role": "root",
+        "provider_id": "fb65f8f6-2b3d-4445-9d34-1cf5e00a49a2",
+        "model": "qwen/qwen3.8-27b"
+      },
+      {
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "role": "manager",
+        "provider_id": "fb65f8f6-2b3d-4445-9d34-1cf5e00a49a2",
+        "model": "qwen/qwen3.8-27b"
+      },
+      {
+        "agent_id": "1b3cb5b9-3c04-4bcc-848c-e9738c783a0b",
+        "role": "specialist",
+        "provider_id": "fb65f8f6-2b3d-4445-9d34-1cf5e00a49a2",
+        "model": "qwen/qwen3.8-27b"
+      }
+    ],
+    "events": [
+      {
+        "sequence": 1,
+        "type": "execution.queued",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 2,
+        "type": "execution.queued",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 3,
+        "type": "execution.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 4,
+        "type": "execution.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 5,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 6,
+        "type": "execution.started",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 7,
+        "type": "root.planning.started",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 8,
+        "type": "operation.prepared",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 9,
+        "type": "operation.in_flight",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 10,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 11,
+        "type": "operation.prepared",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 12,
+        "type": "operation.in_flight",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 13,
+        "type": "operation.committed",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 14,
+        "type": "structured_decision.normalized",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 15,
+        "type": "operation.committed",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 16,
+        "type": "root.planning.completed",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 17,
+        "type": "operation.prepared",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 18,
+        "type": "operation.in_flight",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 19,
+        "type": "operation.committed",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 20,
+        "type": "root.direct_response",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 21,
+        "type": "root.synthesis.completed",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 22,
+        "type": "execution.completed",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 23,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 24,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 25,
+        "type": "output.final.available",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 26,
+        "type": "execution.completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      }
+    ],
+    "final_review": "pass",
+    "manager_statuses": [],
+    "safe_error": null,
+    "forbidden_payload_key_count": 0
+  },
+  {
+    "id": "95e064f8-cded-42ce-980e-ef09808605fe",
+    "tree_id": "16a930e9-2314-4c78-8c4f-a8e8821124df",
+    "version_id": "b5b22790-43a4-4bbe-8e28-ee1029362a1e",
+    "status": "failed",
+    "core_status": null,
+    "duration_ms": 4256,
+    "mode": null,
+    "result_available": false,
+    "result_hash": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+    "trace_count": 76,
+    "journal_count": 76,
+    "bindings": [
+      {
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "role": "root",
+        "provider_id": "fb65f8f6-2b3d-4445-9d34-1cf5e00a49a2",
+        "model": "qwen/qwen3.8-27b"
+      },
+      {
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "role": "manager",
+        "provider_id": "fb65f8f6-2b3d-4445-9d34-1cf5e00a49a2",
+        "model": "qwen/qwen3.8-27b"
+      },
+      {
+        "agent_id": "1b3cb5b9-3c04-4bcc-848c-e9738c783a0b",
+        "role": "specialist",
+        "provider_id": "fb65f8f6-2b3d-4445-9d34-1cf5e00a49a2",
+        "model": "qwen/qwen3.8-27b"
+      }
+    ],
+    "events": [
+      {
+        "sequence": 1,
+        "type": "execution.queued",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 2,
+        "type": "execution.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 3,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 4,
+        "type": "operation.prepared",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 5,
+        "type": "operation.in_flight",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 6,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 7,
+        "type": "operation.prepared",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 8,
+        "type": "operation.in_flight",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 9,
+        "type": "operation.committed",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 10,
+        "type": "structured_decision.normalized",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 11,
+        "type": "operation.committed",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 12,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 13,
+        "type": "operation.prepared",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 14,
+        "type": "operation.in_flight",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 15,
+        "type": "operation.committed",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 16,
+        "type": "structured_decision.normalized",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 17,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 18,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 19,
+        "type": "operation.prepared",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 20,
+        "type": "operation.in_flight",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 21,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 22,
+        "type": "operation.prepared",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 23,
+        "type": "operation.in_flight",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 24,
+        "type": "operation.committed",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 25,
+        "type": "structured_decision.normalized",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 26,
+        "type": "operation.committed",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 27,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 28,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 29,
+        "type": "operation.prepared",
+        "agent_id": "1b3cb5b9-3c04-4bcc-848c-e9738c783a0b",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 30,
+        "type": "operation.in_flight",
+        "agent_id": "1b3cb5b9-3c04-4bcc-848c-e9738c783a0b",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 31,
+        "type": "operation.prepared",
+        "agent_id": "1b3cb5b9-3c04-4bcc-848c-e9738c783a0b",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 32,
+        "type": "operation.in_flight",
+        "agent_id": "1b3cb5b9-3c04-4bcc-848c-e9738c783a0b",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 33,
+        "type": "operation.committed",
+        "agent_id": "1b3cb5b9-3c04-4bcc-848c-e9738c783a0b",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 34,
+        "type": "operation.committed",
+        "agent_id": "1b3cb5b9-3c04-4bcc-848c-e9738c783a0b",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 35,
+        "type": "operation.prepared",
+        "agent_id": "1b3cb5b9-3c04-4bcc-848c-e9738c783a0b",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 36,
+        "type": "operation.in_flight",
+        "agent_id": "1b3cb5b9-3c04-4bcc-848c-e9738c783a0b",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 37,
+        "type": "operation.prepared",
+        "agent_id": "1b3cb5b9-3c04-4bcc-848c-e9738c783a0b",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 38,
+        "type": "operation.in_flight",
+        "agent_id": "1b3cb5b9-3c04-4bcc-848c-e9738c783a0b",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 39,
+        "type": "operation.committed",
+        "agent_id": "1b3cb5b9-3c04-4bcc-848c-e9738c783a0b",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 40,
+        "type": "operation.committed",
+        "agent_id": "1b3cb5b9-3c04-4bcc-848c-e9738c783a0b",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 41,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 42,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 43,
+        "type": "operation.prepared",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 44,
+        "type": "operation.in_flight",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 45,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 46,
+        "type": "operation.prepared",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 47,
+        "type": "operation.in_flight",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 48,
+        "type": "operation.committed",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 49,
+        "type": "structured_decision.normalized",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 50,
+        "type": "operation.committed",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 51,
+        "type": "operation.prepared",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 52,
+        "type": "operation.in_flight",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 53,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 54,
+        "type": "operation.prepared",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 55,
+        "type": "operation.in_flight",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 56,
+        "type": "operation.committed",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 57,
+        "type": "structured_decision.normalized",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 58,
+        "type": "operation.committed",
+        "agent_id": "1c035fe5-2949-4763-869d-bf31ce62e5b1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 59,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 60,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 61,
+        "type": "operation.prepared",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 62,
+        "type": "operation.in_flight",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 63,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 64,
+        "type": "operation.prepared",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 65,
+        "type": "operation.in_flight",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 66,
+        "type": "operation.committed",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 67,
+        "type": "structured_decision.normalized",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 68,
+        "type": "operation.committed",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 69,
+        "type": "operation.prepared",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 70,
+        "type": "operation.in_flight",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 71,
+        "type": "operation.prepared",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 72,
+        "type": "operation.in_flight",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 73,
+        "type": "operation.failed",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 74,
+        "type": "operation.failed",
+        "agent_id": "f2583755-acf1-4c55-bcd8-1a9b012962a1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 75,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 76,
+        "type": "execution.failed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      }
+    ],
+    "final_review": "pass",
+    "manager_statuses": [
+      "passed"
+    ],
+    "safe_error": "ProviderRateLimitError",
+    "forbidden_payload_key_count": 0
+  },
+  {
+    "id": "652d3740-79cc-4e11-84bb-c0d9e547ba4d",
+    "tree_id": "cd642ca6-dd41-4699-8c4d-86ff8981a914",
+    "version_id": "f8fb7de0-378b-416d-91c1-ded046f08a84",
+    "status": "completed",
+    "core_status": "completed",
+    "duration_ms": 3441,
+    "mode": null,
+    "result_available": true,
+    "result_hash": "59581b7eafb2499b081253d62610c438992978963b01b81abc75775ed6deee39",
+    "trace_count": 26,
+    "journal_count": 17,
+    "bindings": [
+      {
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "role": "root",
+        "provider_id": "7816c7e4-9e94-4349-bc94-647811938df3",
+        "model": "models/gemini-3.1-flash-lite"
+      },
+      {
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "role": "manager",
+        "provider_id": "7816c7e4-9e94-4349-bc94-647811938df3",
+        "model": "models/gemini-3.1-flash-lite"
+      },
+      {
+        "agent_id": "c5a15b43-5924-40ac-91f8-9d62a3240bba",
+        "role": "specialist",
+        "provider_id": "7816c7e4-9e94-4349-bc94-647811938df3",
+        "model": "models/gemini-3.1-flash-lite"
+      }
+    ],
+    "events": [
+      {
+        "sequence": 1,
+        "type": "execution.queued",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 2,
+        "type": "execution.queued",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 3,
+        "type": "execution.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 4,
+        "type": "execution.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 5,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 6,
+        "type": "execution.started",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 7,
+        "type": "root.planning.started",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 8,
+        "type": "operation.prepared",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 9,
+        "type": "operation.in_flight",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 10,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 11,
+        "type": "operation.prepared",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 12,
+        "type": "operation.in_flight",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 13,
+        "type": "operation.committed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 14,
+        "type": "structured_decision.normalized",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 15,
+        "type": "operation.committed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 16,
+        "type": "root.planning.completed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 17,
+        "type": "operation.prepared",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 18,
+        "type": "operation.in_flight",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 19,
+        "type": "operation.committed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 20,
+        "type": "root.direct_response",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 21,
+        "type": "root.synthesis.completed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 22,
+        "type": "execution.completed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 23,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 24,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 25,
+        "type": "output.final.available",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 26,
+        "type": "execution.completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      }
+    ],
+    "final_review": "pass",
+    "manager_statuses": [],
+    "safe_error": null,
+    "forbidden_payload_key_count": 0
+  },
+  {
+    "id": "c0173618-a9df-4fee-ba44-0e251a15ffb8",
+    "tree_id": "cd642ca6-dd41-4699-8c4d-86ff8981a914",
+    "version_id": "f8fb7de0-378b-416d-91c1-ded046f08a84",
+    "status": "completed",
+    "core_status": "partial",
+    "duration_ms": 70721,
+    "mode": null,
+    "result_available": true,
+    "result_hash": "867b3571cffcc88119c5e44337693e9afe63530b5f00d579c9dd6e802513e260",
+    "trace_count": 148,
+    "journal_count": 102,
+    "bindings": [
+      {
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "role": "root",
+        "provider_id": "7816c7e4-9e94-4349-bc94-647811938df3",
+        "model": "models/gemini-3.1-flash-lite"
+      },
+      {
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "role": "manager",
+        "provider_id": "7816c7e4-9e94-4349-bc94-647811938df3",
+        "model": "models/gemini-3.1-flash-lite"
+      },
+      {
+        "agent_id": "c5a15b43-5924-40ac-91f8-9d62a3240bba",
+        "role": "specialist",
+        "provider_id": "7816c7e4-9e94-4349-bc94-647811938df3",
+        "model": "models/gemini-3.1-flash-lite"
+      }
+    ],
+    "events": [
+      {
+        "sequence": 1,
+        "type": "execution.queued",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 2,
+        "type": "execution.queued",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 3,
+        "type": "execution.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 4,
+        "type": "execution.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 5,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 6,
+        "type": "execution.started",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 7,
+        "type": "root.planning.started",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 8,
+        "type": "operation.prepared",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 9,
+        "type": "operation.in_flight",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 10,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 11,
+        "type": "operation.prepared",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 12,
+        "type": "operation.in_flight",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 13,
+        "type": "operation.committed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 14,
+        "type": "structured_decision.normalized",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 15,
+        "type": "operation.committed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 16,
+        "type": "root.planning.completed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 17,
+        "type": "orchestration.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 18,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 19,
+        "type": "operation.prepared",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 20,
+        "type": "operation.in_flight",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 21,
+        "type": "operation.committed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 22,
+        "type": "structured_decision.validation_failed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 23,
+        "type": "structured_decision.repair.started",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 24,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 25,
+        "type": "operation.prepared",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 26,
+        "type": "operation.in_flight",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 27,
+        "type": "operation.committed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 28,
+        "type": "structured_decision.normalized",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 29,
+        "type": "structured_decision.repair.succeeded",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 30,
+        "type": "orchestration.triage_completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 31,
+        "type": "orchestration.manager_discovery_completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 32,
+        "type": "orchestration.planning_completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 33,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 34,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 35,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 36,
+        "type": "orchestration.manager_delegation_started",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 37,
+        "type": "operation.prepared",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 38,
+        "type": "operation.in_flight",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 39,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 40,
+        "type": "operation.prepared",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 41,
+        "type": "operation.in_flight",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 42,
+        "type": "operation.committed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 43,
+        "type": "structured_decision.normalized",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 44,
+        "type": "operation.committed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 45,
+        "type": "orchestration.subtask_created",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 46,
+        "type": "orchestration.specialist_discovery_completed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 47,
+        "type": "orchestration.subtask_created",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 48,
+        "type": "orchestration.specialist_discovery_completed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 49,
+        "type": "orchestration.no_specialist",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 50,
+        "type": "orchestration.manager_delegation_completed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 51,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 52,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 53,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 54,
+        "type": "orchestration.execution_started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 55,
+        "type": "orchestration.specialist_execution_started",
+        "agent_id": "c5a15b43-5924-40ac-91f8-9d62a3240bba",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 56,
+        "type": "operation.prepared",
+        "agent_id": "c5a15b43-5924-40ac-91f8-9d62a3240bba",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 57,
+        "type": "operation.in_flight",
+        "agent_id": "c5a15b43-5924-40ac-91f8-9d62a3240bba",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 58,
+        "type": "operation.prepared",
+        "agent_id": "c5a15b43-5924-40ac-91f8-9d62a3240bba",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 59,
+        "type": "operation.in_flight",
+        "agent_id": "c5a15b43-5924-40ac-91f8-9d62a3240bba",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 60,
+        "type": "operation.committed",
+        "agent_id": "c5a15b43-5924-40ac-91f8-9d62a3240bba",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 61,
+        "type": "operation.committed",
+        "agent_id": "c5a15b43-5924-40ac-91f8-9d62a3240bba",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 62,
+        "type": "orchestration.specialist_execution_completed",
+        "agent_id": "c5a15b43-5924-40ac-91f8-9d62a3240bba",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 63,
+        "type": "orchestration.assignment_skipped",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 64,
+        "type": "orchestration.execution_completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 65,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 66,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 67,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 68,
+        "type": "orchestration.manager_review_started",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 69,
+        "type": "operation.prepared",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 70,
+        "type": "operation.in_flight",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 71,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 72,
+        "type": "operation.prepared",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 73,
+        "type": "operation.in_flight",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 74,
+        "type": "operation.committed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 75,
+        "type": "structured_decision.normalized",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 76,
+        "type": "operation.committed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 77,
+        "type": "orchestration.manager_review_passed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 78,
+        "type": "orchestration.manager_review_started",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 79,
+        "type": "operation.prepared",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 80,
+        "type": "operation.in_flight",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 81,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 82,
+        "type": "operation.prepared",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 83,
+        "type": "operation.in_flight",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 84,
+        "type": "operation.committed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 85,
+        "type": "structured_decision.normalized",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 86,
+        "type": "operation.committed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 87,
+        "type": "orchestration.manager_review_failed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 88,
+        "type": "orchestration.manager_review_completed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 89,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 90,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 91,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 92,
+        "type": "orchestration.final_review_started",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 93,
+        "type": "operation.prepared",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 94,
+        "type": "operation.in_flight",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 95,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 96,
+        "type": "operation.prepared",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 97,
+        "type": "operation.in_flight",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 98,
+        "type": "operation.committed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 99,
+        "type": "structured_decision.normalized",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 100,
+        "type": "operation.committed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 101,
+        "type": "orchestration.final_review_revision_requested",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 102,
+        "type": "orchestration.final_revision_started",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 103,
+        "type": "orchestration.manager_review_started",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 104,
+        "type": "operation.prepared",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 105,
+        "type": "operation.in_flight",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 106,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 107,
+        "type": "operation.prepared",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 108,
+        "type": "operation.in_flight",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 109,
+        "type": "operation.committed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 110,
+        "type": "structured_decision.normalized",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 111,
+        "type": "operation.committed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 112,
+        "type": "orchestration.manager_review_passed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 113,
+        "type": "orchestration.manager_review_started",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 114,
+        "type": "operation.prepared",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 115,
+        "type": "operation.in_flight",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 116,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 117,
+        "type": "operation.prepared",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 118,
+        "type": "operation.in_flight",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 119,
+        "type": "operation.committed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 120,
+        "type": "structured_decision.normalized",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 121,
+        "type": "operation.committed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 122,
+        "type": "orchestration.manager_review_failed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 123,
+        "type": "orchestration.manager_review_completed",
+        "agent_id": "19d23310-1aa9-4bae-8656-35dde9821660",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 124,
+        "type": "orchestration.final_revision_completed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 125,
+        "type": "orchestration.final_review_started",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 126,
+        "type": "operation.prepared",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 127,
+        "type": "operation.in_flight",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 128,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 129,
+        "type": "operation.prepared",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 130,
+        "type": "operation.in_flight",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 131,
+        "type": "operation.committed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 132,
+        "type": "structured_decision.normalized",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 133,
+        "type": "operation.committed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 134,
+        "type": "orchestration.final_review_passed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 135,
+        "type": "orchestration.final_result_created",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 136,
+        "type": "root.synthesis.started",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 137,
+        "type": "operation.prepared",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 138,
+        "type": "operation.in_flight",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 139,
+        "type": "operation.prepared",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 140,
+        "type": "operation.in_flight",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 141,
+        "type": "operation.committed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 142,
+        "type": "operation.committed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 143,
+        "type": "root.synthesis.completed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 144,
+        "type": "execution.completed",
+        "agent_id": "89f546cc-fecc-4429-9f1f-59bf634f13cb",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 145,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 146,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 147,
+        "type": "output.final.available",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 148,
+        "type": "execution.completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      }
+    ],
+    "final_review": "pass",
+    "manager_statuses": [
+      "partial"
+    ],
+    "safe_error": null,
+    "forbidden_payload_key_count": 0
+  },
+  {
+    "id": "9ec32a31-a046-4169-9da3-f5a4177b0326",
+    "tree_id": "1aec8079-480c-46ee-a062-8338d997f2f2",
+    "version_id": "4b87081f-28e8-42d4-a4b4-7edd3acb5f70",
+    "status": "completed",
+    "core_status": "completed",
+    "duration_ms": 1400,
+    "mode": null,
+    "result_available": true,
+    "result_hash": "9d5ee03950ec1ad94cea8f57a1124573e0182e6e6bd92d51c1131a8aaa49bdef",
+    "trace_count": 33,
+    "journal_count": 24,
+    "bindings": [
+      {
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "role": "root",
+        "provider_id": "27ea2781-fdb9-457f-b61c-10c2d6b428fe",
+        "model": "qwen-3.8-27b"
+      },
+      {
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "role": "manager",
+        "provider_id": "27ea2781-fdb9-457f-b61c-10c2d6b428fe",
+        "model": "qwen-3.8-27b"
+      },
+      {
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "role": "specialist",
+        "provider_id": "27ea2781-fdb9-457f-b61c-10c2d6b428fe",
+        "model": "qwen-3.8-27b"
+      }
+    ],
+    "events": [
+      {
+        "sequence": 1,
+        "type": "execution.queued",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 2,
+        "type": "execution.queued",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 3,
+        "type": "execution.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 4,
+        "type": "execution.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 5,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 6,
+        "type": "execution.started",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 7,
+        "type": "root.planning.started",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 8,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 9,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 10,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 11,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 12,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 13,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 14,
+        "type": "structured_decision.validation_failed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 15,
+        "type": "structured_decision.repair.started",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 16,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 17,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 18,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 19,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 20,
+        "type": "structured_decision.normalized",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 21,
+        "type": "structured_decision.repair.succeeded",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 22,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 23,
+        "type": "root.planning.completed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 24,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 25,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 26,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 27,
+        "type": "root.direct_response",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 28,
+        "type": "root.synthesis.completed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 29,
+        "type": "execution.completed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 30,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 31,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 32,
+        "type": "output.final.available",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 33,
+        "type": "execution.completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      }
+    ],
+    "final_review": "pass",
+    "manager_statuses": [],
+    "safe_error": null,
+    "forbidden_payload_key_count": 0
+  },
+  {
+    "id": "70da4038-72da-4527-9a39-1ad04239f6bb",
+    "tree_id": "1aec8079-480c-46ee-a062-8338d997f2f2",
+    "version_id": "4b87081f-28e8-42d4-a4b4-7edd3acb5f70",
+    "status": "completed",
+    "core_status": "partial",
+    "duration_ms": 15294,
+    "mode": null,
+    "result_available": true,
+    "result_hash": "83e37a7a6b4683ce82200848f80725de099f23054eb58c313eb7e1c7d8935c34",
+    "trace_count": 139,
+    "journal_count": 94,
+    "bindings": [
+      {
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "role": "root",
+        "provider_id": "27ea2781-fdb9-457f-b61c-10c2d6b428fe",
+        "model": "qwen-3.8-27b"
+      },
+      {
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "role": "manager",
+        "provider_id": "27ea2781-fdb9-457f-b61c-10c2d6b428fe",
+        "model": "qwen-3.8-27b"
+      },
+      {
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "role": "specialist",
+        "provider_id": "27ea2781-fdb9-457f-b61c-10c2d6b428fe",
+        "model": "qwen-3.8-27b"
+      }
+    ],
+    "events": [
+      {
+        "sequence": 1,
+        "type": "execution.queued",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 2,
+        "type": "execution.queued",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 3,
+        "type": "execution.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 4,
+        "type": "execution.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 5,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 6,
+        "type": "execution.started",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 7,
+        "type": "root.planning.started",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 8,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 9,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 10,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 11,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 12,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 13,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 14,
+        "type": "structured_decision.normalized",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 15,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 16,
+        "type": "root.planning.completed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 17,
+        "type": "orchestration.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 18,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 19,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 20,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 21,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 22,
+        "type": "structured_decision.normalized",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 23,
+        "type": "orchestration.triage_completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 24,
+        "type": "orchestration.manager_discovery_completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 25,
+        "type": "orchestration.planning_completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 26,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 27,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 28,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 29,
+        "type": "orchestration.manager_delegation_started",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 30,
+        "type": "operation.prepared",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 31,
+        "type": "operation.in_flight",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 32,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 33,
+        "type": "operation.prepared",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 34,
+        "type": "operation.in_flight",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 35,
+        "type": "operation.committed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 36,
+        "type": "structured_decision.normalized",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 37,
+        "type": "operation.committed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 38,
+        "type": "orchestration.subtask_created",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 39,
+        "type": "orchestration.specialist_discovery_completed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 40,
+        "type": "orchestration.subtask_created",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 41,
+        "type": "orchestration.specialist_discovery_completed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 42,
+        "type": "orchestration.no_specialist",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 43,
+        "type": "orchestration.manager_delegation_completed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 44,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 45,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 46,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 47,
+        "type": "orchestration.execution_started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 48,
+        "type": "orchestration.specialist_execution_started",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 49,
+        "type": "operation.prepared",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 50,
+        "type": "operation.in_flight",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 51,
+        "type": "operation.prepared",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 52,
+        "type": "operation.in_flight",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 53,
+        "type": "operation.committed",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 54,
+        "type": "operation.committed",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 55,
+        "type": "orchestration.specialist_execution_completed",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 56,
+        "type": "orchestration.assignment_skipped",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 57,
+        "type": "orchestration.execution_completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 58,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 59,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 60,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 61,
+        "type": "orchestration.manager_review_started",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 62,
+        "type": "operation.prepared",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 63,
+        "type": "operation.in_flight",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 64,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 65,
+        "type": "operation.prepared",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 66,
+        "type": "operation.in_flight",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 67,
+        "type": "operation.committed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 68,
+        "type": "structured_decision.validation_failed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 69,
+        "type": "structured_decision.repair.started",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 70,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 71,
+        "type": "operation.prepared",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 72,
+        "type": "operation.in_flight",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 73,
+        "type": "operation.committed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 74,
+        "type": "structured_decision.normalized",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 75,
+        "type": "structured_decision.repair.succeeded",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 76,
+        "type": "operation.committed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 77,
+        "type": "orchestration.manager_review_passed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 78,
+        "type": "orchestration.manager_review_started",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 79,
+        "type": "operation.prepared",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 80,
+        "type": "operation.in_flight",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 81,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 82,
+        "type": "operation.prepared",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 83,
+        "type": "operation.in_flight",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 84,
+        "type": "operation.committed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 85,
+        "type": "structured_decision.normalized",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 86,
+        "type": "operation.committed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 87,
+        "type": "orchestration.manager_review_revision_requested",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 88,
+        "type": "orchestration.revision_started",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 89,
+        "type": "orchestration.revision_execution_completed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 90,
+        "type": "orchestration.manager_review_started",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 91,
+        "type": "operation.prepared",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 92,
+        "type": "operation.in_flight",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 93,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 94,
+        "type": "operation.prepared",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 95,
+        "type": "operation.in_flight",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 96,
+        "type": "operation.committed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 97,
+        "type": "structured_decision.normalized",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 98,
+        "type": "operation.committed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 99,
+        "type": "orchestration.manager_review_revision_requested",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 100,
+        "type": "orchestration.revision_started",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 101,
+        "type": "orchestration.revision_execution_completed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 102,
+        "type": "orchestration.manager_review_started",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 103,
+        "type": "operation.prepared",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 104,
+        "type": "operation.in_flight",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 105,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 106,
+        "type": "operation.prepared",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 107,
+        "type": "operation.in_flight",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 108,
+        "type": "operation.committed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 109,
+        "type": "structured_decision.normalized",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 110,
+        "type": "operation.committed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 111,
+        "type": "orchestration.manager_review_failed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 112,
+        "type": "orchestration.manager_review_completed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 113,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 114,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 115,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 116,
+        "type": "orchestration.final_review_started",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 117,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 118,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 119,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 120,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 121,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 122,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 123,
+        "type": "structured_decision.normalized",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 124,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 125,
+        "type": "orchestration.final_review_passed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 126,
+        "type": "orchestration.final_result_created",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 127,
+        "type": "root.synthesis.started",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 128,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 129,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 130,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 131,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 132,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 133,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 134,
+        "type": "root.synthesis.completed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 135,
+        "type": "execution.completed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 136,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 137,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 138,
+        "type": "output.final.available",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 139,
+        "type": "execution.completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      }
+    ],
+    "final_review": "pass",
+    "manager_statuses": [
+      "partial"
+    ],
+    "safe_error": null,
+    "forbidden_payload_key_count": 0
+  },
+  {
+    "id": "738e3e85-cfeb-4755-b01f-09a26923c256",
+    "tree_id": "c4260f26-0db1-4185-a177-a8ef338fcd55",
+    "version_id": "6d63dfcb-4270-48b8-8437-a3310df6bc20",
+    "status": "completed",
+    "core_status": "completed",
+    "duration_ms": 7015,
+    "mode": null,
+    "result_available": true,
+    "result_hash": "e25f52cffaa41b87e35af20065edccf95d1eea73676ed77f863adcbb719863d7",
+    "trace_count": 26,
+    "journal_count": 17,
+    "bindings": [
+      {
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "role": "root",
+        "provider_id": "79d3f0d4-51f5-4f5c-a465-6f387fe080c4",
+        "model": "phi4-mini:latest"
+      },
+      {
+        "agent_id": "2bf179d0-e722-48af-a2ef-de48854eb295",
+        "role": "manager",
+        "provider_id": "79d3f0d4-51f5-4f5c-a465-6f387fe080c4",
+        "model": "phi4-mini:latest"
+      },
+      {
+        "agent_id": "7d41005b-2e50-48cd-bd74-15841c937ac5",
+        "role": "specialist",
+        "provider_id": "79d3f0d4-51f5-4f5c-a465-6f387fe080c4",
+        "model": "phi4-mini:latest"
+      }
+    ],
+    "events": [
+      {
+        "sequence": 1,
+        "type": "execution.queued",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 2,
+        "type": "execution.queued",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 3,
+        "type": "execution.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 4,
+        "type": "execution.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 5,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 6,
+        "type": "execution.started",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 7,
+        "type": "root.planning.started",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 8,
+        "type": "operation.prepared",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 9,
+        "type": "operation.in_flight",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 10,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 11,
+        "type": "operation.prepared",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 12,
+        "type": "operation.in_flight",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 13,
+        "type": "operation.committed",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 14,
+        "type": "structured_decision.normalized",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 15,
+        "type": "operation.committed",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 16,
+        "type": "root.planning.completed",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 17,
+        "type": "operation.prepared",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 18,
+        "type": "operation.in_flight",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 19,
+        "type": "operation.committed",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 20,
+        "type": "root.direct_response",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 21,
+        "type": "root.synthesis.completed",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 22,
+        "type": "execution.completed",
+        "agent_id": "808150ec-e8e4-4544-8034-19c294aab5ca",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 23,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 24,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 25,
+        "type": "output.final.available",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 26,
+        "type": "execution.completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      }
+    ],
+    "final_review": "pass",
+    "manager_statuses": [],
+    "safe_error": null,
+    "forbidden_payload_key_count": 0
+  },
+  {
+    "id": "66f42f6d-d78d-4b33-8f54-3b0931287fd5",
+    "tree_id": "1aec8079-480c-46ee-a062-8338d997f2f2",
+    "version_id": "4b87081f-28e8-42d4-a4b4-7edd3acb5f70",
+    "status": "completed",
+    "core_status": "completed",
+    "duration_ms": 6115,
+    "mode": null,
+    "result_available": true,
+    "result_hash": "3c967886aa84c55610ff1f284c37f9a030ef2ae94f3e4f2d7157edd6f4a6d952",
+    "trace_count": 94,
+    "journal_count": 63,
+    "bindings": [
+      {
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "role": "root",
+        "provider_id": "27ea2781-fdb9-457f-b61c-10c2d6b428fe",
+        "model": "qwen-3.8-27b"
+      },
+      {
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "role": "manager",
+        "provider_id": "27ea2781-fdb9-457f-b61c-10c2d6b428fe",
+        "model": "qwen-3.8-27b"
+      },
+      {
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "role": "specialist",
+        "provider_id": "27ea2781-fdb9-457f-b61c-10c2d6b428fe",
+        "model": "qwen-3.8-27b"
+      }
+    ],
+    "events": [
+      {
+        "sequence": 1,
+        "type": "execution.queued",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 2,
+        "type": "execution.queued",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 3,
+        "type": "execution.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 4,
+        "type": "execution.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 5,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 6,
+        "type": "execution.started",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 7,
+        "type": "root.planning.started",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 8,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 9,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 10,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 11,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 12,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 13,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 14,
+        "type": "structured_decision.normalized",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 15,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 16,
+        "type": "root.planning.completed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 17,
+        "type": "orchestration.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 18,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 19,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 20,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 21,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 22,
+        "type": "structured_decision.normalized",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 23,
+        "type": "orchestration.triage_completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 24,
+        "type": "orchestration.manager_discovery_completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 25,
+        "type": "orchestration.planning_completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 26,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 27,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 28,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 29,
+        "type": "orchestration.manager_delegation_started",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 30,
+        "type": "operation.prepared",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 31,
+        "type": "operation.in_flight",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 32,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 33,
+        "type": "operation.prepared",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 34,
+        "type": "operation.in_flight",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 35,
+        "type": "operation.committed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 36,
+        "type": "structured_decision.normalized",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 37,
+        "type": "operation.committed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 38,
+        "type": "orchestration.subtask_created",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 39,
+        "type": "orchestration.specialist_discovery_completed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 40,
+        "type": "orchestration.manager_delegation_completed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 41,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 42,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 43,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 44,
+        "type": "orchestration.execution_started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 45,
+        "type": "orchestration.specialist_execution_started",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 46,
+        "type": "operation.prepared",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 47,
+        "type": "operation.in_flight",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 48,
+        "type": "operation.prepared",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 49,
+        "type": "operation.in_flight",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 50,
+        "type": "operation.committed",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 51,
+        "type": "operation.committed",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 52,
+        "type": "orchestration.specialist_execution_completed",
+        "agent_id": "995b116f-fab7-4b1f-bff2-d333200ac6f1",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 53,
+        "type": "orchestration.execution_completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 54,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 55,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 56,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 57,
+        "type": "orchestration.manager_review_started",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 58,
+        "type": "operation.prepared",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 59,
+        "type": "operation.in_flight",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 60,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 61,
+        "type": "operation.prepared",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 62,
+        "type": "operation.in_flight",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 63,
+        "type": "operation.committed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 64,
+        "type": "structured_decision.normalized",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 65,
+        "type": "operation.committed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 66,
+        "type": "orchestration.manager_review_passed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 67,
+        "type": "orchestration.manager_review_completed",
+        "agent_id": "5d677a2c-f1aa-4606-a2ea-ca2c9057527d",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 68,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 69,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 70,
+        "type": "execution.phase.started",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 71,
+        "type": "orchestration.final_review_started",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 72,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 73,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 74,
+        "type": "structured_decision.decision_attempt",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 75,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 76,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 77,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 78,
+        "type": "structured_decision.normalized",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 79,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 80,
+        "type": "orchestration.final_review_passed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 81,
+        "type": "orchestration.final_result_created",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 82,
+        "type": "root.synthesis.started",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 83,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 84,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 85,
+        "type": "operation.prepared",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 86,
+        "type": "operation.in_flight",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 87,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 88,
+        "type": "operation.committed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 89,
+        "type": "root.synthesis.completed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 90,
+        "type": "execution.completed",
+        "agent_id": "4183867c-d002-4cf4-bbe0-49b7138274f3",
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 91,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 92,
+        "type": "execution.checkpoint.saved",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 93,
+        "type": "output.final.available",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      },
+      {
+        "sequence": 94,
+        "type": "execution.completed",
+        "agent_id": null,
+        "strategy": null,
+        "decision": null,
+        "failure_class": null
+      }
+    ],
+    "final_review": "pass",
+    "manager_statuses": [
+      "passed"
+    ],
+    "safe_error": null,
+    "forbidden_payload_key_count": 0
+  }
+]

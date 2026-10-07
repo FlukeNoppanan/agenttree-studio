@@ -6,9 +6,10 @@ import { ConceptHelp } from "@/components/concept-help"
 import { Label } from "@/components/ui/label"
 import { Select } from "@/components/ui/select"
 import { api, type ProviderConnection, type ProviderModel } from "@/lib/api"
-import { isUsableModel } from "@/lib/provider-models"
+import { isSelectableModel, modelCompatibilityKey, qualificationEvidence, supportsAgentRole } from "@/lib/provider-models"
 
 interface ProviderModelSelectorProps {
+  role?: "root" | "manager" | "specialist"
   providers: ProviderConnection[]
   modelCatalogs?: Record<string, ProviderModel[]>
   providerId: string | null
@@ -17,7 +18,7 @@ interface ProviderModelSelectorProps {
   onModelChange: (modelId: string | null) => void
 }
 
-export function ProviderModelSelector({ providers, modelCatalogs, providerId, modelId, onProviderChange, onModelChange }: ProviderModelSelectorProps) {
+export function ProviderModelSelector({ providers, modelCatalogs, providerId, modelId, onProviderChange, onModelChange, role }: ProviderModelSelectorProps) {
   const { t } = useTranslation()
   const [models, setModels] = useState<ProviderModel[]>([])
   const [loading, setLoading] = useState(false)
@@ -27,7 +28,9 @@ export function ProviderModelSelector({ providers, modelCatalogs, providerId, mo
   const providerOptions = selected && selected.status !== "connected"
     ? [selected, ...connected]
     : connected
-  const readyModels = models.filter(isUsableModel)
+  const readyModels = models.filter(isSelectableModel)
+  const chosenModel = models.find(item => item.model_id === modelId)
+  const evidence = chosenModel ? qualificationEvidence(chosenModel) : null
   const savedModelIsMissing = Boolean(modelId && !readyModels.some((model) => model.model_id === modelId))
 
   useEffect(() => {
@@ -42,7 +45,7 @@ export function ProviderModelSelector({ providers, modelCatalogs, providerId, mo
     setModels([])
     setLoading(true)
     setError(null)
-    api.listModels(providerId)
+    api.listModels(providerId, true)
       .then((items) => { if (active) setModels(items) })
       .catch((reason) => { if (active) setError(reason instanceof Error ? reason.message : t("builder.modelsFailed")) })
       .finally(() => { if (active) setLoading(false) })
@@ -73,12 +76,14 @@ export function ProviderModelSelector({ providers, modelCatalogs, providerId, mo
                   ? t("builder.noModels")
                   : t("builder.selectModel")}</option>
           {savedModelIsMissing ? <option value={modelId ?? ""} disabled>{modelId} · {t("trees.modelUnavailable")}</option> : null}
-          {readyModels.map((model) => <option key={model.id} value={model.model_id}>{model.display_name ? `${model.display_name} · ${model.model_id}` : model.model_id}</option>)}
+          {readyModels.map((model) => <option key={model.id} value={model.model_id}>{model.display_name ? `${model.display_name} · ${model.model_id}` : model.model_id} · {t(modelCompatibilityKey(model))}</option>)}
         </Select>
         {loading ? <p className="flex items-center gap-1.5 text-xs text-muted-foreground"><LoaderCircle className="size-3 animate-spin" />{t("uiCopy.loadingProviderCatalog")}</p> : null}
         {error ? <p className="text-xs text-destructive">{error}</p> : null}
         {providerId && !loading && selected?.status === "connected" && readyModels.length === 0 && !error ? <p className="text-xs text-muted-foreground">{t("uiCopy.noVerifiedModelsHelp")}</p> : null}
         {savedModelIsMissing && !loading ? <div className="rounded-md border border-warning/25 bg-warning-subtle p-2 text-xs text-warning"><p className="font-medium">{t("trees.modelUnavailable")}</p><p className="mt-1">{t("trees.modelUnavailableHelp")}</p></div> : null}
+        {chosenModel && role && !supportsAgentRole(chosenModel, role) && <p role="alert" className="text-xs text-destructive">{t("compatibility.roleBlocked", {role})}</p>}
+        {chosenModel?.qualification_status === "limited" && <div role="status" className="rounded-md border border-warning/25 bg-warning-subtle p-2 text-xs"><p className="font-medium text-warning">{t("compatibility.limited")}</p><p className="mt-1">{t(role === "specialist" ? "compatibility.specialistWarning" : role && evidence?.roles[role] === "passed" ? "compatibility.rolePassed" : "compatibility.orchestrationWarning", { role: role ?? "Root / Manager" })}</p>{evidence && <p className="mt-1">{Object.entries(evidence.checks).filter(([, check]) => check.status !== "passed").map(([name, check]) => `${t(`compatibility.checks.${name}`)}: ${t(`compatibility.reasons.${check.reason_code}`, {defaultValue: t("compatibility.checkFailed")})}`).join(" · ")}</p>}<p className="mt-1">{t("compatibility.noFallback")}</p></div>}
       </div>
     </div>
   )

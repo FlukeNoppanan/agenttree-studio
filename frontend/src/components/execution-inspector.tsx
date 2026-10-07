@@ -6,10 +6,6 @@ import { RunStatusBadge, RunRecoveryNotice } from "@/components/run-status-badge
 import { CardTitle } from "@/components/ui/card"
 import type { RunDetail, TreeDetail } from "@/lib/api"
 
-function safeText(value: unknown): string | null {
-  return typeof value === "string" || typeof value === "number" ? String(value) : null
-}
-
 function JsonView({ value }: { value: unknown }) {
   return <pre className="max-h-72 max-w-full overflow-auto whitespace-pre-wrap break-all rounded-lg bg-muted p-3 text-xs">{JSON.stringify(value, null, 2)}</pre>
 }
@@ -30,17 +26,24 @@ export function ExecutionInspector({ run, tree, showTrace = true }: { run: RunDe
     if (role) observed.set(event.agent_id, { id: event.agent_id, name: event.agent_name, agent_type: role })
   }
   const hierarchy = (sameVersion ? agents.filter((agent) => seen.has(agent.id) || (agent.agent_type === "root" && trace.some((event) => event.event_type === "orchestration.started"))) : [...observed.values()]).sort((a, b) => ({ root: 0, manager: 1, specialist: 2 })[a.agent_type] - ({ root: 0, manager: 1, specialist: 2 })[b.agent_type])
-  const executionResult = run.state?.execution_result as Record<string, unknown> | undefined
-  const managers = Array.isArray(executionResult?.manager_executions) ? executionResult.manager_executions : []
-  const models = managers.flatMap((manager) => {
-    const entries = (manager as Record<string, unknown>).specialist_executions
-    return Array.isArray(entries) ? entries : []
-  }).map((entry) => {
-    const item = entry as Record<string, unknown>
-    const result = item.agent_result as Record<string, unknown> | undefined
-    const metadata = result?.metadata as Record<string, unknown> | undefined
-    return { agent: agents.find((agent) => agent.id === item.specialist_id)?.name ?? observed.get(String(item.specialist_id))?.name, provider: safeText(metadata?.provider), model: safeText(metadata?.model) }
-  }).filter((item) => item.provider || item.model)
+  // The pinned version records bindings for every role. Specialist result
+  // rows are per subtask and are not a complete Agent binding inventory.
+  const models = agents.filter(agent => agent.model_id || agent.provider_reference || agent.provider_connection_id).map(agent => ({
+    id: agent.id, agent: agent.name, role: agent.agent_type,
+    provider: agent.provider_reference?.name ?? agent.provider_connection_id,
+    model: agent.model_id,
+  }))
+  const observedModels = new Map<string, {id: string; agent: string; provider: string | null; model: string | null}>()
+  const executionResult = run.state?.execution_result as {manager_executions?: Array<{specialist_executions?: Array<{specialist_id?: string; agent_result?: {metadata?: {provider?: unknown; model?: unknown}}}>}>} | undefined
+  for (const manager of executionResult?.manager_executions ?? []) for (const item of manager.specialist_executions ?? []) {
+    const metadata = item.agent_result?.metadata
+    const provider = typeof metadata?.provider === "string" ? metadata.provider : null
+    const model = typeof metadata?.model === "string" ? metadata.model : null
+    if (item.specialist_id && (provider || model)) {
+      const key = JSON.stringify([item.specialist_id, provider, model])
+      observedModels.set(key, {id: key, agent: agents.find(agent => agent.id === item.specialist_id)?.name ?? observed.get(item.specialist_id)?.name ?? item.specialist_id, provider, model})
+    }
+  }
   const inputText = Object.values(run.input).length === 1 && typeof Object.values(run.input)[0] === "string" ? Object.values(run.input)[0] as string : null
 
   return <div className="space-y-6">
@@ -50,7 +53,8 @@ export function ExecutionInspector({ run, tree, showTrace = true }: { run: RunDe
     <section className="min-w-0"><div className="py-4"><CardTitle>{t("live.input")}</CardTitle></div><div>{inputText ? <p className="max-h-72 overflow-auto whitespace-pre-wrap break-words text-sm">{inputText}</p> : <details open><summary className="cursor-pointer text-xs font-medium text-primary">{t("live.prettyView")}</summary><div className="mt-2"><JsonView value={run.input} /></div></details>}{inputText ? null : <details className="mt-3"><summary className="cursor-pointer text-xs text-muted-foreground">{t("live.rawJson")}</summary><div className="mt-2"><JsonView value={run.input} /></div></details>}</div></section>
       <section className="min-w-0"><div className="py-4"><CardTitle>{t("live.agentHierarchy")}</CardTitle></div><div className="space-y-2">{hierarchy.length ? hierarchy.map((agent) => { const completed = trace.some((event) => event.agent_id === agent.id && /completed|passed/.test(event.event_type)); const active = latest?.agent_id === agent.id; return <div key={agent.id}><div className={`flex items-center gap-2 border-b py-3 text-sm ${active ? "border-primary bg-primary/5" : "border-border"}`}>{completed ? <Check className="size-4 text-success" /> : <Circle className="size-4 text-muted-foreground" />}<span className="min-w-0 break-words font-medium">{agent.name}</span><span className="ml-auto text-xs text-muted-foreground">{t(`agents.${agent.agent_type}`)}</span></div></div> }) : <p className="text-sm text-muted-foreground">{t("live.hierarchyUnavailable")}</p>}</div></section>
     </div>
-    {models.length ? <section className="min-w-0"><div className="py-4"><CardTitle>{t("agents.provider")} / {t("agents.model")}</CardTitle></div><div className="flex flex-wrap gap-3">{models.map((item, index) => <div key={index} className="border-l-2 border-earth/30 pl-3 text-sm"><p className="font-medium">{item.agent ?? t("agents.specialist")}</p>{item.provider ? <p className="mt-1">{t("live.provider")}: {item.provider}</p> : null}{item.model ? <p>{t("live.model")}: {item.model}</p> : null}</div>)}</div></section> : null}
+    {models.length ? <section className="min-w-0"><div className="py-4"><CardTitle>{t("agents.provider")} / {t("agents.model")}</CardTitle><p className="mt-1 text-xs text-muted-foreground">{t("compatibility.pinnedBindings")}</p></div><div className="flex flex-wrap gap-3">{models.map((item) => <div key={item.id} className="border-l-2 border-earth/30 pl-3 text-sm"><p className="font-medium">{item.agent} · {t(`agents.${item.role}`)}</p>{item.provider ? <p className="mt-1">{t("live.provider")}: {item.provider}</p> : null}{item.model ? <p>{t("live.model")}: {item.model}</p> : null}</div>)}</div></section> : null}
+    {observedModels.size > 0 && <section><CardTitle>{t("compatibility.observedBindings")}</CardTitle><p className="mt-1 text-xs text-muted-foreground">{t("compatibility.observedHelp")}</p><div className="mt-3 flex flex-wrap gap-3">{[...observedModels.values()].map(item => <div key={item.id} className="border-l-2 border-border pl-3 text-sm"><p className="font-medium">{item.agent} · {t("agents.specialist")}</p>{item.provider && <p>{t("live.provider")}: {item.provider}</p>}{item.model && <p>{t("live.model")}: {item.model}</p>}</div>)}</div></section>}
     {showTrace && <HumanExecutionTrace events={trace} tree={sameVersion ? tree : null} />}
     {run.status === "failed" ? <section className="min-w-0 border-destructive/25"><div className="py-4"><CardTitle>{t("live.executionFailed")}</CardTitle></div><div><p className="text-sm text-destructive">{run.error_message ?? run.error_code ?? t("live.noErrorDetails")}</p>{run.error_code ? <details className="mt-3"><summary className="cursor-pointer text-xs">{t("common.technicalDetails")}</summary><p className="mt-2 font-mono text-xs">{run.error_code}</p></details> : null}</div></section> : null}
     {run.status === "completed" ? <section className="min-w-0"><div className="py-4"><CardTitle>{t("live.finalResult")}</CardTitle></div><div>{run.output ? <JsonView value={run.output.value} /> : <p className="text-sm text-muted-foreground">{t("live.noFinalResult")}</p>}</div></section> : null}

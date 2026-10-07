@@ -2,6 +2,8 @@
 
 from uuid import uuid4
 
+from qualification_fixture import QUALIFIED_METADATA
+
 import pytest
 from sqlalchemy import func, select
 
@@ -26,7 +28,7 @@ def connected_provider(database, model_id: str = "discovered-model") -> Provider
         provider_connection_id=provider.id,
         model_id=model_id,
         is_available=True,
-        qualification_status="qualified",
+        qualification_status="qualified", metadata_json=QUALIFIED_METADATA,
     ))
     database.commit()
     return provider
@@ -127,11 +129,14 @@ def test_multiple_managers_are_allowed(database) -> None:
 
 def test_ready_tree_configuration_edit_is_versioned_and_atomic(database) -> None:
     first = connected_provider(database)
-    second = ProviderConnection(name="Replacement", provider_type="ollama", status="connected")
+    from backend.schemas.secret import SecretCreate
+    from backend.services.secret_service import SecretService
+    secret = SecretService(database).create(SecretCreate(name="Replacement key", secret_type="api_key", value="test-key"))
+    second = ProviderConnection(name="Replacement", provider_type="groq", status="connected", secret_id=secret.id)
     database.add(second)
     database.flush()
     database.add(ProviderModel(provider_connection_id=second.id, model_id="ready-model",
-                               is_available=True, generation_candidate=True, qualification_status="qualified"))
+                               is_available=True, generation_candidate=True, qualification_status="qualified", metadata_json=QUALIFIED_METADATA))
     database.add(ProviderModel(provider_connection_id=second.id, model_id="discovered-only",
                                is_available=True, generation_candidate=True, qualification_status="unknown"))
     tool = ToolConnection(name="Probe", tool_type="http_api", status="connected", enabled=True)
@@ -193,6 +198,12 @@ def test_ready_tree_configuration_edit_is_versioned_and_atomic(database) -> None
 
 def test_ready_tree_tool_assignment_can_be_added_and_removed(database) -> None:
     provider = connected_provider(database)
+    from backend.schemas.secret import SecretCreate
+    from backend.services.secret_service import SecretService
+    secret = SecretService(database).create(SecretCreate(name="Tool capable key", secret_type="api_key", value="test-key"))
+    provider.provider_type = "groq"
+    provider.secret_id = secret.id
+    database.commit()
     tool = ToolConnection(name="Disposable Tool", tool_type="http_api", status="connected", enabled=True)
     database.add(tool)
     database.commit()
@@ -436,7 +447,14 @@ def test_builder_preview_empty_and_duplicate_roots(database):
 
 def test_builder_preview_reports_tool_loop_and_mcp_readiness(database):
     service = TreeService(database)
-    payload = valid_payload(connected_provider(database))
+    from backend.schemas.secret import SecretCreate
+    from backend.services.secret_service import SecretService
+    provider = connected_provider(database)
+    secret = SecretService(database).create(SecretCreate(name="MCP key", secret_type="api_key", value="test-key"))
+    provider.provider_type = "groq"
+    provider.secret_id = secret.id
+    database.commit()
+    payload = valid_payload(provider)
     payload.agents[2].settings = {'autonomous_tool_use': True}
     assert any(i.code == 'tool_assignment_required' for i in service.preview_draft(payload).errors)
     tool = ToolConnection(name='MCP', tool_type='mcp', status='connected', enabled=True,
@@ -447,6 +465,33 @@ def test_builder_preview_reports_tool_loop_and_mcp_readiness(database):
     assert any(i.code == 'mcp_tool_not_selected' for i in service.preview_draft(payload).errors)
     tool.discovered_tools_json = [{'name': 'query', 'selected': True}]
     database.commit()
+    assert service.preview_draft(payload).valid
+
+
+def test_ready_model_with_unsupported_provider_tool_binding_is_tree_not_ready(database):
+    service = TreeService(database)
+    provider = connected_provider(database)
+    payload = valid_payload(provider)
+    tool = ToolConnection(name="Bound HTTP Tool", tool_type="http_api", status="connected", enabled=True,
+                          config_json={"base_url": "https://example.test"})
+    database.add(tool)
+    database.commit()
+    payload.tool_assignments = [ToolAssignmentDraft(
+        agent_config_id=payload.agents[0].id, tool_connection_id=tool.id,
+    )]
+
+    result = service.preview_draft(payload)
+    assert not result.valid
+    issue = next(issue for issue in result.errors if issue.code == "provider_tool_incompatible")
+    assert issue.agent_id == payload.agents[0].id
+    assert "Tool" in issue.message and "provider" in issue.message
+    assert database.query(ProviderModel).filter_by(model_id="discovered-model").one().qualification_status == "qualified"
+
+    from backend.schemas.secret import SecretCreate
+    from backend.services.secret_service import SecretService
+    secret = SecretService(database).create(SecretCreate(name="Compatible key", secret_type="api_key", value="test-key"))
+    provider.provider_type = "groq"
+    provider.secret_id = secret.id
     assert service.preview_draft(payload).valid
 
 

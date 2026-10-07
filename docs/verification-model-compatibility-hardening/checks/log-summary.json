@@ -1,0 +1,9 @@
+{
+  "line_count": 230,
+  "requests": [],
+  "http_failures": [],
+  "error_markers": {},
+  "raw_content_exported": false,
+  "http_access_records_available": false,
+  "network_scope": "Real UI Run submission, journal/stream activity and persisted result/trace recovery verified; no raw HAR or HTTP access log capture available."
+}

@@ -1,5 +1,7 @@
 """Metadata-only management responses and bounded, generic event input."""
 
+from agenttree.models import ExecutionMode
+
 from datetime import datetime
 from typing import Any
 
@@ -38,6 +40,7 @@ class WebhookCreated(WebhookRead):
 
 
 class WebhookEvent(BaseModel):
+    execution_mode: ExecutionMode = ExecutionMode.FAST
     model_config = ConfigDict(extra="forbid")
     event: dict[str, Any]
     metadata: dict[str, Any] = Field(default_factory=dict)

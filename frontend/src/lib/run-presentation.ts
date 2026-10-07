@@ -33,9 +33,11 @@ export function recoveredAttempts(events: readonly (LiveEvent | TraceEvent)[]) {
     const meta = event.payload.metadata as Record<string, unknown> | undefined
     const tool = meta?.tool_id
     const phase = meta?.phase
+    const decision = meta?.decision_id
     const toolEvent = /(?:\.tool\.(?:failed|completed)$|tool_execution_(?:failed|completed)$)/.test(type)
     const decisionEvent = /structured_decision\.(?:validation_failed|repair\.(?:failed|succeeded))$/.test(type)
     const identity = toolEvent && typeof tool === "string" ? `tool:${tool}`
+      : decisionEvent && typeof decision === "string" ? `decision:${decision}`
       : decisionEvent && typeof phase === "string" ? `decision:${phase}` : null
     if (!identity) continue
     const key = `${event.agent_id}:${identity}`

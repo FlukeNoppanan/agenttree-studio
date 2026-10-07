@@ -2,6 +2,7 @@
 from datetime import datetime, timezone
 from uuid import uuid4
 import json
+from qualification_fixture import QUALIFIED_METADATA
 
 import pytest
 from sqlalchemy import select, text
@@ -12,6 +13,7 @@ from backend.models.secret import Secret
 from backend.models.tool import ToolConnection, ToolAssignment
 from backend.models.tree import AgentConfig, Tree, TreeVersion
 from backend.schemas.provider import ProviderUpdate
+from backend.schemas.secret import SecretCreate
 from backend.schemas.tree import ToolAssignmentDraft
 from backend.services.dependency_service import DependencyService
 from backend.services.errors import ResourceConflictError, ServiceError
@@ -25,7 +27,7 @@ from tests.test_trees import connected_provider, valid_payload
 def alternate(database):
     p=ProviderConnection(name='Replacement Provider',provider_type='ollama',base_url='http://localhost:11434',status='connected')
     database.add(p); database.flush()
-    database.add(ProviderModel(provider_connection_id=p.id,model_id='discovered-model',qualification_status='qualified'))
+    database.add(ProviderModel(provider_connection_id=p.id,model_id='discovered-model',qualification_status='qualified',metadata_json=QUALIFIED_METADATA))
     database.commit()
     return p
 
@@ -35,6 +37,14 @@ def enable_fk(database):
 
 
 def rotate(database, a, b, *, tools=None):
+    if tools:
+        for provider in (a, b):
+            secret = SecretService(database).create(SecretCreate(
+                name=f"Tool-capable test key {uuid4().hex[:4]}", secret_type="api_key", value="test-key",
+            ))
+            provider.provider_type = "groq"
+            provider.secret_id = secret.id
+        database.commit()
     payload=valid_payload(a)
     if tools:
         payload.tool_assignments=[ToolAssignmentDraft(agent_config_id=payload.agents[-1].id,tool_connection_id=tools[0].id)]

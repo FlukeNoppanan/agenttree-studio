@@ -55,7 +55,8 @@ class RunService:
     def test_run(self, tree_id: str, request: TestRunRequest) -> RunDetailRead:
         return self.invoke(
             tree_id,
-            InvocationRequest(input=request.input, metadata={"invoked_from": "studio_test"}),
+            InvocationRequest(input=request.input, metadata={"invoked_from": "studio_test"},
+                              execution_mode=request.execution_mode),
             invocation_source="studio_test",
         )
 
@@ -95,7 +96,7 @@ class RunService:
             tree_version_id=version.id,
             status="pending",
             input_json=sanitize_for_persistence(dict(request.input)),
-            metadata_json=sanitize_for_persistence(dict(request.metadata)),
+            metadata_json=sanitize_for_persistence({**request.metadata, "execution_mode": request.execution_mode.value}),
             invocation_source=invocation_source,
             submitted_by_user_id=submitted_by_user_id,
             submitted_by_token_id=submitted_by_token_id,
@@ -127,6 +128,7 @@ class RunService:
             run.metadata_json = sanitize_for_persistence(caller_metadata, bundle.sensitive_values)
             self._database.commit()
             task = Task(
+                execution_mode=caller_metadata.get("execution_mode", "fast"),
                 id=run.id,
                 objective=self._task_objective(tree.name, version, prepared_input),
                 context=TaskContext(data=prepared_input),
@@ -506,6 +508,7 @@ class RunService:
             final_status=run.final_status,
             input=run.input_json,
             metadata=run.metadata_json or {},
+            execution_mode=(run.metadata_json or {}).get("execution_mode", "fast"),
             invocation_source=run.invocation_source,
             output=run.output_json,
             error_code=run.error_code,

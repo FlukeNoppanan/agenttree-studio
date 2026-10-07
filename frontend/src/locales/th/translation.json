@@ -2118,6 +2118,7 @@
       "tool_assignment_required": "เพิ่ม Tool ก่อนเปิดใช้ Tool แบบอัตโนมัติ",
       "tool_not_ready": "Tool ที่ผูกไว้ต้องเปิดใช้งานและเชื่อมต่อสำเร็จ",
       "mcp_tool_not_selected": "เลือก Tool ที่ค้นพบใน MCP นี้",
+      "provider_tool_incompatible": "{{name}} ผูกกับ Tool ที่ Provider นี้ไม่รองรับ",
       "instruction_required": "เพิ่มคำสั่งสำหรับ Agent จาก Template นี้",
       "template_tool_requirement_unresolved": "ตั้งค่า Tool ที่ Template ต้องใช้ในหน้า Template Setup",
       "core_compatibility": "AgentTree Core ยังไม่รองรับการตั้งค่านี้ ตรวจสอบ Agent และ Tool ที่เกี่ยวข้อง",
@@ -2126,7 +2127,8 @@
       "root_parent": "Root ต้องไม่มี Agent อยู่เหนือ Root",
       "template_agent_missing": "Tree ยังขาด Agent ที่ Template ต้องใช้",
       "template_snapshot_invalid": "ข้อมูล Template ของ Tree นี้ไม่ถูกต้อง",
-      "tool_loop_settings": "การตั้งค่าใช้ Tool อัตโนมัติไม่ถูกต้อง ตรวจสอบขีดจำกัดและเวลาที่กำหนด"
+      "tool_loop_settings": "การตั้งค่าใช้ Tool อัตโนมัติไม่ถูกต้อง ตรวจสอบขีดจำกัดและเวลาที่กำหนด",
+      "model_role_not_qualified": "{{name}} ใช้ Model ที่ยังผ่านการตรวจสำหรับ role นี้ไม่ครบ ดูผลการตรวจที่หน้า Providers"
     },
     "savedVersion": "บันทึกเป็นเวอร์ชันพร้อมใช้งานใหม่แล้ว ตำแหน่งจะจัดใหม่ตามลำดับชั้น เนื่องจาก Agent มี ID ใหม่",
     "zoomIn": "ขยาย",
@@ -2249,10 +2251,30 @@
       "execution_started": "เริ่ม Run แล้ว",
       "execution_completed": "Run เสร็จแล้ว",
       "execution_failed": "Run ไม่สำเร็จ",
-      "execution_cancelled": "ยกเลิก Run แล้ว"
+      "execution_cancelled": "ยกเลิก Run แล้ว",
+      "provider_request_queued": "คำขอ Provider เข้าคิว",
+      "provider_request_dispatched": "เริ่มส่งคำขอไปยัง Provider",
+      "provider_request_completed": "Provider ตอบกลับแล้ว",
+      "provider_request_failed": "คำขอ Provider ไม่สำเร็จ",
+      "provider_wait_started": "กำลังรอ Provider พร้อมรับคำขอ",
+      "provider_wait_resumed": "ดำเนินการเรียก Provider ต่อ",
+      "provider_wait_deferred": "พักการรอ Provider ชั่วคราว กรุณาลองอีกครั้งภายหลัง",
+      "provider_rate_limited": "ถึงขีดจำกัด Provider",
+      "provider_retry_scheduled": "เตรียมเรียก Provider อีกครั้ง",
+      "provider_usage_reconciled": "บันทึกการใช้ Token จาก Provider"
     },
     "fullTrace": "Execution Trace ทั้งหมดที่บันทึกไว้",
-    "assignedProvider": "เลือก Provider แล้ว"
+    "assignedProvider": "เลือก Provider แล้ว",
+    "executionMode": "โหมดการทำงาน",
+    "modes": {
+      "fast": "Fast",
+      "deep": "Deep"
+    },
+    "modeHelp": {
+      "fast": "Root เลือกได้ว่าจะตอบโดยตรงหรือส่งงานต่อให้ Agent",
+      "deep": "ส่งงานผ่าน Manager และ Specialist แล้วตรวจทานผลลัพธ์"
+    },
+    "trafficWaiting": "กำลังรอ Provider พร้อมรับคำขอ Run ยังทำงานอยู่"
   },
   "integrationPolish": {
     "deleteTreeTitle": "ลบ Tree นี้หรือไม่?",
@@ -2330,7 +2352,8 @@
         "synthesis": "Root · Final Result",
         "resource": "Tools / Artifacts",
         "collaboration": "Manager Collaboration",
-        "recovery": "Recovery / Retry"
+        "recovery": "Recovery / Retry",
+        "traffic": "การเรียก Provider"
       },
       "fields": {
         "task": "งานย่อย",
@@ -2345,7 +2368,14 @@
         "provider": "Provider",
         "model": "Model",
         "duration": "เวลา (ms)",
-        "objective": "งานที่ต้องทำ"
+        "objective": "งานที่ต้องทำ",
+        "strategy": "ช่วง decision",
+        "reason": "สาเหตุ",
+        "field": "Field",
+        "wait": "เวลารอ (วินาที)",
+        "limitKind": "ประเภท quota",
+        "limitScope": "ขอบเขต quota",
+        "category": "ประเภทข้อผิดพลาด"
       },
       "actions": {
         "queued": {
@@ -2567,6 +2597,62 @@
         "other": {
           "title": "กิจกรรมเพิ่มเติมของ runtime",
           "help": "event นี้ยังไม่มีคำอธิบายเฉพาะ เปิดดูข้อมูลทั้งหมดได้ในรายละเอียด"
+        },
+        "decisionInvalid": {
+          "title": "decision ไม่ผ่านการตรวจ",
+          "help": "คำตอบไม่ตรงตาม contract ระบบจะลองซ่อมได้หนึ่งครั้งใน decision นี้"
+        },
+        "decisionRepair": {
+          "title": "กำลังซ่อม decision นี้",
+          "help": "ขอให้ Model ส่ง decision ที่ถูกต้อง โดยคงข้อกำหนดและตัวเลือกเดิม"
+        },
+        "decisionRepaired": {
+          "title": "ซ่อม decision นี้สำเร็จ",
+          "help": "คำตอบที่ซ่อมผ่านการตรวจแล้ว Execution ดำเนินต่อจากช่วงนี้ได้"
+        },
+        "decisionUnrepaired": {
+          "title": "ซ่อม decision นี้ไม่สำเร็จ",
+          "help": "คำตอบครั้งที่ซ่อมยังไม่ผ่านการตรวจหรือ Provider ล้มเหลว ระบบจะไม่เดา decision ให้"
+        },
+        "trafficrequest_queued": {
+          "title": "คำขอ Provider เข้าคิว",
+          "help": "ข้อมูลจากการเรียก Provider จริง โดยไม่ได้เปลี่ยน Tree หรือ Model ที่เลือกไว้"
+        },
+        "trafficrequest_dispatched": {
+          "title": "เริ่มส่งคำขอไปยัง Provider",
+          "help": "ข้อมูลจากการเรียก Provider จริง โดยไม่ได้เปลี่ยน Tree หรือ Model ที่เลือกไว้"
+        },
+        "trafficrequest_completed": {
+          "title": "Provider ตอบกลับแล้ว",
+          "help": "ข้อมูลจากการเรียก Provider จริง โดยไม่ได้เปลี่ยน Tree หรือ Model ที่เลือกไว้"
+        },
+        "trafficrequest_failed": {
+          "title": "คำขอ Provider ไม่สำเร็จ",
+          "help": "ข้อมูลจากการเรียก Provider จริง โดยไม่ได้เปลี่ยน Tree หรือ Model ที่เลือกไว้"
+        },
+        "trafficwait_started": {
+          "title": "กำลังรอ Provider พร้อมรับคำขอ",
+          "help": "ข้อมูลจากการเรียก Provider จริง โดยไม่ได้เปลี่ยน Tree หรือ Model ที่เลือกไว้"
+        },
+        "trafficwait_resumed": {
+          "title": "ดำเนินการเรียก Provider ต่อ",
+          "help": "ข้อมูลจากการเรียก Provider จริง โดยไม่ได้เปลี่ยน Tree หรือ Model ที่เลือกไว้"
+        },
+        "trafficwait_deferred": {
+          "title": "พักการรอ Provider ชั่วคราว กรุณาลองอีกครั้งภายหลัง",
+          "help": "ข้อมูลจากการเรียก Provider จริง โดยไม่ได้เปลี่ยน Tree หรือ Model ที่เลือกไว้"
+        },
+        "trafficrate_limited": {
+          "title": "ถึงขีดจำกัด Provider",
+          "help": "ข้อมูลจากการเรียก Provider จริง โดยไม่ได้เปลี่ยน Tree หรือ Model ที่เลือกไว้"
+        },
+        "trafficretry_scheduled": {
+          "title": "เตรียมเรียก Provider อีกครั้ง",
+          "help": "ข้อมูลจากการเรียก Provider จริง โดยไม่ได้เปลี่ยน Tree หรือ Model ที่เลือกไว้"
+        },
+        "trafficusage_reconciled": {
+          "title": "บันทึกการใช้ Token จาก Provider",
+          "help": "ข้อมูลจากการเรียก Provider จริง โดยไม่ได้เปลี่ยน Tree หรือ Model ที่เลือกไว้"
         }
       }
     },
@@ -2610,7 +2696,8 @@
         "paragraphs": [
           "ถ้า Provider ต้องใช้ credential ให้เปิด Secrets → เพิ่ม Secret ตั้งชื่อให้จำได้ เลือกประเภทที่รองรับ แล้วบันทึก credential ค่าที่เก็บไว้ถูกเข้ารหัสและแสดงแบบปิดบัง",
           "เปิด Providers แล้วเพิ่มการเชื่อมต่อ เลือก Secret ที่บันทึกไว้ ตั้งค่าบริการ และทดสอบ Ollama ในเครื่องหรือบริการที่ไม่ต้องยืนยันตัวตนอาจไม่ต้องใช้ Secret ให้ยึดตามช่องตั้งค่าของ Provider ที่เลือก",
-          "ค้นหาและตรวจสอบ Model การเชื่อมต่อสำเร็จไม่ได้แปลว่าทุก Model ใช้งานได้ เลือก Model ที่ Studio ตรวจสอบแล้วว่าใช้งานได้ หาก Model ไม่พร้อมหรือทดสอบล้มเหลวชั่วคราว ให้ตรวจสาเหตุหรือลองใหม่ภายหลัง"
+          "ค้นหาและตรวจสอบ Model การเชื่อมต่อสำเร็จไม่ได้แปลว่าทุก Model ใช้งานได้ เลือก Model ที่ Studio ตรวจสอบแล้วว่าใช้งานได้ หาก Model ไม่พร้อมหรือทดสอบล้มเหลวชั่วคราว ให้ตรวจสาเหตุหรือลองใหม่ภายหลัง",
+          "Provider คือการเชื่อมต่อ ส่วน Model คือ AI ที่เลือกใช้ผ่าน Provider นั้น AgentTree Ready หมายถึงผ่านการสร้างข้อความและ decision ด้วยข้อมูลทดสอบแล้ว Limited หมายถึงสร้างข้อความได้แต่ยังตรวจด้านการควบคุมงานไม่ผ่านครบ ระบบจะคงสิ่งที่คุณเลือกไว้ ไม่เปลี่ยนจากในเครื่องไปใช้ cloud อัตโนมัติ"
         ]
       },
       "build": {
@@ -2723,5 +2810,85 @@
     "attentionCount": "{{count}} รายการที่ควรตรวจสอบ",
     "lastChecked": "สถานะจากการตรวจครั้งล่าสุด ไม่ใช่ระบบติดตาม uptime",
     "connectedTools": "Tools: เชื่อมต่อแล้ว / ทั้งหมด"
+  },
+  "compatibility": {
+    "qualified": "AgentTree Ready",
+    "limited": "Limited",
+    "unknown": "Pending",
+    "verifying": "กำลังตรวจ",
+    "unavailable": "ใช้งานไม่ได้",
+    "transient_error": "Pending",
+    "verify": "ตรวจความเข้ากันได้",
+    "catalog": "ความเข้ากันได้ของ Model",
+    "catalogHelp": "สถานะเชื่อมต่อหมายถึงติดต่อ Provider ได้ ส่วนความสามารถของแต่ละ Model ต้องตรวจทั้งการสร้างข้อความและ decision ของ AgentTree",
+    "readyHelp": "ผ่านการสร้างข้อความและ decision ของ AgentTree ด้วยข้อมูลทดสอบขนาดเล็กแล้ว ยังควรทดสอบงานจริงและการใช้ Tool",
+    "limitedHelp": "สร้างข้อความได้ แต่ยังผ่านการตรวจ decision ไม่ครบ ระบบจะคง binding ที่เลือกไว้",
+    "unverifiedHelp": "Model นี้ยังไม่ผ่านการตรวจความเข้ากันได้ ตรวจอีกครั้งเพื่อดูสาเหตุ",
+    "checked": "ตรวจล่าสุด",
+    "evidence": "ดูผลการตรวจแต่ละด้าน",
+    "scope": "ผลนี้มาจากข้อมูลทดสอบขนาดเล็ก ไม่รับประกันทุกงาน ตรวจการสร้างข้อความของ Specialist แล้ว แต่ยังไม่ได้รับรองการเรียก Tool/MCP หรือคุณภาพของงานจริง",
+    "checkFailed": "ไม่ผ่านการตรวจความเข้ากันได้",
+    "orchestrationWarning": "Model นี้ยังผ่านการตรวจ decision สำหรับ {{role}} ไม่ครบ ควรดูผลการตรวจก่อนเริ่ม Run",
+    "specialistWarning": "สร้างข้อความได้ แต่ยังไม่รับประกันการเรียก Tool แบบ Structured Output หรือคุณภาพงาน ควรทดสอบ Specialist ด้วยข้อมูลจริง",
+    "noFallback": "ระบบจะใช้ Provider และ Model ที่คุณเลือก ไม่มีการเปลี่ยนจาก Ollama ในเครื่องไปใช้ cloud Provider อัตโนมัติ",
+    "partialRepairNotice": "decision ก่อนหน้าซ่อมสำเร็จ แต่ decision อีกช่วงหนึ่งซ่อมไม่สำเร็จ ดูแต่ละช่วงด้านล่าง Execution ไม่ได้ฟื้นจากข้อผิดพลาดครั้งหลัง",
+    "pinnedBindings": "binding ที่บันทึกใน Tree version ของ Execution นี้ แสดง Agent แต่ละตัวครั้งเดียว เป็นข้อมูลการตั้งค่า ไม่ได้ยืนยันว่า Agent ทุกตัวได้ทำงาน",
+    "checks": {
+      "structured_output": "Structured Output",
+      "root_planning": "การวางแผนของ Root",
+      "triage": "การส่งงานตาม Capability",
+      "decomposition": "การแบ่งงานของ Manager",
+      "manager_review": "Manager Review",
+      "final_review": "Root Final Review"
+    },
+    "checkStatus": {
+      "passed": "ผ่าน",
+      "failed": "ไม่ผ่าน",
+      "interrupted": "ตรวจไม่จบ"
+    },
+    "reasons": {
+      "malformed_json": "ได้รับคำตอบแล้ว แต่อ่านเป็น JSON หนึ่งก้อนที่รองรับไม่ได้",
+      "object_required": "ได้รับข้อมูลแล้ว แต่ contract ต้องการ JSON object",
+      "missing_required_field": "อ่าน JSON ได้ แต่ขาด field ที่จำเป็น",
+      "invalid_enum": "ค่า decision ไม่อยู่ในตัวเลือกที่รองรับ",
+      "unknown_capability": "เลือก Capability ที่ไม่ได้ลงทะเบียน",
+      "schema_mismatch": "decision ไม่ตรงตาม schema",
+      "probe_mismatch": "คำตอบ Structured Output ไม่ตรงตามข้อมูลทดสอบ",
+      "delegation_not_exercised": "ยังไม่แสดงการส่งงานต่อ",
+      "routing_not_exercised": "ยังไม่แสดงการเลือก Capability เพื่อส่งงาน",
+      "structured_decision_not_qualified": "ผ่านการตรวจ decision ยังไม่ครบ",
+      "verification_timeout": "Provider ตอบไม่ทัน ลองตรวจใหม่ภายหลัง",
+      "provider_rate_limited": "ถึงขีดจำกัด Provider ลองใหม่ภายหลัง",
+      "provider_auth_failed": "ตรวจ credential ของ Provider",
+      "provider_unavailable": "ติดต่อ Provider ไม่ได้ชั่วคราว",
+      "incompatible_response": "ไม่ได้รับคำตอบในรูปแบบที่รองรับ",
+      "generation_failed": "สร้างข้อความไม่สำเร็จ",
+      "not_discovered": "ไม่พบ Model ในรายการล่าสุด",
+      "not_generation_capable": "Model นี้ไม่รองรับการสร้างข้อความ",
+      "model_rate_limited": "Model นี้ติด rate limit แต่ยังตรวจ Model อื่นต่อได้",
+      "model_quota_exhausted": "โควตาของ Model นี้หมด แต่ยังตรวจ Model อื่นต่อได้",
+      "verification_stopped": "หยุดตรวจ Model แล้ว ผลที่ตรวจเสร็จถูกบันทึกไว้"
+    },
+    "otherModels": "Model อื่น ({{count}})",
+    "observedBindings": "การสร้างข้อความของ Specialist ที่บันทึกไว้",
+    "observedHelp": "Provider และ Model ที่บันทึกจากการทำงานของ Specialist แสดงรายการเดียวเมื่อหลาย subtask ใช้ binding เดียวกัน ข้อมูลที่ Run เก่าไม่ได้เก็บจะไม่ถูกเติมขึ้นเอง",
+    "rolePassed": "ผ่าน contract ที่ตรวจสำหรับ {{role}} แล้ว แต่การตรวจด้านอื่นยังไม่ผ่าน จึงยังเป็น Model แบบ Limited ควรทดสอบด้วยงานจริงก่อนใช้งาน",
+    "roleBlocked": "Model นี้ยังผ่านการตรวจสำหรับ {{role}} ไม่ครบ Tree จะยังไม่พร้อมใช้งานเมื่อเลือก binding นี้",
+    "diagnostics": "ข้อมูลวิเคราะห์ที่ไม่เก็บคำตอบหรือข้อมูลลับ",
+    "diagnosticSummary": "คำขอ: {{count}} · รูปแบบ: {{mode}} · ตรวจ contract: {{validation}} · ซ่อมคำตอบ: {{repair}}"
+  },
+  "qualificationFlow": {
+    "paused": "พักการตรวจ Model · บันทึกผลแล้ว",
+    "providerInterrupted": "การตรวจ Provider หยุดชั่วคราว",
+    "continue": "ตรวจ Model ต่อ",
+    "saved": "บันทึกผลแล้ว: ตรวจ {{checked}} / {{total}} Model ที่รองรับข้อความ · Pending {{pending}}",
+    "progress": "ตรวจแล้ว {{checked}} / {{total}} Model ที่รองรับข้อความ",
+    "counts": "Limited {{limited}} · Unavailable {{unavailable}} · Pending {{pending}}",
+    "rechecks": "มี {{count}} Model ที่เคยตรวจแล้วและรอตรวจซ้ำ",
+    "pendingGroup": "Model ที่รอตรวจ (Pending {{count}})",
+    "pendingRecheck": "รอตรวจ Model ต่อ โดยยังเก็บผลที่ตรวจเสร็จแล้ว",
+    "retryAt": "ตรวจใหม่ได้หลัง {{time}}",
+    "stop": "หยุดตรวจ Model",
+    "stopFailed": "หยุดตรวจ Model ไม่สำเร็จ"
   }
 }

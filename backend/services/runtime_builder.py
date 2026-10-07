@@ -26,6 +26,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
 from backend.models.provider import ProviderConnection, ProviderModel
+from backend.services.model_capabilities import supports_agent_role
 from backend.models.tool import ToolConnection
 from backend.models.tree import AgentConfig, Tree, TreeVersion
 from backend.repositories.protocols import TreeRepository
@@ -35,6 +36,7 @@ from backend.services.errors import ResourceNotFoundError, RunRequestError
 from backend.services.secret_service import SecretService
 from backend.services.tree_contracts import invalid_manager_peers
 from backend.tools.factory import BuiltTools, ToolAdapterFactory
+from backend.providers.generation import provider_supports_tool_calling
 
 
 ProviderFactory = Callable[[ProviderConnection, str, str | None, str], BaseProvider]
@@ -111,6 +113,7 @@ class RuntimeBuilder:
         tree_repository: TreeRepository | None = None,
     ) -> None:
         self._database = database
+        self._custom_provider_factory = provider_factory is not None
         self._provider_factory = provider_factory or (
             lambda connection, model, credential, name: create_generation_provider(
                 connection, model, credential, provider_name=name,
@@ -189,6 +192,13 @@ class RuntimeBuilder:
                 item.get("selected") is True for item in (tool.discovered_tools_json or [])
             ):
                 issue("TOOL_BINDING_ERROR", "Assigned MCP connection has no selected Tools", agent.id)
+            if agent is not None and agent.provider_connection_id and not self._custom_provider_factory:
+                provider_connection = self._database.get(ProviderConnection, agent.provider_connection_id)
+                if (provider_connection is not None
+                        and not provider_supports_tool_calling(provider_connection.provider_type)):
+                    issue("PROVIDER_TOOL_INCOMPATIBLE",
+                          f"{agent.name or 'Agent'} uses a Tool that is not supported by the selected provider.",
+                          agent.id)
         for manager_id in invalid_manager_peers(agents):
             issue("TREE_INVALID", "Manager collaboration peers must reference other Managers in this Tree version", manager_id)
         return RuntimeValidationResult(valid=not errors, errors=tuple(errors))
@@ -210,15 +220,17 @@ class RuntimeBuilder:
         if not agent.model_id:
             issue("MODEL_NOT_AVAILABLE", "Agent model is missing", agent.id)
             return
-        model = self._database.scalar(select(ProviderModel.id).where(
+        model = self._database.scalar(select(ProviderModel).where(
             ProviderModel.provider_connection_id == connection.id,
             ProviderModel.model_id == agent.model_id,
             ProviderModel.is_available.is_(True),
             ProviderModel.generation_candidate.is_(True),
-            ProviderModel.qualification_status == "qualified",
+            ProviderModel.qualification_status.in_(("qualified", "limited")),
         ))
         if model is None:
             issue("MODEL_NOT_AVAILABLE", "Agent model is not available", agent.id)
+        elif not supports_agent_role(model, agent.agent_type):
+            issue("MODEL_ROLE_NOT_QUALIFIED", "Agent model has not passed the required role checks", agent.id)
 
     def build(self, tree_id: str, tree_version_id: str | None = None) -> RuntimeBundle:
         tree = self.get_tree(tree_id)
@@ -293,6 +305,14 @@ class RuntimeBuilder:
             config.id: resolve(config)
             for config in (root_config, *manager_configs, *specialist_configs)
         }
+        for assignment in version.tool_assignments:
+            agent = configs.get(assignment.agent_config_id)
+            provider = resolved_providers.get(agent.id) if agent is not None else None
+            if provider is not None and not provider.capabilities.tool_calling:
+                raise RunRequestError(
+                    "PROVIDER_TOOL_INCOMPATIBLE",
+                    f"{agent.name or 'Agent'} uses a Tool that is not supported by the selected provider.",
+                )
 
         tool_registry = ToolRegistry()
         tool_bindings = ToolBindingRegistry()

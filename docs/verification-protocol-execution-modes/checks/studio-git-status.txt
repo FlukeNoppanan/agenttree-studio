@@ -1,0 +1,51 @@
+ M backend/api/dashboard.py
+ M backend/api/public_v1.py
+ M backend/api/public_v2.py
+ M backend/api/studio_runs.py
+ M backend/schemas/provider.py
+ M backend/schemas/public_api.py
+ M backend/schemas/public_api_v2.py
+ M backend/schemas/run.py
+ M backend/schemas/webhook.py
+ M backend/services/dashboard_service.py
+ M backend/services/model_discovery_service.py
+ M backend/services/provider_service.py
+ M backend/services/run_service.py
+ M backend/services/runtime_builder.py
+ M backend/services/template_setup_service.py
+ M backend/services/tree_service.py
+ M backend/services/webhook_service.py
+ M frontend/src/components/execution-inspector.tsx
+ M frontend/src/components/human-execution-trace.tsx
+ M frontend/src/components/run-status-badge.tsx
+ M frontend/src/components/tree/agent-form.tsx
+ M frontend/src/components/tree/provider-model-selector.test.tsx
+ M frontend/src/components/tree/provider-model-selector.tsx
+ M frontend/src/lib/api.ts
+ M frontend/src/lib/provider-models.ts
+ M frontend/src/lib/run-presentation.ts
+ M frontend/src/lib/trace-activity.ts
+ M frontend/src/locales/en/translation.json
+ M frontend/src/locales/th/translation.json
+ M frontend/src/pages/providers.test.tsx
+ M frontend/src/pages/providers.tsx
+ M frontend/src/pages/trees/tree-playground.css
+ M frontend/src/pages/trees/tree-playground.test.tsx
+ M frontend/src/pages/trees/tree-playground.tsx
+ M tests/test_model_qualification_failures.py
+ M tests/test_onboarding.py
+ M tests/test_provider_management.py
+ M tests/test_resource_persistence.py
+ M tests/test_runs.py
+ M tests/test_template_setup.py
+?? backend/services/model_qualification.py
+?? docs/provider-model-compatibility.md
+?? docs/verification-playground-qualification-followup/
+?? docs/verification-protocol-execution-modes/
+?? docs/verification-provider-neutral-structured-decisions/
+?? frontend/src/components/model-compatibility.test.tsx
+?? frontend/src/components/model-compatibility.tsx
+?? frontend/src/lib/qualification-progress.test.ts
+?? tests/test_execution_modes.py
+?? tests/test_qualification_continuation.py
+?? tests/test_structured_model_qualification.py

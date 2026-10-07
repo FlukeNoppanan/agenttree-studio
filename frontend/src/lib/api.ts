@@ -1,3 +1,4 @@
+export type ExecutionMode = "fast" | "deep"
 export type ProviderType = "openai" | "gemini" | "groq" | "openrouter" | "cerebras" | "openai_compatible" | "ollama"
 export type Permission = "manage_trees_agents" | "manage_secrets" | "manage_providers_models" | "manage_tools_mcp" | "view_executions" | "use_trees"
 export type TreeAccessMode = "selected" | "all"
@@ -78,6 +79,12 @@ export interface ProviderConnection {
   discovered_models_count: number
   unavailable_models_count: number
   transient_models_count: number
+  limited_models_count?: number
+  pending_models_count?: number
+  checked_models_count?: number
+  candidate_models_count?: number
+  pending_rechecks_count?: number
+  qualification_pause_code?: string | null
   created_at: string
   updated_at: string
 }
@@ -90,7 +97,7 @@ export interface ProviderModel {
   metadata: Record<string, unknown> | null
   is_available: boolean
   generation_candidate: boolean
-  qualification_status: "unknown" | "verifying" | "qualified" | "unavailable" | "transient_error"
+  qualification_status: "unknown" | "verifying" | "qualified" | "limited" | "unavailable" | "transient_error"
   qualification_checked_at: string | null
   qualification_error_code: string | null
   qualification_message: string | null
@@ -371,6 +378,7 @@ export type RunStatus = "pending" | "running" | "cancellation_requested" | "comp
 
 export type LiveRunStatus = "queued" | "running" | "cancellation_requested" | "completed" | "failed" | "cancelled"
 export interface LiveRun {
+  execution_mode?: ExecutionMode
   run_id: string; tree_id: string; tree_version_id: string; status: LiveRunStatus
   final_status: string | null; created_at: string; started_at: string | null; finished_at: string | null
   cancellation_requested: boolean; error: { code: string; message: string } | null
@@ -402,6 +410,7 @@ export interface TraceEvent {
 }
 
 export interface Run {
+  execution_mode?: ExecutionMode
   final_status?: string | null
   id: string
   tree_id: string
@@ -559,6 +568,8 @@ export const api = {
     request<DiscoveryResponse>(`/api/providers/${id}/discover-models`, { method: "POST" }),
   discoverModelCatalog: (id: string) =>
     request<DiscoveryResponse>(`/api/providers/${id}/discover-catalog`, { method: "POST" }),
+  startProviderQualification: (id: string) => request<void>(`/api/providers/${id}/qualification/start`, { method: "POST" }),
+  stopProviderQualification: (id: string) => request<void>(`/api/providers/${id}/qualification/stop`, { method: "POST" }),
   verifyProviderModel: (id: string, model_id: string) =>
     request<ProviderModelVerificationResponse>(`/api/providers/${id}/verify-model`, {
       method: "POST",
@@ -663,8 +674,8 @@ export const api = {
   getTreeLive: (treeId: string) => request<TreeLive>(`/api/trees/${treeId}/live`),
   getRun: (runId: string) => request<RunDetail>(`/api/runs/${runId}`),
   getRunTrace: (runId: string) => request<TraceEvent[]>(`/api/runs/${runId}/trace`),
-  submitLiveRun: (treeId: string, input: string) => request<{ run_id: string }>("/api/studio/runs", {
-    method: "POST", body: JSON.stringify({ tree_id: treeId, input }),
+  submitLiveRun: (treeId: string, input: string, executionMode: ExecutionMode = "fast") => request<{ run_id: string }>("/api/studio/runs", {
+    method: "POST", body: JSON.stringify({ tree_id: treeId, input, execution_mode: executionMode }),
   }),
   getLiveRun: (runId: string) => request<LiveRun>(`/api/studio/runs/${runId}`),
   getLiveEvents: (runId: string, after: number) => request<LiveEventPage>(`/api/studio/runs/${runId}/events?after=${after}&limit=500`),

@@ -29,6 +29,7 @@ def submit(payload: RunSubmitRequest, request: Request,
         raise HTTPException(409, "Tree is not ready")
     run = RunService(database).prepare(tree.id, InvocationRequest(
         input={"input": payload.input}, metadata=payload.metadata.model_dump(),
+        execution_mode=payload.execution_mode,
     ), invocation_source="studio_live", submitted_by_user_id=user.id)
     factory = sessionmaker(bind=database.get_bind(), autoflush=False, expire_on_commit=False)
     try:
@@ -36,7 +37,7 @@ def submit(payload: RunSubmitRequest, request: Request,
     except RuntimeCapacityError:
         RunService(database).cancel_run(run.id)
         raise HTTPException(503, "Run capacity is temporarily exhausted") from None
-    return RunAccepted(run_id=run.id, tree_id=tree.id,
+    return RunAccepted(execution_mode=payload.execution_mode, run_id=run.id, tree_id=tree.id,
                        tree_version_id=run.tree_version_id, status="queued",
                        created_at=RunService._utc(run.created_at), links=links(run.id))
 

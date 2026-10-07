@@ -1,0 +1,187 @@
+ Image agenttree-studio-backend Building
+ Image agenttree-studio-frontend Building
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.07kB done
+#1 DONE 0.0s
+
+#2 [backend internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.53kB 0.0s done
+#2 DONE 0.0s
+
+#3 [frontend internal] load build definition from Dockerfile
+#3 transferring dockerfile: 344B 0.0s done
+#3 DONE 0.0s
+
+#4 [backend context agenttree_core] load .dockerignore
+#4 transferring agenttree_core: 2B done
+#4 DONE 0.0s
+
+#5 [backend internal] load metadata for docker.io/library/node:24-bookworm-slim
+#5 ...
+
+#6 [backend internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#6 DONE 0.9s
+
+#5 [backend internal] load metadata for docker.io/library/node:24-bookworm-slim
+#5 DONE 0.9s
+
+#7 [frontend internal] load .dockerignore
+#7 transferring context: 320B done
+#7 DONE 0.0s
+
+#8 [backend internal] load build context
+#8 DONE 0.0s
+
+#9 [backend context agenttree_core] load from client
+#9 DONE 0.0s
+
+#10 [backend context agenttree_core] load from client
+#10 DONE 0.0s
+
+#11 [frontend internal] load build context
+#11 transferring context: 8.28kB 0.0s done
+#11 DONE 0.1s
+
+#12 [frontend 1/7] FROM docker.io/library/node:24-bookworm-slim@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6
+#12 resolve docker.io/library/node:24-bookworm-slim@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6
+#12 resolve docker.io/library/node:24-bookworm-slim@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6 0.1s done
+#12 DONE 0.1s
+
+#13 [backend stage-1  1/16] FROM docker.io/library/python:3.12-slim-bookworm@sha256:54c85f3c47607a77f32adec749d3c81d1348bf25833671f512b26a9b6d778cb3
+#13 resolve docker.io/library/python:3.12-slim-bookworm@sha256:54c85f3c47607a77f32adec749d3c81d1348bf25833671f512b26a9b6d778cb3 0.1s done
+#13 DONE 0.1s
+
+#14 [frontend 3/7] COPY frontend/package.json frontend/package-lock.json ./
+#14 CACHED
+
+#15 [frontend 2/7] WORKDIR /app
+#15 CACHED
+
+#16 [frontend 5/7] COPY frontend/index.html frontend/vite.config.ts frontend/tsconfig*.json ./
+#16 CACHED
+
+#17 [frontend 4/7] RUN npm ci
+#17 CACHED
+
+#18 [frontend 6/7] COPY frontend/src ./src
+#18 CACHED
+
+#19 [frontend 7/7] COPY frontend/public ./public
+#19 CACHED
+
+#10 [backend context agenttree_core] load from client
+#10 transferring agenttree_core: 65B done
+#10 DONE 0.0s
+
+#8 [backend internal] load build context
+#8 transferring context: 6.65kB 0.0s done
+#8 DONE 0.0s
+
+#9 [backend context agenttree_core] load from client
+#9 transferring agenttree_core: 40.10kB 0.0s done
+#9 DONE 0.0s
+
+#20 [backend stage-1  2/16] RUN apt-get update     && apt-get install --no-install-recommends -y git ca-certificates libstdc++6 libatomic1     && rm -rf /var/lib/apt/lists/*
+#20 CACHED
+
+#21 [backend stage-1  7/16] COPY requirements-base.txt requirements-docker.txt ./
+#21 CACHED
+
+#22 [backend stage-1  6/16] WORKDIR /app
+#22 CACHED
+
+#23 [backend stage-1  4/16] COPY --from=node-runtime /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/npm
+#23 CACHED
+
+#24 [backend stage-1  3/16] COPY --from=node-runtime /usr/local/bin/node /usr/local/bin/node
+#24 CACHED
+
+#25 [backend stage-1  5/16] RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm     && ln -s /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+#25 CACHED
+
+#26 [backend stage-1  8/16] RUN pip install -r requirements-docker.txt
+#26 CACHED
+
+#27 [backend stage-1  9/16] COPY --from=agenttree_core /pyproject.toml /README.md /tmp/agenttree-core/
+#27 CACHED
+
+#28 [frontend] exporting to image
+#28 exporting layers 0.0s done
+#28 exporting manifest sha256:c577f97cecde29549a620ef33857a3fbc66b19bfe71f819855d16152b8dea9f5 done
+#28 exporting config sha256:0c4e8448c5befd4c87d576dd2e793edd1ee8c88b7bc6fd719209ba9ef90b4a7b done
+#28 exporting attestation manifest sha256:def029ffc0675232537288b743e35f0a93c006393ae3314661d107db03913996 0.0s done
+#28 exporting manifest list sha256:930d8acf05ffbf3ea21af36ae63eb370d7911100c2a72f9554df7c403eca71fe
+#28 ...
+
+#29 [backend stage-1 10/16] COPY --from=agenttree_core /src /tmp/agenttree-core/src
+#29 DONE 0.1s
+
+#28 [frontend] exporting to image
+#28 exporting manifest list sha256:930d8acf05ffbf3ea21af36ae63eb370d7911100c2a72f9554df7c403eca71fe 0.0s done
+#28 naming to docker.io/library/agenttree-studio-frontend:latest done
+#28 unpacking to docker.io/library/agenttree-studio-frontend:latest 0.0s done
+#28 DONE 0.2s
+
+#30 [backend stage-1 11/16] RUN pip install --no-deps /tmp/agenttree-core && rm -rf /tmp/agenttree-core
+#30 ...
+
+#31 [frontend] resolving provenance for metadata file
+#31 DONE 0.0s
+
+#30 [backend stage-1 11/16] RUN pip install --no-deps /tmp/agenttree-core && rm -rf /tmp/agenttree-core
+#30 2.780 Processing /tmp/agenttree-core
+#30 2.788   Installing build dependencies: started
+#30 7.218   Installing build dependencies: finished with status 'done'
+#30 7.220   Getting requirements to build wheel: started
+#30 9.110   Getting requirements to build wheel: finished with status 'done'
+#30 9.115   Preparing metadata (pyproject.toml): started
+#30 10.52   Preparing metadata (pyproject.toml): finished with status 'done'
+#30 10.53 Building wheels for collected packages: agenttree
+#30 10.53   Building wheel for agenttree (pyproject.toml): started
+#30 11.93   Building wheel for agenttree (pyproject.toml): finished with status 'done'
+#30 11.94   Created wheel for agenttree: filename=agenttree-0.2.2-py3-none-any.whl size=154883 sha256=47729385062337370771eb0eb3e2217402551f6b619b168b6e7f0955d6018211
+#30 11.94   Stored in directory: /tmp/pip-ephem-wheel-cache-z727qx59/wheels/db/79/ea/838a4db50556e374419d378b6cb1dc579abedd2034beaed8d3
+#30 11.96 Successfully built agenttree
+#30 11.96 Installing collected packages: agenttree
+#30 11.96   Attempting uninstall: agenttree
+#30 11.97     Found existing installation: agenttree 0.2.2
+#30 11.99     Uninstalling agenttree-0.2.2:
+#30 12.03       Successfully uninstalled agenttree-0.2.2
+#30 12.35 Successfully installed agenttree-0.2.2
+#30 12.35 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#30 12.55
+#30 12.55 [notice] A new release of pip is available: 25.0.1 -> 26.2.1
+#30 12.55 [notice] To update, run: pip install --upgrade pip
+#30 DONE 12.8s
+
+#32 [backend stage-1 12/16] COPY alembic.ini ./
+#32 DONE 0.1s
+
+#33 [backend stage-1 13/16] COPY alembic ./alembic
+#33 DONE 0.1s
+
+#34 [backend stage-1 14/16] COPY backend ./backend
+#34 DONE 0.1s
+
+#35 [backend stage-1 15/16] COPY backend/docker-entrypoint.sh /usr/local/bin/studio-entrypoint
+#35 DONE 0.0s
+
+#36 [backend stage-1 16/16] RUN chmod 755 /usr/local/bin/studio-entrypoint     && mkdir -p /workspace /var/lib/agenttree-studio
+#36 DONE 0.2s
+
+#37 [backend] exporting to image
+#37 exporting layers
+#37 exporting layers 0.4s done
+#37 exporting manifest sha256:3ef926300d61da54dd8f58cba862d3c86a01137ff386cb7d75d3c87b86e260b1 0.0s done
+#37 exporting config sha256:8d415666c6dc7bd3df155974899fb9d30af80ac973a453d93f4c687abf7b675d 0.0s done
+#37 exporting attestation manifest sha256:80d8149e3f954cae8b8a61696271000d4e44cfaf8645ffb7b8d073b136c965c4 0.0s done
+#37 exporting manifest list sha256:63862b2ce907de39cc0b11d7cc39dd3a28e6aa6e1585f107520de068e39cc640 0.0s done
+#37 naming to docker.io/library/agenttree-studio-backend:latest done
+#37 unpacking to docker.io/library/agenttree-studio-backend:latest
+#37 unpacking to docker.io/library/agenttree-studio-backend:latest 0.3s done
+#37 DONE 0.8s
+
+#38 [backend] resolving provenance for metadata file
+#38 DONE 0.0s
+ Image agenttree-studio-frontend Built
+ Image agenttree-studio-backend Built

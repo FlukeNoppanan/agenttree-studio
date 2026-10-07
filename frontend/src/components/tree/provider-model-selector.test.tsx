@@ -28,7 +28,7 @@ describe("shared Provider/Model eligibility", () => {
     vi.spyOn(api, "listModels").mockResolvedValue(catalog.slice(1))
     render(<ProviderModelSelector providers={[connection]} providerId="provider" modelId={null} onProviderChange={vi.fn()} onModelChange={vi.fn()} />)
     expect(await screen.findByText(i18n.t("uiCopy.noVerifiedModelsHelp"))).toBeInTheDocument()
-    expect(api.listModels).toHaveBeenCalledWith("provider")
+    expect(api.listModels).toHaveBeenCalledWith("provider", true)
     expect(screen.getByRole("combobox", { name: "Model" })).toBeDisabled()
   })
 

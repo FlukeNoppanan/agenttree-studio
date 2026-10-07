@@ -128,12 +128,13 @@ class TemplateSetupService:
 
     @staticmethod
     def _qualified_models(database: Session, provider_id: str) -> list[ProviderModel]:
-        return list(database.scalars(select(ProviderModel).where(
+        models = database.scalars(select(ProviderModel).where(
             ProviderModel.provider_connection_id == provider_id,
             ProviderModel.is_available.is_(True),
             ProviderModel.generation_candidate.is_(True),
             ProviderModel.qualification_status == "qualified",
-        ).order_by(ProviderModel.model_id)).all())
+        ).order_by(ProviderModel.model_id)).all()
+        return [model for model in models if ProviderService.model_status(model) == "qualified"]
 
     def _validate_binding(self, provider_id: str | None, model_id: str | None) -> None:
         if provider_id is None and model_id is None:
@@ -150,7 +151,7 @@ class TemplateSetupService:
             ProviderModel.generation_candidate.is_(True),
             ProviderModel.qualification_status == "qualified",
         ))
-        if model is None:
+        if model is None or ProviderService.model_status(model) != "qualified":
             raise ServiceError("Choose a discovered, verified model that supports generation")
 
     def bind_agent(

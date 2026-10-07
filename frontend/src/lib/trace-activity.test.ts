@@ -51,3 +51,13 @@ describe("Complete public clients",()=>{
   expect(apiResponseExamples(false)[0].value).toHaveProperty("output.content")
  })
 })
+
+describe('Provider traffic facts',()=>{
+ it('uses real waiting and quota events without inventing quota scope',()=>{
+  const items=traceActivities([event('provider.wait.started',1,{wait_seconds:9,model:'exact-model'}),event('provider.rate_limited',2,{category:'rate_limit',rate_limit:{kind:'unknown',scope:'unknown'}}),event('provider.wait.resumed',3)])
+  expect(items.map(i=>i.key)).toEqual(['trafficwait_started','trafficrate_limited','trafficwait_resumed'])
+  expect(items[0].context).toContainEqual(['wait','9'])
+  expect(items[1].context).toContainEqual(['limitKind','unknown'])
+  expect(items[1].context).toContainEqual(['limitScope','unknown'])
+ })
+})

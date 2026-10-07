@@ -1,0 +1,12 @@
+{
+  "local_test_import": "/home/fluke/Agenttree/src/agenttree/__init__.py",
+  "runtime_import": "/usr/local/lib/python3.12/site-packages/agenttree",
+  "runtime_matches_dirty_checkout": true,
+  "sha256": {
+    "core/structured_output.py": "9eff16843d1b173e6f5f5302595d0166afc0444d7f8a521cdd828d3021b4667e",
+    "providers/_adapter.py": "10e3b24817a8b59d1806c557fad99e3fab4e3b83ea980dc18a3982f6ac40f753",
+    "providers/compatible.py": "70c7ea83fec56549da00231219d7493b311ac3018b5eb82b1a52dd5c177facb2",
+    "providers/exceptions.py": "f55ae9f4d9a509c5e65ba5bd2905e2791ff4c5412927c19e4e569bf8e4787788",
+    "providers/gemini.py": "510cdd5fee88abe494fe3d9a34913ef45325ac13f392fbf31ec95fcabdc45365"
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "agent_configs": {
+    "initial_count": 42,
+    "final_count": 42,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "api_tokens": {
+    "initial_count": 7,
+    "final_count": 7,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "output_configs": {
+    "initial_count": 10,
+    "final_count": 10,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "provider_connections": {
+    "initial_count": 2,
+    "final_count": 3,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 1
+  },
+  "provider_models": {
+    "initial_count": 6,
+    "final_count": 17,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 11
+  },
+  "result_deliveries": {
+    "initial_count": 8,
+    "final_count": 8,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "result_destinations": {
+    "initial_count": 6,
+    "final_count": 6,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "run_artifacts": {
+    "initial_count": 1,
+    "final_count": 1,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "run_idempotency": {
+    "initial_count": 0,
+    "final_count": 0,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "runs": {
+    "initial_count": 10,
+    "final_count": 10,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "secrets": {
+    "initial_count": 1,
+    "final_count": 2,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 1
+  },
+  "security_events": {
+    "initial_count": 379,
+    "final_count": 381,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 2
+  },
+  "tool_assignments": {
+    "initial_count": 35,
+    "final_count": 35,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "tool_connections": {
+    "initial_count": 4,
+    "final_count": 4,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "trace_events": {
+    "initial_count": 264,
+    "final_count": 264,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "tree_templates": {
+    "initial_count": 0,
+    "final_count": 0,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "tree_versions": {
+    "initial_count": 10,
+    "final_count": 10,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "trees": {
+    "initial_count": 3,
+    "final_count": 3,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "trigger_configs": {
+    "initial_count": 10,
+    "final_count": 10,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "user_permissions": {
+    "initial_count": 1,
+    "final_count": 1,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "user_sessions": {
+    "initial_count": 13,
+    "final_count": 13,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "user_tree_access": {
+    "initial_count": 0,
+    "final_count": 0,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "users": {
+    "initial_count": 3,
+    "final_count": 3,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  },
+  "webhook_integrations": {
+    "initial_count": 0,
+    "final_count": 0,
+    "removed_ids": [],
+    "changed_original_ids": [],
+    "added_count": 0
+  }
+}

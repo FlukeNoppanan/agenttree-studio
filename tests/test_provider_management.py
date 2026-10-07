@@ -30,6 +30,7 @@ from backend.services.errors import (
 from backend.services.model_discovery_service import ModelDiscoveryService, runtime_model_id
 from backend.services.provider_service import ProviderService
 from backend.services.secret_service import SecretService
+from test_structured_model_qualification import decision_reply
 
 
 def create_secret(database, value: str = "sk-super-secret-9X2A"):
@@ -114,7 +115,7 @@ def test_ollama_test_and_discovery_use_normalized_tags_catalog(database) -> None
                 ],
             }
         else:
-            body = {"model": json.loads(request.content)["model"], "response": "OK", "thinking": ""}
+            body = {"model": json.loads(request.content)["model"], "response": decision_reply() if json.loads(request.content).get("format") else "OK", "thinking": ""}
         return httpx.Response(200, json=body)
 
     client = httpx.Client(transport=httpx.MockTransport(respond))
@@ -148,20 +149,13 @@ def test_ollama_test_and_discovery_use_normalized_tags_catalog(database) -> None
     assert discovered.provider.models_count == 2
     assert discovered.summary.discovered_count == 2
     assert [model.model_id for model in discovered.models] == ["gemma4:e4b", "qwen3:1.7b"]
-    assert discovered.models[0].metadata == {"details": {"format": "gguf"}, "size": 400}
+    assert discovered.models[0].metadata["details"] == {"format": "gguf"}
+    assert discovered.models[0].metadata["agenttree_qualification"]["roles"]["root"] == "passed"
     assert all(model.qualification_status == "qualified" for model in discovered.models)
-    assert [(request.method, request.url.path) for request in requested] == [
-        ("GET", "/api/tags"), ("GET", "/api/tags"),
-        ("POST", "/api/generate"), ("POST", "/api/generate"),
-    ]
-    assert [str(request.url) for request in requested] == [
-        "http://127.0.0.1:11434/api/tags",
-        "http://127.0.0.1:11434/api/tags",
-        "http://127.0.0.1:11434/api/generate",
-        "http://127.0.0.1:11434/api/generate",
-    ]
+    assert [(request.method, request.url.path) for request in requested[:2]] == [("GET", "/api/tags"), ("GET", "/api/tags")]
     bodies = [json.loads(request.content) for request in requested if request.method == "POST"]
-    assert [body["model"] for body in bodies] == ["gemma4:e4b", "qwen3:1.7b"]
+    assert len(bodies) == 14
+    assert all(body["model"] in {"gemma4:e4b", "qwen3:1.7b"} for body in bodies)
     assert all(body["think"] is False and body["stream"] is False for body in bodies)
     assert all(options["timeout"] == 120.0 and options["trust_env"] is False for options in client_options)
 
@@ -178,7 +172,7 @@ def test_qwen3_thinking_only_response_does_not_fail_other_ollama_models(database
         generation_requests.append(body)
         if body["model"] == "gemma4:e4b":
             return httpx.Response(200, json={
-                "model": "gemma4:e4b", "response": "OK", "thinking": "", "done": True,
+                "model": "gemma4:e4b", "response": decision_reply() if json.loads(request.content).get("format") else "OK", "thinking": "", "done": True,
             })
         return httpx.Response(200, json={
             "model": "qwen3:1.7b", "response": "", "thinking": "private reasoning text", "done": True,
@@ -209,7 +203,7 @@ def test_qwen3_thinking_only_response_does_not_fail_other_ollama_models(database
     assert qwen.model.qualification_error_code == "incompatible_response"
     assert qwen.model.qualification_message == "Incompatible response — no final text was returned"
     assert "private reasoning text" not in qwen.model.model_dump_json()
-    assert [item["model"] for item in generation_requests] == ["gemma4:e4b", "qwen3:1.7b"]
+    assert [item["model"] for item in generation_requests] == ["gemma4:e4b"] * 7 + ["qwen3:1.7b"]
     assert all(item["think"] is False and item["stream"] is False for item in generation_requests)
     assert ProviderService(database).get(provider.id).models_count == 1
 
@@ -224,7 +218,7 @@ def test_qwen3_verifies_when_ollama_thinking_is_disabled(database) -> None:
         generation_requests.append(body)
         if body.get("think") is False:
             return httpx.Response(200, json={
-                "model": "qwen3:1.7b", "response": "OK", "thinking": "", "done": True,
+                "model": "qwen3:1.7b", "response": decision_reply() if json.loads(request.content).get("format") else "OK", "thinking": "", "done": True,
             })
         return httpx.Response(200, json={
             "model": "qwen3:1.7b", "response": "", "thinking": "private reasoning text", "done": True,
@@ -245,7 +239,7 @@ def test_qwen3_verifies_when_ollama_thinking_is_disabled(database) -> None:
     service.discover_catalog(provider.id)
     result = service.verify_model(provider.id, "qwen3:1.7b")
 
-    assert generation_requests == [{
+    assert generation_requests[:1] == [{
         "model": "qwen3:1.7b",
         "prompt": "Reply with exactly OK. Do not explain.",
         "stream": False,
@@ -254,7 +248,8 @@ def test_qwen3_verifies_when_ollama_thinking_is_disabled(database) -> None:
     }]
     assert result.provider.status == "connected"
     assert result.model.qualification_status == "qualified"
-    assert result.model.qualification_message == "Ready to use"
+    assert result.model.qualification_message == "AgentTree decision checks passed"
+    assert len(generation_requests) == 7
     assert result.provider.models_count == 1
 
 
@@ -384,9 +379,9 @@ def test_ollama_generation_client_proxy_policy(base_url, expected_trust_env) -> 
 
     provider = create_generation_provider(connection, "gemma4:e4b", None)
     try:
-        assert provider._client._client._trust_env is expected_trust_env
+        assert provider.delegate._client._client._trust_env is expected_trust_env
     finally:
-        provider._client.close()
+        provider.delegate._client.close()
 
 
 @pytest.mark.parametrize(("provider_type", "expected_type"), (
@@ -405,7 +400,9 @@ def test_phase8a_provider_types_resolve_to_core_adapters(
     ))
     connection = database.get(ProviderConnection, created.id)
     provider = create_generation_provider(connection, "exact-model-id", "fixture-secret")
-    assert isinstance(provider, expected_type)
+    from agenttree.providers.traffic import GovernedProvider
+    assert isinstance(provider, GovernedProvider)
+    assert isinstance(provider.delegate, expected_type)
     assert provider.config.model == "exact-model-id"
 
 
@@ -459,7 +456,7 @@ def test_model_discovery_stores_and_returns_models(database) -> None:
         generation_factory=lambda connection, model_id, credential, provider_name: type(
             "WorkingProvider", (),
             {"generate": lambda self, request: ProviderResponse(
-                content="OK", model=model_id, provider=provider_name or "test",
+                content=decision_reply() if request.metadata.get("strategy") or "Return JSON" in request.prompt else "OK", model=model_id, provider=provider_name or "test",
             )},
         )(),
     )
@@ -468,7 +465,8 @@ def test_model_discovery_stores_and_returns_models(database) -> None:
     assert result.provider.status == "connected"
     assert result.provider.models_count == 2
     assert [model.model_id for model in result.models] == ["model-a", "model-z"]
-    assert result.models[1].metadata == {"owned_by": "test"}
+    assert result.models[1].metadata["owned_by"] == "test"
+    assert result.models[1].metadata["agenttree_qualification"]["generation"] == "passed"
 
     stored = ProviderService(database).models(provider.id)
     assert stored == result.models
@@ -488,7 +486,7 @@ def test_gemini_2_native_id_is_preserved_and_qualified_by_real_generation_contra
     class WorkingProvider:
         def generate(self, request):
             captured.append(request.model or "")
-            return ProviderResponse(content="OK", provider="Gemini", model=request.model)
+            return ProviderResponse(content=decision_reply() if request.metadata.get("strategy") or "Return JSON" in request.prompt else "OK", provider="Gemini", model=request.model)
 
     result = ModelDiscoveryService(
         database,

@@ -40,7 +40,9 @@ def test_fresh_admin_has_no_fabricated_progress(database, monkeypatch):
     assert result.runnable_tree_id is None
 
 
-def test_provider_requires_connected_and_verified_generation_model(database, monkeypatch):
+def test_provider_requires_connected_and_verified_decision_model(database, monkeypatch):
+    import json
+    from test_structured_model_qualification import ProbeProvider, qualify_decisions
     account(database, monkeypatch, ["manage_providers_models"])
     provider = ProviderConnection(name="AI", provider_type="gemini", status="error")
     database.add(provider); database.flush()
@@ -49,6 +51,9 @@ def test_provider_requires_connected_and_verified_generation_model(database, mon
     database.add(model); database.commit()
     assert facts(database).provider_ready is False
     provider.status = "connected"; database.commit()
+    assert facts(database).provider_ready is False  # Legacy OK-only evidence.
+    model.metadata_json = json.dumps({"agenttree_qualification": qualify_decisions(ProbeProvider())})
+    database.commit()
     assert facts(database).provider_ready is True
     model.qualification_status = "unknown"; database.commit()
     assert facts(database).provider_ready is False

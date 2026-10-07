@@ -15,6 +15,7 @@ from backend.models.tool import ToolConnection
 from backend.models.tree import Tree
 from backend.services.auth_service import AuthService
 from backend.services.dashboard_service import DashboardService
+from backend.services.provider_service import ProviderService
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 
@@ -43,10 +44,13 @@ def my_dashboard(request: Request, database: Session = Depends(get_db)) -> MyDas
     accessible_ids = {tree.id for tree in accessible}
     result.onboarding.runnable_tree_id = next((tree.id for tree in result.onboarding.trees if tree.ready and tree.id in accessible_ids), None)
     if can("manage_providers_models"):
-        result.onboarding.provider_ready = bool(database.scalar(select(ProviderModel.id).join(ProviderConnection).where(
-            ProviderConnection.status == "connected", ProviderModel.is_available.is_(True),
+        candidates = database.execute(select(ProviderModel, ProviderConnection.status).join(ProviderConnection).where(
+            ProviderModel.is_available.is_(True),
             ProviderModel.generation_candidate.is_(True), ProviderModel.qualification_status == "qualified",
-        ).limit(1)))
+        )).all()
+        ready = [(model, status) for model, status in candidates if ProviderService.model_status(model) == "qualified"]
+        result.onboarding.provider_ready = any(status == "connected" for _, status in ready)
+        result.ready_models_count = len(ready)
     if can("view_executions"):
         completed = select(Run.id).where(Run.status == "completed", Run.tree_id.in_(accessible_ids)).order_by(Run.started_at.desc())
         if not user.is_admin:
@@ -64,9 +68,6 @@ def my_dashboard(request: Request, database: Session = Depends(get_db)) -> MyDas
             result.trees_count = len(trees)
     if can("manage_providers_models"):
         result.providers_count = database.scalar(select(func.count()).select_from(ProviderConnection)) or 0
-        result.ready_models_count = database.scalar(select(func.count()).select_from(ProviderModel).where(
-            ProviderModel.is_available.is_(True), ProviderModel.generation_candidate.is_(True),
-            ProviderModel.qualification_status == "qualified")) or 0
     if can("manage_tools_mcp"):
         result.tools_count = database.scalar(select(func.count()).select_from(ToolConnection)) or 0
     if can("manage_secrets"):

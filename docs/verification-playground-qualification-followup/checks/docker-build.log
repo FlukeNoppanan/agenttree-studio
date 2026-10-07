@@ -1,0 +1,585 @@
+ Image agenttree-studio-backend Building
+ Image agenttree-studio-frontend Building
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.12kB done
+#1 DONE 0.0s
+
+#2 [frontend internal] load build definition from Dockerfile
+#2 transferring dockerfile: 344B done
+#2 DONE 0.0s
+
+#3 [backend internal] load build definition from Dockerfile
+#3 transferring dockerfile: 1.53kB done
+#3 DONE 0.0s
+
+#4 [backend context agenttree_core] load .dockerignore
+#4 transferring agenttree_core: 2B done
+#4 DONE 0.0s
+
+#5 [backend internal] load metadata for docker.io/library/node:24-bookworm-slim
+#5 DONE 1.7s
+
+#6 [frontend internal] load .dockerignore
+#6 transferring context: 320B done
+#6 DONE 0.0s
+
+#7 [frontend 1/7] FROM docker.io/library/node:24-bookworm-slim@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6
+#7 resolve docker.io/library/node:24-bookworm-slim@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6 0.0s done
+#7 DONE 0.0s
+
+#8 [frontend 2/7] WORKDIR /app
+#8 CACHED
+
+#9 [frontend internal] load build context
+#9 transferring context: 1.21MB 0.0s done
+#9 DONE 0.0s
+
+#10 [frontend 3/7] COPY frontend/package.json frontend/package-lock.json ./
+#10 DONE 0.0s
+
+#11 [frontend 4/7] RUN npm ci
+#11 ...
+
+#12 [backend internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#12 DONE 1.9s
+
+#6 [backend internal] load .dockerignore
+#6 transferring context: 320B done
+#6 DONE 0.0s
+
+#13 [backend stage-1  1/16] FROM docker.io/library/python:3.12-slim-bookworm@sha256:54c85f3c47607a77f32adec749d3c81d1348bf25833671f512b26a9b6d778cb3
+#13 resolve docker.io/library/python:3.12-slim-bookworm@sha256:54c85f3c47607a77f32adec749d3c81d1348bf25833671f512b26a9b6d778cb3 0.0s done
+#13 CACHED
+
+#7 [frontend 1/7] FROM docker.io/library/node:24-bookworm-slim@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6
+#7 resolve docker.io/library/node:24-bookworm-slim@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6 0.0s done
+#7 CACHED
+
+#14 [backend context agenttree_core] load from client
+#14 transferring agenttree_core: 65B done
+#14 DONE 0.0s
+
+#15 [backend internal] load build context
+#15 transferring context: 53.70kB done
+#15 DONE 0.0s
+
+#16 [backend context agenttree_core] load from client
+#16 transferring agenttree_core: 26.58kB done
+#16 DONE 0.0s
+
+#17 [backend stage-1  2/16] RUN apt-get update     && apt-get install --no-install-recommends -y git ca-certificates libstdc++6 libatomic1     && rm -rf /var/lib/apt/lists/*
+#17 0.257 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#17 0.282 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#17 0.287 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#17 0.340 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8790 kB]
+#17 0.567 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#17 0.567 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [346 kB]
+#17 1.271 Fetched 9384 kB in 1s (8401 kB/s)
+#17 1.271 Reading package lists...
+#17 1.745 Reading package lists...
+#17 2.153 Building dependency tree...
+#17 2.251 Reading state information...
+#17 2.367 ca-certificates is already the newest version (20250419~deb12u1).
+#17 2.367 libstdc++6 is already the newest version (12.2.0-14+deb12u1).
+#17 2.367 libstdc++6 set to manually installed.
+#17 2.367 The following additional packages will be installed:
+#17 2.367   git-man libbrotli1 libcurl3-gnutls liberror-perl libexpat1 libgdbm-compat4
+#17 2.367   libldap-2.5-0 libnghttp2-14 libperl5.36 libpsl5 librtmp1 libsasl2-2
+#17 2.367   libsasl2-modules-db libssh2-1 perl perl-modules-5.36
+#17 2.369 Suggested packages:
+#17 2.369   gettext-base git-daemon-run | git-daemon-sysvinit git-doc git-email git-gui
+#17 2.369   gitk gitweb git-cvs git-mediawiki git-svn sensible-utils perl-doc
+#17 2.369   libterm-readline-gnu-perl | libterm-readline-perl-perl make
+#17 2.369   libtap-harness-archive-perl
+#17 2.369 Recommended packages:
+#17 2.369   patch less ssh-client libldap-common publicsuffix libsasl2-modules
+#17 2.469 The following NEW packages will be installed:
+#17 2.469   git git-man libatomic1 libbrotli1 libcurl3-gnutls liberror-perl libexpat1
+#17 2.470   libgdbm-compat4 libldap-2.5-0 libnghttp2-14 libperl5.36 libpsl5 librtmp1
+#17 2.470   libsasl2-2 libsasl2-modules-db libssh2-1 perl perl-modules-5.36
+#17 2.505 0 upgraded, 18 newly installed, 0 to remove and 1 not upgraded.
+#17 2.505 Need to get 18.1 MB of archives.
+#17 2.505 After this operation, 101 MB of additional disk space will be used.
+#17 2.505 Get:1 http://deb.debian.org/debian bookworm/main amd64 perl-modules-5.36 all 5.36.0-7+deb12u3 [2815 kB]
+#17 2.569 Get:2 http://deb.debian.org/debian bookworm/main amd64 libgdbm-compat4 amd64 1.23-3 [48.2 kB]
+#17 2.576 Get:3 http://deb.debian.org/debian bookworm/main amd64 libperl5.36 amd64 5.36.0-7+deb12u3 [4196 kB]
+#17 2.647 Get:4 http://deb.debian.org/debian bookworm/main amd64 perl amd64 5.36.0-7+deb12u3 [239 kB]
+#17 2.670 Get:5 http://deb.debian.org/debian bookworm/main amd64 libbrotli1 amd64 1.0.9-2+b6 [275 kB]
+#17 2.685 Get:6 http://deb.debian.org/debian bookworm/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg-10 [20.3 kB]
+#17 2.686 Get:7 http://deb.debian.org/debian bookworm/main amd64 libsasl2-2 amd64 2.1.28+dfsg-10 [59.7 kB]
+#17 2.692 Get:8 http://deb.debian.org/debian bookworm/main amd64 libldap-2.5-0 amd64 2.5.13+dfsg-5 [183 kB]
+#17 2.706 Get:9 http://deb.debian.org/debian bookworm/main amd64 libnghttp2-14 amd64 1.52.0-1+deb12u3 [72.4 kB]
+#17 2.706 Get:10 http://deb.debian.org/debian bookworm/main amd64 libpsl5 amd64 0.21.2-1 [58.7 kB]
+#17 2.708 Get:11 http://deb.debian.org/debian bookworm/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2+b2 [60.8 kB]
+#17 2.713 Get:12 http://deb.debian.org/debian-security bookworm-security/main amd64 libssh2-1 amd64 1.10.0-3+deb12u1 [176 kB]
+#17 2.720 Get:13 http://deb.debian.org/debian bookworm/main amd64 libcurl3-gnutls amd64 7.88.1-10+deb12u15 [386 kB]
+#17 2.755 Get:14 http://deb.debian.org/debian-security bookworm-security/main amd64 libexpat1 amd64 2.5.0-1+deb12u4 [106 kB]
+#17 2.762 Get:15 http://deb.debian.org/debian bookworm/main amd64 liberror-perl all 0.17029-2 [29.0 kB]
+#17 2.764 Get:16 http://deb.debian.org/debian bookworm/main amd64 git-man all 1:2.39.5-0+deb12u3 [2053 kB]
+#17 3.018 Get:17 http://deb.debian.org/debian bookworm/main amd64 git amd64 1:2.39.5-0+deb12u3 [7264 kB]
+#17 3.566 Get:18 http://deb.debian.org/debian bookworm/main amd64 libatomic1 amd64 12.2.0-14+deb12u1 [9376 B]
+#17 ...
+
+#11 [frontend 4/7] RUN npm ci
+#11 3.479
+#11 3.479 added 218 packages, and audited 219 packages in 3s
+#11 3.479
+#11 3.479 29 packages are looking for funding
+#11 3.479   run `npm fund` for details
+#11 3.480
+#11 3.480 found 0 vulnerabilities
+#11 3.481 npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+#11 3.481 npm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)
+#11 3.481 npm warn install-scripts
+#11 3.481 npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+#11 3.482 npm notice
+#11 3.482 npm notice New major version of npm available! 11.19.0 -> 12.2.0
+#11 3.482 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+#11 3.482 npm notice To update run: npm install -g npm@12.2.0
+#11 3.482 npm notice
+#11 DONE 3.8s
+
+#17 [backend stage-1  2/16] RUN apt-get update     && apt-get install --no-install-recommends -y git ca-certificates libstdc++6 libatomic1     && rm -rf /var/lib/apt/lists/*
+#17 3.725 debconf: delaying package configuration, since apt-utils is not installed
+#17 ...
+
+#18 [frontend 5/7] COPY frontend/index.html frontend/vite.config.ts frontend/tsconfig*.json ./
+#18 DONE 0.1s
+
+#19 [frontend 6/7] COPY frontend/src ./src
+#19 DONE 0.0s
+
+#20 [frontend 7/7] COPY frontend/public ./public
+#20 DONE 0.0s
+
+#17 [backend stage-1  2/16] RUN apt-get update     && apt-get install --no-install-recommends -y git ca-certificates libstdc++6 libatomic1     && rm -rf /var/lib/apt/lists/*
+#17 3.757 Fetched 18.1 MB in 1s (16.5 MB/s)
+#17 3.781 Selecting previously unselected package perl-modules-5.36.
+#17 3.781 (Reading database ...
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 6703 files and directories currently installed.)
+#17 3.817 Preparing to unpack .../00-perl-modules-5.36_5.36.0-7+deb12u3_all.deb ...
+#17 3.821 Unpacking perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#17 4.060 Selecting previously unselected package libgdbm-compat4:amd64.
+#17 4.061 Preparing to unpack .../01-libgdbm-compat4_1.23-3_amd64.deb ...
+#17 4.067 Unpacking libgdbm-compat4:amd64 (1.23-3) ...
+#17 4.097 Selecting previously unselected package libperl5.36:amd64.
+#17 4.099 Preparing to unpack .../02-libperl5.36_5.36.0-7+deb12u3_amd64.deb ...
+#17 4.102 Unpacking libperl5.36:amd64 (5.36.0-7+deb12u3) ...
+#17 4.353 Selecting previously unselected package perl.
+#17 4.354 Preparing to unpack .../03-perl_5.36.0-7+deb12u3_amd64.deb ...
+#17 4.363 Unpacking perl (5.36.0-7+deb12u3) ...
+#17 4.400 Selecting previously unselected package libbrotli1:amd64.
+#17 4.401 Preparing to unpack .../04-libbrotli1_1.0.9-2+b6_amd64.deb ...
+#17 4.404 Unpacking libbrotli1:amd64 (1.0.9-2+b6) ...
+#17 4.441 Selecting previously unselected package libsasl2-modules-db:amd64.
+#17 4.443 Preparing to unpack .../05-libsasl2-modules-db_2.1.28+dfsg-10_amd64.deb ...
+#17 4.445 Unpacking libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#17 4.470 Selecting previously unselected package libsasl2-2:amd64.
+#17 4.471 Preparing to unpack .../06-libsasl2-2_2.1.28+dfsg-10_amd64.deb ...
+#17 4.474 Unpacking libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#17 4.506 Selecting previously unselected package libldap-2.5-0:amd64.
+#17 4.507 Preparing to unpack .../07-libldap-2.5-0_2.5.13+dfsg-5_amd64.deb ...
+#17 4.510 Unpacking libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#17 4.544 Selecting previously unselected package libnghttp2-14:amd64.
+#17 4.546 Preparing to unpack .../08-libnghttp2-14_1.52.0-1+deb12u3_amd64.deb ...
+#17 4.550 Unpacking libnghttp2-14:amd64 (1.52.0-1+deb12u3) ...
+#17 4.577 Selecting previously unselected package libpsl5:amd64.
+#17 4.578 Preparing to unpack .../09-libpsl5_0.21.2-1_amd64.deb ...
+#17 4.581 Unpacking libpsl5:amd64 (0.21.2-1) ...
+#17 4.609 Selecting previously unselected package librtmp1:amd64.
+#17 4.610 Preparing to unpack .../10-librtmp1_2.4+20151223.gitfa8646d.1-2+b2_amd64.deb ...
+#17 4.613 Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#17 4.642 Selecting previously unselected package libssh2-1:amd64.
+#17 4.644 Preparing to unpack .../11-libssh2-1_1.10.0-3+deb12u1_amd64.deb ...
+#17 4.646 Unpacking libssh2-1:amd64 (1.10.0-3+deb12u1) ...
+#17 4.686 Selecting previously unselected package libcurl3-gnutls:amd64.
+#17 4.688 Preparing to unpack .../12-libcurl3-gnutls_7.88.1-10+deb12u15_amd64.deb ...
+#17 4.691 Unpacking libcurl3-gnutls:amd64 (7.88.1-10+deb12u15) ...
+#17 4.735 Selecting previously unselected package libexpat1:amd64.
+#17 4.737 Preparing to unpack .../13-libexpat1_2.5.0-1+deb12u4_amd64.deb ...
+#17 4.739 Unpacking libexpat1:amd64 (2.5.0-1+deb12u4) ...
+#17 4.768 Selecting previously unselected package liberror-perl.
+#17 4.769 Preparing to unpack .../14-liberror-perl_0.17029-2_all.deb ...
+#17 4.772 Unpacking liberror-perl (0.17029-2) ...
+#17 4.798 Selecting previously unselected package git-man.
+#17 4.799 Preparing to unpack .../15-git-man_1%3a2.39.5-0+deb12u3_all.deb ...
+#17 4.802 Unpacking git-man (1:2.39.5-0+deb12u3) ...
+#17 4.900 Selecting previously unselected package git.
+#17 4.901 Preparing to unpack .../16-git_1%3a2.39.5-0+deb12u3_amd64.deb ...
+#17 4.909 Unpacking git (1:2.39.5-0+deb12u3) ...
+#17 5.166 Selecting previously unselected package libatomic1:amd64.
+#17 5.167 Preparing to unpack .../17-libatomic1_12.2.0-14+deb12u1_amd64.deb ...
+#17 5.170 Unpacking libatomic1:amd64 (12.2.0-14+deb12u1) ...
+#17 5.199 Setting up libexpat1:amd64 (2.5.0-1+deb12u4) ...
+#17 5.206 Setting up libpsl5:amd64 (0.21.2-1) ...
+#17 5.214 Setting up libbrotli1:amd64 (1.0.9-2+b6) ...
+#17 5.222 Setting up libnghttp2-14:amd64 (1.52.0-1+deb12u3) ...
+#17 5.230 Setting up libsasl2-modules-db:amd64 (2.1.28+dfsg-10) ...
+#17 5.237 Setting up perl-modules-5.36 (5.36.0-7+deb12u3) ...
+#17 5.245 Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#17 5.252 Setting up libatomic1:amd64 (12.2.0-14+deb12u1) ...
+#17 5.261 Setting up libgdbm-compat4:amd64 (1.23-3) ...
+#17 5.269 Setting up libsasl2-2:amd64 (2.1.28+dfsg-10) ...
+#17 5.277 Setting up git-man (1:2.39.5-0+deb12u3) ...
+#17 5.285 Setting up libssh2-1:amd64 (1.10.0-3+deb12u1) ...
+#17 5.293 Setting up libperl5.36:amd64 (5.36.0-7+deb12u3) ...
+#17 5.301 Setting up libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#17 5.309 Setting up perl (5.36.0-7+deb12u3) ...
+#17 5.327 Setting up libcurl3-gnutls:amd64 (7.88.1-10+deb12u15) ...
+#17 5.335 Setting up liberror-perl (0.17029-2) ...
+#17 5.343 Setting up git (1:2.39.5-0+deb12u3) ...
+#17 5.361 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#17 DONE 5.5s
+
+#21 [frontend] exporting to image
+#21 exporting layers
+#21 ...
+
+#22 [backend stage-1  3/16] COPY --from=node-runtime /usr/local/bin/node /usr/local/bin/node
+#22 DONE 0.4s
+
+#23 [backend stage-1  4/16] COPY --from=node-runtime /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/npm
+#23 DONE 0.2s
+
+#21 [frontend] exporting to image
+#21 ...
+
+#24 [backend stage-1  5/16] RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm     && ln -s /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+#24 DONE 0.1s
+
+#25 [backend stage-1  6/16] WORKDIR /app
+#25 DONE 0.0s
+
+#26 [backend stage-1  7/16] COPY requirements-base.txt requirements-docker.txt ./
+#26 DONE 0.0s
+
+#27 [backend stage-1  8/16] RUN pip install -r requirements-docker.txt
+#27 1.027 Collecting agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99 (from agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 1.027   Cloning https://github.com/FlukeNoppanan/Agenttree.git (to revision 1f9649e4f9c10bc38defdf1e3fef70bebf95df99) to /tmp/pip-install-cx9gkv72/agenttree_a48d8b965ec645fe993b70f4efa41aee
+#27 1.029   Running command git clone --filter=blob:none --quiet https://github.com/FlukeNoppanan/Agenttree.git /tmp/pip-install-cx9gkv72/agenttree_a48d8b965ec645fe993b70f4efa41aee
+#27 2.899   Running command git rev-parse -q --verify 'sha^1f9649e4f9c10bc38defdf1e3fef70bebf95df99'
+#27 2.901   Running command git fetch -q https://github.com/FlukeNoppanan/Agenttree.git 1f9649e4f9c10bc38defdf1e3fef70bebf95df99
+#27 3.543   Running command git checkout -q 1f9649e4f9c10bc38defdf1e3fef70bebf95df99
+#27 ...
+
+#21 [frontend] exporting to image
+#21 exporting layers 5.1s done
+#21 exporting manifest sha256:07addb0173d750aff69959faaaba594c6e44d21d1bde0ee443091b72769bbdf7 0.0s done
+#21 exporting config sha256:486f39d8bc2039435478a102afa557cb844e916b0a407ae3dba135e25d349e73 0.0s done
+#21 exporting attestation manifest sha256:5599226b9049df9e6ca5163d8f3a5bff9f7df3e4a9c70c2918e696d8eebd85b9 0.0s done
+#21 exporting manifest list sha256:c762a8053e1d0c9c900f142e44e9cd22cb4aa78338e743428e97198d44b995a7 done
+#21 naming to docker.io/library/agenttree-studio-frontend:latest done
+#21 unpacking to docker.io/library/agenttree-studio-frontend:latest 1.4s done
+#21 DONE 6.6s
+
+#28 [frontend] resolving provenance for metadata file
+#28 DONE 0.0s
+
+#27 [backend stage-1  8/16] RUN pip install -r requirements-docker.txt
+#27 4.260   Resolved https://github.com/FlukeNoppanan/Agenttree.git to commit 1f9649e4f9c10bc38defdf1e3fef70bebf95df99
+#27 4.263   Installing build dependencies: started
+#27 6.261   Installing build dependencies: finished with status 'done'
+#27 6.261   Getting requirements to build wheel: started
+#27 6.692   Getting requirements to build wheel: finished with status 'done'
+#27 6.694   Preparing metadata (pyproject.toml): started
+#27 7.074   Preparing metadata (pyproject.toml): finished with status 'done'
+#27 7.332 Collecting fastapi<1,>=0.115 (from -r /app/requirements-base.txt (line 2))
+#27 7.437   Downloading fastapi-0.142.2-py3-none-any.whl.metadata (27 kB)
+#27 7.497 Collecting uvicorn<1,>=0.30 (from uvicorn[standard]<1,>=0.30->-r /app/requirements-base.txt (line 3))
+#27 7.509   Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+#27 7.636 Collecting pydantic<3,>=2.9 (from -r /app/requirements-base.txt (line 4))
+#27 7.646   Downloading pydantic-2.13.5-py3-none-any.whl.metadata (110 kB)
+#27 7.877 Collecting SQLAlchemy<3,>=2.0 (from -r /app/requirements-base.txt (line 5))
+#27 7.890   Downloading sqlalchemy-2.1.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (9.7 kB)
+#27 7.939 Collecting alembic<2,>=1.14 (from -r /app/requirements-base.txt (line 6))
+#27 7.950   Downloading alembic-1.20.0-py3-none-any.whl.metadata (7.3 kB)
+#27 8.075 Collecting cryptography<47,>=44 (from -r /app/requirements-base.txt (line 7))
+#27 8.084   Downloading cryptography-46.0.7-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (5.7 kB)
+#27 8.128 Collecting argon2-cffi<26,>=23.1 (from -r /app/requirements-base.txt (line 8))
+#27 8.138   Downloading argon2_cffi-25.1.0-py3-none-any.whl.metadata (4.1 kB)
+#27 8.181 Collecting httpx<1,>=0.28 (from -r /app/requirements-base.txt (line 9))
+#27 8.189   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#27 8.232 Collecting psycopg<4,>=3.2 (from psycopg[binary]<4,>=3.2->-r /app/requirements-base.txt (line 10))
+#27 8.240   Downloading psycopg-3.3.6-py3-none-any.whl.metadata (4.4 kB)
+#27 8.293 Collecting pytest<10,>=8 (from -r /app/requirements-base.txt (line 11))
+#27 8.304   Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+#27 8.354 Collecting starlette>=0.46.0 (from fastapi<1,>=0.115->-r /app/requirements-base.txt (line 2))
+#27 8.363   Downloading starlette-1.7.0-py3-none-any.whl.metadata (6.6 kB)
+#27 8.405 Collecting typing-extensions>=4.8.0 (from fastapi<1,>=0.115->-r /app/requirements-base.txt (line 2))
+#27 8.414   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#27 8.450 Collecting typing-inspection>=0.4.2 (from fastapi<1,>=0.115->-r /app/requirements-base.txt (line 2))
+#27 8.458   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+#27 8.494 Collecting annotated-doc>=0.0.2 (from fastapi<1,>=0.115->-r /app/requirements-base.txt (line 2))
+#27 8.502   Downloading annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+#27 8.544 Collecting opentelemetry-api>=1.44.0 (from fastapi<1,>=0.115->-r /app/requirements-base.txt (line 2))
+#27 8.553   Downloading opentelemetry_api-1.45.0-py3-none-any.whl.metadata (1.4 kB)
+#27 8.595 Collecting click>=7.0 (from uvicorn<1,>=0.30->uvicorn[standard]<1,>=0.30->-r /app/requirements-base.txt (line 3))
+#27 8.603   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+#27 8.640 Collecting h11>=0.8 (from uvicorn<1,>=0.30->uvicorn[standard]<1,>=0.30->-r /app/requirements-base.txt (line 3))
+#27 8.648   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#27 8.687 Collecting annotated-types>=0.6.0 (from pydantic<3,>=2.9->-r /app/requirements-base.txt (line 4))
+#27 8.695   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+#27 9.123 Collecting pydantic-core==2.46.5 (from pydantic<3,>=2.9->-r /app/requirements-base.txt (line 4))
+#27 9.131   Downloading pydantic_core-2.46.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+#27 9.177 Collecting Mako (from alembic<2,>=1.14->-r /app/requirements-base.txt (line 6))
+#27 9.426   Downloading mako-1.4.3-py3-none-any.whl.metadata (2.9 kB)
+#27 9.543 Collecting cffi>=2.0.0 (from cryptography<47,>=44->-r /app/requirements-base.txt (line 7))
+#27 9.555   Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.5 kB)
+#27 9.595 Collecting argon2-cffi-bindings (from argon2-cffi<26,>=23.1->-r /app/requirements-base.txt (line 8))
+#27 9.605   Downloading argon2_cffi_bindings-26.1.0-cp310-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl.metadata (7.5 kB)
+#27 9.652 Collecting anyio (from httpx<1,>=0.28->-r /app/requirements-base.txt (line 9))
+#27 9.660   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+#27 9.702 Collecting certifi (from httpx<1,>=0.28->-r /app/requirements-base.txt (line 9))
+#27 9.711   Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+#27 9.753 Collecting httpcore==1.* (from httpx<1,>=0.28->-r /app/requirements-base.txt (line 9))
+#27 9.761   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#27 9.801 Collecting idna (from httpx<1,>=0.28->-r /app/requirements-base.txt (line 9))
+#27 9.810   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#27 9.850 Collecting iniconfig>=1.0.1 (from pytest<10,>=8->-r /app/requirements-base.txt (line 11))
+#27 9.859   Downloading iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+#27 9.900 Collecting packaging>=22 (from pytest<10,>=8->-r /app/requirements-base.txt (line 11))
+#27 9.910   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+#27 9.947 Collecting pluggy<2,>=1.5 (from pytest<10,>=8->-r /app/requirements-base.txt (line 11))
+#27 9.957   Downloading pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+#27 10.00 Collecting pygments>=2.7.2 (from pytest<10,>=8->-r /app/requirements-base.txt (line 11))
+#27 10.01   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+#27 10.12 Collecting psycopg-binary==3.3.6 (from psycopg[binary]<4,>=3.2->-r /app/requirements-base.txt (line 10))
+#27 10.13   Downloading psycopg_binary-3.3.6-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.7 kB)
+#27 10.18 Collecting httptools>=0.8.0 (from uvicorn[standard]<1,>=0.30->-r /app/requirements-base.txt (line 3))
+#27 10.19   Downloading httptools-0.8.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (3.5 kB)
+#27 10.23 Collecting python-dotenv>=0.13 (from uvicorn[standard]<1,>=0.30->-r /app/requirements-base.txt (line 3))
+#27 10.24   Downloading python_dotenv-1.2.4-py3-none-any.whl.metadata (29 kB)
+#27 10.29 Collecting pyyaml>=5.1 (from uvicorn[standard]<1,>=0.30->-r /app/requirements-base.txt (line 3))
+#27 10.30   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+#27 10.35 Collecting uvloop>=0.15.1 (from uvicorn[standard]<1,>=0.30->-r /app/requirements-base.txt (line 3))
+#27 10.36   Downloading uvloop-0.23.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (5.1 kB)
+#27 10.43 Collecting watchfiles>=0.20 (from uvicorn[standard]<1,>=0.30->-r /app/requirements-base.txt (line 3))
+#27 10.44   Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+#27 10.52 Collecting websockets>=13.0 (from uvicorn[standard]<1,>=0.30->-r /app/requirements-base.txt (line 3))
+#27 10.53   Downloading websockets-17.2-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.3 kB)
+#27 10.57 Collecting mcp<2,>=1.29.1 (from agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 10.58   Downloading mcp-1.30.0-py3-none-any.whl.metadata (9.3 kB)
+#27 10.69 Collecting openai<3,>=1.66 (from agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 10.70   Downloading openai-2.54.0-py3-none-any.whl.metadata (40 kB)
+#27 10.75 Collecting google-genai<2,>=1 (from agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 10.76   Downloading google_genai-1.75.0-py3-none-any.whl.metadata (52 kB)
+#27 10.81 Collecting ollama<1,>=0.4 (from agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 10.82   Downloading ollama-0.6.3-py3-none-any.whl.metadata (7.6 kB)
+#27 10.86 Collecting pycparser (from cffi>=2.0.0->cryptography<47,>=44->-r /app/requirements-base.txt (line 7))
+#27 10.86   Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+#27 10.93 Collecting google-auth<3.0.0,>=2.48.1 (from google-auth[requests]<3.0.0,>=2.48.1->google-genai<2,>=1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 10.93   Downloading google_auth-2.59.1-py3-none-any.whl.metadata (6.0 kB)
+#27 10.99 Collecting requests<3.0.0,>=2.28.1 (from google-genai<2,>=1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 11.00   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+#27 11.05 Collecting tenacity<9.2.0,>=8.2.3 (from google-genai<2,>=1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 11.05   Downloading tenacity-9.1.4-py3-none-any.whl.metadata (1.2 kB)
+#27 11.06 Collecting websockets>=13.0 (from uvicorn[standard]<1,>=0.30->-r /app/requirements-base.txt (line 3))
+#27 11.07   Downloading websockets-16.1.1-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (6.8 kB)
+#27 11.11 Collecting distro<2,>=1.7.0 (from google-genai<2,>=1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 11.12   Downloading distro-1.9.0-py3-none-any.whl.metadata (6.8 kB)
+#27 11.15 Collecting sniffio (from google-genai<2,>=1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 11.16   Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+#27 11.21 Collecting httpx-sse>=0.4 (from mcp<2,>=1.29.1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 11.22   Downloading httpx_sse-0.4.3-py3-none-any.whl.metadata (9.7 kB)
+#27 11.27 Collecting jsonschema>=4.20.0 (from mcp<2,>=1.29.1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 11.28   Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+#27 11.32 Collecting pydantic-settings>=2.5.2 (from mcp<2,>=1.29.1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 11.33   Downloading pydantic_settings-2.15.0-py3-none-any.whl.metadata (3.9 kB)
+#27 11.38 Collecting pyjwt>=2.10.1 (from pyjwt[crypto]>=2.10.1->mcp<2,>=1.29.1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 11.39   Downloading pyjwt-2.15.1-py3-none-any.whl.metadata (3.5 kB)
+#27 11.43 Collecting python-multipart>=0.0.9 (from mcp<2,>=1.29.1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 11.44   Downloading python_multipart-0.0.32-py3-none-any.whl.metadata (2.1 kB)
+#27 11.48 Collecting sse-starlette>=1.6.1 (from mcp<2,>=1.29.1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 11.49   Downloading sse_starlette-3.5.0-py3-none-any.whl.metadata (15 kB)
+#27 11.59 Collecting jiter<1,>=0.10.0 (from openai<3,>=1.66->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 11.61   Downloading jiter-0.17.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.2 kB)
+#27 11.67 Collecting tqdm>4 (from openai<3,>=1.66->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 11.68   Downloading tqdm-4.70.1-py3-none-any.whl.metadata (57 kB)
+#27 11.78 Collecting MarkupSafe>=2.0 (from Mako->alembic<2,>=1.14->-r /app/requirements-base.txt (line 6))
+#27 11.79   Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+#27 11.83 Collecting pyasn1-modules>=0.2.1 (from google-auth<3.0.0,>=2.48.1->google-auth[requests]<3.0.0,>=2.48.1->google-genai<2,>=1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 11.84   Downloading pyasn1_modules-0.4.2-py3-none-any.whl.metadata (3.5 kB)
+#27 11.91 Collecting attrs>=22.2.0 (from jsonschema>=4.20.0->mcp<2,>=1.29.1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 11.92   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+#27 11.96 Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.20.0->mcp<2,>=1.29.1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 11.96   Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+#27 12.01 Collecting referencing>=0.28.4 (from jsonschema>=4.20.0->mcp<2,>=1.29.1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 12.02   Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+#27 12.18 Collecting rpds-py>=0.25.0 (from jsonschema>=4.20.0->mcp<2,>=1.29.1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 12.43   Downloading rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+#27 12.60 Collecting charset_normalizer<4,>=2 (from requests<3.0.0,>=2.28.1->google-genai<2,>=1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 12.61   Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (46 kB)
+#27 12.66 Collecting urllib3<3,>=1.26 (from requests<3.0.0,>=2.28.1->google-genai<2,>=1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 12.67   Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+#27 12.74 Collecting pyasn1<0.7.0,>=0.6.1 (from pyasn1-modules>=0.2.1->google-auth<3.0.0,>=2.48.1->google-auth[requests]<3.0.0,>=2.48.1->google-genai<2,>=1->agenttree@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->agenttree[mcp,providers]@ git+https://github.com/FlukeNoppanan/Agenttree.git@1f9649e4f9c10bc38defdf1e3fef70bebf95df99->-r requirements-docker.txt (line 4))
+#27 12.75   Downloading pyasn1-0.6.4-py3-none-any.whl.metadata (8.4 kB)
+#27 12.78 Downloading fastapi-0.142.2-py3-none-any.whl (144 kB)
+#27 12.78 Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+#27 12.79 Downloading pydantic-2.13.5-py3-none-any.whl (472 kB)
+#27 12.81 Downloading pydantic_core-2.46.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+#27 12.85    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 51.9 MB/s eta 0:00:00
+#27 12.86 Downloading sqlalchemy-2.1.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (4.7 MB)
+#27 12.98    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.7/4.7 MB 40.6 MB/s eta 0:00:00
+#27 12.99 Downloading alembic-1.20.0-py3-none-any.whl (268 kB)
+#27 13.00 Downloading cryptography-46.0.7-cp311-abi3-manylinux_2_34_x86_64.whl (4.5 MB)
+#27 13.16    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 28.2 MB/s eta 0:00:00
+#27 13.17 Downloading argon2_cffi-25.1.0-py3-none-any.whl (14 kB)
+#27 13.18 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#27 13.19 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#27 13.20 Downloading psycopg-3.3.6-py3-none-any.whl (215 kB)
+#27 13.21 Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+#27 13.23 Downloading psycopg_binary-3.3.6-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.2 MB)
+#27 13.39    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.2/5.2 MB 32.4 MB/s eta 0:00:00
+#27 13.40 Downloading annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+#27 13.41 Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+#27 13.42 Downloading cffi-2.1.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (221 kB)
+#27 13.43 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+#27 13.44 Downloading google_genai-1.75.0-py3-none-any.whl (793 kB)
+#27 13.47    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 793.7/793.7 kB 33.4 MB/s eta 0:00:00
+#27 13.48 Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+#27 13.49 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#27 13.50 Downloading httptools-0.8.0-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (523 kB)
+#27 13.52 Downloading idna-3.20-py3-none-any.whl (69 kB)
+#27 13.53 Downloading iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+#27 13.54 Downloading mcp-1.30.0-py3-none-any.whl (234 kB)
+#27 13.55 Downloading ollama-0.6.3-py3-none-any.whl (16 kB)
+#27 13.56 Downloading openai-2.54.0-py3-none-any.whl (1.7 MB)
+#27 13.61    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.7/1.7 MB 37.2 MB/s eta 0:00:00
+#27 13.61 Downloading opentelemetry_api-1.45.0-py3-none-any.whl (60 kB)
+#27 13.62 Downloading packaging-26.3-py3-none-any.whl (129 kB)
+#27 13.63 Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+#27 13.64 Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+#27 13.68    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 34.5 MB/s eta 0:00:00
+#27 13.68 Downloading python_dotenv-1.2.4-py3-none-any.whl (23 kB)
+#27 13.70 Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+#27 13.72    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.9/807.9 kB 38.2 MB/s eta 0:00:00
+#27 13.73 Downloading starlette-1.7.0-py3-none-any.whl (78 kB)
+#27 13.73 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#27 13.74 Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+#27 13.75 Downloading uvloop-0.23.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (4.5 MB)
+#27 13.88    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 36.4 MB/s eta 0:00:00
+#27 13.88 Downloading watchfiles-1.3.0-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (458 kB)
+#27 13.91 Downloading websockets-16.1.1-cp312-cp312-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (187 kB)
+#27 13.92 Downloading argon2_cffi_bindings-26.1.0-cp310-abi3-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl (26 kB)
+#27 13.92 Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+#27 13.93 Downloading mako-1.4.3-py3-none-any.whl (80 kB)
+#27 13.94 Downloading distro-1.9.0-py3-none-any.whl (20 kB)
+#27 13.95 Downloading google_auth-2.59.1-py3-none-any.whl (263 kB)
+#27 13.96 Downloading httpx_sse-0.4.3-py3-none-any.whl (9.0 kB)
+#27 13.97 Downloading jiter-0.17.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (345 kB)
+#27 13.99 Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+#27 13.99 Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+#27 14.00 Downloading pydantic_settings-2.15.0-py3-none-any.whl (69 kB)
+#27 14.01 Downloading pyjwt-2.15.1-py3-none-any.whl (33 kB)
+#27 14.02 Downloading python_multipart-0.0.32-py3-none-any.whl (30 kB)
+#27 14.03 Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+#27 14.04 Downloading sse_starlette-3.5.0-py3-none-any.whl (17 kB)
+#27 14.05 Downloading tenacity-9.1.4-py3-none-any.whl (28 kB)
+#27 14.06 Downloading tqdm-4.70.1-py3-none-any.whl (80 kB)
+#27 14.07 Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+#27 14.08 Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+#27 14.08 Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+#27 14.09 Downloading charset_normalizer-3.5.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (257 kB)
+#27 14.10 Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+#27 14.11 Downloading pyasn1_modules-0.4.2-py3-none-any.whl (181 kB)
+#27 14.12 Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+#27 14.13 Downloading rpds_py-2026.9.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (371 kB)
+#27 14.15 Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+#27 14.16 Downloading pyasn1-0.6.4-py3-none-any.whl (84 kB)
+#27 14.22 Building wheels for collected packages: agenttree
+#27 14.22   Building wheel for agenttree (pyproject.toml): started
+#27 14.68   Building wheel for agenttree (pyproject.toml): finished with status 'done'
+#27 14.68   Created wheel for agenttree: filename=agenttree-0.2.2-py3-none-any.whl size=149948 sha256=36690db1e3318a5be9e37f30e80268b7a7c8a376937d4a7636da74e1677bbef8
+#27 14.68   Stored in directory: /tmp/pip-ephem-wheel-cache-owfh_ef2/wheels/25/83/c3/e5952a8644de42ec3d4b67e2b12a0bb357bbfad8a6869e6a68
+#27 14.68 Successfully built agenttree
+#27 14.76 Installing collected packages: websockets, uvloop, urllib3, typing-extensions, tqdm, tenacity, sniffio, rpds-py, pyyaml, python-multipart, python-dotenv, pyjwt, pygments, pycparser, pyasn1, psycopg-binary, pluggy, packaging, MarkupSafe, jiter, iniconfig, idna, httpx-sse, httptools, h11, distro, click, charset_normalizer, certifi, attrs, annotated-types, annotated-doc, agenttree, uvicorn, typing-inspection, SQLAlchemy, requests, referencing, pytest, pydantic-core, pyasn1-modules, psycopg, opentelemetry-api, Mako, httpcore, cffi, anyio, watchfiles, starlette, pydantic, jsonschema-specifications, httpx, cryptography, argon2-cffi-bindings, alembic, sse-starlette, pydantic-settings, openai, ollama, jsonschema, google-auth, fastapi, argon2-cffi, mcp, google-genai
+#27 20.00 Successfully installed Mako-1.4.3 MarkupSafe-3.0.4 SQLAlchemy-2.1.3 agenttree-0.2.2 alembic-1.20.0 annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.15.1 argon2-cffi-25.1.0 argon2-cffi-bindings-26.1.0 attrs-26.1.0 certifi-2026.7.22 cffi-2.1.1 charset_normalizer-3.5.2 click-8.5.0 cryptography-46.0.7 distro-1.9.0 fastapi-0.142.2 google-auth-2.59.1 google-genai-1.75.0 h11-0.16.0 httpcore-1.0.9 httptools-0.8.0 httpx-0.28.1 httpx-sse-0.4.3 idna-3.20 iniconfig-2.3.0 jiter-0.17.0 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 mcp-1.30.0 ollama-0.6.3 openai-2.54.0 opentelemetry-api-1.45.0 packaging-26.3 pluggy-1.6.0 psycopg-3.3.6 psycopg-binary-3.3.6 pyasn1-0.6.4 pyasn1-modules-0.4.2 pycparser-3.0 pydantic-2.13.5 pydantic-core-2.46.5 pydantic-settings-2.15.0 pygments-2.21.0 pyjwt-2.15.1 pytest-9.1.1 python-dotenv-1.2.4 python-multipart-0.0.32 pyyaml-6.0.3 referencing-0.37.0 requests-2.34.2 rpds-py-2026.9.1 sniffio-1.3.1 sse-starlette-3.5.0 starlette-1.7.0 tenacity-9.1.4 tqdm-4.70.1 typing-extensions-4.16.0 typing-inspection-0.4.4 urllib3-2.8.0 uvicorn-0.54.0 uvloop-0.23.0 watchfiles-1.3.0 websockets-16.1.1
+#27 20.00 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#27 20.19
+#27 20.19 [notice] A new release of pip is available: 25.0.1 -> 26.2.1
+#27 20.19 [notice] To update, run: pip install --upgrade pip
+#27 DONE 20.7s
+
+#29 [backend stage-1  9/16] COPY --from=agenttree_core /pyproject.toml /README.md /tmp/agenttree-core/
+#29 DONE 0.1s
+
+#30 [backend stage-1 10/16] COPY --from=agenttree_core /src /tmp/agenttree-core/src
+#30 DONE 0.0s
+
+#31 [backend stage-1 11/16] RUN pip install --no-deps /tmp/agenttree-core && rm -rf /tmp/agenttree-core
+#31 1.101 Processing /tmp/agenttree-core
+#31 1.104   Installing build dependencies: started
+#31 2.893   Installing build dependencies: finished with status 'done'
+#31 2.894   Getting requirements to build wheel: started
+#31 3.279   Getting requirements to build wheel: finished with status 'done'
+#31 3.281   Preparing metadata (pyproject.toml): started
+#31 3.662   Preparing metadata (pyproject.toml): finished with status 'done'
+#31 3.667 Building wheels for collected packages: agenttree
+#31 3.668   Building wheel for agenttree (pyproject.toml): started
+#31 4.100   Building wheel for agenttree (pyproject.toml): finished with status 'done'
+#31 4.100   Created wheel for agenttree: filename=agenttree-0.2.2-py3-none-any.whl size=153374 sha256=f26183e2ea829faa2877be67e3f6d2ff31f0c37687d1edf547244fd29cdeb6f9
+#31 4.100   Stored in directory: /tmp/pip-ephem-wheel-cache-bv9p43gn/wheels/db/79/ea/838a4db50556e374419d378b6cb1dc579abedd2034beaed8d3
+#31 4.104 Successfully built agenttree
+#31 4.104 Installing collected packages: agenttree
+#31 4.105   Attempting uninstall: agenttree
+#31 4.107     Found existing installation: agenttree 0.2.2
+#31 4.113     Uninstalling agenttree-0.2.2:
+#31 4.130       Successfully uninstalled agenttree-0.2.2
+#31 4.233 Successfully installed agenttree-0.2.2
+#31 4.233 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#31 4.412
+#31 4.412 [notice] A new release of pip is available: 25.0.1 -> 26.2.1
+#31 4.412 [notice] To update, run: pip install --upgrade pip
+#31 DONE 4.5s
+
+#32 [backend stage-1 12/16] COPY alembic.ini ./
+#32 DONE 0.0s
+
+#33 [backend stage-1 13/16] COPY alembic ./alembic
+#33 DONE 0.0s
+
+#34 [backend stage-1 14/16] COPY backend ./backend
+#34 DONE 0.0s
+
+#35 [backend stage-1 15/16] COPY backend/docker-entrypoint.sh /usr/local/bin/studio-entrypoint
+#35 DONE 0.0s
+
+#36 [backend stage-1 16/16] RUN chmod 755 /usr/local/bin/studio-entrypoint     && mkdir -p /workspace /var/lib/agenttree-studio
+#36 DONE 0.1s
+
+#37 [backend] exporting to image
+#37 exporting layers
+#37 exporting layers 4.7s done
+#37 exporting manifest sha256:0df55842b9f27edbcefb85467183d2c2c5ace8f160038909e377a7d509c295f9 0.0s done
+#37 exporting config sha256:883eb36c32cab59801975c1a148c212055dd14df0107b6dac335a4f65081f65f done
+#37 exporting attestation manifest sha256:eca8b41010e7fdce939531a8614e6fe2079b1fc66b8ee8f559edafc685e2434a 0.0s done
+#37 exporting manifest list sha256:4393dcbb7beb8d9a3cf61ea596aac9e0f566fe97139900783749f263ecad227a 0.0s done
+#37 naming to docker.io/library/agenttree-studio-backend:latest done
+#37 unpacking to docker.io/library/agenttree-studio-backend:latest
+#37 unpacking to docker.io/library/agenttree-studio-backend:latest 2.3s done
+#37 DONE 7.1s
+
+#38 [backend] resolving provenance for metadata file
+#38 DONE 0.0s
+ Image agenttree-studio-backend Built
+ Image agenttree-studio-frontend Built

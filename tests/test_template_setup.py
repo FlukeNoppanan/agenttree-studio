@@ -1,6 +1,8 @@
 """Template onboarding snapshots, bindings, readiness, and Tool resolution."""
 
 from uuid import uuid4
+import json
+from test_structured_model_qualification import ProbeProvider, qualify_decisions
 
 import pytest
 from fastapi.testclient import TestClient
@@ -50,6 +52,7 @@ def _provider(database, *, status="connected", model_status="qualified", model_i
         provider_connection_id=provider.id, model_id=model_id,
         display_name=model_id, is_available=model_status == "qualified",
         generation_candidate=model_status == "qualified", qualification_status=model_status,
+        metadata_json=json.dumps({"agenttree_qualification": qualify_decisions(ProbeProvider())}) if model_status == "qualified" else None,
     )
     database.add(model)
     database.commit()
@@ -130,6 +133,11 @@ def test_ready_required_tool_blocks_readiness_but_recommendations_do_not_and_add
     owner = _user(database)
     tree = TemplateService(database).instantiate("builtin-general-analysis", owner)
     provider, model = _provider(database)
+    from backend.schemas.secret import SecretCreate
+    from backend.services.secret_service import SecretService
+    secret = SecretService(database).create(SecretCreate(name="Tool-capable provider", secret_type="api_key", value="test-key"))
+    provider.provider_type, provider.secret_id = "groq", secret.id
+    database.commit()
     setup = TemplateSetupService(database)
     ready = setup.apply_default(tree.id, AgentModelBindingUpdate(
         provider_connection_id=provider.id, model_id=model.model_id,
@@ -292,6 +300,11 @@ def test_template_setup_http_flow_returns_models_and_finishes_after_required_too
         AuthService(database).bootstrap("SetupAdmin", "strong-template-setup-password-2026")
         user = database.scalar(select(User).where(User.is_primary_admin.is_(True)))
         provider, model = _provider(database)
+        from backend.schemas.secret import SecretCreate
+        from backend.services.secret_service import SecretService
+        secret = SecretService(database).create(SecretCreate(name="Tool-capable setup", secret_type="api_key", value="test-key"))
+        provider.provider_type, provider.secret_id = "groq", secret.id
+        database.commit()
         tree = TemplateService(database).instantiate("builtin-general-analysis", user)
         provider_id, model_id, tree_id = provider.id, model.model_id, tree.id
     client = TestClient(app)

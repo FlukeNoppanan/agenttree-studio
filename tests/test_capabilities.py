@@ -1,5 +1,7 @@
 """Capability normalization, catalog, and safe AI suggestion behavior."""
 
+from qualification_fixture import QUALIFIED_METADATA
+
 import pytest
 from agenttree.providers import BaseProvider, ProviderConfig, ProviderRequest, ProviderResponse
 from sqlalchemy import select
@@ -39,7 +41,7 @@ def provider_with_model(database, *, status: str = "connected", secret_id: str |
         provider_connection_id=provider.id,
         model_id="test-model",
         is_available=True,
-        qualification_status="qualified",
+        qualification_status="qualified", metadata_json=QUALIFIED_METADATA,
     ))
     database.commit()
     return provider

@@ -1,0 +1,19 @@
+{
+  "unchanged": {
+    "runs": true,
+    "trees": true,
+    "secrets": true,
+    "users": true,
+    "provider_connections": true,
+    "providers_safe": true,
+    "historical_runs": true,
+    "agent_hashes": true
+  },
+  "counts": {
+    "trees": 3,
+    "runs": 4,
+    "provider_connections": 2,
+    "secrets": 1,
+    "users": 3
+  }
+}

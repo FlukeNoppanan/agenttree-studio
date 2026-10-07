@@ -20,6 +20,8 @@ export function RunRecoveryNotice({ events }: { events: readonly (LiveEvent | Tr
   const { t } = useTranslation()
   const repaired = hasStructuredRepair(events)
   if (!repaired && recoveredAttempts(events).size === 0) return null
-  const key = repaired ? "integrationPolish.recoveryNotice" : "integrationPolish.recoveredToolNotice"
+  const lastRepair = Math.max(-1, ...events.filter(event => /structured_decision\.repair\.succeeded$/.test("type" in event ? event.type : event.event_type)).map(event => event.sequence))
+  const laterFailure = events.some(event => event.sequence > lastRepair && /structured_decision\.repair\.failed$/.test("type" in event ? event.type : event.event_type))
+  const key = repaired && laterFailure ? "compatibility.partialRepairNotice" : repaired ? "integrationPolish.recoveryNotice" : "integrationPolish.recoveredToolNotice"
   return <p className="mt-3 text-sm text-muted-foreground" role="status">{t(key)}</p>
 }

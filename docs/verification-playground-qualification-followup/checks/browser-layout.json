@@ -1,0 +1,35 @@
+{
+  "events": 60,
+  "pageWidth": 1920,
+  "panes": [
+    {
+      "class": "playground-test",
+      "height": 818,
+      "scrollHeight": 818,
+      "scrollTop": 0,
+      "width": 545,
+      "x": 257,
+      "y": 150
+    },
+    {
+      "class": "playground-live",
+      "height": 818,
+      "scrollHeight": 818,
+      "scrollTop": 0,
+      "width": 702,
+      "x": 803,
+      "y": 150
+    },
+    {
+      "class": "playground-activity",
+      "height": 818,
+      "scrollHeight": 1648,
+      "scrollTop": 830,
+      "width": 389,
+      "x": 1505,
+      "y": 150
+    }
+  ],
+  "run": "5e0196a6-c557-431d-8bb2-540ea5486252",
+  "width": 1920
+}

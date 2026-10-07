@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from backend.repositories.protocols import DashboardRepository
 from backend.models.auth import User
+from backend.services.provider_service import ProviderService
 from backend.repositories.sqlalchemy import SQLAlchemyDashboardRepository
 from backend.schemas.dashboard import (
     AttentionItem,
@@ -67,7 +68,7 @@ class DashboardService:
                 if not agent.provider_connection_id or not agent.model_id:
                     continue
                 model = model_lookup.get((agent.provider_connection_id, agent.model_id))
-                if model is None or model.qualification_status != "qualified" or not model.is_available:
+                if model is None or model.qualification_status not in {"qualified", "limited"} or not model.is_available:
                     unavailable.append(agent.name)
             if unavailable:
                 attention.append(AttentionItem(
@@ -144,7 +145,7 @@ class DashboardService:
                 providers=ProviderMetrics(
                     total=len(providers), connected=sum(provider.status == "connected" for provider in providers),
                     usable_models=sum(
-                        model.is_available and model.generation_candidate and model.qualification_status == "qualified"
+                        model.is_available and model.generation_candidate and ProviderService.model_status(model) == "qualified"
                         for provider in providers for model in provider.models
                     ),
                 ),
@@ -164,7 +165,7 @@ class DashboardService:
                 id=provider.id, name=provider.name, provider_type=provider.provider_type,
                 status=provider.status,
                 usable_models=sum(
-                    model.is_available and model.generation_candidate and model.qualification_status == "qualified"
+                    model.is_available and model.generation_candidate and ProviderService.model_status(model) == "qualified"
                     for model in provider.models
                 ),
                 unavailable_models=sum(model.qualification_status == "unavailable" for model in provider.models),

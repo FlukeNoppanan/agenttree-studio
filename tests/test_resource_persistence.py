@@ -4,6 +4,7 @@ import json
 
 import pytest
 from agenttree.providers import ProviderResponse
+from test_structured_model_qualification import decision_reply
 from cryptography.fernet import Fernet
 from sqlalchemy import func, select
 
@@ -28,7 +29,7 @@ class CatalogAdapter(ProviderAdapter):
 
 class WorkingProvider:
     def generate(self, request):
-        return ProviderResponse(content="OK", model=request.model, provider="test")
+        return ProviderResponse(content=decision_reply() if request.metadata.get("strategy") or "Return JSON" in request.prompt else "OK", model=request.model, provider="test")
 
 
 def test_resources_survive_new_sessions_and_disappear_only_after_delete(database_factory) -> None:

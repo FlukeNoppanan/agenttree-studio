@@ -1,0 +1,26 @@
+{
+  "backend": {
+    "line_count": 313,
+    "http_status_counts": {},
+    "http_requests": [],
+    "http_access_entries_available": false,
+    "traceback_count": 0,
+    "runtime_error_markers": {
+      "uncaught": 0,
+      "unhandled": 0,
+      "migration failure": 0
+    }
+  },
+  "frontend": {
+    "line_count": 9,
+    "http_status_counts": {},
+    "http_requests": [],
+    "http_access_entries_available": false,
+    "traceback_count": 0,
+    "runtime_error_markers": {
+      "uncaught": 0,
+      "unhandled": 0,
+      "migration failure": 0
+    }
+  }
+}

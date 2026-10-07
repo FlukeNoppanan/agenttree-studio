@@ -1,0 +1,56 @@
+ Image agenttree-studio-frontend Building
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.05kB done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 344B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:24-bookworm-slim
+#3 DONE 1.0s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 320B done
+#4 DONE 0.0s
+
+#5 [1/7] FROM docker.io/library/node:24-bookworm-slim@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6
+#5 resolve docker.io/library/node:24-bookworm-slim@sha256:0e0ff40c39bc087845bfb27465a0df4ea419520094bc35842ff83dd8cbe6f9b6 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 11.91kB 0.0s done
+#6 DONE 0.0s
+
+#7 [3/7] COPY frontend/package.json frontend/package-lock.json ./
+#7 CACHED
+
+#8 [4/7] RUN npm ci
+#8 CACHED
+
+#9 [2/7] WORKDIR /app
+#9 CACHED
+
+#10 [5/7] COPY frontend/index.html frontend/vite.config.ts frontend/tsconfig*.json ./
+#10 CACHED
+
+#11 [6/7] COPY frontend/src ./src
+#11 DONE 0.0s
+
+#12 [7/7] COPY frontend/public ./public
+#12 DONE 0.1s
+
+#13 exporting to image
+#13 exporting layers 0.1s done
+#13 exporting manifest sha256:b7d145ff55bf2a131ed0909d418b268cae01bb91de4252ee5dfa67066e52e2df 0.0s done
+#13 exporting config sha256:b45dd465787d652010168d3e88e757ebd2ed11ff5bc7a8c176d27d863b8c4359
+#13 exporting config sha256:b45dd465787d652010168d3e88e757ebd2ed11ff5bc7a8c176d27d863b8c4359 0.0s done
+#13 exporting attestation manifest sha256:650626c8ef89c0f20573561a9040cc390f927f03a379799566aec2c076ce38cf 0.0s done
+#13 exporting manifest list sha256:59e7040216a088a336340cec0d4219fd0bf8b161601e1093fb22096775d46928 0.0s done
+#13 naming to docker.io/library/agenttree-studio-frontend:latest done
+#13 unpacking to docker.io/library/agenttree-studio-frontend:latest 0.0s done
+#13 DONE 0.2s
+
+#14 resolving provenance for metadata file
+#14 DONE 0.0s
+ Image agenttree-studio-frontend Built

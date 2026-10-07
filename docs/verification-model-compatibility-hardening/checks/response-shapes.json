@@ -1,0 +1,1187 @@
+[
+  {
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "source_index": 0,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float"
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": false,
+    "representation": null,
+    "payload_shape": null,
+    "example_final_content": "Synthetic non-JSON answer",
+    "expected_parse": false,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "source_index": 1,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float"
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": false,
+    "representation": "json",
+    "payload_shape": {
+      "probe": "str"
+    },
+    "example_final_content": "{\"probe\": \"agenttree\"}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "source_index": 2,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float"
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": false,
+    "representation": "fence+json",
+    "payload_shape": {
+      "delegate": "bool",
+      "direct_output": "NoneType"
+    },
+    "example_final_content": "```json\n{\"delegate\": true, \"direct_output\": null}\n```",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "source_index": 3,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float"
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": false,
+    "representation": "json",
+    "payload_shape": {
+      "objective": "str",
+      "required_capabilities": [
+        "str"
+      ],
+      "category": "str",
+      "confidence": "float",
+      "notes": "str",
+      "metadata": {}
+    },
+    "example_final_content": "{\"objective\": \"Synthetic comparison\", \"required_capabilities\": [\"comparison\"], \"category\": \"Synthetic text\", \"confidence\": \"Synthetic text\", \"notes\": \"Synthetic text\", \"metadata\": {}}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "source_index": 4,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float"
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": false,
+    "representation": "fence+json",
+    "payload_shape": {
+      "subtasks": [
+        {
+          "objective": "str",
+          "required_capabilities": [
+            "str"
+          ],
+          "metadata": {}
+        }
+      ]
+    },
+    "example_final_content": "```json\n{\"subtasks\": [{\"objective\": \"Synthetic comparison\", \"required_capabilities\": [\"comparison\"], \"metadata\": {}}]}\n```",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "groq",
+    "model": "qwen/qwen3.8-27b",
+    "source_index": 5,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float"
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": false,
+    "representation": "json",
+    "payload_shape": {
+      "decision": "str",
+      "feedback": "str",
+      "metadata": {}
+    },
+    "example_final_content": "{\"decision\": \"pass\", \"feedback\": \"Synthetic feedback\", \"metadata\": {}}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "groq",
+    "model": "allam-2-7b",
+    "source_index": 8,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float"
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": false,
+    "representation": "fence+json",
+    "payload_shape": {
+      "probe": "str"
+    },
+    "example_final_content": "```json\n{\"probe\": \"agenttree\"}\n```",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "groq",
+    "model": "allam-2-7b",
+    "source_index": 9,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float"
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": false,
+    "representation": "json",
+    "payload_shape": {
+      "delegate": "bool",
+      "direct_output": "str"
+    },
+    "example_final_content": "{\"delegate\": true, \"direct_output\": \"Synthetic text\"}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "groq",
+    "model": "allam-2-7b",
+    "source_index": 12,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float"
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": false,
+    "representation": "json",
+    "payload_shape": {
+      "subtasks": [
+        {
+          "objective": "str",
+          "required_capabilities": [
+            "str"
+          ],
+          "metadata": {}
+        },
+        {
+          "objective": "str",
+          "required_capabilities": [
+            "str"
+          ],
+          "metadata": {}
+        },
+        {
+          "objective": "str",
+          "required_capabilities": [
+            "str"
+          ],
+          "metadata": {}
+        }
+      ]
+    },
+    "example_final_content": "{\"subtasks\": [{\"objective\": \"Synthetic comparison\", \"required_capabilities\": [\"comparison\"], \"metadata\": {}}, {\"objective\": \"Synthetic comparison\", \"required_capabilities\": [\"comparison\"], \"metadata\": {}}, {\"objective\": \"Synthetic comparison\", \"required_capabilities\": [\"comparison\"], \"metadata\": {}}]}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "groq",
+    "model": "allam-2-7b",
+    "source_index": 13,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float"
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": false,
+    "representation": "json",
+    "payload_shape": {
+      "decision": "str",
+      "feedback": "str",
+      "metdata": {}
+    },
+    "example_final_content": "{\"decision\": \"pass\", \"feedback\": \"Synthetic feedback\", \"metdata\": {}}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "source_index": 15,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float",
+        "completion_tokens_details": {
+          "reasoning_tokens": "int"
+        }
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": true,
+    "representation": null,
+    "payload_shape": null,
+    "example_final_content": "Synthetic non-JSON answer",
+    "expected_parse": false,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "source_index": 16,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float",
+        "completion_tokens_details": {
+          "reasoning_tokens": "int"
+        }
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": true,
+    "representation": "json",
+    "payload_shape": {
+      "probe": "str"
+    },
+    "example_final_content": "{\"probe\": \"agenttree\"}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "source_index": 17,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float",
+        "completion_tokens_details": {
+          "reasoning_tokens": "int"
+        }
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": true,
+    "representation": "json",
+    "payload_shape": {
+      "delegate": "bool",
+      "direct_output": "str"
+    },
+    "example_final_content": "{\"delegate\": true, \"direct_output\": \"Synthetic text\"}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "source_index": 18,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float",
+        "completion_tokens_details": {
+          "reasoning_tokens": "int"
+        }
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": true,
+    "representation": "json",
+    "payload_shape": {
+      "objective": "str",
+      "required_capabilities": [
+        "str"
+      ]
+    },
+    "example_final_content": "{\"objective\": \"Synthetic comparison\", \"required_capabilities\": [\"comparison\"]}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "source_index": 19,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float",
+        "completion_tokens_details": {
+          "reasoning_tokens": "int"
+        }
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": true,
+    "representation": "json",
+    "payload_shape": {
+      "subtasks": [
+        {
+          "objective": "str",
+          "required_capabilities": [
+            "str"
+          ],
+          "metadata": {}
+        },
+        {
+          "objective": "str",
+          "required_capabilities": [
+            "str"
+          ],
+          "metadata": {}
+        }
+      ]
+    },
+    "example_final_content": "{\"subtasks\": [{\"objective\": \"Synthetic comparison\", \"required_capabilities\": [\"comparison\"], \"metadata\": {}}, {\"objective\": \"Synthetic comparison\", \"required_capabilities\": [\"comparison\"], \"metadata\": {}}]}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "source_index": 20,
+    "observed_shape": {
+      "id": "str",
+      "object": "str",
+      "created": "int",
+      "model": "str",
+      "choices": [
+        {
+          "index": "int",
+          "message": {
+            "role": "str",
+            "content": "str"
+          },
+          "logprobs": "NoneType",
+          "finish_reason": "str"
+        }
+      ],
+      "usage": {
+        "queue_time": "float",
+        "prompt_tokens": "int",
+        "prompt_time": "float",
+        "completion_tokens": "int",
+        "completion_time": "float",
+        "total_tokens": "int",
+        "total_time": "float",
+        "completion_tokens_details": {
+          "reasoning_tokens": "int"
+        }
+      },
+      "usage_breakdown": "NoneType",
+      "system_fingerprint": "str",
+      "x_groq": {
+        "id": "str",
+        "seed": "int"
+      },
+      "service_tier": "str"
+    },
+    "reasoning_present": true,
+    "representation": "json",
+    "payload_shape": {
+      "decision": "str",
+      "feedback": "str",
+      "metadata": {}
+    },
+    "example_final_content": "{\"decision\": \"pass\", \"feedback\": \"Synthetic feedback\", \"metadata\": {}}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "cerebras",
+    "model": "qwen-3.8-27b",
+    "source_index": 22,
+    "observed_shape": {
+      "id": "str",
+      "choices": [
+        {
+          "finish_reason": "str",
+          "index": "int",
+          "message": {
+            "content": "str",
+            "role": "str"
+          }
+        }
+      ],
+      "created": "int",
+      "model": "str",
+      "system_fingerprint": "str",
+      "object": "str",
+      "usage": {
+        "total_tokens": "int",
+        "completion_tokens": "int",
+        "completion_tokens_details": {
+          "reasoning_tokens": "int"
+        },
+        "prompt_tokens": "int",
+        "prompt_tokens_details": {
+          "cached_tokens": "int",
+          "image_tokens": "int"
+        }
+      },
+      "time_info": {
+        "created": "float",
+        "queue_time": "float",
+        "prompt_time": "float",
+        "completion_time": "float",
+        "total_time": "float"
+      }
+    },
+    "reasoning_present": true,
+    "representation": null,
+    "payload_shape": null,
+    "example_final_content": "Synthetic non-JSON answer",
+    "expected_parse": false,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "cerebras",
+    "model": "qwen-3.8-27b",
+    "source_index": 23,
+    "observed_shape": {
+      "id": "str",
+      "choices": [
+        {
+          "finish_reason": "str",
+          "index": "int",
+          "message": {
+            "content": "str",
+            "role": "str"
+          }
+        }
+      ],
+      "created": "int",
+      "model": "str",
+      "system_fingerprint": "str",
+      "object": "str",
+      "usage": {
+        "total_tokens": "int",
+        "completion_tokens": "int",
+        "completion_tokens_details": {
+          "reasoning_tokens": "int"
+        },
+        "prompt_tokens": "int",
+        "prompt_tokens_details": {
+          "cached_tokens": "int",
+          "image_tokens": "int"
+        }
+      },
+      "time_info": {
+        "created": "float",
+        "queue_time": "float",
+        "prompt_time": "float",
+        "completion_time": "float",
+        "total_time": "float"
+      }
+    },
+    "reasoning_present": true,
+    "representation": "json",
+    "payload_shape": {
+      "probe": "str"
+    },
+    "example_final_content": "{\"probe\": \"agenttree\"}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "cerebras",
+    "model": "qwen-3.8-27b",
+    "source_index": 24,
+    "observed_shape": {
+      "id": "str",
+      "choices": [
+        {
+          "finish_reason": "str",
+          "index": "int",
+          "message": {
+            "content": "str",
+            "role": "str"
+          }
+        }
+      ],
+      "created": "int",
+      "model": "str",
+      "system_fingerprint": "str",
+      "object": "str",
+      "usage": {
+        "total_tokens": "int",
+        "completion_tokens": "int",
+        "completion_tokens_details": {
+          "reasoning_tokens": "int"
+        },
+        "prompt_tokens": "int",
+        "prompt_tokens_details": {
+          "cached_tokens": "int",
+          "image_tokens": "int"
+        }
+      },
+      "time_info": {
+        "created": "float",
+        "queue_time": "float",
+        "prompt_time": "float",
+        "completion_time": "float",
+        "total_time": "float"
+      }
+    },
+    "reasoning_present": true,
+    "representation": "json",
+    "payload_shape": {
+      "delegate": "bool",
+      "direct_output": "str"
+    },
+    "example_final_content": "{\"delegate\": true, \"direct_output\": \"Synthetic text\"}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "cerebras",
+    "model": "qwen-3.8-27b",
+    "source_index": 25,
+    "observed_shape": {
+      "id": "str",
+      "choices": [
+        {
+          "finish_reason": "str",
+          "index": "int",
+          "message": {
+            "content": "str",
+            "role": "str"
+          }
+        }
+      ],
+      "created": "int",
+      "model": "str",
+      "system_fingerprint": "str",
+      "object": "str",
+      "usage": {
+        "total_tokens": "int",
+        "completion_tokens": "int",
+        "completion_tokens_details": {
+          "reasoning_tokens": "int"
+        },
+        "prompt_tokens": "int",
+        "prompt_tokens_details": {
+          "cached_tokens": "int",
+          "image_tokens": "int"
+        }
+      },
+      "time_info": {
+        "created": "float",
+        "queue_time": "float",
+        "prompt_time": "float",
+        "completion_time": "float",
+        "total_time": "float"
+      }
+    },
+    "reasoning_present": true,
+    "representation": "json",
+    "payload_shape": {
+      "objective": "str",
+      "required_capabilities": [
+        "str"
+      ],
+      "category": "str",
+      "confidence": "int",
+      "notes": "str",
+      "metadata": {}
+    },
+    "example_final_content": "{\"objective\": \"Synthetic comparison\", \"required_capabilities\": [\"comparison\"], \"category\": \"Synthetic text\", \"confidence\": 1, \"notes\": \"Synthetic text\", \"metadata\": {}}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "cerebras",
+    "model": "qwen-3.8-27b",
+    "source_index": 26,
+    "observed_shape": {
+      "id": "str",
+      "choices": [
+        {
+          "finish_reason": "str",
+          "index": "int",
+          "message": {
+            "content": "str",
+            "role": "str"
+          }
+        }
+      ],
+      "created": "int",
+      "model": "str",
+      "system_fingerprint": "str",
+      "object": "str",
+      "usage": {
+        "total_tokens": "int",
+        "completion_tokens": "int",
+        "completion_tokens_details": {
+          "reasoning_tokens": "int"
+        },
+        "prompt_tokens": "int",
+        "prompt_tokens_details": {
+          "cached_tokens": "int",
+          "image_tokens": "int"
+        }
+      },
+      "time_info": {
+        "created": "float",
+        "queue_time": "float",
+        "prompt_time": "float",
+        "completion_time": "float",
+        "total_time": "float"
+      }
+    },
+    "reasoning_present": true,
+    "representation": "json",
+    "payload_shape": {
+      "subtasks": [
+        {
+          "objective": "str",
+          "required_capabilities": [
+            "str"
+          ],
+          "metadata": {}
+        },
+        {
+          "objective": "str",
+          "required_capabilities": [
+            "str"
+          ],
+          "metadata": {}
+        }
+      ]
+    },
+    "example_final_content": "{\"subtasks\": [{\"objective\": \"Synthetic comparison\", \"required_capabilities\": [\"comparison\"], \"metadata\": {}}, {\"objective\": \"Synthetic comparison\", \"required_capabilities\": [\"comparison\"], \"metadata\": {}}]}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "cerebras",
+    "model": "qwen-3.8-27b",
+    "source_index": 27,
+    "observed_shape": {
+      "id": "str",
+      "choices": [
+        {
+          "finish_reason": "str",
+          "index": "int",
+          "message": {
+            "content": "str",
+            "role": "str"
+          }
+        }
+      ],
+      "created": "int",
+      "model": "str",
+      "system_fingerprint": "str",
+      "object": "str",
+      "usage": {
+        "total_tokens": "int",
+        "completion_tokens": "int",
+        "completion_tokens_details": {
+          "reasoning_tokens": "int"
+        },
+        "prompt_tokens": "int",
+        "prompt_tokens_details": {
+          "cached_tokens": "int",
+          "image_tokens": "int"
+        }
+      },
+      "time_info": {
+        "created": "float",
+        "queue_time": "float",
+        "prompt_time": "float",
+        "completion_time": "float",
+        "total_time": "float"
+      }
+    },
+    "reasoning_present": true,
+    "representation": "json",
+    "payload_shape": {
+      "decision": "str",
+      "feedback": "str",
+      "metadata": {}
+    },
+    "example_final_content": "{\"decision\": \"pass\", \"feedback\": \"Synthetic feedback\", \"metadata\": {}}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  },
+  {
+    "provider": "cerebras",
+    "model": "qwen-3.8-27b",
+    "source_index": 28,
+    "observed_shape": {
+      "id": "str",
+      "choices": [
+        {
+          "finish_reason": "str",
+          "index": "int",
+          "message": {
+            "content": "str",
+            "role": "str"
+          }
+        }
+      ],
+      "created": "int",
+      "model": "str",
+      "system_fingerprint": "str",
+      "object": "str",
+      "usage": {
+        "total_tokens": "int",
+        "completion_tokens": "int",
+        "completion_tokens_details": {
+          "reasoning_tokens": "int"
+        },
+        "prompt_tokens": "int",
+        "prompt_tokens_details": {
+          "cached_tokens": "int",
+          "image_tokens": "int"
+        }
+      },
+      "time_info": {
+        "created": "float",
+        "queue_time": "float",
+        "prompt_time": "float",
+        "completion_time": "float",
+        "total_time": "float"
+      }
+    },
+    "reasoning_present": true,
+    "representation": "json",
+    "payload_shape": {
+      "decision": "str",
+      "feedback": "str",
+      "metadata": {
+        "manager_results_count": "int",
+        "objective_met": "bool"
+      }
+    },
+    "example_final_content": "{\"decision\": \"pass\", \"feedback\": \"Synthetic feedback\", \"metadata\": {\"manager_results_count\": 1, \"objective_met\": true}}",
+    "expected_parse": true,
+    "provenance": "Observed transport/representation shape; all content values replaced with synthetic placeholders. Reasoning text was never recorded."
+  }
+]

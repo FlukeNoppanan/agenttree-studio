@@ -1,5 +1,7 @@
 """Resource-oriented external Public API V2 contracts."""
 
+from agenttree.models import ExecutionMode
+
 from datetime import datetime
 from typing import Any, Literal
 
@@ -35,6 +37,7 @@ class V2Metadata(BaseModel):
 
 
 class RunSubmitRequest(BaseModel):
+    execution_mode: ExecutionMode = ExecutionMode.FAST
     model_config = ConfigDict(extra="forbid")
     tree_id: str = Field(min_length=1, max_length=36)
     input: str = Field(min_length=1, max_length=65_536)
@@ -52,6 +55,7 @@ class RunLinks(BaseModel):
 
 
 class RunAccepted(BaseModel):
+    execution_mode: ExecutionMode = ExecutionMode.FAST
     run_id: str
     tree_id: str
     tree_version_id: str
@@ -78,6 +82,7 @@ class ArtifactSummary(BaseModel):
 
 
 class RunState(BaseModel):
+    execution_mode: ExecutionMode = ExecutionMode.FAST
     run_id: str
     tree_id: str
     tree_version_id: str
@@ -117,6 +122,7 @@ class ArtifactList(BaseModel):
 
 
 class RunResult(BaseModel):
+    execution_mode: ExecutionMode = ExecutionMode.FAST
     run_id: str
     status: PublicRunStatus
     final_output: Any | None

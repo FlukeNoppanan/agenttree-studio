@@ -1,5 +1,7 @@
 """Phase 8A Studio-to-Core runtime integration contracts."""
 
+from qualification_fixture import QUALIFIED_METADATA
+
 from datetime import datetime, timezone
 from types import SimpleNamespace
 from threading import Event
@@ -113,7 +115,7 @@ def test_builder_preserves_mixed_provider_and_model_routing(database):
         database.add(connection); database.flush()
         database.add(ProviderModel(
             provider_connection_id=connection.id, model_id=model_id,
-            is_available=True, qualification_status="qualified",
+            is_available=True, qualification_status="qualified", metadata_json=QUALIFIED_METADATA,
         ))
         configs[agent_id].provider_connection_id = connection.id
         configs[agent_id].model_id = model_id

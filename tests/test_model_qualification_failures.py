@@ -1,13 +1,15 @@
 """Temporary provider failures must not become permanent model capability claims."""
 import pytest
 import httpx
-from agenttree.providers import ProviderResponse
+from test_structured_model_qualification import decision_reply
+from agenttree.providers import ProviderRequest, ProviderResponse
 from agenttree.providers.exceptions import (
     MalformedProviderResponseError, ProviderAuthenticationError,
     ProviderInvalidRequestError, ProviderModelNotFoundError, ProviderRateLimitError,
     ProviderRuntimeError, ProviderTimeoutError, ProviderUnavailableError,
 )
 from backend.providers.base import DiscoveredModel, ProviderAdapter
+from backend.models.provider import ProviderConnection
 from backend.schemas.provider import ProviderCreate
 from backend.services.model_discovery_service import ModelDiscoveryService, _qualification_failure
 from backend.services.provider_service import ProviderService
@@ -31,6 +33,28 @@ def test_typed_failures_are_safe_and_correct(error, status, code):
     assert classified[:2] == (status, code)
     assert "secret" not in classified[2] and "sensitive" not in classified[2]
 
+def test_generation_probe_leaves_room_for_reasoning_before_final_text():
+    requests = []
+    class Working:
+        def generate(self, request):
+            requests.append(request)
+            return ProviderResponse("OK", provider="Cerebras")
+
+    service = ModelDiscoveryService(None, generation_factory=lambda *_: Working())
+    connection = ProviderConnection(name="Cerebras", provider_type="cerebras")
+    service._verify_generation(connection, "generic-reasoning-model")
+
+    assert len(requests) == 1
+    request = requests[0]
+    assert isinstance(request, ProviderRequest)
+    assert request.prompt == "Reply with exactly OK"
+    assert request.temperature == 0
+    assert request.max_tokens == service.GENERATION_VERIFICATION_MAX_TOKENS == 64
+    assert request.response_format is None
+    assert not request.tools
+    assert request.tool_choice is None
+    assert request.provider_options == {}
+
 @pytest.mark.parametrize("status,code", [(429, "provider_rate_limited"), (401, "provider_auth_failed"), (403, "provider_auth_failed"), (503, "provider_unavailable"), (408, "verification_timeout"), (504, "verification_timeout")])
 def test_direct_http_verification_errors_remain_transient(status, code):
     response = httpx.Response(status, request=httpx.Request("POST", "https://provider.invalid/generate"))
@@ -49,15 +73,15 @@ def test_rate_limit_pauses_bulk_qualification_and_later_success_restores_model(d
         def generate(self, request):
             calls.append(request)
             raise ProviderRateLimitError("unsafe quota response")
-    service = ModelDiscoveryService(database, adapter_factory=lambda *_: Catalog(), generation_factory=lambda *_: Limited())
+    service = ModelDiscoveryService(database, adapter_factory=lambda *_: Catalog(), generation_factory=lambda *_: Limited(), sleep=lambda _: None)
     result = service.discover_models(provider.id)
-    assert len(calls) == 1
+    assert len(calls) == 2
     assert [m.qualification_status for m in result.models] == ["transient_error", "unknown"]
     assert ProviderService(database).models(provider.id) == []
     assert len(ProviderService(database).models(provider.id, include_unusable=True)) == 2
     class Working:
         def generate(self, request):
-            return ProviderResponse(content="OK", provider="Test Provider")
+            return ProviderResponse(content=decision_reply() if request.metadata.get("strategy") or "Return JSON" in request.prompt else "OK", provider="Test Provider")
     recovered = ModelDiscoveryService(database, generation_factory=lambda *_: Working()).verify_model(provider.id, "first")
     assert recovered.model.qualification_status == "qualified"
     assert recovered.model.qualification_error_code is None

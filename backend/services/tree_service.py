@@ -12,6 +12,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
 from backend.models.provider import ProviderConnection, ProviderModel
+from backend.services.model_capabilities import supports_agent_role
 from backend.models.tool import ToolAssignment, ToolConnection
 from backend.models.auth import User
 from backend.services.auth_service import AuthService
@@ -45,6 +46,7 @@ from backend.schemas.template import upgrade_template_definition
 from backend.services.template_requirements import resolve_requirements
 from backend.services.tree_contracts import invalid_manager_peers
 from backend.services.resource_identity import identity
+from backend.providers.generation import provider_supports_tool_calling
 
 
 class TreeService:
@@ -452,13 +454,17 @@ class TreeService:
         elif (
             not model.is_available
             or not model.generation_candidate
-            or model.qualification_status != "qualified"
+            or model.qualification_status not in {"qualified", "limited"}
         ):
             self._issue(
                 errors, step, "model_unavailable",
                 f"Model for {agent.name or 'Agent'} is not verified for AgentTree generation",
                 agent.id,
             )
+        elif not supports_agent_role(model, agent.agent_type):
+            self._issue(errors, step, "model_role_not_qualified",
+                        f"Model for {agent.name or 'Agent'} has not passed the required {agent.agent_type.title()} checks",
+                        agent.id)
 
     def _validate_core_hierarchy(self, agents: Iterable[AgentConfig]) -> None:
         roots = [agent for agent in agents if agent.agent_type == "root"]
@@ -572,6 +578,7 @@ class TreeService:
                     specialist.id,
                 )
 
+        configs_by_id = {agent.id: agent for agent in agents}
         for assignment in version.tool_assignments:
             tool = self._database.get(ToolConnection, assignment.tool_connection_id)
             if tool is None or not tool.enabled or tool.status != "connected":
@@ -580,6 +587,16 @@ class TreeService:
                 isinstance(item, dict) and item.get("selected") for item in tool.discovered_tools_json or []
             ):
                 self._issue(errors, "tools", "mcp_tool_not_selected", "Assigned MCP connection needs a selected Tool", assignment.agent_config_id)
+
+            agent = configs_by_id.get(assignment.agent_config_id)
+            provider = (self._database.get(ProviderConnection, agent.provider_connection_id)
+                        if agent is not None and agent.provider_connection_id else None)
+            if provider is not None and not provider_supports_tool_calling(provider.provider_type):
+                self._issue(
+                    errors, "tools", "provider_tool_incompatible",
+                    f"{agent.name or 'Agent'} uses a Tool that is not supported by the selected provider.",
+                    agent.id,
+                )
 
         instance = version.template_instance_json
         if isinstance(instance, dict) and isinstance(instance.get("definition"), dict):

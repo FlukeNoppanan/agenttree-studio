@@ -1,0 +1,207 @@
+[
+  {
+    "run_id": "3b1b0a1b-f765-4291-8d15-27bf2bbc3fe1",
+    "tree_id": "257e8a23-eac2-4b8d-8bcd-5e0277e582a0",
+    "mode": "fast",
+    "status": "completed",
+    "duration_ms": 14993,
+    "persisted_event_count": 26,
+    "error_code": null,
+    "canonical_contracts": [
+      {
+        "agent_id": "4381e5c7-3d30-43ca-a72b-ba83ede7a9ee",
+        "strategy": "root_planning",
+        "canonical_type": "RootPlan",
+        "representation": "json"
+      }
+    ],
+    "event_types": {
+      "execution.queued": 2,
+      "execution.started": 3,
+      "execution.phase.started": 1,
+      "root.planning.started": 1,
+      "operation.prepared": 3,
+      "operation.in_flight": 3,
+      "structured_decision.decision_attempt": 1,
+      "operation.committed": 3,
+      "structured_decision.normalized": 1,
+      "root.planning.completed": 1,
+      "root.direct_response": 1,
+      "root.synthesis.completed": 1,
+      "execution.completed": 2,
+      "execution.checkpoint.saved": 2,
+      "output.final.available": 1
+    }
+  },
+  {
+    "run_id": "e4d84c68-fa9f-4208-a2a7-6ddac0443dba",
+    "tree_id": "257e8a23-eac2-4b8d-8bcd-5e0277e582a0",
+    "mode": "deep",
+    "status": "cancelled",
+    "duration_ms": 902313,
+    "persisted_event_count": 65,
+    "error_code": null,
+    "canonical_contracts": [
+      {
+        "agent_id": "4381e5c7-3d30-43ca-a72b-ba83ede7a9ee",
+        "strategy": "root_planning",
+        "canonical_type": "RootPlan",
+        "representation": "json"
+      },
+      {
+        "agent_id": "4381e5c7-3d30-43ca-a72b-ba83ede7a9ee",
+        "strategy": "triage",
+        "canonical_type": "TriageResult",
+        "representation": "json"
+      },
+      {
+        "agent_id": "eb2d98cd-fc10-4148-98b7-82982a7e6b53",
+        "strategy": "decomposition",
+        "canonical_type": "tuple",
+        "representation": "json"
+      },
+      {
+        "agent_id": "f7eccd5f-5716-4c4d-b247-8cdc9d9da1e9",
+        "strategy": "decomposition",
+        "canonical_type": "tuple",
+        "representation": "json"
+      },
+      {
+        "agent_id": "eb2d98cd-fc10-4148-98b7-82982a7e6b53",
+        "strategy": "manager_review",
+        "canonical_type": "ReviewResult",
+        "representation": "json"
+      }
+    ],
+    "event_types": {
+      "execution.queued": 1,
+      "execution.started": 1,
+      "execution.phase.started": 4,
+      "operation.prepared": 15,
+      "operation.in_flight": 15,
+      "structured_decision.decision_attempt": 6,
+      "operation.committed": 13,
+      "structured_decision.normalized": 5,
+      "execution.checkpoint.saved": 3,
+      "execution.cancellation.requested": 1,
+      "execution.cancelled": 1
+    }
+  },
+  {
+    "run_id": "9cdcb19b-22c6-4f4d-b20d-b65e7e6c6846",
+    "tree_id": "f47466be-c158-45ea-a29f-0cf42669cc51",
+    "mode": "deep",
+    "status": "completed",
+    "duration_ms": 6571,
+    "persisted_event_count": 95,
+    "error_code": null,
+    "canonical_contracts": [
+      {
+        "agent_id": "114fa598-4a24-4776-b366-ff64b84c2447",
+        "strategy": "root_planning",
+        "canonical_type": "RootPlan",
+        "representation": "json"
+      },
+      {
+        "agent_id": "114fa598-4a24-4776-b366-ff64b84c2447",
+        "strategy": "triage",
+        "canonical_type": "TriageResult",
+        "representation": "json"
+      },
+      {
+        "agent_id": "eb06aa77-2ef0-4eec-8acf-f41d0649c4a2",
+        "strategy": "decomposition",
+        "canonical_type": "tuple",
+        "representation": "json"
+      },
+      {
+        "agent_id": "eb06aa77-2ef0-4eec-8acf-f41d0649c4a2",
+        "strategy": "manager_review",
+        "canonical_type": "ReviewResult",
+        "representation": "json"
+      },
+      {
+        "agent_id": "114fa598-4a24-4776-b366-ff64b84c2447",
+        "strategy": "final_review",
+        "canonical_type": "ReviewResult",
+        "representation": "fence+json"
+      }
+    ],
+    "event_types": {
+      "execution.queued": 2,
+      "execution.started": 3,
+      "execution.phase.started": 5,
+      "root.planning.started": 1,
+      "operation.prepared": 13,
+      "operation.in_flight": 13,
+      "structured_decision.decision_attempt": 5,
+      "operation.committed": 13,
+      "structured_decision.normalized": 5,
+      "root.planning.completed": 1,
+      "root.delegation.required": 1,
+      "orchestration.started": 1,
+      "orchestration.triage_completed": 1,
+      "orchestration.manager_discovery_completed": 1,
+      "orchestration.planning_completed": 1,
+      "execution.checkpoint.saved": 10,
+      "orchestration.manager_delegation_started": 1,
+      "orchestration.subtask_created": 1,
+      "orchestration.specialist_discovery_completed": 1,
+      "orchestration.manager_delegation_completed": 1,
+      "orchestration.execution_started": 1,
+      "orchestration.specialist_execution_started": 1,
+      "orchestration.specialist_execution_completed": 1,
+      "orchestration.execution_completed": 1,
+      "orchestration.manager_review_started": 1,
+      "orchestration.manager_review_passed": 1,
+      "orchestration.manager_review_completed": 1,
+      "orchestration.final_review_started": 1,
+      "orchestration.final_review_passed": 1,
+      "orchestration.final_result_created": 1,
+      "root.synthesis.started": 1,
+      "root.synthesis.completed": 1,
+      "execution.completed": 2,
+      "output.final.available": 1
+    }
+  },
+  {
+    "run_id": "3d33f2b3-0f8f-4237-bdaa-f98790846afc",
+    "tree_id": "186f73fe-44e7-478c-8675-cdd0d4225273",
+    "mode": "deep",
+    "status": "cancelled",
+    "duration_ms": 114092,
+    "persisted_event_count": 10,
+    "error_code": null,
+    "canonical_contracts": [],
+    "event_types": {
+      "execution.queued": 1,
+      "execution.started": 1,
+      "execution.phase.started": 1,
+      "operation.prepared": 2,
+      "operation.in_flight": 2,
+      "structured_decision.decision_attempt": 1,
+      "execution.cancellation.requested": 1,
+      "execution.cancelled": 1
+    }
+  },
+  {
+    "run_id": "134e5ec1-c041-4c37-b7d2-55300a2f7efc",
+    "tree_id": "f47466be-c158-45ea-a29f-0cf42669cc51",
+    "mode": "deep",
+    "status": "failed",
+    "duration_ms": 377,
+    "persisted_event_count": 11,
+    "error_code": "PROVIDER_RATE_LIMIT",
+    "canonical_contracts": [],
+    "event_types": {
+      "execution.queued": 1,
+      "execution.started": 1,
+      "execution.phase.started": 1,
+      "operation.prepared": 2,
+      "operation.in_flight": 2,
+      "structured_decision.decision_attempt": 1,
+      "operation.failed": 2,
+      "execution.failed": 1
+    }
+  }
+]

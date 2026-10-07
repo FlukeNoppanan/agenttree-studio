@@ -54,3 +54,17 @@ export function displayResult(output: unknown): unknown {
   if (typeof output === 'string') { try { return JSON.parse(output) } catch { return output } }
   return output
 }
+
+/** Reconcile actual traffic per invocation; another Agent completing cannot
+ * clear a still-waiting request. Completed Runs never display live waiting. */
+export function waitingProviderRequests(events: LiveEvent[]): LiveEvent[] {
+  const waiting = new Map<string, LiveEvent>()
+  for (const event of events) {
+    if (!event.type.startsWith('provider.')) continue
+    const meta = operationInfo(event)
+    const key = typeof meta.traffic_request_id === 'string' ? meta.traffic_request_id : `${event.agent_id ?? 'system'}:${meta.model ?? ''}:${meta.strategy ?? ''}`
+    if (['provider.wait.started', 'provider.retry.scheduled', 'provider.rate_limited'].includes(event.type)) waiting.set(key, event)
+    else if (['provider.wait.resumed', 'provider.request.dispatched', 'provider.request.completed', 'provider.request.failed', 'provider.wait.deferred'].includes(event.type)) waiting.delete(key)
+  }
+  return [...waiting.values()]
+}

@@ -27,6 +27,7 @@ export function AgentForm({ value, onChange, providers, modelCatalogs, agentType
       <div className="space-y-2"><Label htmlFor={`name-${value.id}`}>{t("agents.name")}</Label><Input id={`name-${value.id}`} value={value.name} onChange={(event) => update("name", event.target.value)} required /></div>
       <div className="space-y-2"><Label htmlFor={`description-${value.id}`}>{t("agents.description")}</Label><Textarea id={`description-${value.id}`} value={value.description} onChange={(event) => update("description", event.target.value)} placeholder={t("designV3.nameHelp")} /></div>
       <ProviderModelSelector
+        role={agentType}
         providers={providers}
         modelCatalogs={modelCatalogs}
         providerId={value.provider_connection_id}

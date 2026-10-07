@@ -109,3 +109,19 @@ def list_provider_models(
     database: Session = Depends(get_db),
 ) -> list[ProviderModelRead]:
     return ProviderService(database).models(provider_id, include_unusable=include_unusable)
+
+
+@router.post("/{provider_id}/qualification/start", status_code=status.HTTP_204_NO_CONTENT)
+def start_provider_qualification(provider_id: str, database: Session = Depends(get_db)):
+    from backend.services.qualification_control import start_qualification
+    ProviderService(database).get_model(provider_id)
+    start_qualification(provider_id)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.post("/{provider_id}/qualification/stop", status_code=status.HTTP_204_NO_CONTENT)
+def stop_provider_qualification(provider_id: str, database: Session = Depends(get_db)):
+    from backend.services.qualification_control import stop_qualification
+    ProviderService(database).get_model(provider_id)
+    stop_qualification(provider_id)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

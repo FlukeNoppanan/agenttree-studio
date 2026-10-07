@@ -17,7 +17,7 @@ from backend.models.provider import ProviderConnection
 from backend.providers.http import url_targets_loopback
 
 
-def create_generation_provider(
+def _create_generation_provider(
     connection: ProviderConnection,
     model_id: str,
     credential: str | None,
@@ -58,3 +58,33 @@ def create_generation_provider(
         client = OllamaClient(host=connection.base_url, **client_options)
         return OllamaProvider(config, client=client)
     raise ValueError("Unsupported provider type")
+
+
+def provider_supports_tool_calling(provider_type: str) -> bool:
+    """Return the adapter's declared tool-call capability for a Studio type.
+
+    Unknown provider families are conservative: runtime adapters default to
+    unsupported unless they explicitly advertise the capability.
+    """
+    return provider_type in {
+        "openai", "gemini", "groq", "openrouter", "cerebras",
+        "openai_compatible", "custom_openai",
+    }
+
+
+def traffic_scope_key(connection, credential):
+    """Private process key: same family/endpoint/credential shares traffic.
+
+    Neither plaintext nor this fingerprint is emitted in diagnostics.
+    """
+    from hashlib import sha256
+    from urllib.parse import urlsplit
+    endpoint = urlsplit(connection.base_url or "").netloc
+    return sha256((connection.provider_type + ":" + endpoint + ":" +
+                   (credential or connection.id or connection.name)).encode()).hexdigest()
+
+
+def create_generation_provider(connection, model_id, credential, provider_name=None):
+    from agenttree.providers.traffic import governed
+    return governed(_create_generation_provider(connection, model_id, credential, provider_name),
+                    key=traffic_scope_key(connection, credential))
