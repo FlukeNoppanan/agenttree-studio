@@ -915,7 +915,8 @@
     "settings": "Settings",
     "intelligence": "ความสามารถอัจฉริยะ",
     "learning": "Learning",
-    "comingSoon": "เร็ว ๆ นี้"
+    "comingSoon": "เร็ว ๆ นี้",
+    "executionTrace": "Execution Trace"
   },
   "common": {
     "refresh": "รีเฟรช",

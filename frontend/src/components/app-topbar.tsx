@@ -1,15 +1,16 @@
-import { CircleHelp, Network } from "lucide-react"
+import { CircleHelp, KeyRound, Network } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 
+import { useAuth } from "@/auth"
 import { AccountMenu } from "@/components/account-menu"
 import { LanguageSelect } from "@/components/language-select"
 import { ThemeToggle } from "@/components/theme-toggle"
 
 const contexts: Record<string, string> = {
-  trees: "nav.trees", runs: "consolidation.executions", executions: "consolidation.executions", templates: "nav.templates",
+  trees: "nav.trees", runs: "nav.runs", executions: "nav.runs", templates: "nav.templates",
   providers: "nav.providers", tools: "nav.tools", secrets: "nav.secrets",
-  "execution-trace": "consolidation.executions", "security-events": "audit.title",
+  "execution-trace": "nav.executionTrace", "security-events": "audit.title",
   users: "auth.users", settings: "nav.settings", account: "accountUx.myAccount",
   "getting-started": "onboarding.title", learning: "nav.learning",
 }
@@ -17,6 +18,7 @@ const contexts: Record<string, string> = {
 export function AppTopbar() {
   const { t } = useTranslation()
   const { pathname } = useLocation()
+  const { user } = useAuth()
   const context = contexts[pathname.split("/")[1]] ?? "nav.dashboard"
   return <header className="app-topbar" aria-label={t("integrationPolish.utilities")}>
     <div className="flex min-w-0 items-center gap-2 text-sm">
@@ -29,9 +31,10 @@ export function AppTopbar() {
       <Link to="/getting-started" className="flex h-9 items-center gap-2 rounded-md px-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground" aria-label={t("onboarding.title")} title={t("onboarding.title")}>
         <CircleHelp className="size-4" aria-hidden="true" /><span className="hidden xl:inline">{t("onboarding.title")}</span>
       </Link>
+      {(user?.is_admin || user?.permissions.includes("use_trees")) && <Link to="/account?section=api-keys" className="flex h-9 items-center gap-2 rounded-md px-2 text-sm text-muted-foreground hover:bg-accent hover:text-foreground" aria-label={t("apiKeys.title")} title={t("apiKeys.title")}><KeyRound className="size-4" aria-hidden="true" /><span className="hidden xl:inline">{t("apiKeys.title")}</span></Link>}
       <div className="w-[94px]"><LanguageSelect compact /></div>
       <ThemeToggle />
-      <AccountMenu compact placement="below" />
+      <AccountMenu compact placement="below" showApiKeys={false} />
     </div>
   </header>
 }

@@ -7,47 +7,47 @@
   --app-topbar-height: 56px;
   --radius-panel: 8px;
   --radius-control: 6px;
-  --background: #F3F5F7;
-  --foreground: #202938;
-  --foreground-secondary: #4F5C6E;
-  --card: #FFFFFF;
-  --card-foreground: #202938;
-  --primary: #4964A4;
-  --primary-hover: #3C528B;
-  --primary-active: #314575;
+  --background: #F3F2EF;
+  --foreground: #292D31;
+  --foreground-secondary: #535B60;
+  --card: #FCFCFA;
+  --card-foreground: #292D31;
+  --primary: #505D7C;
+  --primary-hover: #404C68;
+  --primary-active: #344059;
   --primary-foreground: #FFFFFF;
-  --secondary: #EDEFF3;
-  --secondary-foreground: #364356;
-  --muted: #EDEFF3;
-  --muted-foreground: #626F80;
-  --accent: #E8EDF8;
-  --accent-foreground: #3D5182;
-  --border: #DCE2EA;
-  --border-strong: #94A1B4;
-  --ring: #5472B7;
-  --sidebar: #EAEFF4;
-  --sidebar-border: #D5DEE8;
-  --sidebar-foreground: #29364A;
-  --sidebar-muted: #606F83;
-  --sidebar-active: #D8E2F2;
-  --sidebar-hover: #DFE6EF;
-  --success: #39765A;
-  --success-subtle: #E8F2EB;
-  --warning: #936B21;
-  --warning-subtle: #F9F0DB;
-  --destructive: #B64C4F;
-  --destructive-fill: #B64C4F;
+  --secondary: #EAECE8;
+  --secondary-foreground: #41494F;
+  --muted: #EAECE8;
+  --muted-foreground: #646D71;
+  --accent: #E6E9ED;
+  --accent-foreground: #455371;
+  --border: #D5D9D7;
+  --border-strong: #8C979A;
+  --ring: #647498;
+  --sidebar: #E7EAE7;
+  --sidebar-border: #CFD5D2;
+  --sidebar-foreground: #30383D;
+  --sidebar-muted: #5D696E;
+  --sidebar-active: #D6DDDE;
+  --sidebar-hover: #DDE2DE;
+  --success: #3E7055;
+  --success-subtle: #E7EEE7;
+  --warning: #886322;
+  --warning-subtle: #F3ECD9;
+  --destructive: #A74843;
+  --destructive-fill: #A74843;
   --destructive-foreground: #FFFFFF;
-  --danger-subtle: #FAEDEF;
-  --info: #3C7191;
-  --info-subtle: #E7F1F7;
+  --danger-subtle: #F5E8E4;
+  --info: #496D86;
+  --info-subtle: #E7EDF1;
   --earth: #697269;
-  --root-agent: #5967AE;
-  --manager-agent: #287C7E;
-  --specialist-agent: #587A64;
-  --elevated: #FDFEFF;
-  --input: #F9FBFD;
-  --input-border: #94A1B4;
+  --root-agent: #626080;
+  --manager-agent: #367778;
+  --specialist-agent: #587461;
+  --elevated: #FFFFFF;
+  --input: #F7F8F5;
+  --input-border: #8C979A;
   --surface: var(--card);
   --surface-secondary: var(--secondary);
   --surface-elevated: var(--elevated);
@@ -57,52 +57,52 @@
   --shadow-soft: 0 1px 3px rgb(32 35 27 / 0.05);
   --shadow-lifted: 0 12px 32px rgb(32 35 27 / 0.14);
   color-scheme: light;
-  --tool-resource: #607890;
-  --mcp-resource: #81688D;
+  --tool-resource: #57748B;
+  --mcp-resource: #7B6582;
 }
 
 .dark {
-  --background: #171D27;
-  --foreground: #EDF2F8;
-  --foreground-secondary: #CAD4E1;
-  --card: #202937;
-  --card-foreground: #EDF2F8;
-  --primary: #91ABEB;
-  --primary-hover: #B0C4F4;
-  --primary-active: #809BDC;
-  --primary-foreground: #18243D;
-  --secondary: #293446;
-  --secondary-foreground: #DCE5F0;
-  --muted: #293446;
-  --muted-foreground: #A4B2C7;
-  --accent: #2B3B59;
-  --accent-foreground: #BBD0FA;
-  --border: #364456;
-  --border-strong: #71859D;
-  --ring: #91ABEB;
-  --sidebar: #1C2532;
-  --sidebar-border: #334052;
-  --sidebar-foreground: #EDF2F8;
-  --sidebar-muted: #A4B2C7;
-  --sidebar-active: #2A3D5C;
-  --sidebar-hover: #283548;
-  --success: #94CDAE;
-  --success-subtle: #243C36;
-  --warning: #E3BE74;
-  --warning-subtle: #40382B;
-  --destructive: #F0A2AC;
-  --destructive-fill: #C95C6B;
+  --background: #1B2023;
+  --foreground: #ECF0EC;
+  --foreground-secondary: #C4CDCD;
+  --card: #262D31;
+  --card-foreground: #ECF0EC;
+  --primary: #B3BDDA;
+  --primary-hover: #C9D1E8;
+  --primary-active: #9EAACD;
+  --primary-foreground: #252E43;
+  --secondary: #30393D;
+  --secondary-foreground: #D7DFDE;
+  --muted: #30393D;
+  --muted-foreground: #A5B2B4;
+  --accent: #37414D;
+  --accent-foreground: #CFD6E8;
+  --border: #465157;
+  --border-strong: #7C8E95;
+  --ring: #B3BDDA;
+  --sidebar: #222A2D;
+  --sidebar-border: #3D4B50;
+  --sidebar-foreground: #ECF0EC;
+  --sidebar-muted: #A5B2B4;
+  --sidebar-active: #38464D;
+  --sidebar-hover: #303D42;
+  --success: #A4CBB0;
+  --success-subtle: #2D3E35;
+  --warning: #DFBE7F;
+  --warning-subtle: #403A2F;
+  --destructive: #E8AAA4;
+  --destructive-fill: #A74946;
   --destructive-foreground: #FFFFFF;
-  --danger-subtle: #452E3A;
-  --info: #97C9E5;
-  --info-subtle: #243D50;
+  --danger-subtle: #463432;
+  --info: #AAC7D8;
+  --info-subtle: #2E404C;
   --earth: #BDC5B8;
-  --root-agent: #ADB7F1;
-  --manager-agent: #88CCCB;
-  --specialist-agent: #A3CCB2;
-  --elevated: #303D50;
-  --input: #1B2432;
-  --input-border: #71859D;
+  --root-agent: #C0BDD9;
+  --manager-agent: #A1CDCA;
+  --specialist-agent: #B0CDB8;
+  --elevated: #354146;
+  --input: #20282B;
+  --input-border: #7C8E95;
   --surface: var(--card);
   --surface-secondary: var(--secondary);
   --surface-elevated: var(--elevated);
@@ -112,8 +112,8 @@
   --shadow-soft: 0 1px 3px rgb(8 12 6 / 0.18);
   --shadow-lifted: 0 12px 32px rgb(8 12 6 / 0.35);
   color-scheme: dark;
-  --tool-resource: #ACC4DE;
-  --mcp-resource: #C8AEDB;
+  --tool-resource: #ABC5D7;
+  --mcp-resource: #CEB8D6;
 }
 
 @theme inline {
@@ -291,7 +291,7 @@
 
 /* Thesis workspace: warm graph identity, quiet surfaces, purposeful hierarchy. */
 @layer components {
-  .dashboard-command-header { padding: 1.15rem 1.25rem; border: 1px solid var(--border); border-radius: var(--radius-panel); background: linear-gradient(110deg,var(--card),color-mix(in srgb,var(--manager-agent) 6%,var(--card))); }
+  .dashboard-command-header { padding: 1.15rem 1.25rem; border: 1px solid var(--border); border-radius: var(--radius-panel); background: var(--card); }
   .dashboard-workflow { display:flex; flex-wrap:wrap; gap:1.5rem; margin-top:1rem; padding-top:.8rem; border-top:1px solid var(--border); }
   .dashboard-workflow span { display:flex; align-items:center; gap:.45rem; font: .65rem ui-monospace,monospace; letter-spacing:.1em; color:var(--muted-foreground); }
   .dashboard-workflow i { width:6px; height:6px; border-radius:2px; background:var(--root-agent); }
@@ -393,3 +393,16 @@
 .workspace-inventory p { grid-column: 1 / -1; font-size: .65rem; color: var(--muted-foreground); }
 @media(min-width:1200px) { .workspace-columns { grid-template-columns: minmax(0,1fr) minmax(250px,.43fr); } }
 @media(max-width:800px) { .workspace-overview { grid-template-columns: minmax(0,1fr); } .workspace-architecture { display: none; } .workspace-tree-list>article { flex-wrap: wrap; } .workspace-tree-actions { width: 100%; align-items: flex-start; padding-left: 1.85rem; } }
+
+/* Industrial shell: neutral working surfaces, compact technical metadata. */
+@layer components {
+  .app-topbar { background:var(--surface); box-shadow:0 1px 0 var(--border); }
+  .metric-strip { border-radius:var(--radius-panel); }
+  .metric-strip > div { font-variant-numeric:tabular-nums; }
+  .studio-tabs > button { font-size:.8125rem; font-weight:500; }
+  .operational-page table { font-variant-numeric:tabular-nums; }
+  .operational-page thead { background:var(--surface-secondary); }
+  .operational-page tbody tr:hover { background:color-mix(in srgb,var(--secondary) 55%,transparent); }
+  .trace-marker { border-radius:4px; }
+  .brand-emblem { border-radius:6px; }
+}

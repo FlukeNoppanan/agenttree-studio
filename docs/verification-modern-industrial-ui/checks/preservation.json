@@ -1,0 +1,109 @@
+{
+  "missing": {},
+  "changed": {},
+  "added": {
+    "result_deliveries": 2,
+    "runs": 1,
+    "trace_events": 30
+  },
+  "counts": {
+    "agent_configs": {
+      "before": 108,
+      "after": 108
+    },
+    "api_tokens": {
+      "before": 7,
+      "after": 7
+    },
+    "output_configs": {
+      "before": 23,
+      "after": 23
+    },
+    "provider_connections": {
+      "before": 4,
+      "after": 4
+    },
+    "provider_models": {
+      "before": 79,
+      "after": 79
+    },
+    "result_deliveries": {
+      "before": 24,
+      "after": 26
+    },
+    "result_destinations": {
+      "before": 14,
+      "after": 14
+    },
+    "run_artifacts": {
+      "before": 18,
+      "after": 18
+    },
+    "run_idempotency": {
+      "before": 0,
+      "after": 0
+    },
+    "runs": {
+      "before": 28,
+      "after": 29
+    },
+    "secrets": {
+      "before": 3,
+      "after": 3
+    },
+    "security_events": {
+      "before": 389,
+      "after": 389
+    },
+    "tool_assignments": {
+      "before": 46,
+      "after": 46
+    },
+    "tool_connections": {
+      "before": 4,
+      "after": 4
+    },
+    "trace_events": {
+      "before": 2010,
+      "after": 2040
+    },
+    "tree_templates": {
+      "before": 0,
+      "after": 0
+    },
+    "tree_versions": {
+      "before": 26,
+      "after": 26
+    },
+    "trees": {
+      "before": 7,
+      "after": 7
+    },
+    "trigger_configs": {
+      "before": 23,
+      "after": 23
+    },
+    "user_permissions": {
+      "before": 0,
+      "after": 0
+    },
+    "user_sessions": {
+      "before": 17,
+      "after": 17
+    },
+    "user_tree_access": {
+      "before": 0,
+      "after": 0
+    },
+    "users": {
+      "before": 3,
+      "after": 3
+    },
+    "webhook_integrations": {
+      "before": 0,
+      "after": 0
+    }
+  },
+  "providers_unchanged": true,
+  "model_evidence_unchanged": true
+}

@@ -41,7 +41,7 @@ const navigation: NavGroup[] = [
     label: "nav.workspace",
     items: [
       { label: "nav.trees", href: "/trees", icon: Network, permission: "manage_trees_agents" },
-      { label: "consolidation.executions", href: "/executions", icon: PlaySquare, permission: "view_executions" },
+      { label: "nav.runs", href: "/executions", icon: PlaySquare, permission: "view_executions" },
       { label: "nav.templates", href: "/templates", icon: Boxes, permission: "manage_trees_agents" },
     ],
   },
@@ -60,6 +60,7 @@ const navigation: NavGroup[] = [
   {
     label: "nav.monitoring",
     items: [
+      { label: "nav.executionTrace", href: "/execution-trace", icon: ScrollText, permission: "view_executions" },
       { label: "audit.title", href: "/security-events", icon: ScrollText, admin: true },
     ],
   },
@@ -98,7 +99,7 @@ function NavigationLink({ item, mobile = false }: { item: NavItem; mobile?: bool
         )
       }
     >
-      <Icon className="size-4 shrink-0 transition-transform group-hover:scale-105" />
+      <Icon className="size-4 shrink-0 transition-transform " />
       {t(item.label)}
       {item.badge ? <span className="ml-auto rounded-full border border-primary/30 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-primary">{t(item.badge)}</span> : null}
     </NavLink>

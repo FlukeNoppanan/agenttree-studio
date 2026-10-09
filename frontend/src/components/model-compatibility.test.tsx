@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, it, expect, vi, beforeEach } from "vitest"
 import i18n from "@/i18n"
-import { ModelCatalog } from "./model-compatibility"
+import { ModelCatalog, ModelCompatibility } from "./model-compatibility"
 import { ProviderModelSelector } from "./tree/provider-model-selector"
 import { HumanExecutionTrace } from "./human-execution-trace"
 import { ExecutionInspector } from "./execution-inspector"
@@ -64,4 +64,14 @@ describe("Model qualification and decision evidence", () => {
     expect(screen.getByText("Provider: Ollama actual")).toBeInTheDocument()
     expect(screen.queryByText("sentinel-credential")).not.toBeInTheDocument()
   })
+})
+
+it.each([
+ ["qualified", ".lucide-circle-check"], ["limited", ".lucide-triangle-alert"],
+ ["unknown", ".lucide-clock-3"], ["unavailable", ".lucide-circle-x"],
+] as const)("provides a non-color %s qualification marker without triggering verification", (status, selector) => {
+ const verify=vi.fn()
+ const {container}=render(<ModelCompatibility model={{...model,qualification_status:status}} onVerify={verify} />)
+ expect(container.querySelector(selector)).toHaveAttribute("aria-hidden","true")
+ expect(verify).not.toHaveBeenCalled()
 })

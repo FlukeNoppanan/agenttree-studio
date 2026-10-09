@@ -71,3 +71,12 @@ it('uses vector configuration markers and preserves read-only execution labels',
  expect(screen.getByText('Running')).toBeVisible()
  expect(container.querySelector('.lucide-circle-check, .lucide-triangle-alert')).toBeNull()
 })
+
+it('uses distinct vector role icons with readable labels in editable and live graphs', () => {
+ const p=props();p.snapshot.document=addAgent(p.snapshot.document,'specialist',p.snapshot.document.agents[1].id)
+ const {container,rerender}=render(<BuilderCanvas {...p} />)
+ for(const role of ['root','manager','specialist']) expect(container.querySelector(`[data-role-icon="${role}"]`)).toHaveAttribute('aria-hidden','true')
+ expect(screen.getByText('root')).toBeVisible();expect(screen.getByText('manager')).toBeVisible();expect(screen.getByText('specialist')).toBeVisible()
+ rerender(<BuilderCanvas {...p} readOnly executionByAgentId={{[p.snapshot.document.agents[0].id]:'completed'}} />)
+ expect(container.querySelectorAll('[data-role-icon]')).toHaveLength(3);expect(screen.getByText('Completed')).toBeVisible()
+})

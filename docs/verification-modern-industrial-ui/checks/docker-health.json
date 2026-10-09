@@ -1,0 +1,23 @@
+[
+  {
+    "Service": "backend",
+    "ID": "16792ba1829b",
+    "Health": "healthy",
+    "State": "running",
+    "CreatedAt": "2026-10-07 16:44:34 +0700 +07"
+  },
+  {
+    "Service": "frontend",
+    "ID": "f932d44fb17d",
+    "Health": "healthy",
+    "State": "running",
+    "CreatedAt": "2026-10-07 18:35:32 +0700 +07"
+  },
+  {
+    "Service": "postgres",
+    "ID": "7748558f8924",
+    "Health": "healthy",
+    "State": "running",
+    "CreatedAt": "2026-10-06 05:24:16 +0700 +07"
+  }
+]

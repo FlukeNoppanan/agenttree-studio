@@ -915,7 +915,8 @@
     "settings": "Settings",
     "intelligence": "Intelligence",
     "learning": "Learning",
-    "comingSoon": "Coming Soon"
+    "comingSoon": "Coming Soon",
+    "executionTrace": "Execution Trace"
   },
   "common": {
     "refresh": "Refresh",

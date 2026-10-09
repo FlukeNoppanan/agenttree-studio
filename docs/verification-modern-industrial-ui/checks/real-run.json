@@ -1,0 +1,45 @@
+{
+  "run_id": "bf547813-c03e-4a94-ac30-c37c3fd35a11",
+  "tree_id": "cafe7aa4-fd9e-406b-b332-424fd70eeaa7",
+  "version_id": "2027b2b0-d97f-48d0-91e0-f7a3a29e979d",
+  "status": "completed",
+  "final_status": "completed",
+  "duration_ms": 10883,
+  "mode": "fast",
+  "result": {
+    "type": "text",
+    "delivery_type": "show_in_web",
+    "value": "42",
+    "success": true,
+    "core_status": "completed",
+    "orchestration": {
+      "managers": []
+    }
+  },
+  "trace_count": 30,
+  "core_event_count": 21,
+  "event_types": {
+    "execution.queued": 2,
+    "execution.started": 3,
+    "execution.phase.started": 1,
+    "root.planning.started": 1,
+    "operation.prepared": 3,
+    "operation.in_flight": 3,
+    "structured_decision.decision_attempt": 1,
+    "provider.request.queued": 1,
+    "provider.request.dispatched": 1,
+    "provider.usage.reconciled": 1,
+    "provider.request.completed": 1,
+    "operation.committed": 3,
+    "structured_decision.normalized": 1,
+    "root.planning.completed": 1,
+    "root.direct_response": 1,
+    "root.synthesis.completed": 1,
+    "execution.completed": 2,
+    "execution.checkpoint.saved": 2,
+    "output.final.available": 1
+  },
+  "agents": [
+    "5e3727c4-d035-4700-9300-fa593ec53135"
+  ]
+}

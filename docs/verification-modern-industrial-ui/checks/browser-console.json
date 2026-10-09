@@ -1,0 +1,12 @@
+{
+  "checked_at": "2026-10-07",
+  "browser": "real Chromium, Codex in-app browser",
+  "tab": "10",
+  "levels": [
+    "error",
+    "warn"
+  ],
+  "limit": 100,
+  "entries": [],
+  "network_limitation": "No raw HAR or request-interception capability exposed. Real UI Run/result/Trace and persistence were verified; Compose logs had no per-request access lines."
+}

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "@/auth"
 import { api } from "@/lib/api"
 
-export function AccountMenu({ compact = false, placement = "above" }: { compact?: boolean; placement?: "above" | "below" }) {
+export function AccountMenu({ compact = false, placement = "above", showApiKeys = true }: { compact?: boolean; placement?: "above" | "below"; showApiKeys?: boolean }) {
   const { user, setUser } = useAuth()
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -49,7 +49,7 @@ export function AccountMenu({ compact = false, placement = "above" }: { compact?
     </button>
     {open && <div role="menu" aria-label={t("accountUx.accountMenu")} className={`absolute z-50 w-56 rounded-lg border border-border-strong bg-elevated p-1 shadow-[var(--shadow-lifted)] ${placement === "below" ? "right-0 top-full mt-2" : "bottom-full left-0 mb-2"}`}>
       <button role="menuitem" onClick={() => go("/account")} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-accent"><UserRound className="size-4" />{t("accountUx.myAccount")}</button>
-      {(user.is_admin || user.permissions.includes("use_trees")) && <button role="menuitem" onClick={() => go("/account?section=api-keys")} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-accent"><KeyRound className="size-4" />{t("apiKeys.title")}</button>}
+      {showApiKeys && (user.is_admin || user.permissions.includes("use_trees")) && <button role="menuitem" onClick={() => go("/account?section=api-keys")} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-accent"><KeyRound className="size-4" />{t("apiKeys.title")}</button>}
       <button role="menuitem" onClick={() => go("/change-password")} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-accent"><LockKeyhole className="size-4" />{t("auth.changePassword")}</button>
       <div className="my-1 border-t border-border" />
       <button role="menuitem" onClick={() => void signOut()} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm hover:bg-accent"><LogOut className="size-4" />{t("auth.signOut")}</button>

@@ -24,7 +24,8 @@ it("keeps restricted resource/admin routes hidden while preserving account API K
   expect(screen.queryByRole("link", { name: "Providers" })).not.toBeInTheDocument()
   expect(screen.queryByRole("link", { name: "Users" })).not.toBeInTheDocument()
   fireEvent.click(screen.getByRole("button", { name: "Account menu" }))
-  expect(screen.getByRole("menuitem", { name: "API Keys" })).toBeInTheDocument()
+  expect(screen.queryByRole("menuitem", { name: "API Keys" })).not.toBeInTheDocument()
+  expect(screen.getByRole("link", { name: "API Keys" })).toHaveAttribute("href", "/account?section=api-keys")
   fireEvent.keyDown(screen.getByRole("menu"), { key: "Escape" })
   expect(screen.queryByRole("menu")).not.toBeInTheDocument()
   expect(screen.getByRole("button", { name: "Account menu" })).toHaveFocus()
@@ -34,7 +35,7 @@ it("uses a downward popup and keyboard menu navigation", () => {
   expect(screen.getByRole("menu")).toHaveClass("top-full", "right-0")
   expect(screen.getByRole("menuitem", { name: "My Account" })).toHaveFocus()
   fireEvent.keyDown(screen.getByRole("menu"), { key: "ArrowDown" })
-  expect(screen.getByRole("menuitem", { name: "API Keys" })).toHaveFocus()
+  expect(screen.getByRole("menuitem", { name: "Change Password" })).toHaveFocus()
   fireEvent.pointerDown(document.body)
   expect(screen.queryByRole("menu")).not.toBeInTheDocument()
 })
@@ -44,4 +45,13 @@ it("localizes navigation groups without translating technical route names", asyn
   for (const label of ["พื้นที่ทำงาน", "ทรัพยากร", "ความสามารถอัจฉริยะ", "การติดตาม"]) expect(screen.getByText(label)).toBeInTheDocument()
   for (const label of ["Settings", "Users", "Learning", "Trees", "Security Events"]) expect(screen.getAllByRole("link", { name: new RegExp(`^${label}`) }).length).toBeGreaterThan(0)
   expect(screen.getByRole("link", { name: "Getting Started" })).toBeInTheDocument()
+})
+
+it("places Runs and the existing Execution Trace route in their operational groups", () => {
+ auth.user.is_admin = true; auth.can = () => true; mount()
+ for (const nav of screen.getAllByRole("navigation")) {
+  expect(within(nav).getByRole("link", {name:"Runs"})).toHaveAttribute("href", "/executions")
+  expect(within(nav).getByRole("link", {name:"Execution Trace"})).toHaveAttribute("href", "/execution-trace")
+ }
+ expect(screen.getAllByRole("link", {name:"API Keys"})).toHaveLength(1)
 })

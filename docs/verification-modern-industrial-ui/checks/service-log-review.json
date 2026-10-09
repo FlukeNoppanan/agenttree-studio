@@ -1,0 +1,8 @@
+{
+  "window_start_utc": "2026-10-07T11:10:00Z",
+  "http_status_counts": null,
+  "http_errors": null,
+  "exception_lines": [],
+  "line_count": 455,
+  "access_logging_observation": "No per-request HTTP status lines were present in the captured Compose output; a raw request-status audit cannot be inferred from these logs."
+}

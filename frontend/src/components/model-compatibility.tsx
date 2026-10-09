@@ -1,3 +1,4 @@
+import { CircleCheck, CircleX, Clock3, TriangleAlert } from "lucide-react"
 import { useTranslation } from "react-i18next"
 import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
@@ -18,9 +19,10 @@ export function ModelCompatibility({ model, disabled, onVerify }: { model: Provi
   const { t, i18n } = useTranslation()
   const evidence = qualificationEvidence(model)
   const attempt = qualificationAttempt(model)
+  const StatusIcon = model.qualification_status === "qualified" ? CircleCheck : model.qualification_status === "limited" ? TriangleAlert : ["unknown", "transient_error", "verifying"].includes(model.qualification_status) ? Clock3 : CircleX
   const delayed = Boolean(attempt.retry_at && Date.parse(attempt.retry_at) > Date.now())
   return <div className="py-3">
-    <div className="flex flex-wrap items-center justify-between gap-3"><div className="min-w-0"><p className="break-words font-medium">{model.display_name || model.model_id.replace(/^models\//, "")}</p><p className="mt-1 break-all font-mono text-xs text-muted-foreground">{model.model_id}</p></div><div className="flex items-center gap-2"><Badge variant={model.qualification_status === "qualified" ? "success" : model.qualification_status === "limited" ? "warning" : "secondary"}>{t(modelCompatibilityKey(model))}</Badge><Button size="sm" variant="outline" disabled={disabled || delayed || model.qualification_status === "verifying" || !model.is_available || !model.generation_candidate} onClick={onVerify}>{t("compatibility.verify")}</Button></div></div>
+    <div className="flex flex-wrap items-center justify-between gap-3"><div className="min-w-0"><p className="break-words font-medium">{model.display_name || model.model_id.replace(/^models\//, "")}</p><p className="mt-1 break-all font-mono text-xs text-muted-foreground">{model.model_id}</p></div><div className="flex items-center gap-2"><Badge className="gap-1.5" variant={model.qualification_status === "qualified" ? "success" : model.qualification_status === "limited" ? "warning" : "secondary"}><StatusIcon className="size-3" aria-hidden="true" />{t(modelCompatibilityKey(model))}</Badge><Button size="sm" variant="outline" disabled={disabled || delayed || model.qualification_status === "verifying" || !model.is_available || !model.generation_candidate} onClick={onVerify}>{t("compatibility.verify")}</Button></div></div>
     <p className="mt-2 text-xs text-muted-foreground">{t(model.qualification_status === "qualified" ? "compatibility.readyHelp" : model.qualification_status === "limited" ? "compatibility.limitedHelp" : "compatibility.unverifiedHelp")}</p>
     {attempt.status === "pending" && <p className="mt-1 text-xs text-warning">{t("qualificationFlow.pendingRecheck")}{attempt.retry_at && ` · ${t("qualificationFlow.retryAt",{time:new Date(attempt.retry_at).toLocaleString(i18n.language)})}`}</p>}
     {model.qualification_checked_at && <p className="mt-1 text-xs text-muted-foreground">{t("compatibility.checked")}: {new Date(model.qualification_checked_at).toLocaleString(i18n.language)}</p>}
